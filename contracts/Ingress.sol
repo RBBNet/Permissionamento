@@ -11,7 +11,7 @@ contract Ingress {
     mapping(bytes32 => address) internal registry;
 
     struct Vote {
-        address proposedAddress;
+//        address proposedAddress;
         mapping(address => bool) voters;
         uint256 count;
     }
@@ -69,11 +69,11 @@ contract Ingress {
             // Three or more admins exist, need voting mechanism
             require(!votes[name][addr].voters[msg.sender], "Already voted for this proposal");
 
-            if (votes[name][addr].count == 0) {
-                votes[name][addr].proposedAddress = addr;
-            }
-
-            require(votes[name][addr].proposedAddress == addr, "Different address proposal for the same name exist");
+//            if (votes[name][addr].count == 0) {
+//                votes[name][addr].proposedAddress = addr;
+//            }
+//
+//            require(votes[name][addr].proposedAddress == addr, "Different address proposal for the same name exist");
 
             votes[name][addr].voters[msg.sender] = true; // record the vote
             votes[name][addr].count++;
