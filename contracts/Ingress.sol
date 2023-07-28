@@ -2,7 +2,6 @@ pragma solidity 0.5.9;
 
 import "./AdminProxy.sol";
 
-
 contract Ingress {
     // Contract keys
     bytes32 public RULES_CONTRACT = 0x72756c6573000000000000000000000000000000000000000000000000000000; // "rules"
@@ -10,6 +9,15 @@ contract Ingress {
 
     // Registry mapping indexing
     mapping(bytes32 => address) internal registry;
+
+    struct Vote {
+        address proposedAddress;
+        mapping(address => bool) voters;
+        uint256 count;
+    }
+
+    // Voting system mapping
+    mapping(bytes32 => mapping(address => Vote)) private votes;
 
     bytes32[] internal contractKeys;
     mapping (bytes32 => uint256) internal indexOf; //1 based indexing. 0 means non-existent
@@ -35,9 +43,13 @@ contract Ingress {
             return AdminProxy(registry[ADMIN_CONTRACT]).isAuthorized(account);
         }
     }
-    function getAdminSize() public view returns (uint256){
 
-        return AdminProxy(registry[ADMIN_CONTRACT]).getAdminSize();
+    function setPrivateContractAddress(bytes32 name, address addr) private{
+        if (indexOf[name] == 0) {
+            indexOf[name] = contractKeys.push(name);
+        }
+        registry[name] = addr;
+        emit RegistryUpdated(addr, name);
 
     }
 
@@ -46,39 +58,40 @@ contract Ingress {
         require(addr != address(0), "Contract address must not be zero.");
         require(isAuthorized(msg.sender), "Not authorized to update contract registry.");
 
-        if (indexOf[name] == 0) {
-            indexOf[name] = contractKeys.push(name);
+        if (registry[ADMIN_CONTRACT] == address(0)) {
+            setPrivateContractAddress(name, addr);
         }
 
-        registry[name] = addr;
+        if (AdminProxy(registry[ADMIN_CONTRACT]).getAdminSize() < 3) {
+            // Less than 3 admins, setting the address directly
+           setPrivateContractAddress(name, addr);
+        } else {
+            // Three or more admins exist, need voting mechanism
+            require(!votes[name][addr].voters[msg.sender], "Already voted for this proposal");
 
-        emit RegistryUpdated(addr, name);
+            if (votes[name][addr].count == 0) {
+                votes[name][addr].proposedAddress = addr;
+            }
+
+            require(votes[name][addr].proposedAddress == addr, "Different address proposal for the same name exist");
+
+            votes[name][addr].voters[msg.sender] = true; // record the vote
+            votes[name][addr].count++;
+
+            if(votes[name][addr].count >= 3) {
+               setPrivateContractAddress(name, addr);
+
+                // Reset the votes
+                delete votes[name][addr];
+            }
+        }
 
         return true;
     }
 
-    function removeContract(bytes32 _name) public returns(bool) {
-        require(_name > 0, "Contract name must not be empty.");
-        require(contractKeys.length > 0, "Must have at least one registered contract to execute delete operation.");
-        require(isAuthorized(msg.sender), "Not authorized to update contract registry.");
-
-        uint256 index = indexOf[_name];
-        if (index > 0 && index <= contractKeys.length) { //1-based indexing
-            //move last address into index being vacated (unless we are dealing with last index)
-            if (index != contractKeys.length) {
-                bytes32 lastKey = contractKeys[contractKeys.length - 1];
-                contractKeys[index - 1] = lastKey;
-                indexOf[lastKey] = index;
-            }
-
-            //shrink contract keys array
-            contractKeys.pop();
-            indexOf[_name] = 0;
-            registry[_name] = address(0);
-            emit RegistryUpdated(address(0), _name);
-            return true;
-        }
-        return false;
+    function getTotalVotes(bytes32 name, address addr) public view returns (uint256){
+        uint256 totalVotes = votes[name][addr].count;
+        return totalVotes;
     }
 
     function getAllContractKeys() public view returns(bytes32[] memory) {
