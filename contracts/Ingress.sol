@@ -36,11 +36,9 @@ contract Ingress {
         }
     }
     function getAdminSize() public view returns (uint256){
-        if (registry[ADMIN_CONTRACT] == address(0)) {
-            return 999;
-        } else {
-            return AdminProxy(registry[ADMIN_CONTRACT]).getAdminSize();
-        }
+
+        return AdminProxy(registry[ADMIN_CONTRACT]).getAdminSize();
+
     }
 
     function setContractAddress(bytes32 name, address addr) public returns (bool) {
