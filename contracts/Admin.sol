@@ -68,11 +68,11 @@ contract Admin is AdminProxy, AdminList {
                 emit AdminAdded(false, _address, msg.sender, block.timestamp, "Adding own account as Admin is not permitted");
                 return false;
             }
-            if (block.timestamp < lastCallTimestamp[msg.sender] + 1 seconds){
+            if (block.timestamp < lastCallTimestamp[msg.sender] + 1 days){
                 emit AdminAdded(false, _address, msg.sender, block.timestamp, "You can only do this once a day");
                 return false;
             }
-            if (block.timestamp < lastCallTimestamp[_address] + 1 seconds){
+            if (block.timestamp < lastCallTimestamp[_address] + 1 days){
                 emit AdminAdded(false, _address, msg.sender, block.timestamp, "Account still under quarantine");
                 return false;
             }
