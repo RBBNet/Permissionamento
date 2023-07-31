@@ -12,6 +12,7 @@ contract Ingress {
 
     struct Vote {
 //        address proposedAddress;
+        uint lastVoteTimeStamp;
         mapping(address => bool) voters;
         uint256 count;
     }
@@ -66,14 +67,19 @@ contract Ingress {
             // Less than 3 admins, setting the address directly
            setPrivateContractAddress(name, addr);
         } else {
+            if (votes[name][addr].lastVoteTimeStamp == 0) {
+                votes[name][addr].lastVoteTimeStamp = block.timeStamp;
+            } else {
+                if (block.timeStamp > votes[name][addr].lastVoteTimeStamp + 7 days) {
+                    delete votes[name][addr];
+                    votes[name][addr].lastVoteTimeStamp = block.timeStamp;
+                } else {
+                    votes[name][addr].lastVoteTimeStamp = block.timeStamp;
+                }
+            }     
+
             // Three or more admins exist, need voting mechanism
             require(!votes[name][addr].voters[msg.sender], "Already voted for this proposal");
-
-//            if (votes[name][addr].count == 0) {
-//                votes[name][addr].proposedAddress = addr;
-//            }
-//
-//            require(votes[name][addr].proposedAddress == addr, "Different address proposal for the same name exist");
 
             votes[name][addr].voters[msg.sender] = true; // record the vote
             votes[name][addr].count++;
