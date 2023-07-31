@@ -12,7 +12,7 @@ contract Ingress {
 
     struct Vote {
 //        address proposedAddress;
-        uint lastVoteTimeStamp;
+        uint256 lastVoteTimeStamp;
         mapping(address => bool) voters;
         uint256 count;
     }
@@ -55,6 +55,8 @@ contract Ingress {
     }
 
     function setContractAddress(bytes32 name, address addr) public returns (bool) {
+        //possui sistema de votação que se assemelha a uma eleição, no sentido de que existe um prazo para
+        //uma votação. Se, em uma semana, a proposta não obtiver 3 votos, ela é excluída.
         require(name > 0, "Contract name must not be empty.");
         require(addr != address(0), "Contract address must not be zero.");
         require(isAuthorized(msg.sender), "Not authorized to update contract registry.");
@@ -65,18 +67,18 @@ contract Ingress {
 
         if (AdminProxy(registry[ADMIN_CONTRACT]).getAdminSize() < 3) {
             // Less than 3 admins, setting the address directly
-           setPrivateContractAddress(name, addr);
+            setPrivateContractAddress(name, addr);
         } else {
             if (votes[name][addr].lastVoteTimeStamp == 0) {
-                votes[name][addr].lastVoteTimeStamp = block.timeStamp;
+                votes[name][addr].lastVoteTimeStamp = block.timestamp;
             } else {
-                if (block.timeStamp > votes[name][addr].lastVoteTimeStamp + 7 days) {
+                if (block.timestamp > votes[name][addr].lastVoteTimeStamp + 7 days) {
                     delete votes[name][addr];
-                    votes[name][addr].lastVoteTimeStamp = block.timeStamp;
+                    votes[name][addr].lastVoteTimeStamp = block.timestamp;
                 } else {
-                    votes[name][addr].lastVoteTimeStamp = block.timeStamp;
+                    votes[name][addr].lastVoteTimeStamp = block.timestamp;
                 }
-            }     
+            }
 
             // Three or more admins exist, need voting mechanism
             require(!votes[name][addr].voters[msg.sender], "Already voted for this proposal");
@@ -85,7 +87,7 @@ contract Ingress {
             votes[name][addr].count++;
 
             if(votes[name][addr].count >= 3) {
-               setPrivateContractAddress(name, addr);
+                setPrivateContractAddress(name, addr);
 
                 // Reset the votes
                 delete votes[name][addr];
