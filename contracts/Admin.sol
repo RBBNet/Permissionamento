@@ -1,4 +1,4 @@
-pragma solidity 0.5.9;
+pragma solidity 0.6.0;
 
 import "./AdminProxy.sol";
 import "./AdminList.sol";
@@ -19,7 +19,7 @@ contract Admin is AdminProxy, AdminList {
         add(msg.sender);
     }
 
-    function isAuthorized(address _address) public view returns (bool) {
+    function isAuthorized(address _address) override public view returns (bool) {
         return exists(_address);
     }
 

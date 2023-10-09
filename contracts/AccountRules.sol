@@ -1,4 +1,4 @@
-pragma solidity 0.5.9;
+pragma solidity 0.6.0;
 
 import "./AccountRulesProxy.sol";
 import "./AccountRulesList.sol";
@@ -63,7 +63,7 @@ contract AccountRules is AccountRulesProxy, AccountRulesList {
         uint256, // gasPrice
         uint256, // gasLimit
         bytes memory // payload
-    ) public view returns (bool) {
+    ) override public view returns (bool) {
         if (
             accountPermitted (sender)
         ) {

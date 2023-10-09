@@ -1,4 +1,4 @@
-pragma solidity 0.5.9;
+pragma solidity 0.6.0;
 
 
 contract AccountRulesList {
@@ -29,7 +29,8 @@ contract AccountRulesList {
 
     function add(address _account) internal returns (bool) {
         if (indexOf[_account] == 0) {
-            indexOf[_account] = allowlist.push(_account);
+            indexOf[_account] = allowlist.length + 1;
+            allowlist.push(_account);
             return true;
         }
         return false;
@@ -57,7 +58,7 @@ contract AccountRulesList {
             }
 
             //shrink array
-            allowlist.length -= 1;
+            allowlist.pop();
             indexOf[_account] = 0;
             return true;
         }
