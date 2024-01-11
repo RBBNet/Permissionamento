@@ -1,4 +1,5 @@
 node_modules/
-src/
+artifacts/
+cache/
 yarn-error.log
 .env
