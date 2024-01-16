@@ -45,7 +45,6 @@ _Nota: A versão 1 "pura" dos smart contracts de permissionamento da Consensys (
 
   - Modificação feita em `migrations/3_deploy_node_ingress_rules_contract.js` que executa a função `setValidateEnodeIdOnly(true)` para **não** considerar IP e Porta na adição e remoção de nós.
   - Adição do endereço de quem permissionou e o _block timestamp_ nos eventos de adição e remoção de contas.
-  ~~- Compatibilidade de instalação dos pacotes em ambiente corporativo. Foi adicionado no `package.json` a dependência `"truffle-corporative": "npm:truffle@5.3.3"` que instala a versão 5.3.3 do truffle (versão máxima do truffle suportada em ambiente corporativo) e nivela as outras dependências com a versão 5.4.24 do truffle.~~
 
 - V2_Multisig_Beta: contém como base a implementação do _frontend_ e _backend_ da versão 2 dos _smart contracts_ de permissionamento [feita pela consensys](https://github.com/ConsenSys/permissioning-smart-contracts) com a implementação **- ainda em desenvolvimento/não concluída -** de múltiplas assinaturas nas transações dos _smart contracts_ de permissionamento. Os testes automatizados, os _scripts_ de migração e o _frontend_ **não** acompanharam essas mudanças feitas.
 
@@ -53,8 +52,6 @@ _Nota: A versão 1 "pura" dos smart contracts de permissionamento da Consensys (
 
 - A [documentação do Besu](https://besu.hyperledger.org/en/stable/Tutorials/Permissioning/Getting-Started-Onchain-Permissioning/)
 descreve como utilizar os contratos de permissionamento _onchain_ com o Besu.
-
-~~- Em um ambiente corporativo com proxy, utilize a versão 5.3.3 do truffle. [Versões posteriores a esta não funcionam corretamente nestes ambientes.](https://github.com/trufflesuite/truffle/issues/4016)~~
 
 - Usar uma versão de Node.js compatível com Hardhat. Este projeto foi testado na versão v20.8.1. 
 
