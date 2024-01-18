@@ -62,7 +62,8 @@ async function deploy(adminAddress) {
     tx = await NodeIngress.setContractAddress(rulesContractName, NodeRules.target); // tx aguarda cada transação a ser feita.
     console.log("   > Updated NodeIngress contract with NodeRules address = " + NodeRules.target);
 
-    //await NodeRules.finishDeploy();
+    let finish = await NodeRules.finishDeploy();
+    await finish.wait();
     console.log("Deploy step finished");
 
     await tx.wait(); // Aguarda o término da transação anterior para não provocar erro na verificação da próxima (solidity require...)
