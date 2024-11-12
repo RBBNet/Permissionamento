@@ -11,8 +11,8 @@ Funcionalidade: Gestão de organizações
     E a organização "TCU"
     Quando implanto o smart contract de gestão de organizações
     Então a implantação do smart contract de gestão de organizações ocorre com sucesso
-    E a organização 1 é "BNDES" com direito de voto
-    E a organização 2 é "TCU" com direito de voto
+    E a organização 1 é "BNDES" e direito de voto "true"
+    E a organização 2 é "TCU" e direito de voto "true"
 
   Cenário: Implantação de smart contract com apenas uma organização
     Dado a organização "BNDES"
