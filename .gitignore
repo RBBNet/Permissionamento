@@ -3,3 +3,10 @@ artifacts/
 cache/
 yarn-error.log
 .env
+.deps
+.states
+typechain/
+typechain-types/
+coverage/
+coverage.json/
+ignition/deployments/chain-31337
