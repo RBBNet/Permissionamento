@@ -1,6 +1,7 @@
 # Organizações
 
 ## USORG01 - Governança cadastra nova organização participante para que possa ser vinculada a nós, contas e rotação de validadores<a id="usorg01"></a>
+
 Critérios de aceitação:
 1. Somente o processo de governança pode realizar o cadastro.
 2. São informados o nome da organização e se a mesma pode participar de votações.
@@ -10,7 +11,9 @@ Critérios de aceitação:
    1. O identificador da organização
 6. O identificador criado para a organização é retornado.
 
+
 ## USORG02 - Governança altera informações de organização participante para manter cadastro atualizado<a id="usorg02"></a>
+
 Critérios de aceitação:
 1. Somente o processo de governança pode realizar alterações.
 2. São informados o identificador da organização, novo nome e nova indicação se a mesma pode participar de votações.
@@ -19,7 +22,9 @@ Critérios de aceitação:
 5. A alteração do cadastro da organização deve emitir um evento, registrando:
    1. O identificador da organização
 
+
 ## USORG03 - Governança exclui organização participante para desabilitar nós, contas e rotação de validadores vinculadas<a id="usorg03"></a>
+
 Critérios de aceitação:
 1. Somente o processo de governança pode realizar a exclusão.
 2. É informado o identificador da organização a ser excluída.
@@ -28,7 +33,9 @@ Critérios de aceitação:
 5. A ocorrência da exclusão deve emitir um evento, registrando:
    1. O identificador da organização
 
+
 ## USORG04 - Observador verifica se organização está ativa para saber se nós e contas vinculadas podem ser usadas<a id="usorg04"></a>
+
 Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.
 2. Observador informa o identificador da organização a ser verificada.
@@ -36,9 +43,10 @@ Critérios de aceitação:
    1. Em qualquer outra situação, indica-se que a organização se encontra inativa.
    2. Caso o identificador não corresponda a uma organização, também se indica resposta de organização inativa.
 
+
 ## USORG05 - Observador consulta organização para obter seus dados cadastrais<a id="usorg05"></a>
+
 Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.
 2. Observador informa o identificador da organização a ser consultada.
 3. São retornados os dados cadastrais da organização correspondente ao identificador informado.
-
