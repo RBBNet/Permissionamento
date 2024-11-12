@@ -1,0 +1,29 @@
+{
+  "name": "rbb-permissionamento",
+  "version": "2.0.0",
+  "description": "Smart contracts de permissionamento da RBB",
+  "scripts": {
+    "test": "cucumber-js",
+    "compile": "npx hardhat compile"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RBBNet/Permissionamento.git"
+  },
+  "keywords": [
+    "permissioning",
+    "RBB"
+  ],
+  "author": "RBB",
+  "license": "GPL-3.0-only",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.13",
+    "@openzeppelin/contracts": "^5.1.0",
+    "@cucumber/cucumber": "^9.6.0"
+  },
+  "bugs": {
+    "url": "https://github.com/RBBNet/Permissionamento/issues"
+  },
+  "homepage": "https://github.com/RBBNet/Permissionamento#readme"
+}
