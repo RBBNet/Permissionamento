@@ -14,6 +14,7 @@ interface Organization {
     event OrganizationDeleted(uint orgId);
 
     error OrganizationNotFound(uint orgId);
+    error IllegalState(string message);
 
     function addOrganization(string memory name, bool canVote) external returns (uint);
     function updateOrganization(uint orgId, string memory name, bool canVote) external;

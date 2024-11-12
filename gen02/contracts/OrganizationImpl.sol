@@ -3,11 +3,15 @@ pragma solidity ^0.8.26;
 
 import "./Organization.sol";
 import "./Governable.sol";
+import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
 contract OrganizationImpl is Organization, Governable {
 
+    using EnumerableSet for EnumerableSet.UintSet;
+
     uint private _idSeed = 0;
     mapping (uint => OrganizationData) private _organizations;
+    EnumerableSet.UintSet private _organizationIds;
 
     modifier existentOrganization(uint orgId) {
         if(_organizations[orgId].id == 0) {
@@ -32,6 +36,7 @@ contract OrganizationImpl is Organization, Governable {
         uint newId = ++_idSeed;
         OrganizationData memory newOrg = OrganizationData(newId, name, canVote);
         _organizations[newId] = newOrg;
+        _organizationIds.add(newId);
         emit OrganizationAdded(newId);
         return newId;
     }
@@ -41,10 +46,16 @@ contract OrganizationImpl is Organization, Governable {
         OrganizationData storage org = _organizations[orgId];
         org.name = name;
         org.canVote = canVote;
+        emit OrganizationUpdated(orgId);
     }
 
     function deleteOrganization(uint orgId) public onlyGovernance existentOrganization(orgId) {
+        if(_organizationIds.length() < 3) {
+            revert IllegalState("At least 2 organizations must be active");
+        }
         delete _organizations[orgId];
+        _organizationIds.remove(orgId);
+        emit OrganizationDeleted(orgId);
     }
 
     function isOrganizationActive(uint orgId) public view returns (bool) {

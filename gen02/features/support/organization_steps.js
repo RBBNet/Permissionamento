@@ -66,3 +66,43 @@ Then('ocorre erro {string} na tentativa de adição de organização', function(
     assert.ok(this.additionError != null);
     assert.ok(this.additionError.message.includes(error));
 });
+
+When('a conta {string} altera a organização {int} com nome {string} e direito de voto {string}', async function (account, orgId, name, canVote) {
+    this.updateError = null;
+    try {
+        const signer = await hre.ethers.getSigner(account);
+        assert.ok(signer != null);
+        await this.organizationContract.connect(signer).updateOrganization(orgId, name, getBoolean(canVote));
+    }
+    catch(error) {
+        this.updateError = error;
+    }
+});
+
+Then('ocorre erro {string} na tentativa de atualização de organização', function(error) {
+    assert.ok(this.updateError != null);
+    assert.ok(this.updateError.message.includes(error));
+});
+
+Then('verifico se a organização {int} está ativa o resultado é {string}', async function(orgId, active) {
+    const orgActive = await this.organizationContract.isOrganizationActive(orgId);
+    assert.equal(orgActive, getBoolean(active));
+});
+
+When('a conta {string} exclui a organização {int}', async function (account, orgId) {
+    this.deleteError = null;
+    try {
+        const signer = await hre.ethers.getSigner(account);
+        assert.ok(signer != null);
+        await this.organizationContract.connect(signer).deleteOrganization(orgId);
+    }
+    catch(error) {
+        this.deleteError = error;
+    }
+});
+
+Then('ocorre erro {string} na tentativa de exclusão de organização', function(error) {
+    assert.ok(this.deleteError != null);
+    assert.ok(this.deleteError.message.includes(error));
+});
+
