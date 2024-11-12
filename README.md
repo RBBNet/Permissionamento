@@ -14,7 +14,7 @@ Como o besu define a versão e mais informações:
 <https://besu.hyperledger.org/en/stable/HowTo/Limit-Access/Specify-Perm-Version/>
 
 ## _Versionamento_
-Mais informações aqui: https://github.com/RBBNet/rbb/blob/master/Versionamento.md
+Mais informações [aqui](https://github.com/RBBNet/rbb/blob/master/Versionamento.md).
 
 No repositório do Permissionamento, estamos considerando a API pública como sendo as ABIs dos contratos. 
  _A versão do Permissionamento 1.0.0 é a usada na rede de Laboratório, com a release **v1.0.0+lab01-backend**._ _A release da branch **migrations** ficou como 1.0.1, um patch de correção, apesar de adicionar outras funcionalidades. De acordo com o SemVer, ela seria a 1.1.0._ 
