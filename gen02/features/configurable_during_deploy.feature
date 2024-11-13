@@ -2,6 +2,10 @@
 
 Funcionalidade: Configuração de smart contracts durante implantação
 
+  # A conta 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 é a conta padrão de
+  # execução pelo Hardhat. Logo, é a conta "owner" que pode configurar o
+  # smart contract.
+
   Cenário: Implantação, configuração e uso de smart contract bem sucedidos
     Dado que inicio a implantação do smart contract configurável
     Quando tento realizar a configuração com a conta "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"

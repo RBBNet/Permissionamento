@@ -3,8 +3,8 @@ const { Given, When, Then } = require('@cucumber/cucumber');
 const hre = require("hardhat");
 const { createOrganization, getBoolean } = require('./setup.js');
 
-Given('a organização {string}', function(name) {
-    this.organizations.push(createOrganization(name));
+Given('a organização {string} com direito de voto {string}', function(name, canVote) {
+    this.organizations.push(createOrganization(name, getBoolean(canVote)));
 });
 
 When('implanto o smart contract de gestão de organizações', async function () {
@@ -67,7 +67,7 @@ Then('ocorre erro {string} na tentativa de adição de organização', function(
     assert.ok(this.additionError.message.includes(error));
 });
 
-When('a conta {string} altera a organização {int} com nome {string} e direito de voto {string}', async function (account, orgId, name, canVote) {
+When('a conta {string} atualiza a organização {int} com nome {string} e direito de voto {string}', async function (account, orgId, name, canVote) {
     this.updateError = null;
     try {
         const signer = await hre.ethers.getSigner(account);
