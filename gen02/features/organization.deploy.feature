@@ -1,6 +1,6 @@
 # language: pt
 
-Funcionalidade: Gestão de organizações
+Funcionalidade: Implantação da gestão de organizações
 
   Contexto:
     Dado que o smart contract de gestão de endereços de admin está implantado
