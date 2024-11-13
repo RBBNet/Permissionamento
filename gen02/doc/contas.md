@@ -91,6 +91,7 @@ Critérios de aceitação:
    2. O identificador da organização
    3. O papel
    4. O hash dos dados cadastrais
+   5. O endereço da Governança
 
 
 ## USACC07 - Governança exclui conta para que não tenha mais acesso à RBB<a id="usacc07"></a>
@@ -104,6 +105,7 @@ Critérios de aceitação:
 6. A ocorrência da exclusão deve emitir um evento, registrando:
    1. O endereço da conta
    2. O identificador da organização
+   5. O endereço da Governança
 
 
 ## USACC08 - Governança configura *smart contract* para que perca temporariamente permissão de execução ou para que readquira permissão de execução<a id="usacc08"></a>
@@ -116,6 +118,7 @@ Critérios de aceitação:
 5. A ocorrência da desativação deve emitir um evento, registrando:
    1. O endereço do smart contract
    2. Se a permissão foi removida ou re-concedida
+   5. O endereço da Governança
 
 
 ## USACC09 - Observador verifica se conta está ativa para saber se a mesma pode ter acesso à RBB<a id="usacc09"></a>
