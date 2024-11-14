@@ -68,7 +68,7 @@ Critérios de aceitação:
 Critérios de aceitação:
 1. Somente Administradores Globais ou Administradores Locais ativos, vinculados a organizações ativas, podem realizar a alteração.
 2. O administrador informa o endereço da conta a ser desativada e a situação desejada (ativa ou inativa).
-3. O administrador somente pode alterar contas ativas e vinculadas à sua organização.
+3. O administrador somente pode alterar contas vinculadas à sua organização.
 4. A alteração não pode ser para uma conta com papel de Administrador Global.
 5. A situação da conta é alterada.
 6. A ocorrência da alteração deve emitir um evento, registrando:

@@ -22,7 +22,7 @@ interface AccountRulesV2 is AccountRulesProxy, IAccessControl {
     event AccountAdded(address account, uint orgId, bytes32 roleId, bytes32 dataHash, address admin);
     event AccountDeleted(address account, uint orgId, address admin);
     event AccountRoleUpdated(address account, uint orgId, bytes32 roleId, address admin);
-    event AccountHashUpdated(address account, uint orgId, bytes32 dataHash, address admin);
+    event AccountDataHashUpdated(address account, uint orgId, bytes32 dataHash, address admin);
     event AccountStatusUpdated(address account, uint orgId, bool active, address admin);
     event SmartContractStatusUpdated(address smartContract, bool status, address admin);
 
@@ -39,7 +39,7 @@ interface AccountRulesV2 is AccountRulesProxy, IAccessControl {
     function addLocalAccount(address account, bytes32 roleId, bytes32 dataHash) external;
     function deleteLocalAccount(address account) external;
     function updateLocalAccountRole(address account, bytes32 roleId) external;
-    function updateLocalAccountHash(address account, bytes32 dataHash) external;
+    function updateLocalAccountDataHash(address account, bytes32 dataHash) external;
     function updateLocalAccountStatus(address account, bool active) external;
 
     function addAccount(address account, uint orgId, bytes32 roleId, bytes32 dataHash) external;

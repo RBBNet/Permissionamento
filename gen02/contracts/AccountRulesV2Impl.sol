@@ -121,16 +121,29 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
         _deleteAccount(account);
     }
 
-    function updateLocalAccountRole(address account, bytes32 roleId) public onlyActiveAdmin {
-        // TODO implementar
+    function updateLocalAccountRole(address account, bytes32 roleId) public
+        onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account)
+        validRole(roleId) notGlobalAdminRole(roleId) {
+        AccountData storage acc = _accounts[account];
+        _revokeRole(acc.roleId, account);
+        acc.roleId = roleId;
+        _grantRole(acc.roleId, account);
+        emit AccountRoleUpdated(acc.account, acc.orgId, acc.roleId, msg.sender);
     }
 
-    function updateLocalAccountHash(address account, bytes32 dataHash) public onlyActiveAdmin {
-        // TODO implementar
+    function updateLocalAccountDataHash(address account, bytes32 dataHash) public
+        onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account)
+        validHash(dataHash) {
+        AccountData storage acc = _accounts[account];
+        acc.dataHash = dataHash;
+        emit AccountDataHashUpdated(acc.account, acc.orgId, acc.dataHash, msg.sender);
     }
 
-    function updateLocalAccountStatus(address account, bool active) public onlyActiveAdmin {
-        // TODO implementar
+    function updateLocalAccountStatus(address account, bool active) public
+        onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account) {
+        AccountData storage acc = _accounts[account];
+        acc.active = active;
+        emit AccountStatusUpdated(acc.account, acc.orgId, acc.active, msg.sender);
     }
 
     function addAccount(address account, uint orgId, bytes32 roleId, bytes32 dataHash) public
@@ -144,7 +157,7 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
         _accounts[account] = newAccount;
         _grantRole(roleId, account);
         _incrementGlobalAdminCount(orgId, roleId);
-        emit AccountAdded(account, orgId, roleId, dataHash, msg.sender);
+        emit AccountAdded(newAccount.account, newAccount.orgId, newAccount.roleId, newAccount.dataHash, msg.sender);
     }
 
     function deleteAccount(address account) public onlyGovernance existentAccount(account) {
@@ -187,8 +200,8 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
     }
 
     function isAccountActive(address account) public view returns (bool) {
-        AccountData memory acc = _accounts[account];
-        return acc.account != address(0) && _organizations.isOrganizationActive(acc.orgId);
+        AccountData storage acc = _accounts[account];
+        return acc.active && _organizations.isOrganizationActive(acc.orgId);
     }
 
     function transactionAllowed(

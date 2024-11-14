@@ -63,6 +63,11 @@ Then('a conta {string} é da organização {int} com papel {string}, data hash {
     assert.equal(acc.active, getBoolean(active));
 });
 
+Then('a conta {string} não consta na lista de contas do papel {string}', async function(account, role) {
+    const hasRole = await this.accountRulesContract.hasRole(getRoleId(role), account);
+    assert.equal(hasRole, false);
+});
+
 Then('o evento {string} foi emitido para a conta {string}, organização {int}, papel {string}, data hash {string} e admin {string}', async function (event, account, orgId, role, dataHash, admin) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.accountRulesContract.queryFilter(event, 0, block);
@@ -124,7 +129,7 @@ Then('ocorre erro {string} na tentativa de exclusão de conta', function(error) 
 
 Then('o evento {string} foi emitido para a conta {string}, organização {int} e admin {string}', async function (event, account, orgId, admin) {
     const block = await hre.ethers.provider.getBlockNumber();
-    const events = await this.accountRulesContract.queryFilter(event, 0, block);
+    const events = await this.accountRulesContract.queryFilter(event, block, block);
     let found = false;
     for (let i = 0; i < events.length && !found; i++) {
         found =
@@ -145,4 +150,90 @@ Then('se tento obter os dados da conta {string} ocorre erro {string}', async fun
     catch(getError) {
         assert.ok(getError.message.includes(error));
     }
+});
+
+When('a conta {string} atualiza o papel da conta local {string} para {string}', async function(admin, account, role) {
+    this.updateError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.accountRulesContract.connect(signer).updateLocalAccountRole(account, getRoleId(role));
+    }
+    catch(error) {
+        this.updateError = error;
+    }
+});
+
+When('a conta {string} atualiza o hash cadastral da conta local {string} para {string}', async function(admin, account, dataHash) {
+    this.updateError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.accountRulesContract.connect(signer).updateLocalAccountDataHash(account, dataHash);
+    }
+    catch(error) {
+        this.updateError = error;
+    }
+});
+
+When('a conta {string} atualiza a situação ativa da conta local {string} para {string}', async function(admin, account, active) {
+    this.updateError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.accountRulesContract.connect(signer).updateLocalAccountStatus(account, getBoolean(active));
+    }
+    catch(error) {
+        this.updateError = error;
+    }
+});
+
+Then('ocorre erro {string} na tentativa de atualização de conta', function(error) {
+    assert.ok(this.updateError != null);
+    assert.ok(this.updateError.message.includes(error));
+});
+
+Then('o evento {string} foi emitido para a conta {string}, organização {int}, papel {string} e admin {string}', async function (event, account, orgId, role, admin) {
+    const block = await hre.ethers.provider.getBlockNumber();
+    const events = await this.accountRulesContract.queryFilter(event, block, block);
+    let found = false;
+    for (let i = 0; i < events.length && !found; i++) {
+        found =
+            events[i].fragment.name == event &&
+            events[i].args[0] == account &&
+            events[i].args[1] == orgId &&
+            events[i].args[2] == getRoleId(role) &&
+            events[i].args[3] == admin
+    }
+    assert.ok(found);
+});
+
+Then('o evento {string} foi emitido para a conta {string}, organização {int}, data hash {string} e admin {string}', async function (event, account, orgId, dataHash, admin) {
+    const block = await hre.ethers.provider.getBlockNumber();
+    const events = await this.accountRulesContract.queryFilter(event, block, block);
+    let found = false;
+    for (let i = 0; i < events.length && !found; i++) {
+        found =
+            events[i].fragment.name == event &&
+            events[i].args[0] == account &&
+            events[i].args[1] == orgId &&
+            events[i].args[2] == dataHash &&
+            events[i].args[3] == admin
+    }
+    assert.ok(found);
+});
+
+Then('o evento {string} foi emitido para a conta {string}, organização {int}, situação ativa {string} e admin {string}', async function (event, account, orgId, active, admin) {
+    const block = await hre.ethers.provider.getBlockNumber();
+    const events = await this.accountRulesContract.queryFilter(event, block, block);
+    let found = false;
+    for (let i = 0; i < events.length && !found; i++) {
+        found =
+            events[i].fragment.name == event &&
+            events[i].args[0] == account &&
+            events[i].args[1] == orgId &&
+            events[i].args[2] == getBoolean(active) &&
+            events[i].args[3] == admin
+    }
+    assert.ok(found);
 });
