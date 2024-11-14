@@ -39,14 +39,14 @@ Then('a organização {int} é {string} e direito de voto {string}', async funct
 });
 
 When('a conta {string} adiciona a organização {string} e direito de voto {string}', async function (account, name, canVote) {
-    this.additionError = null;
+    this.addError = null;
     try {
         const signer = await hre.ethers.getSigner(account);
         assert.ok(signer != null);
         await this.organizationContract.connect(signer).addOrganization(name, getBoolean(canVote));
     }
     catch(error) {
-        this.additionError = error;
+        this.addError = error;
     }
 });
 
@@ -63,8 +63,8 @@ Then('o evento {string} foi emitido para a organização {int}', async function 
 });
 
 Then('ocorre erro {string} na tentativa de adição de organização', function(error) {
-    assert.ok(this.additionError != null);
-    assert.ok(this.additionError.message.includes(error));
+    assert.ok(this.addError != null);
+    assert.ok(this.addError.message.includes(error));
 });
 
 When('a conta {string} atualiza a organização {int} com nome {string} e direito de voto {string}', async function (account, orgId, name, canVote) {
