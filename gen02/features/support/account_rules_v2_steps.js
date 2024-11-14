@@ -79,7 +79,7 @@ Then('o evento {string} foi emitido para a conta {string}, organização {int}, 
     assert.ok(found);
 });
 
-Then('ocorrre erro {string} na tentativa de adição de conta', function(error) {
+Then('ocorre erro {string} na tentativa de adição de conta', function(error) {
     assert.ok(this.addError != null);
     assert.ok(this.addError.message.includes(error));
 });
@@ -101,13 +101,39 @@ When('a conta {string} exclui a conta local {string}', async function(admin, acc
     }
 });
 
+When('a conta {string} exclui a conta {string}', async function(admin, account) {
+    this.deleteError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.accountRulesContract.connect(signer).deleteAccount(account);
+    }
+    catch(error) {
+        this.deleteError = error;
+    }
+});
+
 Then('a exclusão é realizada com sucesso', function() {
     assert.ok(this.deleteError == null);
 });
 
-Then('ocorrre erro {string} na tentativa de exclusão de conta', function(error) {
+Then('ocorre erro {string} na tentativa de exclusão de conta', function(error) {
     assert.ok(this.deleteError != null);
     assert.ok(this.deleteError.message.includes(error));
+});
+
+Then('o evento {string} foi emitido para a conta {string}, organização {int} e admin {string}', async function (event, account, orgId, admin) {
+    const block = await hre.ethers.provider.getBlockNumber();
+    const events = await this.accountRulesContract.queryFilter(event, 0, block);
+    let found = false;
+    for (let i = 0; i < events.length && !found; i++) {
+        found =
+            events[i].fragment.name == event &&
+            events[i].args[0] == account &&
+            events[i].args[1] == orgId &&
+            events[i].args[2] == admin
+    }
+    assert.ok(found);
 });
 
 Then('se tento obter os dados da conta {string} ocorre erro {string}', async function(account, error) {
