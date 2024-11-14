@@ -30,34 +30,36 @@ Then('ocorre erro na implantação do smart contract de gestão de contas', func
 });
 
 When('a conta {string} adiciona a conta local {string} com papel {string} e data hash {string}', async function (admin, account, role, dataHash) {
-    this.additionError = null;
+    this.addError = null;
     try {
         const signer = await hre.ethers.getSigner(admin);
         assert.ok(signer != null);
         await this.accountRulesContract.connect(signer).addLocalAccount(account, getRoleId(role), dataHash);
     }
     catch(error) {
-        this.additionError = error;
+        this.addError = error;
     }
 });
 
 When('a conta {string} adiciona a conta {string} na organização {int} com papel {string} e data hash {string}', async function (admin, account, orgId, role, dataHash) {
-    this.additionError = null;
+    this.addError = null;
     try {
         const signer = await hre.ethers.getSigner(admin);
         assert.ok(signer != null);
         await this.accountRulesContract.connect(signer).addAccount(account, orgId, getRoleId(role), dataHash);
     }
     catch(error) {
-        this.additionError = error;
+        this.addError = error;
     }
 });
 
 Then('a conta {string} é da organização {int} com papel {string}, data hash {string} e situação ativa {string}', async function (account, orgId, role, dataHash, active) {
-    let acc = await this.accountRulesContract.getAccount(account);
+    const acc = await this.accountRulesContract.getAccount(account);
+    const hasRole = await this.accountRulesContract.hasRole(getRoleId(role), account);
     assert.equal(acc.orgId, orgId);
     assert.equal(acc.roleId, getRoleId(role));
     assert.equal(acc.dataHash, dataHash);
+    assert.equal(hasRole, true);
     assert.equal(acc.active, getBoolean(active));
 });
 
@@ -78,11 +80,43 @@ Then('o evento {string} foi emitido para a conta {string}, organização {int}, 
 });
 
 Then('ocorrre erro {string} na tentativa de adição de conta', function(error) {
-    assert.ok(this.additionError != null);
-    assert.ok(this.additionError.message.includes(error));
+    assert.ok(this.addError != null);
+    assert.ok(this.addError.message.includes(error));
 });
 
 Then('verifico se a conta {string} está ativa o resultado é {string}', async function(account, active) {
     const accountActive = await this.accountRulesContract.isAccountActive(account);
     assert.equal(accountActive, getBoolean(active));
+});
+
+When('a conta {string} exclui a conta local {string}', async function(admin, account) {
+    this.deleteError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.accountRulesContract.connect(signer).deleteLocalAccount(account);
+    }
+    catch(error) {
+        this.deleteError = error;
+    }
+});
+
+Then('a exclusão é realizada com sucesso', function() {
+    assert.ok(this.deleteError == null);
+});
+
+Then('ocorrre erro {string} na tentativa de exclusão de conta', function(error) {
+    assert.ok(this.deleteError != null);
+    assert.ok(this.deleteError.message.includes(error));
+});
+
+Then('se tento obter os dados da conta {string} ocorre erro {string}', async function(account, error) {
+    try {
+        let acc = await this.accountRulesContract.getAccount(account);
+        console.log(acc);
+        assert.fail('Conta não deveria ter sido encontrada');
+    }
+    catch(getError) {
+        assert.ok(getError.message.includes(error));
+    }
 });

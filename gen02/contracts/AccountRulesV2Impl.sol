@@ -156,7 +156,7 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
 
     function _deleteAccount(address account) private {
         AccountData memory acc = _accounts[account];
-        revokeRole(acc.roleId, account);
+        _revokeRole(acc.roleId, account);
         delete _accounts[account];
         _decrementGlobalAdminCount(acc.orgId, acc.roleId);
         emit AccountDeleted(account, acc.orgId, msg.sender);
@@ -182,7 +182,7 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
         // TODO Implementar
     }
 
-    function getAccount(address account) public view returns (AccountData memory) {
+    function getAccount(address account) public view existentAccount(account) returns (AccountData memory) {
         return _accounts[account];
     }
 
