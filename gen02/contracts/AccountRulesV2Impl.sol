@@ -11,14 +11,8 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
 
     Organization private _organizations;
     mapping (address => AccountData) private _accounts;
+    mapping (uint => uint) private _globalAdminsCount;
     mapping (bytes32 => bool) private _validRoles;
-
-    error InactiveAccount(address account);
-    error InvalidAccount(address account);
-    error DuplicateAccount(address account);
-    error InvalidOrganization(uint orgId);
-    error InvalidRole(bytes32 roleId);
-    error InvalidHash(bytes32 hash);
 
     modifier onlyActiveAdmin() {
         if(!hasRole(GLOBAL_ADMIN_ROLE, msg.sender) && !hasRole(LOCAL_ADMIN_ROLE, msg.sender)) {
@@ -44,6 +38,13 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
         _;
     }
 
+    modifier existentAccount(address account) {
+        if(_accounts[account].account == address(0)) {
+            revert AccountNotFound(account);
+        }
+        _;
+    }
+
     modifier validRole(bytes32 roleId) {
         if(!_validRoles[roleId]) {
             revert InvalidRole(roleId);
@@ -51,9 +52,16 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
         _;
     }
 
-    modifier notAdminRole(bytes32 roleId) {
+    modifier notGlobalAdminRole(bytes32 roleId) {
         if(roleId == GLOBAL_ADMIN_ROLE) {
             revert InvalidRole(roleId);
+        }
+        _;
+    }
+
+    modifier notGlobalAdminAccount(address account) {
+        if(_accounts[account].roleId == GLOBAL_ADMIN_ROLE) {
+            revert InvalidRole(GLOBAL_ADMIN_ROLE);
         }
         _;
     }
@@ -68,6 +76,13 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
     modifier validOrganization(uint orgId) {
         if(!_organizations.isOrganizationActive(orgId)) {
             revert InvalidOrganization(orgId);
+        }
+        _;
+    }
+
+    modifier sameOrganization(address account) {
+        if(_accounts[msg.sender].orgId != _accounts[account].orgId) {
+            revert NotLocalAccount(account);
         }
         _;
     }
@@ -95,14 +110,15 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
     }
 
     function addLocalAccount(address account, bytes32 roleId, bytes32 dataHash) public
-        onlyActiveAdmin validAccount(account) inexistentAccount(account) validRole(roleId) notAdminRole(roleId)
+        onlyActiveAdmin validAccount(account) inexistentAccount(account) validRole(roleId) notGlobalAdminRole(roleId)
         validHash(dataHash) {
         AccountData memory adminAccount = _accounts[msg.sender];
         _addAccount(account, adminAccount.orgId, roleId, dataHash);
     }
 
-    function deleteLocalAccount(address account) public onlyActiveAdmin {
-        // TODO implementar
+    function deleteLocalAccount(address account) public
+        onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account) {
+        _deleteAccount(account);
     }
 
     function updateLocalAccountRole(address account, bytes32 roleId) public onlyActiveAdmin {
@@ -127,11 +143,39 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
         AccountData memory newAccount = AccountData(orgId, account, roleId, dataHash, true);
         _accounts[account] = newAccount;
         _grantRole(roleId, account);
+        _incrementGlobalAdminCount(orgId, roleId);
         emit AccountAdded(account, orgId, roleId, dataHash, msg.sender);
     }
 
-    function deleteAccount(address account) public onlyGovernance {
-        // TODO Implementar
+    function deleteAccount(address account) public onlyGovernance existentAccount(account) {
+        if(_getGlobalAdminCount(_accounts[account].orgId) < 2) {
+            revert IllegalState("At least 1 global administrator must be active");
+        }
+        _deleteAccount(account);
+    }
+
+    function _deleteAccount(address account) private {
+        AccountData memory acc = _accounts[account];
+        revokeRole(acc.roleId, account);
+        delete _accounts[account];
+        _decrementGlobalAdminCount(acc.orgId, acc.roleId);
+        emit AccountDeleted(account, acc.orgId, msg.sender);
+    }
+
+    function _incrementGlobalAdminCount(uint orgId, bytes32 roleId) private {
+        if(roleId == GLOBAL_ADMIN_ROLE) {
+            _globalAdminsCount[orgId] = _globalAdminsCount[orgId] + 1;
+        }
+    }
+
+    function _decrementGlobalAdminCount(uint orgId, bytes32 roleId) private {
+        if(roleId == GLOBAL_ADMIN_ROLE) {
+            _globalAdminsCount[orgId] = _globalAdminsCount[orgId] - 1;
+        }
+    }
+
+    function _getGlobalAdminCount(uint orgId) private view returns (uint) {
+        return _globalAdminsCount[orgId];
     }
 
     function updateSmartContractStatus(address smartContract, bool status) public onlyGovernance {

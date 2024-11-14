@@ -26,6 +26,16 @@ interface AccountRulesV2 is AccountRulesProxy, IAccessControl {
     event AccountStatusUpdated(address account, uint orgId, bool active, address admin);
     event SmartContractStatusUpdated(address smartContract, bool status, address admin);
 
+    error InactiveAccount(address account);
+    error InvalidAccount(address account);
+    error DuplicateAccount(address account);
+    error AccountNotFound(address account);
+    error NotLocalAccount(address account);
+    error InvalidOrganization(uint orgId);
+    error InvalidRole(bytes32 roleId);
+    error InvalidHash(bytes32 hash);
+    error IllegalState(string message);
+
     function addLocalAccount(address account, bytes32 roleId, bytes32 dataHash) external;
     function deleteLocalAccount(address account) external;
     function updateLocalAccountRole(address account, bytes32 roleId) external;
