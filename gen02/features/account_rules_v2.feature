@@ -64,22 +64,22 @@ Funcionalidade: Gestão de contas
     Então ocorre erro "DuplicateAccount" na tentativa de adição de conta
 
   Cenário: Tentativa de adição de conta local com administrador de organização inativa
-    # Governança adiciona organização 3 - Dataprev
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "Dataprev" e direito de voto "true"
-    Então a organização 3 é "Dataprev" e direito de voto "true"
+    # Governança adiciona organização 3 - OrgExc
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "OrgExc" e direito de voto "true"
+    Então a organização 3 é "OrgExc" e direito de voto "true"
     E verifico se a organização 3 está ativa o resultado é "true"
-    # Governança adiciona novo administrador global para a Dataprev
+    # Governança adiciona novo administrador global para a OrgExc
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" na organização 3 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 3 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
     E verifico se a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" está ativa o resultado é "true"
-    # Administrador global da Dataprev adiciona nova conta de usuário
+    # Administrador global da OrgExc adiciona nova conta de usuário
     Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" adiciona a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     Então a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 3 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e situação ativa "true"
-    # Governança exclui a Dataprev, logo, suas contas ficarão inativas
+    # Governança exclui a OrgExc, logo, suas contas ficarão inativas
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3
     Então verifico se a organização 3 está ativa o resultado é "false"
     E verifico se a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" está ativa o resultado é "false"
-    # Administrador global da Dataprev tenta adiciona nova conta de usuário, mas está inativo
+    # Administrador global da OrgExc tenta adiciona nova conta de usuário, mas está inativo
     Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" adiciona a conta local "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000003"
     Então ocorre erro "InactiveAccount" na tentativa de adição de conta
 
@@ -189,22 +189,22 @@ Funcionalidade: Gestão de contas
     Então ocorre erro "UnauthorizedAccess" na tentativa de exclusão de conta
 
   Cenário: Tentativa de exclusão de conta local com administrador de organização inativa
-    # Governança adiciona organização 3 - Dataprev
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "Dataprev" e direito de voto "true"
-    Então a organização 3 é "Dataprev" e direito de voto "true"
+    # Governança adiciona organização 3 - OrgExc
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "OrgExc" e direito de voto "true"
+    Então a organização 3 é "OrgExc" e direito de voto "true"
     E verifico se a organização 3 está ativa o resultado é "true"
-    # Governança adiciona novo administrador global para a Dataprev
+    # Governança adiciona novo administrador global para a OrgExc
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" na organização 3 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 3 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
     E verifico se a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" está ativa o resultado é "true"
-    # Administrador global da Dataprev adiciona nova conta de usuário
+    # Administrador global da OrgExc adiciona nova conta de usuário
     Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" adiciona a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     Então a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 3 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e situação ativa "true"
-    # Governança exclui a Dataprev, logo, suas contas ficarão inativas
+    # Governança exclui a OrgExc, logo, suas contas ficarão inativas
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3
     Então verifico se a organização 3 está ativa o resultado é "false"
     E verifico se a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" está ativa o resultado é "false"
-    # Administrador global da Dataprev tenta excluir nova conta de usuário, mas está inativo
+    # Administrador global da OrgExc tenta excluir nova conta de usuário, mas está inativo
     Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" exclui a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
     Então ocorre erro "InactiveAccount" na tentativa de exclusão de conta
 
@@ -342,28 +342,28 @@ Funcionalidade: Gestão de contas
     Então ocorre erro "UnauthorizedAccess" na tentativa de atualização de conta
 
   Cenário: Tentativa de atualização de conta local com administrador de organização inativa
-    # Governança adiciona organização 3 - Dataprev
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "Dataprev" e direito de voto "true"
-    Então a organização 3 é "Dataprev" e direito de voto "true"
+    # Governança adiciona organização 3 - OrgExc
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "OrgExc" e direito de voto "true"
+    Então a organização 3 é "OrgExc" e direito de voto "true"
     E verifico se a organização 3 está ativa o resultado é "true"
-    # Governança adiciona novo administrador global para a Dataprev
+    # Governança adiciona novo administrador global para a OrgExc
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" na organização 3 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 3 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
     E verifico se a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" está ativa o resultado é "true"
-    # Administrador global da Dataprev adiciona nova conta de usuário
+    # Administrador global da OrgExc adiciona nova conta de usuário
     Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" adiciona a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     Então a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 3 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e situação ativa "true"
-    # Governança exclui a Dataprev, logo, suas contas ficarão inativas
+    # Governança exclui a OrgExc, logo, suas contas ficarão inativas
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3
     Então verifico se a organização 3 está ativa o resultado é "false"
     E verifico se a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" está ativa o resultado é "false"
-    # Administrador global da Dataprev tenta atualizar papel de conta local
+    # Administrador global da OrgExc tenta atualizar papel de conta local
     Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" atualiza o papel da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "LOCAL_ADMIN_ROLE"
     Então ocorre erro "InactiveAccount" na tentativa de atualização de conta
-    # Administrador global da Dataprev tenta atualizar hash de conta local
+    # Administrador global da OrgExc tenta atualizar hash de conta local
     Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" atualiza o hash cadastral da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "0x0000000000000000000000000000000000000000000000000000000000000002"
     Então ocorre erro "InactiveAccount" na tentativa de atualização de conta
-    # Administrador global da Dataprev tenta atualizar status de conta local
+    # Administrador global da OrgExc tenta atualizar status de conta local
     Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" atualiza a situação ativa da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "false"
     Então ocorre erro "InactiveAccount" na tentativa de atualização de conta
 

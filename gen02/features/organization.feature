@@ -38,7 +38,7 @@ Funcionalidade: Gestão de organizações
   
   Cenário: Tentativa de adição de organização por conta não autorizada ("por fora" da governança)
     # Uma conta que não é a da Governança tenta adicionar organização
-    Quando a conta "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" adiciona a organização "Dataprev" e direito de voto "true"
+    Quando a conta "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" adiciona a organização "OrgAd" e direito de voto "true"
     Então ocorre erro "UnauthorizedAccess" na tentativa de adição de organização
 
   Cenário: Atualização de organização
@@ -54,13 +54,13 @@ Funcionalidade: Gestão de organizações
 
   Cenário: Tentativa de atualização de organização inexistente
     # Governança tenta atualizar organização
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" atualiza a organização 3 com nome "Dataprev" e direito de voto "false"
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" atualiza a organização 3 com nome "OrgInex" e direito de voto "false"
     Então ocorre erro "OrganizationNotFound" na tentativa de atualização de organização
 
   Cenário: Exclusão de organização
-    # Governança adiciona a Dataprev com organização 3
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "Dataprev" e direito de voto "true"
-    Então a organização 3 é "Dataprev" e direito de voto "true"
+    # Governança adiciona a OrgExc com organização 3
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "OrgExc" e direito de voto "true"
+    Então a organização 3 é "OrgExc" e direito de voto "true"
     E verifico se a organização 3 está ativa o resultado é "true"
     E o evento "OrganizationAdded" foi emitido para a organização 3
     # Governança exclui a organização 3
@@ -69,9 +69,9 @@ Funcionalidade: Gestão de organizações
     E verifico se a organização 3 está ativa o resultado é "false"
 
   Cenário: Tentativa de exclusão de organização por conta não autorizada ("por fora" da governança)
-    # Governança adiciona a Dataprev com organização 3
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "Dataprev" e direito de voto "true"
-    Então a organização 3 é "Dataprev" e direito de voto "true"
+    # Governança adiciona a OrgExc com organização 3
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "OrgExc" e direito de voto "true"
+    Então a organização 3 é "OrgExc" e direito de voto "true"
     E verifico se a organização 3 está ativa o resultado é "true"
     # Uma conta que não é a da Governança tenta excluir a organização
     Quando a conta "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" exclui a organização 3
