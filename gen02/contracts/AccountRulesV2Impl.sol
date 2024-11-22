@@ -6,13 +6,18 @@ import "./AccountRulesV2.sol";
 import "./ConfigurableDuringDeploy.sol";
 import "./Governable.sol";
 import "./Organization.sol";
+import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
 contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governable, AccessControl {
+
+    using EnumerableSet for EnumerableSet.AddressSet;
 
     Organization private _organizations;
     mapping (address => AccountData) private _accounts;
     mapping (uint => uint) private _globalAdminsCount;
     mapping (bytes32 => bool) private _validRoles;
+    EnumerableSet.AddressSet private _restrictedSmartContracts;
+    mapping (address => address[]) private _restrictedSmartContractsAllowedAddresses;
 
     modifier onlyActiveAdmin() {
         if(!hasRole(GLOBAL_ADMIN_ROLE, msg.sender) && !hasRole(LOCAL_ADMIN_ROLE, msg.sender)) {
@@ -26,7 +31,7 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
 
     modifier validAccount(address account) {
         if(account == address(0)) {
-            revert InvalidAccount(account, "Account address cannot be 0x0");
+            revert InvalidAccount(account, "Address cannot be 0x0");
         }
         _;
     }
@@ -191,8 +196,18 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
         return _globalAdminsCount[orgId];
     }
 
-    function updateSmartContractStatus(address smartContract, bool status) public onlyGovernance {
-        // TODO Implementar
+    function setSmartContractAccess(address smartContract, bool restricted, address[] memory allowedSenders) public
+        onlyGovernance validAccount(smartContract) {
+        if(restricted) {
+            // Acesso ao smart contract deve ser restrito
+            _restrictedSmartContracts.add(smartContract);
+            _restrictedSmartContractsAllowedAddresses[smartContract] = allowedSenders;
+        }
+        else {
+            // Acesso ao smart contract deve ser liberado
+            _restrictedSmartContracts.remove(smartContract);
+            delete _restrictedSmartContractsAllowedAddresses[smartContract];
+        }
     }
 
     function getAccount(address account) public view existentAccount(account) returns (AccountData memory) {
@@ -212,11 +227,26 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
         uint256,
         bytes calldata
     ) external view returns (bool) {
-        require(isAccountActive(sender), "Sender account is not active");
+        if(!isAccountActive(sender)) {
+            return false;
+        }
+ 
         if(address(0) == target) {
             // Implantação de smart contract
-            require(hasRole(DEPLOYER_ROLE, sender) || hasRole(LOCAL_ADMIN_ROLE, sender) || hasRole(GLOBAL_ADMIN_ROLE, sender), "Account must have authorized role");
+            return hasRole(DEPLOYER_ROLE, sender) || hasRole(LOCAL_ADMIN_ROLE, sender) || hasRole(GLOBAL_ADMIN_ROLE, sender);
         }
+
+        if(_restrictedSmartContracts.contains(target)) {
+            // Chamada a smart contract de acesso restrito
+            address[] memory allowedSenders = _restrictedSmartContractsAllowedAddresses[target];
+            for(uint i = 0; i < allowedSenders.length; ++i) {
+                if(sender == allowedSenders[i]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+ 
         return true;
     }
 

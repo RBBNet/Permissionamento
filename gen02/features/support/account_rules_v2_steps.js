@@ -237,3 +237,8 @@ Then('o evento {string} foi emitido para a conta {string}, organização {int}, 
     }
     assert.ok(found);
 });
+
+Then('a conta {string} chamar o endereço {string} tem verificação de permissionamento {string}', async function (sender, target, allowed) {
+    const wasAllowed = await this.accountRulesContract.transactionAllowed(sender, target, 0, 0, 0, '0x');
+    assert.equal(wasAllowed, getBoolean(allowed));
+});

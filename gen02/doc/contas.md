@@ -108,17 +108,23 @@ Critérios de aceitação:
    5. O endereço da Governança
 
 
-## USACC08 - Governança configura *smart contract* para que perca temporariamente permissão de execução ou para que readquira permissão de execução<a id="usacc08"></a>
+## USACC08 - Governança configura o acesso a *smart contract* para que sua execução possa ser desativada, restrita a um conjunto determinado de endereços ou liberada para qualquer endereço<a id="usacc08"></a>
 
 Critérios de aceitação:
-1. Somente o processo de governança pode realizar a desativação.
-2. É informado o endereço do *smart contract* a ser desativado e se a permissão deve ser removida ou re-concedida.
-3. Caso a permissão deva ser removida, o endereço é colocado na lista de *smart contracts* desativados.
-4. Caso a permissão deva ser re-concedida, o endereço é removido da lista de *smart contracts* desativados.
+1. Somente o processo de governança pode realizar a configuração.
+2. São informados:
+   1. O endereço do *smart contract* a ter seu acesso configurado.
+   2. Se o acesso deve ser restringido ou não.
+   3. No caso de haver restrição, a lista de endereços com permissão de acesso.
+      1. A lista de endereços é opcional.
+      2. Caso seja indicada restrição de acesso e a lista não seja informada, o *smart contract* ficará completamente inacessível (desativado).
+3. Caso seja indicada limitação de acesso, o endereço do *smart contract* é adicionado à lista de restrição de acesso, juntamente com os endereços permitidos (se houver), para restringir a execução do *smart contract*.
+4. Caso **não** seja indicada limitação de acesso, o endereço do *smart contract* é removido da lista de restrição de acesso, liberando completamente, para qualquer chamador, a execução do *smart contract*.
 5. A ocorrência da desativação deve emitir um evento, registrando:
-   1. O endereço do smart contract
-   2. Se a permissão foi removida ou re-concedida
-   5. O endereço da Governança
+   1. O endereço do *smart contract*
+   2. Se foi configurada restrição de acesso
+   3. Lista de endereços com acesso permitido
+   4. O endereço da Governança
 
 
 ## USACC09 - Observador verifica se conta está ativa para saber se a mesma pode ter acesso à RBB<a id="usacc09"></a>
@@ -142,7 +148,7 @@ Critérios de aceitação:
 ## USACC11 - Besu verifica permissão de uma conta para decidir se uma transação pode ser realizada<a id="usacc11"></a>
 
 Critérios de aceitação:
-1. Besu informa endereço da conta que enviou a transação e endereço de destino da transação.
-2. Somente contas ativas e vinculadas a organizações ativas podem enviar transações.
-3. Endereços de destino não podem constar na lista de *smart contracts* desativados.
+1. Besu informa endereço de origem e endereço de destino da transação.
+2. Somente contas ativas e vinculadas a organizações ativas são consideradas endereços de origem válidos.
+3. Caso o endereço de destino conste na lista de restrição de acesso de *smart contracts*, então o endereço de origem deve constar como endereço permitido. Caso contrário o acesso é negado.
 4. Transações de implantação de *smart contract* (endereço destino igual a `0x0`) somente podem ser enviadas por contas com papel Administrador Global, Administador Local ou Implantador de Aplicações.
