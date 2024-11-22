@@ -19,14 +19,14 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
             revert UnauthorizedAccess(msg.sender);
         }
         if(!isAccountActive(msg.sender)) {
-            revert InactiveAccount(msg.sender);
+            revert InactiveAccount(msg.sender, "The account or the respective organization is not active");
         }
         _;
     }
 
     modifier validAccount(address account) {
         if(account == address(0)) {
-            revert InvalidAccount(account);
+            revert InvalidAccount(account, "Account address cannot be 0x0");
         }
         _;
     }
@@ -47,42 +47,42 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
 
     modifier validRole(bytes32 roleId) {
         if(!_validRoles[roleId]) {
-            revert InvalidRole(roleId);
+            revert InvalidRole(roleId, "The informed role is unknown");
         }
         _;
     }
 
     modifier notGlobalAdminRole(bytes32 roleId) {
         if(roleId == GLOBAL_ADMIN_ROLE) {
-            revert InvalidRole(roleId);
+            revert InvalidRole(roleId, "The role cannot be global admin");
         }
         _;
     }
 
     modifier notGlobalAdminAccount(address account) {
         if(_accounts[account].roleId == GLOBAL_ADMIN_ROLE) {
-            revert InvalidRole(GLOBAL_ADMIN_ROLE);
+            revert InvalidRole(GLOBAL_ADMIN_ROLE, "The account cannot be global admin");
         }
         _;
     }
 
     modifier validHash(bytes32 hash) {
         if(hash == 0) {
-            revert InvalidHash(hash);
+            revert InvalidHash(hash, "Hash cannot be 0x0");
         }
         _;
     }
 
     modifier validOrganization(uint orgId) {
         if(!_organizations.isOrganizationActive(orgId)) {
-            revert InvalidOrganization(orgId);
+            revert InvalidOrganization(orgId, "The informed organization is unknown");
         }
         _;
     }
 
     modifier sameOrganization(address account) {
         if(_accounts[msg.sender].orgId != _accounts[account].orgId) {
-            revert NotLocalAccount(account);
+            revert NotLocalAccount(account, "The informed account is not from the same organization");
         }
         _;
     }
