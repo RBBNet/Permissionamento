@@ -24,7 +24,7 @@ interface AccountRulesV2 is AccountRulesProxy, IAccessControl {
     event AccountRoleUpdated(address account, uint orgId, bytes32 roleId, address admin);
     event AccountDataHashUpdated(address account, uint orgId, bytes32 dataHash, address admin);
     event AccountStatusUpdated(address account, uint orgId, bool active, address admin);
-    event SmartContractStatusUpdated(address smartContract, bool status, address admin);
+    event SmartContractAccessUpdated(address smartContract, bool restricted, address[] allowedSenders, address admin);
 
     error InactiveAccount(address account, string message);
     error InvalidAccount(address account, string message);

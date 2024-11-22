@@ -193,7 +193,7 @@ Then('ocorre erro {string} na tentativa de atualização de conta', function(err
     assert.ok(this.updateError.message.includes(error));
 });
 
-Then('o evento {string} foi emitido para a conta {string}, organização {int}, papel {string} e admin {string}', async function (event, account, orgId, role, admin) {
+Then('o evento {string} foi emitido para a conta {string}, organização {int}, papel {string} e admin {string}', async function(event, account, orgId, role, admin) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.accountRulesContract.queryFilter(event, block, block);
     let found = false;
@@ -208,7 +208,7 @@ Then('o evento {string} foi emitido para a conta {string}, organização {int}, 
     assert.ok(found);
 });
 
-Then('o evento {string} foi emitido para a conta {string}, organização {int}, data hash {string} e admin {string}', async function (event, account, orgId, dataHash, admin) {
+Then('o evento {string} foi emitido para a conta {string}, organização {int}, data hash {string} e admin {string}', async function(event, account, orgId, dataHash, admin) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.accountRulesContract.queryFilter(event, block, block);
     let found = false;
@@ -223,7 +223,7 @@ Then('o evento {string} foi emitido para a conta {string}, organização {int}, 
     assert.ok(found);
 });
 
-Then('o evento {string} foi emitido para a conta {string}, organização {int}, situação ativa {string} e admin {string}', async function (event, account, orgId, active, admin) {
+Then('o evento {string} foi emitido para a conta {string}, organização {int}, situação ativa {string} e admin {string}', async function(event, account, orgId, active, admin) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.accountRulesContract.queryFilter(event, block, block);
     let found = false;
@@ -238,7 +238,63 @@ Then('o evento {string} foi emitido para a conta {string}, organização {int}, 
     assert.ok(found);
 });
 
-Then('a conta {string} chamar o endereço {string} tem verificação de permissionamento {string}', async function (sender, target, allowed) {
+Then('a conta {string} chamar o endereço {string} tem verificação de permissionamento {string}', async function(sender, target, allowed) {
     const wasAllowed = await this.accountRulesContract.transactionAllowed(sender, target, 0, 0, 0, '0x');
     assert.equal(wasAllowed, getBoolean(allowed));
+});
+
+When('a conta {string} configura restrição de acesso ao endereço {string} permitindo acesso somente pelas contas {string}', async function(admin, target, addresses) {
+    this.accessConfigurationError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.accountRulesContract.connect(signer).setSmartContractAccess(target, true, getSenders(addresses));
+    }
+    catch(error) {
+        this.accessConfigurationError = error;
+    }
+});
+
+function getSenders(addresses) {
+    let senders = [];
+    if(addresses.length > 0) {
+        senders = addresses.split(",");
+    }
+    return senders;
+}
+
+When('a conta {string} remove restrição de acesso ao endereço {string}', async function(admin, target) {
+    this.accessConfigurationError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.accountRulesContract.connect(signer).setSmartContractAccess(target, false, []);
+    }
+    catch(error) {
+        this.accessConfigurationError = error;
+    }
+});
+
+Then('a configuração de acesso ocorre com sucesso', function() {
+    assert.ok(this.accessConfigurationError == null);
+});
+
+Then('ocorre erro {string} na tentativa de configuração de acesso', function(error) {
+    assert.ok(this.accessConfigurationError != null);
+    assert.ok(this.accessConfigurationError.message.includes(error));
+});
+
+Then('o evento {string} foi emitido para o smart contract {string} com restrição {string} permitindo as contas {string} executado pelo admin {string}', async function(event, target, restricted, addresses, admin) {
+    const block = await hre.ethers.provider.getBlockNumber();
+    const events = await this.accountRulesContract.queryFilter(event, block, block);
+    let found = false;
+    for (let i = 0; i < events.length && !found; i++) {
+        found =
+            events[i].fragment.name == event &&
+            events[i].args[0] == target &&
+            events[i].args[1] == getBoolean(restricted) &&
+            events[i].args[2].toString() == addresses &&
+            events[i].args[3] == admin
+    }
+    assert.ok(found);
 });

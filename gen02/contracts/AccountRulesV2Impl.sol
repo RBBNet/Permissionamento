@@ -208,6 +208,8 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
             _restrictedSmartContracts.remove(smartContract);
             delete _restrictedSmartContractsAllowedAddresses[smartContract];
         }
+
+        emit SmartContractAccessUpdated(smartContract, restricted, allowedSenders, msg.sender);
     }
 
     function getAccount(address account) public view existentAccount(account) returns (AccountData memory) {
