@@ -22,5 +22,6 @@ interface Organization {
 
     function isOrganizationActive(uint orgId) external view returns (bool);
     function getOrganization(uint orgId) external view returns (OrganizationData memory);
+    function getOrganizations() external view returns (OrganizationData[] memory);
 
 }

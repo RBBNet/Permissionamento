@@ -50,3 +50,11 @@ Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.
 2. Observador informa o identificador da organização a ser consultada.
 3. São retornados os dados cadastrais da organização correspondente ao identificador informado.
+
+
+## USORG06 - Observador consulta organização para obter seus dados cadastrais<a id="usorg06"></a>
+
+Critérios de aceitação:
+1. Qualquer pessoa pode realizar a consulta.
+2. Observador solicita lista de organizações cadastradas.
+3. São retornados os dados cadastrais de todas as organizações.

@@ -38,6 +38,20 @@ Then('a organização {int} é {string} e direito de voto {string}', async funct
     assert.equal(org.canVote, getBoolean(canVote));
 });
 
+Then('a lista de organizações é {string}', async function(orgsList) {
+    const actualOrgs = await this.organizationContract.getOrganizations();
+    const expectedOrgs = orgsList.split('|');
+    assert.equal(actualOrgs.length, expectedOrgs.length);
+    for(i = 0; i < expectedOrgs.length; ++i) {
+        const org = expectedOrgs[i].split(',');
+        assert.ok(actualOrgs[i].length == 3);
+        assert.ok(org.length == 3);
+        assert.equal(actualOrgs[i][0], BigInt(org[0]));
+        assert.equal(actualOrgs[i][1], org[1]);
+        assert.equal(actualOrgs[i][2], getBoolean(org[2]));
+    }
+});
+
 When('a conta {string} adiciona a organização {string} e direito de voto {string}', async function (account, name, canVote) {
     this.addError = null;
     try {

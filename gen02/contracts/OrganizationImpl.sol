@@ -66,4 +66,12 @@ contract OrganizationImpl is Organization, Governable {
         return _organizations[orgId];
     }
 
+    function getOrganizations() public view returns (OrganizationData[] memory) {
+        OrganizationData[] memory organizations = new OrganizationData[](_organizationIds.length());
+        for(uint i = 0; i < _organizationIds.length(); ++i) {
+            organizations[i] = _organizations[_organizationIds.at(i)];
+        }
+        return organizations;
+    }
+
 }

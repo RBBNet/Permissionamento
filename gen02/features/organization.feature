@@ -18,6 +18,7 @@ Funcionalidade: Gestão de organizações
   Cenário: Consulta de dados cadastrais de organização
     E a organização 1 é "BNDES" e direito de voto "true"
     E a organização 2 é "TCU" e direito de voto "true"
+    E a lista de organizações é "1,BNDES,true|2,TCU,true"
 
   Cenário: Verificação de organizações ativas e inativas
     Quando verifico se a organização 1 está ativa o resultado é "true"
@@ -35,6 +36,8 @@ Funcionalidade: Gestão de organizações
     Então a organização 4 é "PUC-Rio" e direito de voto "false"
     E o evento "OrganizationAdded" foi emitido para a organização 4
     E verifico se a organização 4 está ativa o resultado é "true"
+    # Verificação da lista de organizações
+    E a lista de organizações é "1,BNDES,true|2,TCU,true|3,Dataprev,true|4,PUC-Rio,false"
   
   Cenário: Tentativa de adição de organização por conta não autorizada ("por fora" da governança)
     # Uma conta que não é a da Governança tenta adicionar organização
@@ -63,10 +66,12 @@ Funcionalidade: Gestão de organizações
     Então a organização 3 é "OrgExc" e direito de voto "true"
     E verifico se a organização 3 está ativa o resultado é "true"
     E o evento "OrganizationAdded" foi emitido para a organização 3
+    E a lista de organizações é "1,BNDES,true|2,TCU,true|3,OrgExc,true"
     # Governança exclui a organização 3
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3
     Então o evento "OrganizationDeleted" foi emitido para a organização 3
     E verifico se a organização 3 está ativa o resultado é "false"
+    E a lista de organizações é "1,BNDES,true|2,TCU,true"
 
   Cenário: Tentativa de exclusão de organização por conta não autorizada ("por fora" da governança)
     # Governança adiciona a OrgExc com organização 3
