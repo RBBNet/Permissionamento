@@ -28,7 +28,6 @@ Then('ocorre erro {string} na funcionalidade de acesso restrito', function (erro
     assert.ok(this.governableExecutionError.message.includes(error));
 });
 
-
 When('tento executar funcionalidade sem restrição de acesso com a conta {string}', async function (account) {
     const signer = await hre.ethers.getSigner(account);
     assert.ok(signer != null);
@@ -40,7 +39,6 @@ When('tento executar funcionalidade sem restrição de acesso com a conta {strin
         this.publicExecutionError = error;
     }
 });
-
 
 Then('a funcionalidade sem restrição de acesso é executada com sucesso', function () {
     assert.ok(this.publicExecutionError == null);
