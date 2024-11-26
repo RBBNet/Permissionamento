@@ -12,14 +12,33 @@ Funcionalidade: Gestão de contas
     E a organização "BNDES" com direito de voto "true"
     # TCU será organização 2
     E a organização "TCU" com direito de voto "true"
+    # OrgExc será organização 3
+    E a organização "OrgExc" com direito de voto "true"
     E implanto o smart contract de gestão de organizações
     E a implantação do smart contract de gestão de organizações ocorre com sucesso
     # Administrador global da organização 1 - BNDES
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     # Administrador global da organização 2 - TCU
     E a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a"
+    # Administrador global da organização 3 - OrgExc
+    E a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30"
     E implanto o smart contract de gestão de contas
     E a implantação do smart contract de gestão de contas ocorre com sucesso
+    # Administrador global da OrgExc adiciona nova conta de usuário
+    E a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" adiciona a conta local "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
+    # Verificando cadastro das organizações
+    E a lista de organizações é "1,BNDES,true|2,TCU,true|3,OrgExc,true"
+    # Verificando cadastro das contas
+    E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" é da organização 1 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
+    E a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" é da organização 2 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
+    E a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" é da organização 3 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
+    E a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" é da organização 3 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e situação ativa "true"
+    # Governança exclui a OrgExc, logo, suas contas ficarão inativas
+    E a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3
+    E verifico se a organização 3 está ativa o resultado é "false"
+    E a lista de organizações é "1,BNDES,true|2,TCU,true"
+    E verifico se a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" está ativa o resultado é "false"
+    E verifico se a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" está ativa o resultado é "false"
 
   ##############################################################################
   # Adição de contas locais
@@ -64,23 +83,8 @@ Funcionalidade: Gestão de contas
     Então ocorre erro "DuplicateAccount" na tentativa de adição de conta
 
   Cenário: Tentativa de adição de conta local com administrador de organização inativa
-    # Governança adiciona organização 3 - OrgExc
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "OrgExc" e direito de voto "true"
-    Então a organização 3 é "OrgExc" e direito de voto "true"
-    E verifico se a organização 3 está ativa o resultado é "true"
-    # Governança adiciona novo administrador global para a OrgExc
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" na organização 3 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
-    Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 3 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
-    E verifico se a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" está ativa o resultado é "true"
-    # Administrador global da OrgExc adiciona nova conta de usuário
-    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" adiciona a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
-    Então a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 3 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e situação ativa "true"
-    # Governança exclui a OrgExc, logo, suas contas ficarão inativas
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3
-    Então verifico se a organização 3 está ativa o resultado é "false"
-    E verifico se a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" está ativa o resultado é "false"
     # Administrador global da OrgExc tenta adiciona nova conta de usuário, mas está inativo
-    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" adiciona a conta local "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000003"
+    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" adiciona a conta local "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000003"
     Então ocorre erro "InactiveAccount" na tentativa de adição de conta
 
   #Cenário: Tentativa de adição de conta local com administrador local inativo
@@ -189,23 +193,8 @@ Funcionalidade: Gestão de contas
     Então ocorre erro "UnauthorizedAccess" na tentativa de exclusão de conta
 
   Cenário: Tentativa de exclusão de conta local com administrador de organização inativa
-    # Governança adiciona organização 3 - OrgExc
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "OrgExc" e direito de voto "true"
-    Então a organização 3 é "OrgExc" e direito de voto "true"
-    E verifico se a organização 3 está ativa o resultado é "true"
-    # Governança adiciona novo administrador global para a OrgExc
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" na organização 3 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
-    Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 3 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
-    E verifico se a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" está ativa o resultado é "true"
-    # Administrador global da OrgExc adiciona nova conta de usuário
-    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" adiciona a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
-    Então a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 3 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e situação ativa "true"
-    # Governança exclui a OrgExc, logo, suas contas ficarão inativas
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3
-    Então verifico se a organização 3 está ativa o resultado é "false"
-    E verifico se a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" está ativa o resultado é "false"
     # Administrador global da OrgExc tenta excluir nova conta de usuário, mas está inativo
-    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" exclui a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" exclui a conta local "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc"
     Então ocorre erro "InactiveAccount" na tentativa de exclusão de conta
 
   Cenário: Tentativa de exclusão de conta de outra organização
@@ -342,29 +331,14 @@ Funcionalidade: Gestão de contas
     Então ocorre erro "UnauthorizedAccess" na tentativa de atualização de conta
 
   Cenário: Tentativa de atualização de conta local com administrador de organização inativa
-    # Governança adiciona organização 3 - OrgExc
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "OrgExc" e direito de voto "true"
-    Então a organização 3 é "OrgExc" e direito de voto "true"
-    E verifico se a organização 3 está ativa o resultado é "true"
-    # Governança adiciona novo administrador global para a OrgExc
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" na organização 3 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
-    Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 3 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
-    E verifico se a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" está ativa o resultado é "true"
-    # Administrador global da OrgExc adiciona nova conta de usuário
-    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" adiciona a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
-    Então a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 3 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e situação ativa "true"
-    # Governança exclui a OrgExc, logo, suas contas ficarão inativas
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3
-    Então verifico se a organização 3 está ativa o resultado é "false"
-    E verifico se a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" está ativa o resultado é "false"
     # Administrador global da OrgExc tenta atualizar papel de conta local
-    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" atualiza o papel da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "LOCAL_ADMIN_ROLE"
+    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" atualiza o papel da conta local "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" para "LOCAL_ADMIN_ROLE"
     Então ocorre erro "InactiveAccount" na tentativa de atualização de conta
     # Administrador global da OrgExc tenta atualizar hash de conta local
-    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" atualiza o hash cadastral da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "0x0000000000000000000000000000000000000000000000000000000000000002"
+    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" atualiza o hash cadastral da conta local "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" para "0x0000000000000000000000000000000000000000000000000000000000000002"
     Então ocorre erro "InactiveAccount" na tentativa de atualização de conta
     # Administrador global da OrgExc tenta atualizar status de conta local
-    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" atualiza a situação ativa da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "false"
+    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" atualiza a situação ativa da conta local "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" para "false"
     Então ocorre erro "InactiveAccount" na tentativa de atualização de conta
 
   Cenário: Tentativa de atualização de conta de outra organização
@@ -429,3 +403,24 @@ Funcionalidade: Gestão de contas
     # Administrador global do BNDES tenta atualizar conta local com hash zerado
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza o hash cadastral da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "0x0000000000000000000000000000000000000000000000000000000000000000"
     Então ocorre erro "InvalidHash" na tentativa de atualização de conta
+
+  ##############################################################################
+  # Consultas
+  ##############################################################################
+  
+  Cenário: Consulta de conta existente
+    Quando um observador consulta a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    Então a consulta de conta ocorre com sucesso
+
+  Cenário: Consulta de conta inexistente
+    Quando um observador consulta a conta "0x0000000000000000000000000000000000000001"
+    Então ocorre erro "AccountNotFound" na consulta de conta
+
+  Cenário: Conta existente ativa
+    Quando verifico se a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" está ativa o resultado é "true"
+
+  Cenário: Conta existente de organização inativa
+    Quando verifico se a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" está ativa o resultado é "false"
+
+  Cenário: Conta inexistente inativa
+    Quando verifico se a conta "0x0000000000000000000000000000000000000001" está ativa o resultado é "false"

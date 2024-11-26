@@ -297,3 +297,22 @@ Then('o evento {string} foi emitido para o smart contract {string} com restri√ß√
     }
     assert.ok(found);
 });
+
+When('um observador consulta a conta {string}', async function(account) {
+    this.getAccountError = null;
+    try {
+        await this.accountRulesContract.getAccount(account);
+    }
+    catch(error) {
+        this.getAccountError = error;
+    }
+});
+
+Then('a consulta de conta ocorre com sucesso', function() {
+    assert.ok(this.getAccountError == null);
+});
+
+Then('ocorre erro {string} na consulta de conta', function(error) {
+    assert.ok(this.getAccountError != null);
+    assert.ok(this.getAccountError.message.includes(error));
+});

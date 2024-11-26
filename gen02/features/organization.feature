@@ -18,7 +18,12 @@ Funcionalidade: Gestão de organizações
   Cenário: Consulta de dados cadastrais de organização
     E a organização 1 é "BNDES" e direito de voto "true"
     E a organização 2 é "TCU" e direito de voto "true"
+
+  Cenário: Consulta da lista de organizações
     E a lista de organizações é "1,BNDES,true|2,TCU,true"
+
+  Cenário: Consulta de organização inexistente
+    Quando um observador consulta a organização 10 ocorre erro "OrganizationNotFound"
 
   Cenário: Verificação de organizações ativas e inativas
     Quando verifico se a organização 1 está ativa o resultado é "true"
@@ -91,3 +96,4 @@ Funcionalidade: Gestão de organizações
     # Governança tenta excluir organização
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3
     Então ocorre erro "OrganizationNotFound" na tentativa de exclusão de organização
+  

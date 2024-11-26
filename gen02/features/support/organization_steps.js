@@ -28,14 +28,24 @@ Given('que não há organizações definidas', function () {
     // Nada a fazer, apenas deixar o array organizations vazio
 });
 
-Then('ocorre erro na implantação do smart contract de gestão de organizações', function () {
+Then('ocorre erro na implantação do smart contract de gestão de organizações', function() {
     assert.ok(this.organizationContractDeployError != null);
 });
 
-Then('a organização {int} é {string} e direito de voto {string}', async function (id, name, canVote) {
+Then('a organização {int} é {string} e direito de voto {string}', async function(id, name, canVote) {
     let org = await this.organizationContract.getOrganization(id);
     assert.equal(org.name, name);
     assert.equal(org.canVote, getBoolean(canVote));
+});
+
+When('um observador consulta a organização {int} ocorre erro {string}', async function(orgId, errorMessage) {
+    try {
+        await this.organizationContract.getOrganization(orgId);
+        assert.fail('Deveria ter ocorrido erro na consulta de organização');
+    }
+    catch(error) {
+        assert.ok(error.message.includes(errorMessage));
+    }
 });
 
 Then('a lista de organizações é {string}', async function(orgsList) {
@@ -52,7 +62,7 @@ Then('a lista de organizações é {string}', async function(orgsList) {
     }
 });
 
-When('a conta {string} adiciona a organização {string} e direito de voto {string}', async function (account, name, canVote) {
+When('a conta {string} adiciona a organização {string} e direito de voto {string}', async function(account, name, canVote) {
     this.addError = null;
     try {
         const signer = await hre.ethers.getSigner(account);
@@ -64,7 +74,7 @@ When('a conta {string} adiciona a organização {string} e direito de voto {stri
     }
 });
 
-Then('o evento {string} foi emitido para a organização {int}', async function (event, orgId) {
+Then('o evento {string} foi emitido para a organização {int}', async function(event, orgId) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.organizationContract.queryFilter(event, block, block);
     let found = false;
@@ -81,7 +91,7 @@ Then('ocorre erro {string} na tentativa de adição de organização', function(
     assert.ok(this.addError.message.includes(error));
 });
 
-When('a conta {string} atualiza a organização {int} com nome {string} e direito de voto {string}', async function (account, orgId, name, canVote) {
+When('a conta {string} atualiza a organização {int} com nome {string} e direito de voto {string}', async function(account, orgId, name, canVote) {
     this.updateError = null;
     try {
         const signer = await hre.ethers.getSigner(account);
@@ -103,7 +113,7 @@ Then('verifico se a organização {int} está ativa o resultado é {string}', as
     assert.equal(orgActive, getBoolean(active));
 });
 
-When('a conta {string} exclui a organização {int}', async function (account, orgId) {
+When('a conta {string} exclui a organização {int}', async function(account, orgId) {
     this.deleteError = null;
     try {
         const signer = await hre.ethers.getSigner(account);
