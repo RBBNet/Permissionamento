@@ -32,16 +32,22 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     E a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" na organização 1 com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000003"
     # Governança adiciona conta de usuário para a OrgExc
     E a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65" na organização 3 com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000004"
+    # Verificando cadastro das organizações
+    E a lista de organizações é "1,BNDES,true|2,TCU,true|3,OrgExc,true"
     # Verificando cadastro das contas
+    E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" é da organização 1 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" é da organização 1 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
     E a conta "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" é da organização 1 com papel "DEPLOYER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e situação ativa "true"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 1 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000003" e situação ativa "true"
     E a conta "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65" é da organização 3 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000004" e situação ativa "true"
+    E a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" é da organização 2 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
+    E a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 3 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     # Governança exclui OrgExc
     E a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3
     E verifico se a organização 3 está ativa o resultado é "false"
     E verifico se a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" está ativa o resultado é "false"
     E verifico se a conta "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65" está ativa o resultado é "false"
+    E a lista de organizações é "1,BNDES,true|2,TCU,true"
 
   Cenário: Transação permitida a smart contract
     # Administrador global do BNDES pode chamar smart contract
