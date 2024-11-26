@@ -26,6 +26,7 @@ interface AccountRulesV2 is AccountRulesProxy, IAccessControl {
     event AccountStatusUpdated(address account, uint orgId, bool active, address admin);
     event SmartContractAccessUpdated(address smartContract, bool restricted, address[] allowedSenders, address admin);
 
+    error InvalidArgument(string message);
     error InactiveAccount(address account, string message);
     error InvalidAccount(address account, string message);
     error DuplicateAccount(address account);

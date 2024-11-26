@@ -3,12 +3,11 @@ pragma solidity ^0.8.26;
 
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import "./AccountRulesV2.sol";
-import "./ConfigurableDuringDeploy.sol";
 import "./Governable.sol";
 import "./Organization.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
-contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governable, AccessControl {
+contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
 
     using EnumerableSet for EnumerableSet.AddressSet;
 
@@ -92,8 +91,14 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
         _;
     }
 
-    constructor(address[] memory accs, AdminProxy admins) Governable(admins) {
-        require(accs.length >= 2, "At least 2 accounts must exist");
+    constructor(Organization organizations, address[] memory accs, AdminProxy admins) Governable(admins) {
+        if(address(organizations) == address(0)) {
+            revert InvalidArgument("Invalid address for Organization management smart contract");
+        }
+        if(accs.length < 2) {
+            revert InvalidArgument("At least 2 accounts must exist");
+        }
+        _organizations = organizations;
         for(uint i = 0; i < accs.length; ++i) {
             // Inclui as contas informadas como administradores globais,
             // utilizando suas posições no array para identificar as organizações.
@@ -106,12 +111,6 @@ contract AccountRulesV2Impl is AccountRulesV2, ConfigurableDuringDeploy, Governa
         _validRoles[LOCAL_ADMIN_ROLE] = true;
         _validRoles[DEPLOYER_ROLE] = true;
         _validRoles[USER_ROLE] = true;
-    }
-
-    function configure(Organization organizations) public onlyOwner onlyDuringDeploy {
-        require(address(organizations) != address(0), "Invalid address for Organization management smart contract");
-        _organizations = organizations;
-        finishConfiguration();
     }
 
     function addLocalAccount(address account, bytes32 roleId, bytes32 dataHash) public

@@ -10,11 +10,10 @@ Given('a conta {string}', function(acc) {
 When('implanto o smart contract de gestão de contas', async function () {
     this.accountRulesContractDeployError = null;
     try {
-        this.accountRulesContract = await hre.ethers.deployContract("AccountRulesV2Impl", [this.accounts, this.adminMockContractAddress]);
+        this.accountRulesContract = await hre.ethers.deployContract("AccountRulesV2Impl", [this.organizationContractAddress, this.accounts, this.adminMockContractAddress]);
         assert.ok(this.accountRulesContract != null);
         this.accountRulesContractAddress = await this.accountRulesContract.getAddress();
         assert.ok(this.accountRulesContractAddress != null);
-        await this.accountRulesContract.configure(this.organizationContractAddress);
     }
     catch(error) {
         this.accountRulesContractDeployError = error;
