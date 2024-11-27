@@ -27,6 +27,26 @@ function getRoleId(role) {
     }
 }
 
+function getProposalStatus(status) {
+    switch(status) {
+        case 'Undefined': return 0;
+        case 'Active': return 1;
+        case 'Canceled': return 2;
+        case 'Finished' : return 3;
+        case 'Executed' : return 4;
+        default: throw new Error('Status inválido: ' + status);
+    }
+}
+
+function getProposalResult(result) {
+    switch(result) {
+        case 'Undefined': return 0;
+        case 'Approved': return 1;
+        case 'Rejected': return 2;
+        default: throw new Error('Resultado inválido: ' + result);
+    }
+}
+
 Before(function() {
     this.organizations = [];
     this.accounts = [];
@@ -35,5 +55,7 @@ Before(function() {
 module.exports = {
     createOrganization: createOrganization,
     getBoolean: getBoolean,
-    getRoleId: getRoleId
+    getRoleId: getRoleId,
+    getProposalStatus: getProposalStatus,
+    getProposalResult: getProposalResult
 }

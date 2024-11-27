@@ -64,5 +64,11 @@ Funcionalidade: Governança do permissionamento
     E implanto um smart contract mock para que sofra ações da governança
     E a implantação do smart contract mock ocorre com sucesso
 
+  Cenário: Criação de proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
+
   Cenário: Consulta de proposta não existente
     Quando um observador consulta a proposta 1 ocorre erro "ProposalNotFound"

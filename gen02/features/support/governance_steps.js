@@ -1,6 +1,8 @@
 const assert = require('assert');
 const { Given, When, Then } = require('@cucumber/cucumber');
 const hre = require("hardhat");
+const { getProposalStatus, getProposalResult } = require('./setup.js');
+
 
 Given('implanto o smart contract de governança do permissionamento', async function () {
     this.govenanceContractDeployError = null;
@@ -22,6 +24,8 @@ Given('implanto um smart contract mock para que sofra ações da governança', a
     try {
         this.mockContract = await hre.ethers.deployContract("ExecutionMock", []);
         assert.ok(this.mockContract != null);
+        this.mockContractAddress = await this.mockContract.getAddress();
+        assert.ok(this.mockContractAddress != null);
     }
     catch(error) {
         this.mockContractDeployError = error;
@@ -40,5 +44,60 @@ When('um observador consulta a proposta {int} ocorre erro {string}', async funct
     }
     catch(error) {
         assert.ok(error.message.includes(errorMessage));
+    }
+});
+
+//https://emn178.github.io/online-tools/keccak_256.html
+//https://abi.hashex.org/
+//https://docs.ethers.org/v6/api/abi/abi-coder/
+When('a conta {string} cria uma proposta com alvo o smart contract de teste com dados {string}, limite de {int} blocos e descrição {string}', async function(admin, calldatas, blocksDuration, description) {
+    const calldatasArray = calldatas.split(',');
+    this.creationError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.govenanceContract.connect(signer).createProposal([this.mockContractAddress], calldatasArray, blocksDuration, description);
+    }
+    catch(error) {
+        console.log(error);
+        this.creationError = error;
+    }
+    
+    const func = hre.ethers.id('setCode(uint)').substring(0, 10);
+    const params = hre.ethers.AbiCoder.defaultAbiCoder().encode(['uint'], [2024]);
+    const calldata = func + params.substring(2, params.length);
+    const encodedData = hre.ethers.AbiCoder.defaultAbiCoder().encode(
+        ['address[]', 'bytes[]', 'uint', 'string'],
+        [[this.mockContractAddress], [calldata], blocksDuration, description]
+    );
+    const keccak256encodedData = hre.ethers.keccak256(encodedData);
+    this.proposalId = hre.ethers.toBigInt(keccak256encodedData);
+});
+
+Then('a proposta é criada com sucesso', function() {
+    assert.ok(this.creationError == null);
+});
+
+Then('o evento {string} é emitido para a proposta criada pela conta {string}', async function(event, creator) {
+    const block = await hre.ethers.provider.getBlockNumber();
+    const events = await this.govenanceContract.queryFilter(event, block, block);
+    let found = false;
+    for (let i = 0; i < events.length && !found; i++) {
+        found =
+            events[i].fragment.name == event &&
+            events[i].args[0] == this.proposalId &&
+            events[i].args[1] == creator;
+    }
+    assert.ok(found);
+});
+
+Then('a proposta criada tem situação {string}, resultado {string} e organizações {string}', async function(status, result, orgs) {
+    const expectedOrgs = orgs.split(',');
+    const proposal = await this.govenanceContract.getProposal(this.proposalId);
+    assert.equal(proposal.status, getProposalStatus(status));
+    assert.equal(proposal.result, getProposalResult(result));
+    assert.equal(proposal.organizations.length, expectedOrgs.length);
+    for(i = 0; i < expectedOrgs.length; ++i) {
+        assert.equal(proposal.organizations[i], expectedOrgs[i]);
     }
 });

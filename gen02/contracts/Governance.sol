@@ -10,11 +10,6 @@ contract Governance {
     enum ProposalResult { Undefined, Approved, Rejected }
     enum PropsalVote { NotVoted, Approval, Rejection }
 
-    error UnauthorizedAccess(address account, string message);
-    error IllegalState(string message);
-    error InvalidArgument(string message);
-    error ProposalNotFound(uint proposalId);
-
     struct ProposalData {
         uint id;
         address creator;
@@ -27,6 +22,13 @@ contract Governance {
         ProposalResult result;
         uint[] organizations;
     }
+
+    event ProposalCreated(uint proposalId, address creator);
+
+    error UnauthorizedAccess(address account, string message);
+    error IllegalState(string message);
+    error InvalidArgument(string message);
+    error ProposalNotFound(uint proposalId);
 
     Organization private _organizations;
     AccountRulesV2 private _accounts;
@@ -115,6 +117,8 @@ contract Governance {
                 proposalOrgs.push(allOrgs[i].id);
             }
         }
+
+        emit ProposalCreated(proposal.id, proposal.creator);
 
         return proposalId;
     }
