@@ -59,7 +59,6 @@ When('a conta {string} cria uma proposta com alvo o smart contract de teste com 
         await this.govenanceContract.connect(signer).createProposal([this.mockContractAddress], calldatasArray, blocksDuration, description);
     }
     catch(error) {
-        console.log(error);
         this.creationError = error;
     }
     
@@ -76,6 +75,11 @@ When('a conta {string} cria uma proposta com alvo o smart contract de teste com 
 
 Then('a proposta é criada com sucesso', function() {
     assert.ok(this.creationError == null);
+});
+
+Then('ocorre erro {string} na criação da proposta', function(error) {
+    assert.ok(this.creationError != null);
+    assert.ok(this.creationError.message.includes(error));
 });
 
 Then('o evento {string} é emitido para a proposta criada pela conta {string}', async function(event, creator) {

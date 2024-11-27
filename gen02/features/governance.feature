@@ -70,5 +70,29 @@ Funcionalidade: Governança do permissionamento
     E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
 
+  Cenário: Tentativa de criar votação com perfis de acesso sem privilégio
+    Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então ocorre erro "UnauthorizedAccess" na criação da proposta    
+    Quando a conta "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então ocorre erro "UnauthorizedAccess" na criação da proposta    
+    Quando a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então ocorre erro "UnauthorizedAccess" na criação da proposta    
+
+  Cenário: Tentativa de criar votação com conta inativa
+    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então ocorre erro "UnauthorizedAccess" na criação da proposta    
+
+  Cenário: Tentativa de criar votação com conta não cadastrada
+    Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então ocorre erro "UnauthorizedAccess" na criação da proposta    
+
+  Cenário: Tentativa de criar votação com as listas de targets e calldatas de tamanhos diferentes
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8,0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então ocorre erro "InvalidArgument" na criação da proposta    
+
+  Cenário: Tentativa de criar votação com duração de zero blocos
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 0 blocos e descrição "Ajustando código para 2024"
+    Então ocorre erro "InvalidArgument" na criação da proposta    
+
   Cenário: Consulta de proposta não existente
     Quando um observador consulta a proposta 1 ocorre erro "ProposalNotFound"
