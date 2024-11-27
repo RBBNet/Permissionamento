@@ -78,7 +78,7 @@ Then('o evento {string} foi emitido para a conta {string}, organização {int}, 
             events[i].args[1] == orgId &&
             events[i].args[2] == getRoleId(role) &&
             events[i].args[3] == dataHash &&
-            events[i].args[4] == admin
+            events[i].args[4] == admin;
     }
     assert.ok(found);
 });
@@ -135,7 +135,7 @@ Then('o evento {string} foi emitido para a conta {string}, organização {int} e
             events[i].fragment.name == event &&
             events[i].args[0] == account &&
             events[i].args[1] == orgId &&
-            events[i].args[2] == admin
+            events[i].args[2] == admin;
     }
     assert.ok(found);
 });
@@ -202,7 +202,7 @@ Then('o evento {string} foi emitido para a conta {string}, organização {int}, 
             events[i].args[0] == account &&
             events[i].args[1] == orgId &&
             events[i].args[2] == getRoleId(role) &&
-            events[i].args[3] == admin
+            events[i].args[3] == admin;
     }
     assert.ok(found);
 });
@@ -217,7 +217,7 @@ Then('o evento {string} foi emitido para a conta {string}, organização {int}, 
             events[i].args[0] == account &&
             events[i].args[1] == orgId &&
             events[i].args[2] == dataHash &&
-            events[i].args[3] == admin
+            events[i].args[3] == admin;
     }
     assert.ok(found);
 });
@@ -232,7 +232,7 @@ Then('o evento {string} foi emitido para a conta {string}, organização {int}, 
             events[i].args[0] == account &&
             events[i].args[1] == orgId &&
             events[i].args[2] == getBoolean(active) &&
-            events[i].args[3] == admin
+            events[i].args[3] == admin;
     }
     assert.ok(found);
 });
@@ -293,7 +293,7 @@ Then('o evento {string} foi emitido para o smart contract {string} com restriç�
             events[i].args[0] == target &&
             events[i].args[1] == getBoolean(restricted) &&
             events[i].args[2].toString() == addresses &&
-            events[i].args[3] == admin
+            events[i].args[3] == admin;
     }
     assert.ok(found);
 });

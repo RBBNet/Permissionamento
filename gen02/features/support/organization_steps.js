@@ -81,7 +81,7 @@ Then('o evento {string} foi emitido para a organização {int}', async function(
     for (let i = 0; i < events.length && !found; i++) {
         found =
             events[i].fragment.name == event &&
-            events[i].args[0] == orgId
+            events[i].args[0] == orgId;
     }
     assert.ok(found);
 });
