@@ -305,7 +305,30 @@ Funcionalidade: Governança do permissionamento
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval" para a proposta 1
     Então ocorre erro "ProposalNotFound" no envio do voto
   
-  Cenário: Tentativa de envio de voto para proposta não ativa
+  Cenário: Tentativa de envio de voto para proposta encerrada
+    # Administrador Global do BNDES cria uma proposta com apenas 1 bloco de duração
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 1 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    # Administrador Global do BNDES vota para aprovar a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Já foi "gasto 1 bloco", então a duração da proposta já esgotou
+    # Administrador Global do TCU tenta enviar voto para aprovar a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Approval"
+    Então o evento "ProposalFinished" é emitido para a proposta
+    # Administrador Global do CPQD tenta enviar voto para aprovar a proposta
+    Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Approval"
+    Então ocorre erro "IllegalState" no envio do voto
+
+  Cenário: Tentativa de envio de voto para proposta cancelada
+    # TODO Escrever
   
+  Cenário: Consulta de proposta e votos
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
+    E a proposta tem situação "Active", resultado "Undefined" e votos "NotVoted,NotVoted,NotVoted,NotVoted"
+    
   Cenário: Consulta de proposta não existente
     Quando um observador consulta a proposta 1 ocorre erro "ProposalNotFound"
