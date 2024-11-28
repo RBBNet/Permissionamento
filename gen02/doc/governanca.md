@@ -60,7 +60,9 @@ Critérios de aceitação:
 6. O voto somente pode ser marcado até o limite de blocos estabelecido para a proposta. Caso o limite de blocos tenha sido ultrapassado:
    1. O voto é descartado.
    2. A proposta é marcada como encerrada.
-   3. A história é encerrada.
+   3. A ocorrência da finalização da proposta deve emitir evento, registrando:
+      1. O identificador da proposta
+   4. A história é encerrada retornando a indicação que o voto **não** foi registrado.
 7. Registra-se o voto enviado para a organização do administrador.
 8. A ocorrência do voto deve emitir um evento, registrando:
    1. O identificador da proposta
@@ -72,6 +74,7 @@ Critérios de aceitação:
    3. A ocorrência da definição do resultado da proposta deve emitir um evento, registrando:
       1. O identificador da proposta
       2. O resultado da proposta
+10. É retornada a indicação que o voto foi registrado.
 
 
 ## USGOV04 – Administrador Global excuta proposta para que as ações aprovadas sejam realizadas<a id="usgov04"></a>

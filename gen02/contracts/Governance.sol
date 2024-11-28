@@ -25,6 +25,7 @@ contract Governance {
 
     event ProposalCreated(uint proposalId, address creator);
     event OrganizationVoted(uint proposalId, address admin, bool approve);
+    event ProposalFinished(uint proposalId);
     event ProposalApproved(uint proposalId);
     event ProposalRejected(uint proposalId);
 
@@ -83,14 +84,6 @@ contract Governance {
         _;
     }
 
-    modifier durationNotExceeded(uint proposalId) {
-        ProposalData storage proposal = _proposals[proposalId];
-        if(block.number - proposal.creationBlock > proposal.blocksDuration) {
-            revert IllegalState("Proposal duration has been exceeded");
-        }
-        _;
-    }
-
     constructor(Organization organizations, AccountRulesV2 accounts) {
         if(address(organizations) == address(0)) {
             revert InvalidArgument("Invalid address for Organization management smart contract");
@@ -139,11 +132,15 @@ contract Governance {
     }
 
     function castVote(uint proposalId, bool approve) public
-        onlyActiveGlobalAdmin existentProposal(proposalId) onlyActiveProposal(proposalId) durationNotExceeded(proposalId)
-        onlyParticipantOrganization(proposalId) {
+        onlyActiveGlobalAdmin existentProposal(proposalId) onlyActiveProposal(proposalId) onlyParticipantOrganization(proposalId)
+        returns (bool) {
         AccountRulesV2.AccountData memory acc = _accounts.getAccount(msg.sender);
         if(_votes[proposalId][acc.orgId] != ProposalVote.NotVoted) {
             revert IllegalState("Organization has already voted");
+        }
+
+        if(_isFinished(proposalId)) {
+            return false;
         }
 
         if(approve) {
@@ -158,6 +155,19 @@ contract Governance {
         if(_proposals[proposalId].result == ProposalResult.Undefined) {
             _majorityAchieved(_proposals[proposalId]);
         }
+
+        return true;
+    }
+
+    function _isFinished(uint proposalId) private returns (bool) {
+        ProposalData storage proposal = _proposals[proposalId];
+        if(block.number - proposal.creationBlock > proposal.blocksDuration) {
+            // Duration of the proposal is exceeded
+            proposal.status = ProposalStatus.Finished;
+            emit ProposalFinished(proposalId);
+            return true;
+        }
+        return false;
     }
 
     function _majorityAchieved(ProposalData storage proposal) private returns (bool) {
