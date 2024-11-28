@@ -188,16 +188,47 @@ Funcionalidade: Governança do permissionamento
     E o evento "ProposalRejected" é emitido para a proposta
 
   Cenário: Tentativa de envio de voto por organização não participante
-
-  Cenário: Tentativa de envio de voto por diferentes perfis
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    # Administrador Global da PUC-Rio (sem direito a voto) tenta enviar voto
+    Quando a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" envia um voto de "Approval"
+    Então ocorre erro "UnauthorizedAccess" no envio do voto
 
   Cenário: Tentativa de envio de voto com perfis de acesso sem privilégio
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    # Administrador Local do BNDES tenta enviar voto
+    Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" envia um voto de "Approval"
+    Então ocorre erro "UnauthorizedAccess" no envio do voto
+    # Implantador de smart contracts do BNDES tenta enviar voto
+    Quando a conta "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" envia um voto de "Approval"
+    Então ocorre erro "UnauthorizedAccess" no envio do voto
+    # Usuário contracts do BNDES tenta enviar voto
+    Quando a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" envia um voto de "Approval"
+    Então ocorre erro "UnauthorizedAccess" no envio do voto
 
   Cenário: Tentativa de envio de voto com conta inativa
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    # Administrador Global da OrgExc tenta enviar voto
+    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" envia um voto de "Approval"
+    Então ocorre erro "UnauthorizedAccess" no envio do voto
 
   Cenário: Tentativa de envio de voto com conta não cadastrada
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    # Administrador Global da OrgExc tenta enviar voto
+    Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" envia um voto de "Approval"
+    Então ocorre erro "UnauthorizedAccess" no envio do voto
 
   Cenário: Tentativa de envio de voto para proposta inexistente
+    # Administrador Global do BNDES tenta enviar voto para uma proposta inexistente
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval" para a proposta 1
+    Então ocorre erro "ProposalNotFound" no envio do voto
   
   Cenário: Tentativa de envio de voto para proposta não ativa
   

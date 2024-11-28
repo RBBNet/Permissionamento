@@ -118,6 +118,18 @@ When('a conta {string} envia um voto de {string}', async function(admin, vote) {
     }
 });
 
+When('a conta {string} envia um voto de {string} para a proposta {int}', async function(admin, vote, proposalId) {
+    this.voteError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.govenanceContract.connect(signer).castVote(proposalId, getVote(vote));
+    }
+    catch(error) {
+        this.voteError = error;
+    }
+});
+
 Then('o voto é registrado com sucesso', function() {
     assert.ok(this.voteError == null);
 });
