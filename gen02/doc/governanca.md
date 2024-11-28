@@ -37,20 +37,17 @@ Dúvidas:
 
 Critérios de aceitação:
 1. Somente Administradores Globais ativos, vinculados a organizações ativas, podem cancear propostas.
-2. Somente o criador de uma proposta pode realizar o cancelamento.
-3. O Administrador Global informa o identificador da proposta a ser encerrada.
+2. O Administrador Global informa o identificador da proposta a ser encerrada.
+3. Somente o criador de uma proposta pode realizar o cancelamento.
 4. Somente propostas ativas podem ser canceladas.
-5. Caso o limite de blocos estabelecido para a proposta tenha sido ultrapassado e a proposta ainda esteja indefinida, a proposta é marcada como rejeitada.
-   1. A ocorrência da definição do resultado da proposta deve emitir um evento, registrando:
-      1. O identificador da proposta
-      2. O resultado da proposta
-6. Somente propostas com resultado indefinido podem ser canceladas.
-7. A proposta é marcada como cancelada.
+5. Somente propostas com resultado indefinido podem ser canceladas.
+6. A proposta é marcada como cancelada.
    1. A ocorrência do cancelamento da proposta deve emitir um evento, registrando:
       1. O identificador da proposta
 
 Dúvidas:
 - Deve-se registrar a motivação do cancelamento?
+- Deve-se permitir o cancelamento de propostas com resultado indefinido?
 
 
 ## USGOV03 – Administrador Global envia voto para apuração de resultado de proposta<a id="usgov03"></a>

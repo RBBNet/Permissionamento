@@ -25,6 +25,7 @@ contract Governance {
 
     event ProposalCreated(uint proposalId, address creator);
     event OrganizationVoted(uint proposalId, address admin, bool approve);
+    event ProposalCanceled(uint proposalId);
     event ProposalFinished(uint proposalId);
     event ProposalApproved(uint proposalId);
     event ProposalRejected(uint proposalId);
@@ -70,9 +71,17 @@ contract Governance {
         }
         _;
     }
+
     modifier onlyActiveProposal(uint proposalId) {
         if(_proposals[proposalId].status != ProposalStatus.Active) {
             revert IllegalState("Proposal is not Active");
+        }
+        _;
+    }
+
+    modifier onlyUndefinedProposal(uint proposalId) {
+        if(_proposals[proposalId].result != ProposalResult.Undefined) {
+            revert IllegalState("Proposal result is already defined");
         }
         _;
     }
@@ -128,7 +137,10 @@ contract Governance {
         return proposalId;
     }
 
-    function cancelProposal(uint proposalId) public onlyActiveGlobalAdmin onlyCreator(proposalId) {
+    function cancelProposal(uint proposalId) public onlyActiveGlobalAdmin existentProposal(proposalId)
+        onlyCreator(proposalId) onlyActiveProposal(proposalId) onlyUndefinedProposal(proposalId) {
+        _proposals[proposalId].status = ProposalStatus.Canceled;
+        emit ProposalCanceled(proposalId);
     }
 
     function castVote(uint proposalId, bool approve) public

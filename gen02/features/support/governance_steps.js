@@ -106,6 +106,39 @@ Then('a proposta criada tem situação {string}, resultado {string} e organizaç
     }
 });
 
+When('a conta {string} cancela a proposta', async function(admin) {
+    this.cancelError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.govenanceContract.connect(signer).cancelProposal(this.proposalId);
+    }
+    catch(error) {
+        this.cancelError = error;
+    }
+});
+
+When('a conta {string} cancela a proposta {int}', async function(admin, proposalId) {
+    this.cancelError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.govenanceContract.connect(signer).cancelProposal(proposalId);
+    }
+    catch(error) {
+        this.cancelError = error;
+    }
+});
+
+Then('a proposta é cancelada com sucesso', function() {
+    assert.ok(this.cancelError == null);
+});
+
+Then('ocorre erro {string} no cancelamento da proposta', function(error) {
+    assert.ok(this.cancelError != null);
+    assert.ok(this.cancelError.message.includes(error));
+});
+
 When('a conta {string} envia um voto de {string}', async function(admin, vote) {
     this.voteError = null;
     try {
