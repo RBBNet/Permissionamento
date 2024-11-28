@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { Given, When, Then } = require('@cucumber/cucumber');
 const hre = require("hardhat");
-const { getProposalStatus, getProposalResult } = require('./setup.js');
+const { getProposalStatus, getProposalResult, getVote, getProposalVote } = require('./setup.js');
 
 
 Given('implanto o smart contract de governança do permissionamento', async function () {
@@ -105,3 +105,63 @@ Then('a proposta criada tem situação {string}, resultado {string} e organizaç
         assert.equal(proposal.organizations[i], expectedOrgs[i]);
     }
 });
+
+When('a conta {string} envia um voto de {string}', async function(admin, vote) {
+    this.voteError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.govenanceContract.connect(signer).castVote(this.proposalId, getVote(vote));
+    }
+    catch(error) {
+        this.voteError = error;
+    }
+});
+
+Then('o voto é registrado com sucesso', function() {
+    assert.ok(this.voteError == null);
+});
+
+Then('ocorre erro {string} no envio do voto', function(error) {
+    assert.ok(this.voteError != null);
+    assert.ok(this.voteError.message.includes(error));
+});
+
+Then('o evento {string} é emitido para a proposta com voto de {string} pela conta {string}', async function(event, vote, creator) {
+    const block = await hre.ethers.provider.getBlockNumber();
+    const events = await this.govenanceContract.queryFilter(event, block, block);
+    let found = false;
+    for (let i = 0; i < events.length && !found; i++) {
+        found =
+            events[i].fragment.name == event &&
+            events[i].args[0] == this.proposalId &&
+            events[i].args[1] == creator &&
+            events[i].args[2] == getVote(vote);
+    }
+    assert.ok(found);
+});
+
+Then('o evento {string} é emitido para a proposta', async function(event) {
+    const block = await hre.ethers.provider.getBlockNumber();
+    const events = await this.govenanceContract.queryFilter(event, block, block);
+    let found = false;
+    for (let i = 0; i < events.length && !found; i++) {
+        found =
+            events[i].fragment.name == event &&
+            events[i].args[0] == this.proposalId;
+    }
+    assert.ok(found);
+});
+
+Then('a proposta tem situação {string}, resultado {string} e votos {string}', async function(status, result, votes) {
+    const proposal = await this.govenanceContract.getProposal(this.proposalId);
+    assert.equal(proposal.status, getProposalStatus(status));
+    assert.equal(proposal.result, getProposalResult(result));
+    const expectedVotes = votes.split(',');
+    const actualVotes = await this.govenanceContract.getVotes(this.proposalId);
+    assert.equal(actualVotes.length, expectedVotes.length);
+    for(i = 0; i < expectedVotes.length; ++i) {
+        assert.equal(actualVotes[i], getProposalVote(expectedVotes[i]));
+    }
+});
+

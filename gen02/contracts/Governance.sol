@@ -8,7 +8,7 @@ contract Governance {
 
     enum ProposalStatus { Undefined, Active, Canceled, Finished, Executed }
     enum ProposalResult { Undefined, Approved, Rejected }
-    enum PropsalVote { NotVoted, Approval, Rejection }
+    enum ProposalVote { NotVoted, Approval, Rejection }
 
     struct ProposalData {
         uint id;
@@ -24,6 +24,9 @@ contract Governance {
     }
 
     event ProposalCreated(uint proposalId, address creator);
+    event OrganizationVoted(uint proposalId, address admin, bool approve);
+    event ProposalApproved(uint proposalId);
+    event ProposalRejected(uint proposalId);
 
     error UnauthorizedAccess(address account, string message);
     error IllegalState(string message);
@@ -33,6 +36,7 @@ contract Governance {
     Organization private _organizations;
     AccountRulesV2 private _accounts;
     mapping (uint => ProposalData) private _proposals;
+    mapping (uint => mapping(uint => ProposalVote)) private _votes;
 
     modifier onlyActiveGlobalAdmin() {
         if(!_accounts.hasRole(GLOBAL_ADMIN_ROLE, msg.sender)) {
@@ -65,7 +69,7 @@ contract Governance {
         }
         _;
     }
-    modifier onlyAciteProposal(uint proposalId) {
+    modifier onlyActiveProposal(uint proposalId) {
         if(_proposals[proposalId].status != ProposalStatus.Active) {
             revert IllegalState("Proposal is not Active");
         }
@@ -75,6 +79,14 @@ contract Governance {
     modifier onlyCreator(uint proposalId) {
         if(_proposals[proposalId].creator != msg.sender) {
             revert UnauthorizedAccess(msg.sender, "Sender is not the poll creator");
+        }
+        _;
+    }
+
+    modifier durationNotExceeded(uint proposalId) {
+        ProposalData storage proposal = _proposals[proposalId];
+        if(block.number - proposal.creationBlock > proposal.blocksDuration) {
+            revert IllegalState("Proposal duration has been exceeded");
         }
         _;
     }
@@ -126,7 +138,62 @@ contract Governance {
     function cancelProposal(uint proposalId) public onlyActiveGlobalAdmin onlyCreator(proposalId) {
     }
 
-    function castVote(uint proposalId, PropsalVote vote) public onlyActiveGlobalAdmin onlyParticipantOrganization(proposalId) {
+    function castVote(uint proposalId, bool approve) public
+        onlyActiveGlobalAdmin existentProposal(proposalId) onlyActiveProposal(proposalId) durationNotExceeded(proposalId)
+        onlyParticipantOrganization(proposalId) {
+        AccountRulesV2.AccountData memory acc = _accounts.getAccount(msg.sender);
+        if(_votes[proposalId][acc.orgId] != ProposalVote.NotVoted) {
+            revert IllegalState("Organization has already voted");
+        }
+
+        if(approve) {
+            _votes[proposalId][acc.orgId] = ProposalVote.Approval;
+        }
+        else {
+            _votes[proposalId][acc.orgId] = ProposalVote.Rejection;
+        }
+
+        emit OrganizationVoted(proposalId, msg.sender, approve);
+
+        if(_proposals[proposalId].result == ProposalResult.Undefined) {
+            _majorityAchieved(_proposals[proposalId]);
+        }
+    }
+
+    function _majorityAchieved(ProposalData storage proposal) private returns (bool) {
+        uint majority = (proposal.organizations.length / 2) + 1;
+        uint approvalVotes = 0;
+        uint rejectionVotes = 0;
+
+        for(uint i = 0; i < proposal.organizations.length; ++i) {
+            ProposalVote vote = _votes[proposal.id][proposal.organizations[i]];
+            if(vote == ProposalVote.Approval) {
+                ++approvalVotes;
+            }
+            else if(vote == ProposalVote.Rejection) {
+                ++rejectionVotes;
+            }
+        }
+
+        if(approvalVotes >= majority) {
+            proposal.result = ProposalResult.Approved;
+            emit ProposalApproved(proposal.id);
+            return true;
+        }
+
+        if(rejectionVotes >= majority) {
+            proposal.result = ProposalResult.Rejected;
+            emit ProposalRejected(proposal.id);
+            return true;
+        }
+
+        if(approvalVotes + rejectionVotes == proposal.organizations.length) {
+            // Empate
+            proposal.result = ProposalResult.Rejected;
+            emit ProposalRejected(proposal.id);
+        }
+
+        return false;
     }
 
     function executeProposal(uint proposalId) public onlyActiveGlobalAdmin onlyParticipantOrganization(proposalId) {
@@ -134,6 +201,15 @@ contract Governance {
 
     function getProposal(uint proposalId) public view existentProposal(proposalId) returns (ProposalData memory) {
         return _proposals[proposalId];
+    }
+
+    function getVotes(uint proposalId) public view returns (ProposalVote[] memory) {
+        uint[] storage orgs = _proposals[proposalId].organizations;
+        ProposalVote[] memory orgVotes = new ProposalVote[](orgs.length);
+        for(uint i = 0; i < orgs.length; ++i) {
+            orgVotes[i] = _votes[proposalId][orgs[i]];
+        }
+        return orgVotes;
     }
 
 }

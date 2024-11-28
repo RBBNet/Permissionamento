@@ -80,9 +80,17 @@ Critérios de aceitação:
 1. ???
 
 
-## USGOV05 – Observardor consulta proposta para avaliar sua situação
+## USGOV05 – Observardor consulta proposta para avaliar sua situação<a id="usgov05"></a>
 
 Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.
 2. Observador informa o identificador da proposta.
 3. São retornados os dados cadastrais da proposta.
+
+
+## USGOV06 – Observardor consulta votos realizados para uma proposta para avaliar sua situação<a id="usgov06"></a>
+
+Critérios de aceitação:
+1. Qualquer pessoa pode realizar a consulta.
+2. Observador informa o identificador da proposta.
+3. São retornados os votos realizados por cada organização participante.

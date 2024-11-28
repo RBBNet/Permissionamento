@@ -47,6 +47,23 @@ function getProposalResult(result) {
     }
 }
 
+function getVote(vote) {
+    switch(vote) {
+        case 'Approval': return true;
+        case 'Rejection': return false;
+        default: throw new Error('Voto inválido: ' + vote);
+    }
+}
+
+function getProposalVote(vote) {
+    switch(vote) {
+        case 'NotVoted': return 0;
+        case 'Approval': return 1;
+        case 'Rejection': return 2;
+        default: throw new Error('Voto inválido: ' + vote);
+    }
+}
+
 Before(function() {
     this.organizations = [];
     this.accounts = [];
@@ -57,5 +74,7 @@ module.exports = {
     getBoolean: getBoolean,
     getRoleId: getRoleId,
     getProposalStatus: getProposalStatus,
-    getProposalResult: getProposalResult
+    getProposalResult: getProposalResult,
+    getVote: getVote,
+    getProposalVote: getProposalVote
 }

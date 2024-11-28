@@ -65,34 +65,141 @@ Funcionalidade: Governança do permissionamento
     E a implantação do smart contract mock ocorre com sucesso
 
   Cenário: Criação de proposta
+    # Administrador Global do BNDES cria uma proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
 
-  Cenário: Tentativa de criar votação com perfis de acesso sem privilégio
+  Cenário: Tentativa de criar proposta com perfis de acesso sem privilégio
+    # Administrador Local do BNDES tenta criar uma proposta
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então ocorre erro "UnauthorizedAccess" na criação da proposta    
+    # Implantador de smart contracts do BNDES tenta criar uma proposta
     Quando a conta "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então ocorre erro "UnauthorizedAccess" na criação da proposta    
+    # Usuário do BNDES tenta criar uma proposta
     Quando a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então ocorre erro "UnauthorizedAccess" na criação da proposta    
 
-  Cenário: Tentativa de criar votação com conta inativa
+  Cenário: Tentativa de criar proposta com conta inativa
+    # Administrador Global da OrgExc tenta criar uma proposta
     Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então ocorre erro "UnauthorizedAccess" na criação da proposta    
 
-  Cenário: Tentativa de criar votação com conta não cadastrada
+  Cenário: Tentativa de criar proposta com conta não cadastrada
+    # Conta não cadastrada tenta criar uma proposta
     Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então ocorre erro "UnauthorizedAccess" na criação da proposta    
 
-  Cenário: Tentativa de criar votação com as listas de targets e calldatas de tamanhos diferentes
+  Cenário: Tentativa de criar proposta com as listas de targets e calldatas de tamanhos diferentes
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8,0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então ocorre erro "InvalidArgument" na criação da proposta    
 
-  Cenário: Tentativa de criar votação com duração de zero blocos
+  Cenário: Tentativa de criar proposta com duração de zero blocos
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 0 blocos e descrição "Ajustando código para 2024"
     Então ocorre erro "InvalidArgument" na criação da proposta    
 
+  Cenário: Aprovação de proposta
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
+    # Administrador Global do BNDES vota para aprovar a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Approval" pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a proposta tem situação "Active", resultado "Undefined" e votos "Approval,NotVoted,NotVoted,NotVoted"
+    # Administrador Global do CPQD vota para aprovar a proposta
+    Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Approval" pela conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71"
+    E a proposta tem situação "Active", resultado "Undefined" e votos "Approval,NotVoted,NotVoted,Approval"
+    # Administrador Global do TCU vota para aprovar a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Approval" pela conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a"
+    E a proposta tem situação "Active", resultado "Approved" e votos "Approval,Approval,NotVoted,Approval"
+    # Proposta é aprovada por maioria
+    E o evento "ProposalApproved" é emitido para a proposta
+    # Administrador Global da Dataprev vota para rejeitar a proposta
+    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" envia um voto de "Rejection"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Rejection" pela conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec"
+    E a proposta tem situação "Active", resultado "Approved" e votos "Approval,Approval,Rejection,Approval"
+
+  Cenário: Rejeição de proposta
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
+    # Administrador Global do BNDES vota para rejeitar a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Rejection"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Rejection" pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a proposta tem situação "Active", resultado "Undefined" e votos "Rejection,NotVoted,NotVoted,NotVoted"
+    # Administrador Global do CPQD vota para aprovar a proposta
+    Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Approval" pela conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71"
+    E a proposta tem situação "Active", resultado "Undefined" e votos "Rejection,NotVoted,NotVoted,Approval"
+    # Administrador Global do TCU vota para aprovar a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Rejection"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Rejection" pela conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a"
+    E a proposta tem situação "Active", resultado "Undefined" e votos "Rejection,Rejection,NotVoted,Approval"
+    # Administrador Global da Dataprev vota para rejeitar a proposta
+    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" envia um voto de "Rejection"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Rejection" pela conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec"
+    E a proposta tem situação "Active", resultado "Rejected" e votos "Rejection,Rejection,Rejection,Approval"
+    # Proposta é rejeitada por maioria
+    E o evento "ProposalRejected" é emitido para a proposta
+
+  Cenário: Empate e consequente rejeição de proposta
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
+    # Administrador Global do BNDES vota para aprovar a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Approval" pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a proposta tem situação "Active", resultado "Undefined" e votos "Approval,NotVoted,NotVoted,NotVoted"
+    # Administrador Global do TCU vota para aprovar a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Approval" pela conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a"
+    E a proposta tem situação "Active", resultado "Undefined" e votos "Approval,Approval,NotVoted,NotVoted"
+    # Administrador Global do CPQD vota para aprovar a proposta
+    Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Rejection"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Rejection" pela conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71"
+    E a proposta tem situação "Active", resultado "Undefined" e votos "Approval,Approval,NotVoted,Rejection"
+    # Administrador Global da Dataprev vota para rejeitar a proposta
+    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" envia um voto de "Rejection"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Rejection" pela conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec"
+    E a proposta tem situação "Active", resultado "Rejected" e votos "Approval,Approval,Rejection,Rejection"
+    # Proposta não chega a ter aprovação da maioria, então é rejeitada
+    E o evento "ProposalRejected" é emitido para a proposta
+
+  Cenário: Tentativa de envio de voto por organização não participante
+
+  Cenário: Tentativa de envio de voto por diferentes perfis
+
+  Cenário: Tentativa de envio de voto com perfis de acesso sem privilégio
+
+  Cenário: Tentativa de envio de voto com conta inativa
+
+  Cenário: Tentativa de envio de voto com conta não cadastrada
+
+  Cenário: Tentativa de envio de voto para proposta inexistente
+  
+  Cenário: Tentativa de envio de voto para proposta não ativa
+  
   Cenário: Consulta de proposta não existente
     Quando um observador consulta a proposta 1 ocorre erro "ProposalNotFound"
