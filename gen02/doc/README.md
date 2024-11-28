@@ -10,4 +10,5 @@
 
 - [Organizações](organizacoes.md)
 - [Contas](contas.md)
+- [Governança](governanca.md)
 

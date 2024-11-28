@@ -2,8 +2,6 @@
 
 ## USGOV01 - Administrador Global cria nova proposta para para que as organizações aprovem ou rejeitem alguma ação<a id="usgov01"></a>
 
-**DÚVIDA**: Qualquer administrador global pode criar a proposta? Ou somente administradores globais de organizações com direito a voto?
-
 Critérios de aceitação:
 1. Somente Administradores Globais, vinculados a organizações ativas, podem criar propostas.
 2. Administrador Global informa:
@@ -29,6 +27,11 @@ Critérios de aceitação:
    2. O criador da proposta
 6. O identificador da proposta é retornado como resultado.
 
+Dúvidas:
+- Qualquer administrador global deve poder criar propostas? Ou somente administradores globais de organizações com direito a voto deveriam poder criar propostas?
+  - **Resposta**: Seguindo os princípios do [Regulamento da RBB](https://github.com/RBBNet/rbb/blob/master/governanca/reunioes_comite_executivo/2022-11-29_reuniao/2022-11-29-Ata-Reuni%C3%A3o-Governan%C3%A7a-RBB-Assinada.pdf), qualquer organização pode apresentar propostas. Portanto, qualquer adminstrador global pode criar propostas.
+- Deve-se permitir o envio do texto completo da descrição, dando margem ao registro de informações sensíveis, ou deve-se utilizar somente um hash da descrição?
+
 
 ## USGOV02 – Administrador Global cancela uma proposta para que não possa mais receber votos e nem ser executada<a id="usgov02"></a>
 
@@ -46,10 +49,11 @@ Critérios de aceitação:
    1. A ocorrência do cancelamento da proposta deve emitir um evento, registrando:
       1. O identificador da proposta
 
+Dúvidas:
+- Deve-se registrar a motivação do cancelamento?
+
 
 ## USGOV03 – Administrador Global envia voto para apuração de resultado de proposta<a id="usgov03"></a>
-
-**DÚVIDA**: Permitir que o admin de uma organização sobrescreva seu voto?
 
 Critérios de aceitação:
 1. Somente Administradores Globais ativos, vinculados a organizações ativas, podem enviar voto.
@@ -75,6 +79,10 @@ Critérios de aceitação:
       1. O identificador da proposta
       2. O resultado da proposta
 10. É retornada a indicação que o voto foi registrado.
+
+Dúvidas:
+- Deve-se permitir que uma organização sobrescreva seu voto?
+  - **Resposta**: Tal requisito permite maior flexibilidade, porém aumenta a complexidade de implementação e a possibilidade de erros de codificação. Seguindo a ideia de que transações em blockchain não podem ser revertidas e priorizando a simplicidade, tal requisito não será implementado.
 
 
 ## USGOV04 – Administrador Global excuta proposta para que as ações aprovadas sejam realizadas<a id="usgov04"></a>

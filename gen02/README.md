@@ -14,6 +14,14 @@ Para compilar os *smart contracts* (configurado no `package.json`):
 npm run compile
 ```
 
+Para executar os testes automatizados:
+
+```shell
+npm test
+```
+
+**Observação**: Os testes são baseados em cenários, descritos **em linguagem natural**, utilizando a sintaxe [Gherkin](https://cucumber.io/docs/gherkin/). Os cenários podem ser encontrados na pasta [features](features).
+
 Para inicar o Hardhat:
 
 ```shell
