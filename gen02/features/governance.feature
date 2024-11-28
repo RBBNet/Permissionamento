@@ -187,6 +187,81 @@ Funcionalidade: Governança do permissionamento
     # Proposta não chega a ter aprovação da maioria, então é rejeitada
     E o evento "ProposalRejected" é emitido para a proposta
 
+  Cenário: Encerramento de proposta por tempo de duração
+    # Administrador Global do BNDES cria uma proposta com apenas 1 bloco de duração
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 1 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
+    # Administrador Global do BNDES vota para aprovar a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Approval" pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a proposta tem situação "Active", resultado "Undefined" e votos "Approval,NotVoted,NotVoted,NotVoted"
+    # Já foi "gasto 1 bloco", então a duração da proposta já esgotou
+    # Administrador Global do TCU tenta enviar voto para aprovar a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Approval"
+    Então o evento "ProposalFinished" é emitido para a proposta
+    E a proposta tem situação "Finished", resultado "Undefined" e votos "Approval,NotVoted,NotVoted,NotVoted"
+
+  Cenário: Encerramento de proposta aprovada
+    # Administrador Global do BNDES cria uma proposta com apenas 3 blocos de duração
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 3 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
+    # Administrador Global do BNDES vota para aprovar a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Approval" pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a proposta tem situação "Active", resultado "Undefined" e votos "Approval,NotVoted,NotVoted,NotVoted"
+    # Administrador Global do CPQD vota para aprovar a proposta
+    Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Approval" pela conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71"
+    E a proposta tem situação "Active", resultado "Undefined" e votos "Approval,NotVoted,NotVoted,Approval"
+    # Administrador Global do TCU vota para aprovar a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Approval" pela conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a"
+    E a proposta tem situação "Active", resultado "Approved" e votos "Approval,Approval,NotVoted,Approval"
+    # Proposta é aprovada por maioria
+    E o evento "ProposalApproved" é emitido para a proposta
+    # Já foram "gastos 3 blocos", então a duração da proposta já esgotou
+    # Administrador Global da Dataprev tenta enviar voto para rejeitar a proposta
+    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" envia um voto de "Rejection"
+    Então o evento "ProposalFinished" é emitido para a proposta
+    E a proposta tem situação "Finished", resultado "Approved" e votos "Approval,Approval,NotVoted,Approval"
+
+  Cenário: Encerramento de proposta rejeitada
+    # Administrador Global do BNDES cria uma proposta com apenas 3 blocos de duração
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 3 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
+    # Administrador Global do BNDES vota para rejeitar a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Rejection"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Rejection" pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a proposta tem situação "Active", resultado "Undefined" e votos "Rejection,NotVoted,NotVoted,NotVoted"
+    # Administrador Global do CPQD vota para aprovar a proposta
+    Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Rejection"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Rejection" pela conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71"
+    E a proposta tem situação "Active", resultado "Undefined" e votos "Rejection,NotVoted,NotVoted,Rejection"
+    # Administrador Global do TCU vota para aprovar a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Rejection"
+    Então o voto é registrado com sucesso
+    E o evento "OrganizationVoted" é emitido para a proposta com voto de "Rejection" pela conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a"
+    E a proposta tem situação "Active", resultado "Rejected" e votos "Rejection,Rejection,NotVoted,Rejection"
+    # Proposta é rejeitada por maioria
+    E o evento "ProposalRejected" é emitido para a proposta
+    # Já foram "gastos 3 blocos", então a duração da proposta já esgotou
+    # Administrador Global da Dataprev tenta enviar voto para rejeitar a proposta
+    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" envia um voto de "Rejection"
+    Então o evento "ProposalFinished" é emitido para a proposta
+    E a proposta tem situação "Finished", resultado "Rejected" e votos "Rejection,Rejection,NotVoted,Rejection"
+
   Cenário: Tentativa de envio de voto por organização não participante
     # Administrador Global do BNDES cria uma proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
