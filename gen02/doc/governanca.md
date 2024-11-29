@@ -5,11 +5,11 @@
 Critérios de aceitação:
 1. Somente Administradores Globais, vinculados a organizações ativas, podem criar propostas.
 2. Administrador Global informa:
-   1. Lista de endereços a serem chamados caso a proposta seja aceita.
+   1. Lista de endereços (*targets*) a serem chamados caso a proposta seja aceita.
    2. Lista de dados de chamada (*calldata*) a serem utilizados para cada um dos endereços informados.
    3. Limite de blocos para aprovação da proposta.
    4. Descrição da proposta.
-3. A lista de endereços e a lista de *calldatas* devem ter o mesmo número de elementos.
+3. As listaa de *targets* e *calldatas* devem ter o mesmo número de elementos.
 4. A proposta é criada:
    1. Com identificador correspondente ao hash das informações fornecidas para sua criação: endereços, *calldatas*, limite de blocos e descrição.
    2. Com situação ativa.
@@ -17,7 +17,7 @@ Critérios de aceitação:
    4. Vinculada a todas as organizações com direito de voto.
    5. São armazenados:
       1. O criador da proposta.
-      2. A lista de endereços a serem chamados.
+      2. A lista de *targets*.
       3. A lista de *calldatas*.
       4. A descrição da proposta.
       5. O bloco de criação da proposta.
@@ -41,7 +41,8 @@ Critérios de aceitação:
 3. Somente o criador de uma proposta pode realizar o cancelamento.
 4. Somente propostas ativas podem ser canceladas.
 5. Somente propostas com resultado indefinido podem ser canceladas.
-6. A proposta é marcada como cancelada.
+6. A organização do administrador deve constar na lista de organizações vinculadas à proposta.
+7. A proposta é marcada como cancelada.
    1. A ocorrência do cancelamento da proposta deve emitir um evento, registrando:
       1. O identificador da proposta
 
@@ -85,7 +86,19 @@ Dúvidas:
 ## USGOV04 – Administrador Global excuta proposta para que as ações aprovadas sejam realizadas<a id="usgov04"></a>
 
 Critérios de aceitação:
-1. ???
+1. Somente Administradores Globais ativos, vinculados a organizações ativas, podem cancear propostas.
+2. O Administrador Global informa o identificador da proposta a ser encerrada.
+3. Somente propostas ativas ou finalizadas podem ser executadas.
+4. Somente propostas com resultado definido podem ser executadas.
+5. A organização do administrador deve constar na lista de organizações vinculadas à proposta.
+6. Caso a proposta ainda não tenha sido finalizada, a mesma é marcada como finalizada.
+   1. A ocorrência da finalização da proposta deve emitir evento, registrando:
+      1. O identificador da proposta
+7. Os *targets* cadastrados para a proposta são chamados, na ordem que foram informados, com os respectivos *calldatas*.
+8. A proposta é marcada como exectudada.
+   1. A ocorrência da execução da proposta deve emitir um evento, registrando:
+      1. O identificador da proposta
+      2. O administrador executante
 
 
 ## USGOV05 – Observardor consulta proposta para avaliar sua situação<a id="usgov05"></a>

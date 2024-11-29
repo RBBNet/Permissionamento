@@ -3,6 +3,7 @@ pragma solidity ^0.8.26;
 
 import "./Organization.sol";
 import "./AccountRulesV2.sol";
+import {Address} from "@openzeppelin/contracts/utils/Address.sol";
 
 contract Governance {
 
@@ -29,6 +30,7 @@ contract Governance {
     event ProposalFinished(uint proposalId);
     event ProposalApproved(uint proposalId);
     event ProposalRejected(uint proposalId);
+    event ProposalExecuted(uint proposalId);
 
     error UnauthorizedAccess(address account, string message);
     error IllegalState(string message);
@@ -79,9 +81,23 @@ contract Governance {
         _;
     }
 
+    modifier onlyActiveOrFinishedProposal(uint proposalId) {
+        if(_proposals[proposalId].status != ProposalStatus.Active && _proposals[proposalId].status != ProposalStatus.Finished) {
+            revert IllegalState("Proposal is not Active nor Finished");
+        }
+        _;
+    }
+
     modifier onlyUndefinedProposal(uint proposalId) {
         if(_proposals[proposalId].result != ProposalResult.Undefined) {
             revert IllegalState("Proposal result is already defined");
+        }
+        _;
+    }
+
+    modifier onlyDefinedProposal(uint proposalId) {
+        if(_proposals[proposalId].result == ProposalResult.Undefined) {
+            revert IllegalState("Proposal result is not defined");
         }
         _;
     }
@@ -175,11 +191,15 @@ contract Governance {
         ProposalData storage proposal = _proposals[proposalId];
         if(block.number - proposal.creationBlock > proposal.blocksDuration) {
             // Duration of the proposal is exceeded
-            proposal.status = ProposalStatus.Finished;
-            emit ProposalFinished(proposalId);
+            _finishProposal(proposal);
             return true;
         }
         return false;
+    }
+
+    function _finishProposal(ProposalData storage proposal) private {
+        proposal.status = ProposalStatus.Finished;
+        emit ProposalFinished(proposal.id);
     }
 
     function _majorityAchieved(ProposalData storage proposal) private returns (bool) {
@@ -218,7 +238,19 @@ contract Governance {
         return false;
     }
 
-    function executeProposal(uint proposalId) public onlyActiveGlobalAdmin onlyParticipantOrganization(proposalId) {
+    function executeProposal(uint proposalId) public onlyActiveGlobalAdmin existentProposal(proposalId) 
+        onlyActiveOrFinishedProposal(proposalId) onlyParticipantOrganization(proposalId) onlyDefinedProposal(proposalId) {
+        ProposalData storage proposal = _proposals[proposalId];
+        if(proposal.status != ProposalStatus.Finished) {
+            _finishProposal(proposal);
+        }
+
+        for (uint i = 0; i < proposal.targets.length; ++i) {
+            Address.functionCall(proposal.targets[i], proposal.calldatas[i]);
+        }
+
+        proposal.status = ProposalStatus.Executed;
+        emit ProposalExecuted(proposalId);
     }
 
     function getProposal(uint proposalId) public view existentProposal(proposalId) returns (ProposalData memory) {
