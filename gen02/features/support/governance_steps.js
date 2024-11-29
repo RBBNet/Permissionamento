@@ -67,13 +67,34 @@ When('a conta {string} cria uma proposta com alvo o smart contract de teste com 
         this.creationError = error;
     }
     
+    this.proposalId = calculateProposalId(targetsArray, calldatasArray, blocksDuration, description);
+});
+
+When('a conta {string} cria uma proposta com alvos {string}, com dados {string}, limite de {int} blocos e descrição {string}', async function(admin, targets, calldatas, blocksDuration, description) {
+    const calldatasArray = calldatas.split(',');
+    const targetsArray = targets.split(',');
+    
+    this.creationError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.govenanceContract.connect(signer).createProposal(targetsArray, calldatasArray, blocksDuration, description);
+    }
+    catch(error) {
+        this.creationError = error;
+    }
+    
+    this.proposalId = calculateProposalId(targetsArray, calldatasArray, blocksDuration, description);
+});
+
+function calculateProposalId(targetsArray, calldatasArray, blocksDuration, description) {
     const encodedData = hre.ethers.AbiCoder.defaultAbiCoder().encode(
         ['address[]', 'bytes[]', 'uint', 'string'],
         [targetsArray, calldatasArray, blocksDuration, description]
     );
     const keccak256encodedData = hre.ethers.keccak256(encodedData);
-    this.proposalId = hre.ethers.toBigInt(keccak256encodedData);
-});
+    return hre.ethers.toBigInt(keccak256encodedData);
+}
 
 Then('a proposta é criada com sucesso', function() {
     assert.ok(this.creationError == null);

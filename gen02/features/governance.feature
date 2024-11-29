@@ -119,10 +119,9 @@ Funcionalidade: Governança do permissionamento
     Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então ocorre erro "UnauthorizedAccess" na criação da proposta    
 
-  #Cenário: Tentativa de criar proposta com as listas de targets e calldatas de tamanhos diferentes
-    # TODO Rever
-    #Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8,0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
-    #Então ocorre erro "InvalidArgument" na criação da proposta    
+  Cenário: Tentativa de criar proposta com as listas de targets e calldatas de tamanhos diferentes
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvos "0x0000000000000000000000000000000000000001", com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8,0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então ocorre erro "InvalidArgument" na criação da proposta    
 
   Cenário: Tentativa de criar proposta com duração de zero blocos
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 0 blocos e descrição "Ajustando código para 2024"
