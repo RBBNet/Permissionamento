@@ -65,18 +65,27 @@ Funcionalidade: Governança do permissionamento
     E a implantação do smart contract mock ocorre com sucesso
 
 
-  # Sobre os calldatas, deve-se utilizar a especificação de ABI (https://docs.soliditylang.org/en/v0.8.28/abi-spec.html)
-  #
-  # ExecutionMock.setCode(2024)
+  # Sobre os calldatas, deve-se utilizar a especificação de ABI: https://docs.soliditylang.org/en/v0.8.28/abi-spec.html
+  # Function selector: https://docs.soliditylang.org/en/v0.8.28/abi-spec.html#function-selector
+
+  # ExecutionMock.setCode(uint256)
   #
   #   setCode(uint256) -> Keccak-256 de setCode(uint256) = dfc0bedb739978f9c7b224cfb7e74eb506194e6201f65e1cd77cf48815596d91
-  #   4 primeiros bytes -> dfc0bedb -> function selector (https://docs.soliditylang.org/en/v0.8.28/abi-spec.html#function-selector)
+  #   function selector -> 4 primeiros bytes = dfc0bedb
   #   Observação: Não pode ser setCode(uint), tem que ser setCode(uint256). uint é alias para uint256. (https://docs.soliditylang.org/en/v0.8.28/types.html#integers)
   #
   #   2024 -> ABI Encode de um uint256 -> 00000000000000000000000000000000000000000000000000000000000007e8
   #
   #   Logo, o calldata para a chamada ExecutionMock.setCode(2024) é dfc0bedb00000000000000000000000000000000000000000000000000000000000007e8
 
+  # ExecutionMock.setMessage(string)
+  #
+  #   setMessage(string) -> Keccak-256 de setMessage(string) = 368b8772abb9fe9b0c79f44896ca2616a6823123c811ce2be7d997dd9e193269
+  #   function selector -> 4 primeiros bytes = 368b8772
+  #
+  #   "Dois mil e vinte e quatro" -> ABI Encode de uma string -> 00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000019446f6973206d696c20652076696e746520652071756174726f00000000000000
+  #
+  #   Logo, o calldata para a chamada ExecutionMock.setMessage("Dois mil e vinte e quatro") é 368b877200000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000019446f6973206d696c20652076696e746520652071756174726f00000000000000
 
   ##############################################################################
   # Criação de proposta
@@ -479,6 +488,34 @@ Funcionalidade: Governança do permissionamento
     E a proposta tem situação "Executed", resultado "Approved", organizações "1,2,3,5" e votos "Approval,Approval,NotVoted,Approval"
     # Consultamos o smart contract de teste para obter novo resultado, ajustado pela execução da proposta
     Quando consulto o código do smart contract de teste o resultado é 2024
+  
+  Cenário: Execução de proposta com duas ações
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8,0x368b877200000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000019446f6973206d696c20652076696e746520652071756174726f00000000000000", limite de 30000 blocos e descrição "Ajustando código e mensagem para 2024"
+    Então a proposta é criada com sucesso
+    # Administrador Global do BNDES vota para aprovar a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do CPQD vota para aprovar a proposta
+    Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do TCU vota para aprovar a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Proposta é aprovada por maioria
+    E o evento "ProposalApproved" é emitido para a proposta
+    # Consultamos o smart contract de teste
+    Quando consulto o código do smart contract de teste o resultado é 0
+    Quando consulto a mensagem do smart contract de teste o resultado é "No message"
+    # Administrador Global do BNDES executa a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" executa a proposta
+    Então a proposta é executada com sucesso
+    E o evento "ProposalFinished" é emitido para a proposta
+    E o evento "ProposalExecuted" é emitido para a proposta pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a proposta tem situação "Executed", resultado "Approved", organizações "1,2,3,5" e votos "Approval,Approval,NotVoted,Approval"
+    # Consultamos o smart contract de teste para obter novo resultado, ajustado pela execução da proposta
+    Quando consulto o código do smart contract de teste o resultado é 2024
+    Quando consulto a mensagem do smart contract de teste o resultado é "Dois mil e vinte e quatro"
   
 
   ##############################################################################

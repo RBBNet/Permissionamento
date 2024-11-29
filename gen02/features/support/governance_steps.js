@@ -211,6 +211,11 @@ When('consulto o código do smart contract de teste o resultado é {int}', async
     assert.equal(actualResult, expectedResult);
 });
 
+When('consulto a mensagem do smart contract de teste o resultado é {string}', async function(expectedResult) {
+    const actualResult = await this.mockContract.message();
+    assert.equal(actualResult, expectedResult);
+});
+
 When('a conta {string} executa a proposta', async function(admin) {
     this.executionError = null;
     try {
