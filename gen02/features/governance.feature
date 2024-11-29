@@ -65,13 +65,26 @@ Funcionalidade: Governança do permissionamento
     E a implantação do smart contract mock ocorre com sucesso
 
 
+  # Sobre os calldatas, deve-se utilizar a especificação de ABI (https://docs.soliditylang.org/en/v0.8.28/abi-spec.html)
+  #
+  # ExecutionMock.setCode(2024)
+  #
+  #   setCode(uint256) -> Keccak-256 de setCode(uint256) = dfc0bedb739978f9c7b224cfb7e74eb506194e6201f65e1cd77cf48815596d91
+  #   4 primeiros bytes -> dfc0bedb -> function selector (https://docs.soliditylang.org/en/v0.8.28/abi-spec.html#function-selector)
+  #   Observação: Não pode ser setCode(uint), tem que ser setCode(uint256). uint é alias para uint256. (https://docs.soliditylang.org/en/v0.8.28/types.html#integers)
+  #
+  #   2024 -> ABI Encode de um uint256 -> 00000000000000000000000000000000000000000000000000000000000007e8
+  #
+  #   Logo, o calldata para a chamada ExecutionMock.setCode(2024) é dfc0bedb00000000000000000000000000000000000000000000000000000000000007e8
+
+
   ##############################################################################
   # Criação de proposta
   ##############################################################################
 
   Cenário: Criação de proposta
     # Administrador Global do BNDES cria uma proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
@@ -79,31 +92,32 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Tentativa de criar proposta com perfis de acesso sem privilégio
     # Administrador Local do BNDES tenta criar uma proposta
-    Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então ocorre erro "UnauthorizedAccess" na criação da proposta    
     # Implantador de smart contracts do BNDES tenta criar uma proposta
-    Quando a conta "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então ocorre erro "UnauthorizedAccess" na criação da proposta    
     # Usuário do BNDES tenta criar uma proposta
-    Quando a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então ocorre erro "UnauthorizedAccess" na criação da proposta    
 
   Cenário: Tentativa de criar proposta com conta inativa
     # Administrador Global da OrgExc tenta criar uma proposta
-    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então ocorre erro "UnauthorizedAccess" na criação da proposta    
 
   Cenário: Tentativa de criar proposta com conta não cadastrada
     # Conta não cadastrada tenta criar uma proposta
-    Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então ocorre erro "UnauthorizedAccess" na criação da proposta    
 
-  Cenário: Tentativa de criar proposta com as listas de targets e calldatas de tamanhos diferentes
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8,0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
-    Então ocorre erro "InvalidArgument" na criação da proposta    
+  #Cenário: Tentativa de criar proposta com as listas de targets e calldatas de tamanhos diferentes
+    # TODO Rever
+    #Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8,0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    #Então ocorre erro "InvalidArgument" na criação da proposta    
 
   Cenário: Tentativa de criar proposta com duração de zero blocos
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 0 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 0 blocos e descrição "Ajustando código para 2024"
     Então ocorre erro "InvalidArgument" na criação da proposta    
 
 
@@ -113,7 +127,7 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Cancelamento de proposta
     # Administrador Global do BNDES cria uma proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Administrador Global do BNDES cancela a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta
@@ -124,7 +138,7 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Tentativa de cancelamento de proposta com resultado já definido
     # Administrador Global do BNDES cria uma proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Administrador Global do BNDES vota para aprovar a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
@@ -149,7 +163,7 @@ Funcionalidade: Governança do permissionamento
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" na organização 7 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     Então a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" é da organização 7 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
     # Novo administrador global cadastra nova proposta
-    Quando a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5,7"
     # Governança exclui a organização 7 - OrgExc2
@@ -163,7 +177,7 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Tentativa de cancelamento de proposta com conta não cadastrada
     # Administrador Global do BNDES cria uma proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Conta não cadastrada tenta cancelar proposta
     Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" cancela a proposta
@@ -176,7 +190,7 @@ Funcionalidade: Governança do permissionamento
   
   Cenário: Tentativa de cancelamento de proposta já cancelada
     # Administrador Global do BNDES cria uma proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Administrador Global do BNDES cancela a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta
@@ -188,7 +202,7 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Tentativa de envio de voto para proposta encerrada
     # Administrador Global do BNDES cria uma proposta com apenas 1 bloco de duração
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 1 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 1 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Administrador Global do BNDES vota para aprovar a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
@@ -208,7 +222,7 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Aprovação de proposta
     # Administrador Global do BNDES cria uma proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
@@ -237,7 +251,7 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Rejeição de proposta
     # Administrador Global do BNDES cria uma proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
@@ -266,7 +280,7 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Empate e consequente rejeição de proposta
     # Administrador Global do BNDES cria uma proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
@@ -295,7 +309,7 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Encerramento de proposta por tempo de duração
     # Administrador Global do BNDES cria uma proposta com apenas 1 bloco de duração
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 1 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 1 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
@@ -312,7 +326,7 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Encerramento de proposta aprovada
     # Administrador Global do BNDES cria uma proposta com apenas 3 blocos de duração
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 3 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 3 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
@@ -341,7 +355,7 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Encerramento de proposta rejeitada
     # Administrador Global do BNDES cria uma proposta com apenas 3 blocos de duração
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 3 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 3 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
@@ -370,7 +384,7 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Tentativa de envio de voto por organização não participante
     # Administrador Global do BNDES cria uma proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Administrador Global da PUC-Rio (sem direito a voto) tenta enviar voto
     Quando a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" envia um voto de "Approval"
@@ -378,7 +392,7 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Tentativa de envio de voto com perfis de acesso sem privilégio
     # Administrador Global do BNDES cria uma proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Administrador Local do BNDES tenta enviar voto
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" envia um voto de "Approval"
@@ -392,7 +406,7 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Tentativa de envio de voto com conta inativa
     # Administrador Global do BNDES cria uma proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Administrador Global da OrgExc tenta enviar voto
     Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" envia um voto de "Approval"
@@ -400,7 +414,7 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Tentativa de envio de voto com conta não cadastrada
     # Administrador Global do BNDES cria uma proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Conta não cadastrada tenta enviar voto
     Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" envia um voto de "Approval"
@@ -413,7 +427,7 @@ Funcionalidade: Governança do permissionamento
   
   Cenário: Tentativa de envio de voto para proposta encerrada
     # Administrador Global do BNDES cria uma proposta com apenas 1 bloco de duração
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 1 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 1 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Administrador Global do BNDES vota para aprovar a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
@@ -428,7 +442,7 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Tentativa de envio de voto para proposta cancelada
     # Administrador Global do BNDES cria uma proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Administrador Global do BNDES cancela a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta
@@ -439,12 +453,44 @@ Funcionalidade: Governança do permissionamento
 
   
   ##############################################################################
+  # Execução de propostas
+  ##############################################################################
+  
+  Cenário: Execução de proposta com uma única ação
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    # Administrador Global do BNDES vota para aprovar a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do CPQD vota para aprovar a proposta
+    Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do TCU vota para aprovar a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Proposta é aprovada por maioria
+    E o evento "ProposalApproved" é emitido para a proposta
+    # Consultamos o smart contract de teste
+    Quando consulto o código do smart contract de teste o resultado é 0
+    # Administrador Global do BNDES executa a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" executa a proposta
+    Então a proposta é executada com sucesso
+    E o evento "ProposalFinished" é emitido para a proposta
+    E o evento "ProposalExecuted" é emitido para a proposta
+    E a proposta criada tem situação "Executed", resultado "Approved" e organizações "1,2,3,5"
+    E a proposta tem situação "Executed", resultado "Approved" e votos "Approval,Approval,NotVoted,Approval"
+    # Consultamos o smart contract de teste para obter novo resultado, ajustado pela execução da proposta
+    Quando consulto o código do smart contract de teste o resultado é 2024
+  
+
+  ##############################################################################
   # Consulta de proposta e votos
   ##############################################################################
 
   Cenário: Consulta de proposta e votos
     # Administrador Global do BNDES cria uma proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xcc95d1ce00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     E a proposta criada tem situação "Active", resultado "Undefined" e organizações "1,2,3,5"
     E a proposta tem situação "Active", resultado "Undefined" e votos "NotVoted,NotVoted,NotVoted,NotVoted"

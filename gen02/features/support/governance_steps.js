@@ -52,22 +52,24 @@ When('um observador consulta a proposta {int} ocorre erro {string}', async funct
 //https://docs.ethers.org/v6/api/abi/abi-coder/
 When('a conta {string} cria uma proposta com alvo o smart contract de teste com dados {string}, limite de {int} blocos e descrição {string}', async function(admin, calldatas, blocksDuration, description) {
     const calldatasArray = calldatas.split(',');
+    const targetsArray = [];
+    for(i = 0; i < calldatasArray.length; ++i) {
+        targetsArray.push(this.mockContractAddress);
+    }
+    
     this.creationError = null;
     try {
         const signer = await hre.ethers.getSigner(admin);
         assert.ok(signer != null);
-        await this.govenanceContract.connect(signer).createProposal([this.mockContractAddress], calldatasArray, blocksDuration, description);
+        await this.govenanceContract.connect(signer).createProposal(targetsArray, calldatasArray, blocksDuration, description);
     }
     catch(error) {
         this.creationError = error;
     }
     
-    const func = hre.ethers.id('setCode(uint)').substring(0, 10);
-    const params = hre.ethers.AbiCoder.defaultAbiCoder().encode(['uint'], [2024]);
-    const calldata = func + params.substring(2, params.length);
     const encodedData = hre.ethers.AbiCoder.defaultAbiCoder().encode(
         ['address[]', 'bytes[]', 'uint', 'string'],
-        [[this.mockContractAddress], [calldata], blocksDuration, description]
+        [targetsArray, calldatasArray, blocksDuration, description]
     );
     const keccak256encodedData = hre.ethers.keccak256(encodedData);
     this.proposalId = hre.ethers.toBigInt(keccak256encodedData);
@@ -210,3 +212,28 @@ Then('a proposta tem situação {string}, resultado {string} e votos {string}', 
     }
 });
 
+When('consulto o código do smart contract de teste o resultado é {int}', async function(expectedResult) {
+    const actualResult = await this.mockContract.code();
+    assert.equal(actualResult, expectedResult);
+});
+
+When('a conta {string} executa a proposta', async function(admin) {
+    this.executionError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.govenanceContract.connect(signer).executeProposal(this.proposalId);
+    }
+    catch(error) {
+        this.executionError = error;
+    }
+});
+
+Then('a proposta é executada com sucesso', function() {
+    assert.ok(this.executionError == null);
+});
+
+Then('ocorre erro {string} na execução da proposta', function(error) {
+    assert.ok(this.executionError != null);
+    assert.ok(this.executionError.message.includes(error));
+});
