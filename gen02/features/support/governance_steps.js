@@ -97,14 +97,20 @@ Then('o evento {string} é emitido para a proposta criada pela conta {string}', 
     assert.ok(found);
 });
 
-Then('a proposta criada tem situação {string}, resultado {string} e organizações {string}', async function(status, result, orgs) {
+Then('a proposta tem situação {string}, resultado {string}, organizações {string} e votos {string}', async function(status, result, orgs, votes) {
     const expectedOrgs = orgs.split(',');
+    const expectedVotes = votes.split(',');
     const proposal = await this.govenanceContract.getProposal(this.proposalId);
+    const actualVotes = await this.govenanceContract.getVotes(this.proposalId);
     assert.equal(proposal.status, getProposalStatus(status));
     assert.equal(proposal.result, getProposalResult(result));
     assert.equal(proposal.organizations.length, expectedOrgs.length);
     for(i = 0; i < expectedOrgs.length; ++i) {
         assert.equal(proposal.organizations[i], expectedOrgs[i]);
+    }
+    assert.equal(actualVotes.length, expectedVotes.length);
+    for(i = 0; i < expectedVotes.length; ++i) {
+        assert.equal(actualVotes[i], getProposalVote(expectedVotes[i]));
     }
 });
 
@@ -198,18 +204,6 @@ Then('o evento {string} é emitido para a proposta', async function(event) {
             events[i].args[0] == this.proposalId;
     }
     assert.ok(found);
-});
-
-Then('a proposta tem situação {string}, resultado {string} e votos {string}', async function(status, result, votes) {
-    const proposal = await this.govenanceContract.getProposal(this.proposalId);
-    assert.equal(proposal.status, getProposalStatus(status));
-    assert.equal(proposal.result, getProposalResult(result));
-    const expectedVotes = votes.split(',');
-    const actualVotes = await this.govenanceContract.getVotes(this.proposalId);
-    assert.equal(actualVotes.length, expectedVotes.length);
-    for(i = 0; i < expectedVotes.length; ++i) {
-        assert.equal(actualVotes[i], getProposalVote(expectedVotes[i]));
-    }
 });
 
 When('consulto o código do smart contract de teste o resultado é {int}', async function(expectedResult) {
