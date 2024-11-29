@@ -24,6 +24,8 @@ Funcionalidade: Gestão de contas
     E a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30"
     E implanto o smart contract de gestão de contas
     E a implantação do smart contract de gestão de contas ocorre com sucesso
+    # Administrador global da OrgExc adiciona novo administrador local
+    E a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" adiciona a conta local "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000004"
     # Administrador global da OrgExc adiciona nova conta de usuário
     E a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" adiciona a conta local "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     # Verificando cadastro das organizações
@@ -32,6 +34,7 @@ Funcionalidade: Gestão de contas
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" é da organização 1 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     E a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" é da organização 2 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     E a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" é da organização 3 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
+    E a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" é da organização 3 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000004" e situação ativa "true"
     E a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" é da organização 3 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e situação ativa "true"
     # Governança exclui a OrgExc, logo, suas contas ficarão inativas
     E a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3
@@ -87,8 +90,10 @@ Funcionalidade: Gestão de contas
     Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" adiciona a conta local "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000003"
     Então ocorre erro "InactiveAccount" na tentativa de adição de conta
 
-  #Cenário: Tentativa de adição de conta local com administrador local inativo
-    # TODO Implementar
+  Cenário: Tentativa de adição de conta local com administrador local inativo
+    # Administrador local da OrgExc tenta adiciona nova conta de usuário, mas está inativo
+    Quando a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" adiciona a conta local "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000003"
+    Então ocorre erro "InactiveAccount" na tentativa de adição de conta
     
   Cenário: Tentativa de adição de conta local com perfil de administrador global
     # Administrador global do BNDES tenta adicionar outro administrador global como "conta local"
