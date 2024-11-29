@@ -13,3 +13,6 @@ Na pasta [`gen01`](gen01) temos a primeira geração de smart contracts de permi
 
 Na pasta [`gen02`](gen02) temos a segunda geração de smart contracts de permissionamento, contemplando mais conceitos e funcionalidades mais elaboradas para a gestão de acesso, como a gestão de organizações, definição de perfis de acesso e procedimentos de governança através de votações.
 
+## Diagrama
+
+![Esquema de permissionamento da RBB](esquema-permissionamento.png "Esquema de permissionamento da RBB")
