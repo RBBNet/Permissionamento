@@ -388,6 +388,23 @@ Funcionalidade: Governança do permissionamento
     Então o evento "ProposalFinished" é emitido para a proposta
     E a proposta tem situação "Finished", resultado "Rejected", organizações "1,2,3,5" e votos "Rejection,Rejection,NotVoted,Rejection"
 
+  Cenário: Tentativa de envio de voto repetido
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    # Administrador Global do BNDES vota para rejeitar a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Rejection"
+    Então o voto é registrado com sucesso
+    # Administrador Global do BNDES tenta votar novamente para aprovar a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
+    Então ocorre erro "IllegalState" no envio do voto
+    # Governança adiciona um segundo Administrador Global para o BNDES
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" na organização 1 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
+    Então a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" é da organização 1 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
+    # O novo Administrador Global do BNDES tenta votar novamente pelo BNDES para aprovar a proposta
+    Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" envia um voto de "Approval"
+    Então ocorre erro "IllegalState" no envio do voto
+
   Cenário: Tentativa de envio de voto por organização não participante
     # Administrador Global do BNDES cria uma proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
