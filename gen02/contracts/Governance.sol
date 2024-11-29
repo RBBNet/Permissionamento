@@ -30,7 +30,7 @@ contract Governance {
     event ProposalFinished(uint proposalId);
     event ProposalApproved(uint proposalId);
     event ProposalRejected(uint proposalId);
-    event ProposalExecuted(uint proposalId);
+    event ProposalExecuted(uint proposalId, address executor);
 
     error UnauthorizedAccess(address account, string message);
     error IllegalState(string message);
@@ -250,7 +250,7 @@ contract Governance {
         }
 
         proposal.status = ProposalStatus.Executed;
-        emit ProposalExecuted(proposalId);
+        emit ProposalExecuted(proposalId, msg.sender);
     }
 
     function getProposal(uint proposalId) public view existentProposal(proposalId) returns (ProposalData memory) {

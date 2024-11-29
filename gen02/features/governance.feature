@@ -86,7 +86,7 @@ Funcionalidade: Governança do permissionamento
     # Administrador Global do BNDES cria uma proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
-    E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "ProposalCreated" é emitido para a proposta pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5" e votos "NotVoted,NotVoted,NotVoted,NotVoted"
 
   Cenário: Tentativa de criar proposta com perfis de acesso sem privilégio
@@ -222,7 +222,7 @@ Funcionalidade: Governança do permissionamento
     # Administrador Global do BNDES cria uma proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
-    E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "ProposalCreated" é emitido para a proposta pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5" e votos "NotVoted,NotVoted,NotVoted,NotVoted"
     # Administrador Global do BNDES vota para aprovar a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
@@ -251,7 +251,7 @@ Funcionalidade: Governança do permissionamento
     # Administrador Global do BNDES cria uma proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
-    E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "ProposalCreated" é emitido para a proposta pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5" e votos "NotVoted,NotVoted,NotVoted,NotVoted"
     # Administrador Global do BNDES vota para rejeitar a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Rejection"
@@ -280,7 +280,7 @@ Funcionalidade: Governança do permissionamento
     # Administrador Global do BNDES cria uma proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
-    E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "ProposalCreated" é emitido para a proposta pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5" e votos "NotVoted,NotVoted,NotVoted,NotVoted"
     # Administrador Global do BNDES vota para aprovar a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
@@ -309,7 +309,7 @@ Funcionalidade: Governança do permissionamento
     # Administrador Global do BNDES cria uma proposta com apenas 1 bloco de duração
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 1 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
-    E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "ProposalCreated" é emitido para a proposta pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5" e votos "NotVoted,NotVoted,NotVoted,NotVoted"
     # Administrador Global do BNDES vota para aprovar a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
@@ -326,7 +326,7 @@ Funcionalidade: Governança do permissionamento
     # Administrador Global do BNDES cria uma proposta com apenas 3 blocos de duração
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 3 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
-    E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "ProposalCreated" é emitido para a proposta pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5" e votos "NotVoted,NotVoted,NotVoted,NotVoted"
     # Administrador Global do BNDES vota para aprovar a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
@@ -355,7 +355,7 @@ Funcionalidade: Governança do permissionamento
     # Administrador Global do BNDES cria uma proposta com apenas 3 blocos de duração
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 3 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
-    E o evento "ProposalCreated" é emitido para a proposta criada pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "ProposalCreated" é emitido para a proposta pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5" e votos "NotVoted,NotVoted,NotVoted,NotVoted"
     # Administrador Global do BNDES vota para rejeitar a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Rejection"
@@ -475,7 +475,7 @@ Funcionalidade: Governança do permissionamento
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" executa a proposta
     Então a proposta é executada com sucesso
     E o evento "ProposalFinished" é emitido para a proposta
-    E o evento "ProposalExecuted" é emitido para a proposta
+    E o evento "ProposalExecuted" é emitido para a proposta pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta tem situação "Executed", resultado "Approved", organizações "1,2,3,5" e votos "Approval,Approval,NotVoted,Approval"
     # Consultamos o smart contract de teste para obter novo resultado, ajustado pela execução da proposta
     Quando consulto o código do smart contract de teste o resultado é 2024

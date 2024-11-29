@@ -84,7 +84,7 @@ Then('ocorre erro {string} na criação da proposta', function(error) {
     assert.ok(this.creationError.message.includes(error));
 });
 
-Then('o evento {string} é emitido para a proposta criada pela conta {string}', async function(event, creator) {
+Then('o evento {string} é emitido para a proposta pela conta {string}', async function(event, creator) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.govenanceContract.queryFilter(event, block, block);
     let found = false;
