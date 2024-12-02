@@ -88,13 +88,6 @@ contract Governance {
         _;
     }
 
-    modifier onlyUndefinedProposal(uint proposalId) {
-        if(proposals[proposalId].result != ProposalResult.Undefined) {
-            revert IllegalState("Proposal result is already defined");
-        }
-        _;
-    }
-
     modifier onlyDefinedProposal(uint proposalId) {
         if(proposals[proposalId].result == ProposalResult.Undefined) {
             revert IllegalState("Proposal result is not defined");
@@ -102,9 +95,9 @@ contract Governance {
         _;
     }
 
-    modifier onlyCreator(uint proposalId) {
-        if(proposals[proposalId].creator != msg.sender) {
-            revert UnauthorizedAccess(msg.sender, "Sender is not the poll creator");
+    modifier onlyProponentOrganization(uint proposalId) {
+        if(accounts.getAccount(proposals[proposalId].creator).orgId != accounts.getAccount(msg.sender).orgId) {
+            revert UnauthorizedAccess(msg.sender, "Sender is not from proponent organization");
         }
         _;
     }
@@ -154,7 +147,7 @@ contract Governance {
     }
 
     function cancelProposal(uint proposalId) public onlyActiveGlobalAdmin existentProposal(proposalId)
-        onlyCreator(proposalId) onlyActiveProposal(proposalId) onlyUndefinedProposal(proposalId) {
+        onlyProponentOrganization(proposalId) onlyActiveProposal(proposalId) {
         proposals[proposalId].status = ProposalStatus.Canceled;
         emit ProposalCanceled(proposalId);
     }

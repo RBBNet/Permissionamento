@@ -142,7 +142,20 @@ Funcionalidade: Governança do permissionamento
     E o evento "ProposalCanceled" é emitido para a proposta
     E a proposta tem situação "Canceled", resultado "Undefined", organizações "1,2,3,5" e votos "NotVoted,NotVoted,NotVoted,NotVoted"
 
-  Cenário: Tentativa de cancelamento de proposta com resultado já definido
+  Cenário: Cancelamento de proposta por outro Administrador Global da mesma organização
+    # Governança adiciona nova conta de Administrador Global para o BNDES
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" na organização 1 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
+    Então a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" é da organização 1 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    # Segundo Administrador Global do BNDES cancela a proposta
+    Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" cancela a proposta
+    Então a proposta é cancelada com sucesso
+    E o evento "ProposalCanceled" é emitido para a proposta
+    E a proposta tem situação "Canceled", resultado "Undefined", organizações "1,2,3,5" e votos "NotVoted,NotVoted,NotVoted,NotVoted"
+
+  Cenário: Cancelamento de proposta com resultado já definido
     # Administrador Global do BNDES cria uma proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
@@ -158,7 +171,17 @@ Funcionalidade: Governança do permissionamento
     E o evento "ProposalApproved" é emitido para a proposta
     # Administrador Global do BNDES tenta cancelar a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta
-    Então ocorre erro "IllegalState" no cancelamento da proposta
+    Então a proposta é cancelada com sucesso
+    E o evento "ProposalCanceled" é emitido para a proposta
+    E a proposta tem situação "Canceled", resultado "Approved", organizações "1,2,3,5" e votos "Approval,Approval,NotVoted,Approval"
+
+  Cenário: Tentativa de cancelamento de proposta com Administrador Global de outra organização
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    # Administrador Global do TCU tenta cancelar a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" cancela a proposta
+    Então ocorre erro "UnauthorizedAccess" no cancelamento da proposta
 
   Cenário: Tentativa de cancelamento de proposta com conta inativa
     # Governança adiciona a OrgExc2 como organização 7
