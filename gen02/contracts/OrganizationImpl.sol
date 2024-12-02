@@ -32,7 +32,6 @@ contract OrganizationImpl is Organization, Governable {
     }
 
     function _addOrganization(string memory name, bool canVote) private returns (uint) {
-        // TODO validar nome?
         uint newId = ++idSeed;
         OrganizationData memory newOrg = OrganizationData(newId, name, canVote);
         organizations[newId] = newOrg;
@@ -42,7 +41,6 @@ contract OrganizationImpl is Organization, Governable {
     }
 
     function updateOrganization(uint orgId, string memory name, bool canVote) public onlyGovernance existentOrganization(orgId) {
-        // TODO validar nome?
         OrganizationData storage org = organizations[orgId];
         org.name = name;
         org.canVote = canVote;
