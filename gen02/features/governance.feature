@@ -137,10 +137,11 @@ Funcionalidade: Governança do permissionamento
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Administrador Global do BNDES cancela a proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta com motivo "O cadastramento da proposta foi feito de forma errada"
     Então a proposta é cancelada com sucesso
     E o evento "ProposalCanceled" é emitido para a proposta
     E a proposta tem situação "Canceled", resultado "Undefined", organizações "1,2,3,5" e votos "NotVoted,NotVoted,NotVoted,NotVoted"
+    E o motivo de cancelamento da proposta é "O cadastramento da proposta foi feito de forma errada"
 
   Cenário: Cancelamento de proposta por outro Administrador Global da mesma organização
     # Governança adiciona nova conta de Administrador Global para o BNDES

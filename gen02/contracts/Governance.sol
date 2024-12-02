@@ -22,6 +22,7 @@ contract Governance {
         ProposalStatus status;
         ProposalResult result;
         uint[] organizations;
+        string cancelationReason;
     }
 
     event ProposalCreated(uint proposalId, address creator);
@@ -146,9 +147,10 @@ contract Governance {
         return proposalId;
     }
 
-    function cancelProposal(uint proposalId) public onlyActiveGlobalAdmin existentProposal(proposalId)
+    function cancelProposal(uint proposalId, string memory reason) public onlyActiveGlobalAdmin existentProposal(proposalId)
         onlyProponentOrganization(proposalId) onlyActiveProposal(proposalId) {
         proposals[proposalId].status = ProposalStatus.Canceled;
+        proposals[proposalId].cancelationReason = reason;
         emit ProposalCanceled(proposalId);
     }
 

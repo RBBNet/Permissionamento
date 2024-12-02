@@ -140,7 +140,7 @@ When('a conta {string} cancela a proposta', async function(admin) {
     try {
         const signer = await hre.ethers.getSigner(admin);
         assert.ok(signer != null);
-        await this.govenanceContract.connect(signer).cancelProposal(this.proposalId);
+        await this.govenanceContract.connect(signer).cancelProposal(this.proposalId, "");
     }
     catch(error) {
         this.cancelError = error;
@@ -152,7 +152,19 @@ When('a conta {string} cancela a proposta {int}', async function(admin, proposal
     try {
         const signer = await hre.ethers.getSigner(admin);
         assert.ok(signer != null);
-        await this.govenanceContract.connect(signer).cancelProposal(proposalId);
+        await this.govenanceContract.connect(signer).cancelProposal(proposalId, "");
+    }
+    catch(error) {
+        this.cancelError = error;
+    }
+});
+
+When('a conta {string} cancela a proposta com motivo {string}', async function(admin, reason) {
+    this.cancelError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.govenanceContract.connect(signer).cancelProposal(this.proposalId, reason);
     }
     catch(error) {
         this.cancelError = error;
@@ -161,6 +173,11 @@ When('a conta {string} cancela a proposta {int}', async function(admin, proposal
 
 Then('a proposta é cancelada com sucesso', function() {
     assert.ok(this.cancelError == null);
+});
+
+Then('o motivo de cancelamento da proposta é {string}', async function(reason) {
+    const proposal = await this.govenanceContract.getProposal(this.proposalId);
+    assert.equal(proposal.cancelationReason, reason);
 });
 
 Then('ocorre erro {string} no cancelamento da proposta', function(error) {
