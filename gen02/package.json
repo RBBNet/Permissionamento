@@ -4,7 +4,9 @@
   "description": "Smart contracts de permissionamento da RBB",
   "scripts": {
     "test": "cucumber-js",
-    "compile": "npx hardhat compile"
+    "compile": "npx hardhat compile",
+    "ignition-mock": "npx hardhat ignition deploy ignition/modules/AdminMockModule.js",
+    "ignition": "npx hardhat ignition deploy ignition/modules/PermissionamentoModule.js --parameters ignition/parameters.json"
   },
   "repository": {
     "type": "git",
