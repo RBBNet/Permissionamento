@@ -11,12 +11,12 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
 
     using EnumerableSet for EnumerableSet.AddressSet;
 
-    Organization private _organizations;
-    mapping (address => AccountData) private _accounts;
-    mapping (uint => uint) private _globalAdminsCount;
-    mapping (bytes32 => bool) private _validRoles;
+    Organization public organizations;
+    mapping (address => AccountData) public accounts;
+    mapping (uint => uint) public globalAdminsCount;
+    mapping (bytes32 => bool) public validRoles;
     EnumerableSet.AddressSet private _restrictedSmartContracts;
-    mapping (address => address[]) private _restrictedSmartContractsAllowedAddresses;
+    mapping (address => address[]) public restrictedSmartContractsAllowedAddresses;
 
     modifier onlyActiveAdmin() {
         if(!hasRole(GLOBAL_ADMIN_ROLE, msg.sender) && !hasRole(LOCAL_ADMIN_ROLE, msg.sender)) {
@@ -36,21 +36,21 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     }
 
     modifier inexistentAccount(address account) {
-        if(_accounts[account].account != address(0)) {
+        if(accounts[account].account != address(0)) {
             revert DuplicateAccount(account);
         }
         _;
     }
 
     modifier existentAccount(address account) {
-        if(_accounts[account].account == address(0)) {
+        if(accounts[account].account == address(0)) {
             revert AccountNotFound(account);
         }
         _;
     }
 
     modifier validRole(bytes32 roleId) {
-        if(!_validRoles[roleId]) {
+        if(!validRoles[roleId]) {
             revert InvalidRole(roleId, "The informed role is unknown");
         }
         _;
@@ -64,7 +64,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     }
 
     modifier notGlobalAdminAccount(address account) {
-        if(_accounts[account].roleId == GLOBAL_ADMIN_ROLE) {
+        if(accounts[account].roleId == GLOBAL_ADMIN_ROLE) {
             revert InvalidRole(GLOBAL_ADMIN_ROLE, "The account cannot be global admin");
         }
         _;
@@ -78,27 +78,27 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     }
 
     modifier validOrganization(uint orgId) {
-        if(!_organizations.isOrganizationActive(orgId)) {
+        if(!organizations.isOrganizationActive(orgId)) {
             revert InvalidOrganization(orgId, "The informed organization is unknown");
         }
         _;
     }
 
     modifier sameOrganization(address account) {
-        if(_accounts[msg.sender].orgId != _accounts[account].orgId) {
+        if(accounts[msg.sender].orgId != accounts[account].orgId) {
             revert NotLocalAccount(account, "The informed account is not from the same organization");
         }
         _;
     }
 
-    constructor(Organization organizations, address[] memory accs, AdminProxy admins) Governable(admins) {
-        if(address(organizations) == address(0)) {
+    constructor(Organization orgs, address[] memory accs, AdminProxy admins) Governable(admins) {
+        if(address(orgs) == address(0)) {
             revert InvalidArgument("Invalid address for Organization management smart contract");
         }
         if(accs.length < 2) {
             revert InvalidArgument("At least 2 accounts must exist");
         }
-        _organizations = organizations;
+        organizations = orgs;
         for(uint i = 0; i < accs.length; ++i) {
             // Inclui as contas informadas como administradores globais,
             // utilizando suas posições no array para identificar as organizações.
@@ -107,16 +107,16 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
             // TODO Deveria ser necessário informar hash?
             _addAccount(account, orgId, GLOBAL_ADMIN_ROLE, 0);
         }
-        _validRoles[GLOBAL_ADMIN_ROLE] = true;
-        _validRoles[LOCAL_ADMIN_ROLE] = true;
-        _validRoles[DEPLOYER_ROLE] = true;
-        _validRoles[USER_ROLE] = true;
+        validRoles[GLOBAL_ADMIN_ROLE] = true;
+        validRoles[LOCAL_ADMIN_ROLE] = true;
+        validRoles[DEPLOYER_ROLE] = true;
+        validRoles[USER_ROLE] = true;
     }
 
     function addLocalAccount(address account, bytes32 roleId, bytes32 dataHash) public
         onlyActiveAdmin validAccount(account) inexistentAccount(account) validRole(roleId) notGlobalAdminRole(roleId)
         validHash(dataHash) {
-        AccountData memory adminAccount = _accounts[msg.sender];
+        AccountData memory adminAccount = accounts[msg.sender];
         _addAccount(account, adminAccount.orgId, roleId, dataHash);
     }
 
@@ -128,7 +128,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     function updateLocalAccountRole(address account, bytes32 roleId) public
         onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account)
         validRole(roleId) notGlobalAdminRole(roleId) {
-        AccountData storage acc = _accounts[account];
+        AccountData storage acc = accounts[account];
         _revokeRole(acc.roleId, account);
         acc.roleId = roleId;
         _grantRole(acc.roleId, account);
@@ -138,14 +138,14 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     function updateLocalAccountDataHash(address account, bytes32 dataHash) public
         onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account)
         validHash(dataHash) {
-        AccountData storage acc = _accounts[account];
+        AccountData storage acc = accounts[account];
         acc.dataHash = dataHash;
         emit AccountDataHashUpdated(acc.account, acc.orgId, acc.dataHash, msg.sender);
     }
 
     function updateLocalAccountStatus(address account, bool active) public
         onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account) {
-        AccountData storage acc = _accounts[account];
+        AccountData storage acc = accounts[account];
         acc.active = active;
         emit AccountStatusUpdated(acc.account, acc.orgId, acc.active, msg.sender);
     }
@@ -158,41 +158,41 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
 
     function _addAccount(address account, uint orgId, bytes32 roleId, bytes32 dataHash) private {
         AccountData memory newAccount = AccountData(orgId, account, roleId, dataHash, true);
-        _accounts[account] = newAccount;
+        accounts[account] = newAccount;
         _grantRole(roleId, account);
         _incrementGlobalAdminCount(orgId, roleId);
         emit AccountAdded(newAccount.account, newAccount.orgId, newAccount.roleId, newAccount.dataHash, msg.sender);
     }
 
     function deleteAccount(address account) public onlyGovernance existentAccount(account) {
-        if(_getGlobalAdminCount(_accounts[account].orgId) < 2) {
+        if(_getGlobalAdminCount(accounts[account].orgId) < 2) {
             revert IllegalState("At least 1 global administrator must be active");
         }
         _deleteAccount(account);
     }
 
     function _deleteAccount(address account) private {
-        AccountData memory acc = _accounts[account];
+        AccountData memory acc = accounts[account];
         _revokeRole(acc.roleId, account);
-        delete _accounts[account];
+        delete accounts[account];
         _decrementGlobalAdminCount(acc.orgId, acc.roleId);
         emit AccountDeleted(account, acc.orgId, msg.sender);
     }
 
     function _incrementGlobalAdminCount(uint orgId, bytes32 roleId) private {
         if(roleId == GLOBAL_ADMIN_ROLE) {
-            _globalAdminsCount[orgId] = _globalAdminsCount[orgId] + 1;
+            globalAdminsCount[orgId] = globalAdminsCount[orgId] + 1;
         }
     }
 
     function _decrementGlobalAdminCount(uint orgId, bytes32 roleId) private {
         if(roleId == GLOBAL_ADMIN_ROLE) {
-            _globalAdminsCount[orgId] = _globalAdminsCount[orgId] - 1;
+            globalAdminsCount[orgId] = globalAdminsCount[orgId] - 1;
         }
     }
 
     function _getGlobalAdminCount(uint orgId) private view returns (uint) {
-        return _globalAdminsCount[orgId];
+        return globalAdminsCount[orgId];
     }
 
     function setSmartContractAccess(address smartContract, bool restricted, address[] memory allowedSenders) public
@@ -200,24 +200,28 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         if(restricted) {
             // Acesso ao smart contract deve ser restrito
             _restrictedSmartContracts.add(smartContract);
-            _restrictedSmartContractsAllowedAddresses[smartContract] = allowedSenders;
+            restrictedSmartContractsAllowedAddresses[smartContract] = allowedSenders;
         }
         else {
             // Acesso ao smart contract deve ser liberado
             _restrictedSmartContracts.remove(smartContract);
-            delete _restrictedSmartContractsAllowedAddresses[smartContract];
+            delete restrictedSmartContractsAllowedAddresses[smartContract];
         }
 
         emit SmartContractAccessUpdated(smartContract, restricted, allowedSenders, msg.sender);
     }
 
     function getAccount(address account) public view existentAccount(account) returns (AccountData memory) {
-        return _accounts[account];
+        return accounts[account];
     }
 
     function isAccountActive(address account) public view returns (bool) {
-        AccountData storage acc = _accounts[account];
-        return acc.active && _organizations.isOrganizationActive(acc.orgId);
+        AccountData storage acc = accounts[account];
+        return acc.active && organizations.isOrganizationActive(acc.orgId);
+    }
+
+    function restrictedSmartContracts() public view returns (address[] memory) {
+        return _restrictedSmartContracts.values();
     }
 
     function transactionAllowed(
@@ -239,7 +243,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
 
         if(_restrictedSmartContracts.contains(target)) {
             // Chamada a smart contract de acesso restrito
-            address[] memory allowedSenders = _restrictedSmartContractsAllowedAddresses[target];
+            address[] memory allowedSenders = restrictedSmartContractsAllowedAddresses[target];
             for(uint i = 0; i < allowedSenders.length; ++i) {
                 if(sender == allowedSenders[i]) {
                     return true;

@@ -9,12 +9,12 @@ contract OrganizationImpl is Organization, Governable {
 
     using EnumerableSet for EnumerableSet.UintSet;
 
-    uint private _idSeed = 0;
-    mapping (uint => OrganizationData) private _organizations;
+    uint public idSeed = 0;
+    mapping (uint => OrganizationData) public organizations;
     EnumerableSet.UintSet private _organizationIds;
 
     modifier existentOrganization(uint orgId) {
-        if(_organizations[orgId].id == 0) {
+        if(organizations[orgId].id == 0) {
             revert OrganizationNotFound(orgId);
         }
         _;
@@ -33,9 +33,9 @@ contract OrganizationImpl is Organization, Governable {
 
     function _addOrganization(string memory name, bool canVote) private returns (uint) {
         // TODO validar nome?
-        uint newId = ++_idSeed;
+        uint newId = ++idSeed;
         OrganizationData memory newOrg = OrganizationData(newId, name, canVote);
-        _organizations[newId] = newOrg;
+        organizations[newId] = newOrg;
         _organizationIds.add(newId);
         emit OrganizationAdded(newId);
         return newId;
@@ -43,7 +43,7 @@ contract OrganizationImpl is Organization, Governable {
 
     function updateOrganization(uint orgId, string memory name, bool canVote) public onlyGovernance existentOrganization(orgId) {
         // TODO validar nome?
-        OrganizationData storage org = _organizations[orgId];
+        OrganizationData storage org = organizations[orgId];
         org.name = name;
         org.canVote = canVote;
         emit OrganizationUpdated(orgId);
@@ -53,25 +53,29 @@ contract OrganizationImpl is Organization, Governable {
         if(_organizationIds.length() < 3) {
             revert IllegalState("At least 2 organizations must be active");
         }
-        delete _organizations[orgId];
+        delete organizations[orgId];
         _organizationIds.remove(orgId);
         emit OrganizationDeleted(orgId);
     }
 
     function isOrganizationActive(uint orgId) public view returns (bool) {
-        return _organizations[orgId].id > 0;
+        return organizations[orgId].id > 0;
     }
 
     function getOrganization(uint orgId) public view existentOrganization(orgId) returns (OrganizationData memory) {
-        return _organizations[orgId];
+        return organizations[orgId];
     }
 
     function getOrganizations() public view returns (OrganizationData[] memory) {
-        OrganizationData[] memory organizations = new OrganizationData[](_organizationIds.length());
+        OrganizationData[] memory orgs = new OrganizationData[](_organizationIds.length());
         for(uint i = 0; i < _organizationIds.length(); ++i) {
-            organizations[i] = _organizations[_organizationIds.at(i)];
+            orgs[i] = organizations[_organizationIds.at(i)];
         }
-        return organizations;
+        return orgs;
+    }
+
+    function organizationIds() public view returns (uint[] memory) {
+        return _organizationIds.values();
     }
 
 }
