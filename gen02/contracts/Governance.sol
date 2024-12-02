@@ -38,6 +38,7 @@ contract Governance {
     error InvalidArgument(string message);
     error ProposalNotFound(uint proposalId);
 
+    uint public idSeed = 0;
     Organization public organizations;
     AccountRulesV2 public accounts;
     mapping (uint => ProposalData) public proposals;
@@ -123,7 +124,7 @@ contract Governance {
             revert InvalidArgument("Duration must be greater than zero blocks");
         }
 
-        uint proposalId = uint(keccak256(abi.encode(targets, calldatas, blocksDuration, description)));
+        uint proposalId = ++idSeed;
         ProposalData storage proposal = proposals[proposalId];
         proposal.id = proposalId;
         proposal.creator = msg.sender;

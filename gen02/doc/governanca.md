@@ -11,7 +11,7 @@ Critérios de aceitação:
    4. Descrição da proposta.
 3. As listaa de *targets* e *calldatas* devem ter o mesmo número de elementos.
 4. A proposta é criada:
-   1. Com identificador correspondente ao hash das informações fornecidas para sua criação: endereços, *calldatas*, limite de blocos e descrição.
+   1. Com identificador incremental gerado automaticamente.
    2. Com situação ativa.
    3. Com resultado indefinido.
    4. Vinculada a todas as organizações com direito de voto.
