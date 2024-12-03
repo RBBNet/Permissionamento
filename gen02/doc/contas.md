@@ -1,4 +1,4 @@
-# Organizações
+# Contas
 
 ## USACC01 - Administrador cadastra nova conta de sua organização para que possa enviar transações à rede ou executar funcionalidades de permissionamento no âmbito de sua própria organização<a id="usacc01"></a>
 
@@ -67,7 +67,7 @@ Critérios de aceitação:
 
 Critérios de aceitação:
 1. Somente Administradores Globais ou Administradores Locais ativos, vinculados a organizações ativas, podem realizar a alteração.
-2. O administrador informa o endereço da conta a ser desativada e a situação desejada (ativa ou inativa).
+2. O administrador informa o endereço da conta a ser alterada e a situação desejada (ativa ou inativa).
 3. O administrador somente pode alterar contas vinculadas à sua organização.
 4. A alteração não pode ser para uma conta com papel de Administrador Global.
 5. A situação da conta é alterada.
