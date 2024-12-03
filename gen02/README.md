@@ -1,6 +1,8 @@
-# *Smart Contracts* de Permissionamento da RBB - Segunda Geração
+# *Smart Contracts* de Permissionamento da RBB - Segunda Geração (gen02)
 
 ## Ambiente de desenvolvimento
+
+### Preparação do ambiente
 
 Para baixar as dependências:
 
@@ -8,7 +10,10 @@ Para baixar as dependências:
 npm install
 ```
 
-Para compilar os *smart contracts* (configurado no `package.json`):
+
+### Construção e testes
+
+Para compilar os *smart contracts* (script configurado no `package.json`):
 
 ```shell
 npm run compile
@@ -22,32 +27,49 @@ npm test
 
 **Observação**: Os testes são baseados em cenários, descritos **em linguagem natural**, utilizando a sintaxe [Gherkin](https://cucumber.io/docs/gherkin/). Os cenários podem ser encontrados na pasta [features](features).
 
+
+### Debug
+
+#### Cucumber
+
+https://github.com/cucumber/cucumber-js/blob/main/docs/debugging.md
+
+Ajustar variável de ambiente `DEBUG=cucumber`
+
+#### Hardhat
+
+https://hardhat.org/hardhat-runner/docs/troubleshooting/verbose-logging
+
+Ajustar variável de ambiente `HARDHAT_VERBOSE=true`
+
+
+### Implantação Local
+
 Para inicar o Hardhat:
 
 ```shell
 npx hardhat node
 ```
 
-Para implantar os *smart contracts* (configurado no `package.json`):
+Para implantar os *smart contracts* (scripts configurados no `package.json`) em nó local Hardhat:
+
+1. Implantar contrato *mock* de [`AdminProxy`](../gen01/contracts/AdminProxy.sol):
+
+```shell
+npm run ignition-mock
+```
+
+2. Implantar os contratos de permissionamento:
 
 ```shell
 npm run ignition
 ```
 
-## Debug
 
-### Cucumber
-
-https://github.com/cucumber/cucumber-js/blob/main/docs/debugging.md
-
-Ajustar variável de ambiente `DEBUG=cucumber`
-
-### Hardhat
-
-https://hardhat.org/hardhat-runner/docs/troubleshooting/verbose-logging
+### Implantação na Rede Lab
 
 
-Ajustar variável de ambiente `HARDHAT_VERBOSE=true`
+### Implantação na Rede Piloto
 
 
 ## Referências
