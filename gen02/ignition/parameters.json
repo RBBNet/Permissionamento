@@ -9,11 +9,6 @@
             },
             {
                 "id": 0,
-                "name": "BNDES",
-                "canVote": true
-            },
-            {
-                "id": 0,
                 "name": "TCU",
                 "canVote": true
             },
