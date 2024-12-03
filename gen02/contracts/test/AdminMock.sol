@@ -5,7 +5,7 @@ import "../AdminProxy.sol";
 
 contract AdminMock is AdminProxy {
 
-    mapping (address => bool) private admins;
+    mapping (address => bool) public admins;
 
     function addAdmin(address source) public {
         admins[source] = true;
