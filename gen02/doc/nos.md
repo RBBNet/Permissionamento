@@ -97,5 +97,5 @@ Critérios de aceitação:
 Critérios de aceitação:
 1. Besu informa endereço do nó que quer se conectar à rede.
 2. Somente nós cadastrados, ativos e vinculados a organizações ativas podem realizar conexões.
-3. Besu verifica no permissionamento se o nó pode se conectar.
+3. Besu verifica no permissionamento se o nó pode se conectar e sua situação (ativo/desativado).
 4. Caso o nó tenha permissão, o Besu receberá resposta de que pode se conectar. Caso contrário, receberá uma resposta negativa.
