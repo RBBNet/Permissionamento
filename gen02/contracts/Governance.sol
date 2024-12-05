@@ -115,7 +115,7 @@ contract Governance {
         accounts = accs;
     }
 
-    function createProposal(address[] memory targets, bytes[] memory calldatas, uint blocksDuration, string memory description) public
+    function createProposal(address[] calldata targets, bytes[] memory calldatas, uint blocksDuration, string calldata description) public
         onlyActiveGlobalAdmin returns (uint) {
         if(targets.length != calldatas.length) {
             revert InvalidArgument("Targets and calldatas arrays must have the same length");
@@ -148,7 +148,7 @@ contract Governance {
         return proposalId;
     }
 
-    function cancelProposal(uint proposalId, string memory reason) public onlyActiveGlobalAdmin existentProposal(proposalId)
+    function cancelProposal(uint proposalId, string calldata reason) public onlyActiveGlobalAdmin existentProposal(proposalId)
         onlyProponentOrganization(proposalId) onlyActiveProposal(proposalId) {
         proposals[proposalId].status = ProposalStatus.Canceled;
         proposals[proposalId].cancelationReason = reason;

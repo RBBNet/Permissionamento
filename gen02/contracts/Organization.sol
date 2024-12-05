@@ -16,8 +16,8 @@ interface Organization {
     error OrganizationNotFound(uint orgId);
     error IllegalState(string message);
 
-    function addOrganization(string memory name, bool canVote) external returns (uint);
-    function updateOrganization(uint orgId, string memory name, bool canVote) external;
+    function addOrganization(string calldata name, bool canVote) external returns (uint);
+    function updateOrganization(uint orgId, string calldata name, bool canVote) external;
     function deleteOrganization(uint orgId) external;
 
     function isOrganizationActive(uint orgId) external view returns (bool);

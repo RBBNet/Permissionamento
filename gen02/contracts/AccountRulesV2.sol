@@ -46,7 +46,7 @@ interface AccountRulesV2 is AccountRulesProxy, IAccessControl {
     function addAccount(address account, uint orgId, bytes32 roleId, bytes32 dataHash) external;
     function deleteAccount(address account) external;
 
-    function setSmartContractAccess(address smartContract, bool restricted, address[] memory allowedSenders) external;
+    function setSmartContractAccess(address smartContract, bool restricted, address[] calldata allowedSenders) external;
 
     function isAccountActive(address account) external view returns (bool);
     function getAccount(address account) external view returns (AccountData memory);

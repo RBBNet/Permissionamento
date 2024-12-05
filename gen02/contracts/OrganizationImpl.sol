@@ -27,7 +27,7 @@ contract OrganizationImpl is Organization, Governable {
         }
     }
 
-    function addOrganization(string memory name, bool canVote) public onlyGovernance returns (uint) {
+    function addOrganization(string calldata name, bool canVote) public onlyGovernance returns (uint) {
         return _addOrganization(name, canVote);
     }
 
@@ -40,7 +40,7 @@ contract OrganizationImpl is Organization, Governable {
         return newId;
     }
 
-    function updateOrganization(uint orgId, string memory name, bool canVote) public onlyGovernance existentOrganization(orgId) {
+    function updateOrganization(uint orgId, string calldata name, bool canVote) public onlyGovernance existentOrganization(orgId) {
         OrganizationData storage org = organizations[orgId];
         org.name = name;
         org.canVote = canVote;

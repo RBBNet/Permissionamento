@@ -116,8 +116,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     function addLocalAccount(address account, bytes32 roleId, bytes32 dataHash) public
         onlyActiveAdmin validAccount(account) inexistentAccount(account) validRole(roleId) notGlobalAdminRole(roleId)
         validHash(dataHash) {
-        AccountData memory adminAccount = accounts[msg.sender];
-        _addAccount(account, adminAccount.orgId, roleId, dataHash);
+        _addAccount(account, accounts[msg.sender].orgId, roleId, dataHash);
     }
 
     function deleteLocalAccount(address account) public
@@ -195,7 +194,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         return globalAdminsCount[orgId];
     }
 
-    function setSmartContractAccess(address smartContract, bool restricted, address[] memory allowedSenders) public
+    function setSmartContractAccess(address smartContract, bool restricted, address[] calldata allowedSenders) public
         onlyGovernance validAccount(smartContract) {
         if(restricted) {
             // Acesso ao smart contract deve ser restrito
