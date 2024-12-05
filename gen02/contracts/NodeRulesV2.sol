@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 pragma solidity 0.8.26;
 
-import "NodeRulesProxy.sol";
+import "./NodeRulesProxy.sol";
 
 interface NodeRulesV2 is NodeRulesProxy {
 
