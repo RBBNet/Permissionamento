@@ -5,20 +5,20 @@ import "./AdminProxy.sol";
 
 abstract contract Governable {
 
-    AdminProxy immutable private _admins;
+    AdminProxy immutable public admins;
 
     error UnauthorizedAccess(address account);
 
     modifier onlyGovernance() {
-        if(!_admins.isAuthorized(msg.sender)) {
+        if(!admins.isAuthorized(msg.sender)) {
             revert UnauthorizedAccess(msg.sender);
         }
         _;
     }
 
-    constructor(AdminProxy admins) {
-        require(address(admins) != address(0), "Invalid address for Admin management smart contract");
-        _admins = admins;
+    constructor(AdminProxy adminsProxy) {
+        require(address(adminsProxy) != address(0), "Invalid address for Admin management smart contract");
+        admins = adminsProxy;
    }
 
 }
