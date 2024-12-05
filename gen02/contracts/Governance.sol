@@ -39,8 +39,8 @@ contract Governance {
     error ProposalNotFound(uint proposalId);
 
     uint public idSeed = 0;
-    Organization public organizations;
-    AccountRulesV2 public accounts;
+    Organization immutable public organizations;
+    AccountRulesV2 immutable public accounts;
     mapping (uint => ProposalData) public proposals;
     mapping (uint => mapping(uint => ProposalVote)) public votes;
 

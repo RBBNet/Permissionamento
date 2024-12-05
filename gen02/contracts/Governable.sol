@@ -5,7 +5,7 @@ import "./AdminProxy.sol";
 
 abstract contract Governable {
 
-    AdminProxy private _admins;
+    AdminProxy immutable private _admins;
 
     error UnauthorizedAccess(address account);
 
