@@ -17,7 +17,7 @@ interface NodeRulesV2 is NodeRulesProxy {
         bytes32 enodeLow;
         NodeType nodeType;
         string name;
-        uint organization;
+        uint orgId;
         bool status;
     }
 
@@ -36,7 +36,7 @@ interface NodeRulesV2 is NodeRulesProxy {
     error InvalidState(string message);
 
     function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name, uint organization) external;
-    function removeNode(bytes32 enodeHigh, bytes32 enodeLow) external returns (bool);
+    function removeNode(bytes32 enodeHigh, bytes32 enodeLow) external;
     function updateNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external;
     function updateNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool status) external;
 

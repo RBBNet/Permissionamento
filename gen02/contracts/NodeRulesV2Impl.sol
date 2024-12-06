@@ -7,10 +7,8 @@ import "./AccountRulesV2.sol";
 
 contract NodeRulesV2Impl is NodeRulesV2, Governable {
 
-    NodeData[] public allowlist;
-    mapping (uint256 => uint256) private indexOf; 
-
     AccountRulesV2 public immutable contractRules;
+    mapping (uint => NodeData) public allowedNodes;
 
     constructor(address rulesAddress, AdminProxy adminProxy) Governable(adminProxy) {
         contractRules = AccountRulesV2(rulesAddress); // Define o endereço do contrato A
@@ -27,69 +25,47 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     }
 
     function addNode(bytes32 _enodeHigh,bytes32 _enodeLow,NodeType _nodeType, string memory _name, uint _organization) public onlyGovernance {
-        uint256 key = calculateKey(_enodeHigh, _enodeLow);
-        if (indexOf[key] != 0) {
+        uint256 key = _calculateKey(_enodeHigh, _enodeLow);
+        if (_nodeExists(key)) {
             revert NodeAlreadyExists(_enodeHigh, _enodeLow, "This node already exists.");
         }
 
-        allowlist.push(NodeData(_enodeHigh, _enodeLow, _nodeType, _name, _organization, true));
-        indexOf[key] = allowlist.length;
+        allowedNodes[key] = NodeData(_enodeHigh, _enodeLow, _nodeType, _name, _organization, true);
         emit NodeAdded(_enodeHigh, _enodeLow, msg.sender);
     }
 
-    function removeNode(bytes32 _enodeHigh, bytes32 _enodeLow) public onlyGovernance returns (bool){
-        uint256 key = calculateKey(_enodeHigh, _enodeLow);
-        uint256 index = indexOf[key];
-
-        if (index == 0) {
+    function removeNode(bytes32 _enodeHigh, bytes32 _enodeLow) public onlyGovernance {
+        uint256 key = _calculateKey(_enodeHigh, _enodeLow);
+        if (!_nodeExists(key)) {
             revert NodeDoesntExist(_enodeHigh, _enodeLow, "Node does not exist");
         }
 
-        require(index <= allowlist.length, "Index out of bounds");
-
-        // Move the last node into the removed spot, unless it's the last one
-        if (index != allowlist.length) {
-            NodeData memory lastNode = allowlist[allowlist.length - 1];
-            allowlist[index - 1] = lastNode;
-            indexOf[calculateKey(lastNode.enodeHigh, lastNode.enodeLow)] = index;
-        }
-
-        // Remove the last element using `pop()`
-        allowlist.pop();
-        indexOf[key] = 0;
-
+        delete allowedNodes[key];
         emit NodeRemoved(_enodeHigh, _enodeLow, msg.sender);
-
-        return true;
     }
     
     //TODO: verificar validade das novas informações?
     function updateNode(bytes32 _enodeHigh, bytes32 _enodeLow, NodeType _nodeType, string memory _name) public onlyActiveAdmin {
-        uint256 key = calculateKey(_enodeHigh, _enodeLow);
-        uint256 index = indexOf[key];
-        if (index == 0) {
+        uint256 key = _calculateKey(_enodeHigh, _enodeLow);
+        if (!_nodeExists(key)) {
             revert NodeDoesntExist(_enodeHigh, _enodeLow, "Node does not exist");
         }
 
-        NodeData storage nodeToUpdate = allowlist[index - 1]; // 1-based indexing
-
         if (bytes(_name).length > 0) {
-            nodeToUpdate.name = _name;
+            allowedNodes[key].name = _name;
         }
-        nodeToUpdate.nodeType = _nodeType;
+        allowedNodes[key].nodeType = _nodeType;
 
         emit NodeUpdated(_enodeHigh, _enodeLow, msg.sender);
     }
 
     function updateNodeStatus(bytes32 _enodeHigh, bytes32 _enodeLow, bool _status) public onlyActiveAdmin {
-        uint256 key = calculateKey(_enodeHigh, _enodeLow);
-        uint256 index = indexOf[key];
-
-        if (index == 0) {
+        uint256 key = _calculateKey(_enodeHigh, _enodeLow);
+        if (!_nodeExists(key)) {
             revert NodeDoesntExist(_enodeHigh, _enodeLow, "Node does not exist");
         }
 
-        allowlist[index - 1].status = _status;
+        allowedNodes[key].status = _status;
         emit NodeStatusUpdated(_enodeHigh, _enodeLow, msg.sender);
     }
 
@@ -122,15 +98,17 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         bytes32 enodeHigh,
         bytes32 enodeLow
     ) public view returns (bool) {
-        return exists(enodeHigh, enodeLow);
+        // TODO verificar se o nó está ativo
+        uint key = _calculateKey(enodeHigh, enodeLow);
+        return _nodeExists(key);
     }
 
-    function exists(bytes32 _enodeHigh, bytes32 _enodeLow) internal view returns (bool) {
-        return indexOf[calculateKey(_enodeHigh, _enodeLow)] != 0;
+    function _nodeExists(uint nodeKey) private view returns(bool) {
+        return allowedNodes[nodeKey].orgId != 0;
     }
 
-     function calculateKey(bytes32 _enodeHigh, bytes32 _enodeLow) internal pure returns(uint256) {
-        return uint256(keccak256(abi.encodePacked(_enodeHigh, _enodeLow)));
+    function _calculateKey(bytes32 enodeHigh, bytes32 enodeLow) private pure returns(uint) {
+        return uint(keccak256(abi.encodePacked(enodeHigh, enodeLow)));
     }
 
 }
