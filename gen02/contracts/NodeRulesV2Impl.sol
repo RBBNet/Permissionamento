@@ -10,9 +10,9 @@ interface AccountRulesV2 {
 }
 
 contract NodeRulesV2Impl is NodeRulesV2, AccessControl {
-    enode[] public allowlist;
-    mapping (uint256 => uint256) private indexOf; 
 
+    NodeData[] public allowlist;
+    mapping (uint256 => uint256) private indexOf; 
 
     AccountRulesV2 public immutable contractRules;
 
@@ -34,13 +34,13 @@ contract NodeRulesV2Impl is NodeRulesV2, AccessControl {
         return contractRules.isAccountActive(account); // Chama a função no contrato A
     }
 
-    function addNode(bytes32 _enodeHigh,bytes32 _enodeLow,NodeType _nodeType, string memory _name,string memory _organization) public onlyActiveAdmin returns (bool) {
+    function addNode(bytes32 _enodeHigh,bytes32 _enodeLow,NodeType _nodeType, string memory _name, uint _organization) public onlyActiveAdmin returns (bool) {
         uint256 key = calculateKey(_enodeHigh, _enodeLow);
         if (indexOf[key] != 0) {
             revert NodeAlreadyExists(_enodeHigh, _enodeLow, "This node already exists.");
         }
 
-        allowlist.push(enode(_enodeHigh, _enodeLow, _nodeType, _name, _organization, "Active"));
+        allowlist.push(NodeData(_enodeHigh, _enodeLow, _nodeType, _name, _organization, true));
         indexOf[key] = allowlist.length;
         emit NodeAdded(_enodeHigh, _enodeLow, msg.sender);
         return true;
@@ -58,7 +58,7 @@ contract NodeRulesV2Impl is NodeRulesV2, AccessControl {
 
         // Move the last node into the removed spot, unless it's the last one
         if (index != allowlist.length) {
-            enode memory lastNode = allowlist[allowlist.length - 1];
+            NodeData memory lastNode = allowlist[allowlist.length - 1];
             allowlist[index - 1] = lastNode;
             indexOf[calculateKey(lastNode.enodeHigh, lastNode.enodeLow)] = index;
         }
@@ -82,7 +82,7 @@ contract NodeRulesV2Impl is NodeRulesV2, AccessControl {
             revert NodeDoesntExist(_enodeHigh, _enodeLow, "Node does not exist");
         }
 
-        enode storage nodeToUpdate = allowlist[index - 1]; // 1-based indexing
+        NodeData storage nodeToUpdate = allowlist[index - 1]; // 1-based indexing
 
         if (bytes(_name).length > 0) {
             nodeToUpdate.name = _name;
@@ -94,7 +94,7 @@ contract NodeRulesV2Impl is NodeRulesV2, AccessControl {
         return true;
     }
 
-    function updateNodeStatus(bytes32 _enodeHigh, bytes32 _enodeLow, string memory _status) public returns (bool){
+    function updateNodeStatus(bytes32 _enodeHigh, bytes32 _enodeLow, bool _status) public {
         uint256 key = calculateKey(_enodeHigh, _enodeLow);
         uint256 index = indexOf[key];
 
@@ -102,12 +102,8 @@ contract NodeRulesV2Impl is NodeRulesV2, AccessControl {
             revert NodeDoesntExist(_enodeHigh, _enodeLow, "Node does not exist");
         }
 
-        if (bytes(_status).length > 0) {
-            allowlist[index - 1].status = _status;
-            emit NodeStatusUpdated(_enodeHigh, _enodeLow, msg.sender);
-            return true;
-        }
-        return false;
+        allowlist[index - 1].status = _status;
+        emit NodeStatusUpdated(_enodeHigh, _enodeLow, msg.sender);
     }
 
     function connectionAllowed(

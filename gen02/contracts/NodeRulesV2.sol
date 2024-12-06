@@ -15,13 +15,13 @@ interface NodeRulesV2 is NodeRulesProxy {
         ObserverBoot
     }
 
-     struct enode {
+     struct NodeData {
         bytes32 enodeHigh;
         bytes32 enodeLow;
         NodeType nodeType;
         string name;
-        string organization;
-        string status;
+        uint organization;
+        bool status;
     }
 
     event NodeAdded(bytes32 enodeHigh, bytes32 enodeLow, address admin);
@@ -39,10 +39,10 @@ interface NodeRulesV2 is NodeRulesProxy {
     error InvalidState(string message);
     error UnauthorizedAccess(address account);
 
-    function addNode(bytes32 _enodeHigh, bytes32 _enodeLow, NodeType _nodeType, string memory _name, string memory _organization) external returns (bool);
-    function removeNode(bytes32 _enodeHigh, bytes32 _enodeLow) external returns (bool);
-    function updateNode(bytes32 _enodeHigh, bytes32 _enodeLow, NodeType _nodeType, string memory _name) external returns (bool);
-    function updateNodeStatus(bytes32 _enodeHigh, bytes32 _enodeLow, string memory status) external returns (bool);
+    function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name, uint organization) external returns (bool);
+    function removeNode(bytes32 enodeHigh, bytes32 enodeLow) external returns (bool);
+    function updateNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external returns (bool);
+    function updateNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool status) external;
 
     /* NOTAS:
     
