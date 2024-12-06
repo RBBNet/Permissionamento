@@ -12,7 +12,7 @@ interface NodeRulesV2 is NodeRulesProxy {
         ObserverBoot
     }
 
-     struct NodeData {
+    struct NodeData {
         bytes32 enodeHigh;
         bytes32 enodeLow;
         NodeType nodeType;
@@ -34,17 +34,10 @@ interface NodeRulesV2 is NodeRulesProxy {
     error NodeAlreadyExists(bytes32 enodeHigh, bytes32 enodeLow, string message);
     error NodeDoesntExist(bytes32 enodeHigh, bytes32 enodeLow, string message);
     error InvalidState(string message);
-    error UnauthorizedAccess(address account);
 
     function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name, uint organization) external returns (bool);
     function removeNode(bytes32 enodeHigh, bytes32 enodeLow) external returns (bool);
-    function updateNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external returns (bool);
+    function updateNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external;
     function updateNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool status) external;
 
-    /* NOTAS:
-    
-    1 - addNode já põe status "ativo".
-    2 - removeNode já põe status "inativo".
-    
-    */
 }

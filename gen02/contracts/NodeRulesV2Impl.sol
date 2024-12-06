@@ -5,14 +5,14 @@ import "./NodeRulesV2.sol";
 import "./Governable.sol";
 import "./AccountRulesV2.sol";
 
-contract NodeRulesV2Impl is NodeRulesV2 {
+contract NodeRulesV2Impl is NodeRulesV2, Governable {
 
     NodeData[] public allowlist;
     mapping (uint256 => uint256) private indexOf; 
 
     AccountRulesV2 public immutable contractRules;
 
-    constructor(address rulesAddress) {
+    constructor(address rulesAddress, AdminProxy adminProxy) Governable(adminProxy) {
         contractRules = AccountRulesV2(rulesAddress); // Define o endereço do contrato A
     }
     
@@ -30,7 +30,7 @@ contract NodeRulesV2Impl is NodeRulesV2 {
         return contractRules.isAccountActive(account); // Chama a função no contrato A
     }
 
-    function addNode(bytes32 _enodeHigh,bytes32 _enodeLow,NodeType _nodeType, string memory _name, uint _organization) public onlyActiveAdmin returns (bool) {
+    function addNode(bytes32 _enodeHigh,bytes32 _enodeLow,NodeType _nodeType, string memory _name, uint _organization) public onlyGovernance returns (bool) {
         uint256 key = calculateKey(_enodeHigh, _enodeLow);
         if (indexOf[key] != 0) {
             revert NodeAlreadyExists(_enodeHigh, _enodeLow, "This node already exists.");
@@ -42,7 +42,7 @@ contract NodeRulesV2Impl is NodeRulesV2 {
         return true;
     }
 
-    function removeNode(bytes32 _enodeHigh, bytes32 _enodeLow) public returns (bool){
+    function removeNode(bytes32 _enodeHigh, bytes32 _enodeLow) public onlyGovernance returns (bool){
         uint256 key = calculateKey(_enodeHigh, _enodeLow);
         uint256 index = indexOf[key];
 
@@ -68,10 +68,8 @@ contract NodeRulesV2Impl is NodeRulesV2 {
         return true;
     }
     
-
-
     //TODO: verificar validade das novas informações?
-    function updateNode(bytes32 _enodeHigh, bytes32 _enodeLow, NodeType _nodeType, string memory _name) public returns (bool){
+    function updateNode(bytes32 _enodeHigh, bytes32 _enodeLow, NodeType _nodeType, string memory _name) public onlyActiveAdmin {
         uint256 key = calculateKey(_enodeHigh, _enodeLow);
         uint256 index = indexOf[key];
         if (index == 0) {
@@ -85,12 +83,10 @@ contract NodeRulesV2Impl is NodeRulesV2 {
         }
         nodeToUpdate.nodeType = _nodeType;
 
-         emit NodeUpdated(_enodeHigh, _enodeLow, msg.sender);
-
-        return true;
+        emit NodeUpdated(_enodeHigh, _enodeLow, msg.sender);
     }
 
-    function updateNodeStatus(bytes32 _enodeHigh, bytes32 _enodeLow, bool _status) public {
+    function updateNodeStatus(bytes32 _enodeHigh, bytes32 _enodeLow, bool _status) public onlyActiveAdmin {
         uint256 key = calculateKey(_enodeHigh, _enodeLow);
         uint256 index = indexOf[key];
 
@@ -134,7 +130,7 @@ contract NodeRulesV2Impl is NodeRulesV2 {
         return exists(enodeHigh, enodeLow);
     }
 
-     function exists(bytes32 _enodeHigh, bytes32 _enodeLow) internal view returns (bool) {
+    function exists(bytes32 _enodeHigh, bytes32 _enodeLow) internal view returns (bool) {
         return indexOf[calculateKey(_enodeHigh, _enodeLow)] != 0;
     }
 
