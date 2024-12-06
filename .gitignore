@@ -10,3 +10,6 @@ typechain-types/
 coverage/
 coverage.json/
 */ignition/deployments/chain-31337
+pyvenv.cfg
+Lib
+Scripts
