@@ -24,49 +24,49 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         _;
     }
 
-    function addNode(bytes32 _enodeHigh,bytes32 _enodeLow,NodeType _nodeType, string memory _name, uint _organization) public onlyGovernance {
-        uint256 key = _calculateKey(_enodeHigh, _enodeLow);
+    function addNode(bytes32 enodeHigh,bytes32 enodeLow,NodeType nodeType, string calldata name, uint organization) public onlyGovernance {
+        uint256 key = _calculateKey(enodeHigh, enodeLow);
         if (_nodeExists(key)) {
-            revert NodeAlreadyExists(_enodeHigh, _enodeLow, "This node already exists.");
+            revert NodeAlreadyExists(enodeHigh, enodeLow, "This node already exists.");
         }
 
-        allowedNodes[key] = NodeData(_enodeHigh, _enodeLow, _nodeType, _name, _organization, true);
-        emit NodeAdded(_enodeHigh, _enodeLow, msg.sender);
+        allowedNodes[key] = NodeData(enodeHigh, enodeLow, nodeType, name, organization, true);
+        emit NodeAdded(enodeHigh, enodeLow, msg.sender);
     }
 
-    function removeNode(bytes32 _enodeHigh, bytes32 _enodeLow) public onlyGovernance {
-        uint256 key = _calculateKey(_enodeHigh, _enodeLow);
+    function removeNode(bytes32 enodeHigh, bytes32 enodeLow) public onlyGovernance {
+        uint256 key = _calculateKey(enodeHigh, enodeLow);
         if (!_nodeExists(key)) {
-            revert NodeDoesntExist(_enodeHigh, _enodeLow, "Node does not exist");
+            revert NodeDoesntExist(enodeHigh, enodeLow, "Node does not exist");
         }
 
         delete allowedNodes[key];
-        emit NodeRemoved(_enodeHigh, _enodeLow, msg.sender);
+        emit NodeRemoved(enodeHigh, enodeLow, msg.sender);
     }
     
     //TODO: verificar validade das novas informações?
-    function updateNode(bytes32 _enodeHigh, bytes32 _enodeLow, NodeType _nodeType, string memory _name) public onlyActiveAdmin {
-        uint256 key = _calculateKey(_enodeHigh, _enodeLow);
+    function updateNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name) public onlyActiveAdmin {
+        uint256 key = _calculateKey(enodeHigh, enodeLow);
         if (!_nodeExists(key)) {
-            revert NodeDoesntExist(_enodeHigh, _enodeLow, "Node does not exist");
+            revert NodeDoesntExist(enodeHigh, enodeLow, "Node does not exist");
         }
 
-        if (bytes(_name).length > 0) {
-            allowedNodes[key].name = _name;
+        if (bytes(name).length > 0) {
+            allowedNodes[key].name = name;
         }
-        allowedNodes[key].nodeType = _nodeType;
+        allowedNodes[key].nodeType = nodeType;
 
-        emit NodeUpdated(_enodeHigh, _enodeLow, msg.sender);
+        emit NodeUpdated(enodeHigh, enodeLow, msg.sender);
     }
 
-    function updateNodeStatus(bytes32 _enodeHigh, bytes32 _enodeLow, bool _status) public onlyActiveAdmin {
-        uint256 key = _calculateKey(_enodeHigh, _enodeLow);
+    function updateNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool status) public onlyActiveAdmin {
+        uint256 key = _calculateKey(enodeHigh, enodeLow);
         if (!_nodeExists(key)) {
-            revert NodeDoesntExist(_enodeHigh, _enodeLow, "Node does not exist");
+            revert NodeDoesntExist(enodeHigh, enodeLow, "Node does not exist");
         }
 
-        allowedNodes[key].status = _status;
-        emit NodeStatusUpdated(_enodeHigh, _enodeLow, msg.sender);
+        allowedNodes[key].status = status;
+        emit NodeStatusUpdated(enodeHigh, enodeLow, msg.sender);
     }
 
     function connectionAllowed(
