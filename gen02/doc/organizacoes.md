@@ -28,7 +28,7 @@ Critérios de aceitação:
 Critérios de aceitação:
 1. Somente o processo de governança pode realizar a exclusão.
 2. É informado o identificador da organização a ser excluída.
-3. A exclusão só pode ocorrer se ao menos duas organizações permanecerem ativas. **DÚVIDA**
+3. A exclusão só pode ocorrer se ao menos duas organizações permanecerem ativas.
 4. A organização é excluída.
 5. A ocorrência da exclusão deve emitir um evento, registrando:
    1. O identificador da organização

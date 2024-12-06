@@ -295,7 +295,7 @@ Funcionalidade: Governança do permissionamento
     Então o voto é registrado com sucesso
     E o evento "OrganizationVoted" é emitido para a proposta com voto de "Approval" pela conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71"
     E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5" e votos "Rejection,NotVoted,NotVoted,Approval"
-    # Administrador Global do TCU vota para aprovar a proposta
+    # Administrador Global do TCU vota para rejeitar a proposta
     Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Rejection"
     Então o voto é registrado com sucesso
     E o evento "OrganizationVoted" é emitido para a proposta com voto de "Rejection" pela conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a"
@@ -324,7 +324,7 @@ Funcionalidade: Governança do permissionamento
     Então o voto é registrado com sucesso
     E o evento "OrganizationVoted" é emitido para a proposta com voto de "Approval" pela conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a"
     E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5" e votos "Approval,Approval,NotVoted,NotVoted"
-    # Administrador Global do CPQD vota para aprovar a proposta
+    # Administrador Global do CPQD vota para rejeitar a proposta
     Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Rejection"
     Então o voto é registrado com sucesso
     E o evento "OrganizationVoted" é emitido para a proposta com voto de "Rejection" pela conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71"
@@ -394,12 +394,12 @@ Funcionalidade: Governança do permissionamento
     Então o voto é registrado com sucesso
     E o evento "OrganizationVoted" é emitido para a proposta com voto de "Rejection" pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5" e votos "Rejection,NotVoted,NotVoted,NotVoted"
-    # Administrador Global do CPQD vota para aprovar a proposta
+    # Administrador Global do CPQD vota para rejeitar a proposta
     Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Rejection"
     Então o voto é registrado com sucesso
     E o evento "OrganizationVoted" é emitido para a proposta com voto de "Rejection" pela conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71"
     E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5" e votos "Rejection,NotVoted,NotVoted,Rejection"
-    # Administrador Global do TCU vota para aprovar a proposta
+    # Administrador Global do TCU vota para rejeitar a proposta
     Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Rejection"
     Então o voto é registrado com sucesso
     E o evento "OrganizationVoted" é emitido para a proposta com voto de "Rejection" pela conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a"
