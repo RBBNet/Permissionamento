@@ -3,9 +3,6 @@ pragma solidity 0.8.26;
 
 import "./NodeRulesProxy.sol";
 
-bytes32 constant GLOBAL_ADMIN_ROLE = keccak256("GLOBAL_ADMIN_ROLE");
-bytes32 constant LOCAL_ADMIN_ROLE = keccak256("LOCAL_ADMIN_ROLE");
-
 interface NodeRulesV2 is NodeRulesProxy {
 
     enum NodeType{

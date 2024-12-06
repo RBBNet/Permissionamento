@@ -3,13 +3,9 @@ pragma solidity 0.8.26;
 
 import "./NodeRulesV2.sol";
 import "./Governable.sol";
-import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
+import "./AccountRulesV2.sol";
 
-interface AccountRulesV2 {
-    function isAccountActive(address account) external view returns (bool);
-}
-
-contract NodeRulesV2Impl is NodeRulesV2, AccessControl {
+contract NodeRulesV2Impl is NodeRulesV2 {
 
     NodeData[] public allowlist;
     mapping (uint256 => uint256) private indexOf; 
@@ -21,7 +17,7 @@ contract NodeRulesV2Impl is NodeRulesV2, AccessControl {
     }
     
      modifier onlyActiveAdmin() {
-        if(!hasRole(GLOBAL_ADMIN_ROLE, msg.sender) && !hasRole(LOCAL_ADMIN_ROLE, msg.sender)) {
+        if(!contractRules.hasRole(GLOBAL_ADMIN_ROLE, msg.sender) && !contractRules.hasRole(LOCAL_ADMIN_ROLE, msg.sender)) {
             revert UnauthorizedAccess(msg.sender);
         }
         if(!checkAccountStatus(msg.sender)) {
