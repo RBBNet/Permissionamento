@@ -14,7 +14,7 @@ contract NodeRulesV2Impl is NodeRulesV2, AccessControl {
     mapping (uint256 => uint256) private indexOf; 
 
 
-    AccountRulesV2 public contractRules;
+    AccountRulesV2 public immutable contractRules;
 
     constructor(address rulesAddress) {
         contractRules = AccountRulesV2(rulesAddress); // Define o endereço do contrato A
