@@ -20,7 +20,7 @@ contract OrganizationImpl is Organization, Governable {
         _;
     }
 
-    constructor(OrganizationData[] memory orgs, AdminProxy adminsProxy) Governable(adminsProxy) {
+    constructor(OrganizationData[] memory orgs, AdminProxy admins) Governable(admins) {
         require(orgs.length >= 2, "At least 2 organizations must exist");
         for(uint i = 0; i < orgs.length; ++i) {
             _addOrganization(orgs[i].name, orgs[i].canVote);
