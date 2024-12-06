@@ -5,7 +5,7 @@ import "../Governable.sol";
 
 contract GovernableTest is Governable {
 
-    constructor(AdminProxy admins) Governable (admins) {}
+    constructor(AdminProxy adminsProxy) Governable (adminsProxy) {}
 
     function governanceAllowedFunction() public onlyGovernance {}
 

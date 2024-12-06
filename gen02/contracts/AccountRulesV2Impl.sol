@@ -91,7 +91,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         _;
     }
 
-    constructor(Organization orgs, address[] memory accs, AdminProxy admins) Governable(admins) {
+    constructor(Organization orgs, address[] memory accs, AdminProxy adminsProxy) Governable(adminsProxy) {
         if(address(orgs) == address(0)) {
             revert InvalidArgument("Invalid address for Organization management smart contract");
         }

@@ -241,12 +241,12 @@ contract Governance {
             _finishProposal(proposal);
         }
 
+        proposal.status = ProposalStatus.Executed;
+        emit ProposalExecuted(proposalId, msg.sender);
+
         for (uint i = 0; i < proposal.targets.length; ++i) {
             Address.functionCall(proposal.targets[i], proposal.calldatas[i]);
         }
-
-        proposal.status = ProposalStatus.Executed;
-        emit ProposalExecuted(proposalId, msg.sender);
     }
 
     function getProposal(uint proposalId) public view existentProposal(proposalId) returns (ProposalData memory) {
