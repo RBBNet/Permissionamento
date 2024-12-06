@@ -16,21 +16,17 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         contractRules = AccountRulesV2(rulesAddress); // Define o endereço do contrato A
     }
     
-     modifier onlyActiveAdmin() {
+    modifier onlyActiveAdmin() {
         if(!contractRules.hasRole(GLOBAL_ADMIN_ROLE, msg.sender) && !contractRules.hasRole(LOCAL_ADMIN_ROLE, msg.sender)) {
             revert UnauthorizedAccess(msg.sender);
         }
-        if(!checkAccountStatus(msg.sender)) {
+        if(!contractRules.isAccountActive(msg.sender)) {
             revert InactiveAccount(msg.sender, "The account or the respective organization is not active");
         }
         _;
     }
 
-    function checkAccountStatus(address account) public view returns (bool) {
-        return contractRules.isAccountActive(account); // Chama a função no contrato A
-    }
-
-    function addNode(bytes32 _enodeHigh,bytes32 _enodeLow,NodeType _nodeType, string memory _name, uint _organization) public onlyGovernance returns (bool) {
+    function addNode(bytes32 _enodeHigh,bytes32 _enodeLow,NodeType _nodeType, string memory _name, uint _organization) public onlyGovernance {
         uint256 key = calculateKey(_enodeHigh, _enodeLow);
         if (indexOf[key] != 0) {
             revert NodeAlreadyExists(_enodeHigh, _enodeLow, "This node already exists.");
@@ -39,7 +35,6 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         allowlist.push(NodeData(_enodeHigh, _enodeLow, _nodeType, _name, _organization, true));
         indexOf[key] = allowlist.length;
         emit NodeAdded(_enodeHigh, _enodeLow, msg.sender);
-        return true;
     }
 
     function removeNode(bytes32 _enodeHigh, bytes32 _enodeLow) public onlyGovernance returns (bool){
