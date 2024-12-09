@@ -34,9 +34,12 @@ interface NodeRulesV2 is NodeRulesProxy {
     error NodeAlreadyExists(bytes32 enodeHigh, bytes32 enodeLow, string message);
     error NodeDoesntExist(bytes32 enodeHigh, bytes32 enodeLow, string message);
     error InvalidState(string message);
+    error InactiveNode(bytes32 enodeHigh, bytes32 enodeLow);
 
-    function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name, uint organization) external;
+    function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external;
     function removeNode(bytes32 enodeHigh, bytes32 enodeLow) external;
+    function addNodeByGovernance(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name, uint organization) external;
+    function removeNodeByGovernance(bytes32 enodeHigh, bytes32 enodeLow) external;
     function updateNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external;
     function updateNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool status) external;
 
