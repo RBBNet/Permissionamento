@@ -3,12 +3,13 @@
 Funcionalidade: Gestão de nós
   Contexto:
 #    1. implantar contrato de admin (mock)
-#    2. adicionar 2 organizações à array de orgs
+#    2. adicionar 3 organizações à array de orgs
 #    3. implantar contrato de organizações
-#    4. adicionar 2 administradores globais
+#    4. adicionar 3 administradores globais
 #    5. adicionar o contrato de gestão de contas
 #    6. adicionar administradores locais
-#    7. implantar contrato de nós
+#    7. excluir uma das organizações
+#    8. implantar contrato de nós
 
     Dado que o smart contract de gestão de endereços de admin está implantado
     E o endereço "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" é admin
