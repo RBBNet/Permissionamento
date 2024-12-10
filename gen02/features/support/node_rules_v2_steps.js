@@ -2,7 +2,7 @@ const assert = require('assert');
 const { Given, When, Then } = require('@cucumber/cucumber');
 const hre = require("hardhat");
 const { createOrganization, getBoolean } = require('./setup.js');
-const web3 = require('web3');
+
 async function addNode(signer, enodeHigh, enodeLow, name, type) {
     await this.nodeRules.connect(signer).addNode(enodeHigh, enodeLow, type, name);
     const added = await this.nodeRules.getNode(enodeHigh, enodeLow);
