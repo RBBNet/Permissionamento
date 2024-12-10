@@ -3,8 +3,8 @@ const { Given, When, Then } = require('@cucumber/cucumber');
 const hre = require("hardhat");
 const { createOrganization, getBoolean } = require('./setup.js');
 
-async function addNode(signer, enodeHigh, enodeLow, name, type) {
-    await this.nodeRules.connect(signer).addNode(enodeHigh, enodeLow, type, name);
+async function addLocalNode(signer, enodeHigh, enodeLow, name, type) {
+    await this.nodeRules.connect(signer).addLocalNode(enodeHigh, enodeLow, type, name);
     const added = await this.nodeRules.getNode(enodeHigh, enodeLow);
     assert.ok(added[0] === enodeHigh);
 }
@@ -22,7 +22,7 @@ Given("que o contrato de nós está implantado", async function() {
 When(/^o administrador "([^"]*)" informa o enodeHigh "([^"]*)", o enodeLow "([^"]*)", o nome "([^"]*)" e o tipo "([^"]*)" do nó para cadastrá-lo$/, async function (admin, enodeHigh, enodeLow, name, type) {
     const signer = await hre.ethers.getSigner(admin);
     try {
-        await addNode.call(this, signer, enodeHigh, enodeLow, name, type);
+        await addLocalNode.call(this, signer, enodeHigh, enodeLow, name, type);
     } catch (e) {
         this.error = e;
     }
@@ -46,7 +46,7 @@ Then(/^o nó de enodeHigh "([^"]*)" e enodeLow "([^"]*)" tem a mesma organizaç�
 When(/^o administrador inativo "([^"]*)" informa o enodeHigh "([^"]*)", o enodeLow "([^"]*)", o nome "([^"]*)" e o tipo "([^"]*)" do nó para cadastrá-lo$/, async function (admin, enodeHigh, enodeLow, name, type) {
     const signer = await hre.ethers.getSigner(admin);
     try {
-        await this.nodeRules.connect(signer).addNode(enodeHigh, enodeLow, type, name);
+        await this.nodeRules.connect(signer).addLocalNode(enodeHigh, enodeLow, type, name);
     } catch (error) {
         checkErrorMessage(error, `InactiveAccount("${admin}", "The account or the respective organization is not active")`);
     }

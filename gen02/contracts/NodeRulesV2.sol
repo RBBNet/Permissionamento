@@ -22,11 +22,9 @@ interface NodeRulesV2 is NodeRulesProxy {
     }
 
     event NodeAdded(bytes32 enodeHigh, bytes32 enodeLow, address admin);
-    event NodeRemoved(bytes32 enodeHigh, bytes32 enodeLow,address admin);
+    event NodeRemoved(bytes32 enodeHigh, bytes32 enodeLow, address admin);
     event NodeUpdated(bytes32 enodeHigh, bytes32 enodeLow, address admin);
     event NodeStatusUpdated(bytes32 enodeHigh, bytes32 enodeLow, address admin);
-    event NodeAddedByGovernance(bytes32 enodeHigh, bytes32 enodeLow, address governance);
-    event NodeRemovedByGovernance(bytes32 enodeHigh, bytes32 enodeLow, address governance);
 
     error InvalidArgument(string message);
     error InactiveAccount(address account, string message);
@@ -36,10 +34,10 @@ interface NodeRulesV2 is NodeRulesProxy {
     error InvalidState(string message);
     error InactiveNode(bytes32 enodeHigh, bytes32 enodeLow);
 
-    function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external;
+    function addLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external;
+    function removeLocalNode(bytes32 enodeHigh, bytes32 enodeLow) external;
+    function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name, uint organization) external;
     function removeNode(bytes32 enodeHigh, bytes32 enodeLow) external;
-    function addNodeByGovernance(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name, uint organization) external;
-    function removeNodeByGovernance(bytes32 enodeHigh, bytes32 enodeLow) external;
     function updateNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external;
     function updateNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool status) external;
 

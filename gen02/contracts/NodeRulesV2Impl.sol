@@ -28,7 +28,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     }
 
     //USNOD01 - OK
-    function addNode(bytes32 enodeHigh,bytes32 enodeLow,NodeType nodeType, string calldata name) public onlyActiveAdmin{
+    function addLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name) public onlyActiveAdmin {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         if (_nodeExists(key)) {
             revert NodeAlreadyExists(enodeHigh, enodeLow, "This node already exists.");
@@ -42,7 +42,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     }
 
     //USNOD05 - não sei se vai pegar o erro OrganizationNotFound do Organization, e se essa verificação é suficiente
-    function addNodeByGovernance(bytes32 enodeHigh,bytes32 enodeLow,NodeType nodeType, string calldata name, uint organization) public onlyGovernance {
+    function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name, uint organization) public onlyGovernance {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         if (_nodeExists(key)) {
             revert NodeAlreadyExists(enodeHigh, enodeLow, "This node already exists.");
@@ -60,7 +60,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     }
 
     //USNOD06 - OK
-    function removeNodeByGovernance(bytes32 enodeHigh, bytes32 enodeLow) public onlyGovernance {
+    function removeNode(bytes32 enodeHigh, bytes32 enodeLow) public onlyGovernance {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         if (!_nodeExists(key)) {
             revert NodeDoesntExist(enodeHigh, enodeLow, "Node does not exist");
@@ -71,7 +71,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     }
     
     //USNOD02 - OK
-    function removeNode(bytes32 enodeHigh, bytes32 enodeLow) public onlyActiveAdmin {
+    function removeLocalNode(bytes32 enodeHigh, bytes32 enodeLow) public onlyActiveAdmin {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         if (!_nodeExists(key)) {
             revert NodeDoesntExist(enodeHigh, enodeLow, "Node does not exist");
@@ -151,7 +151,6 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
             return false;
         }
     }
-
 
     //USNOD08
     function getNode(bytes32 enodeHigh, bytes32 enodeLow) public view returns (NodeData memory){
