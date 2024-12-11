@@ -60,15 +60,15 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     }
 
     //USNOD06 - OK
-    function removeNode(bytes32 enodeHigh, bytes32 enodeLow) public onlyGovernance {
+    function deleteNode(bytes32 enodeHigh, bytes32 enodeLow) public onlyGovernance {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         delete allowedNodes[key];
-        emit NodeRemoved(enodeHigh, enodeLow, msg.sender);
+        emit NodeDeleted(enodeHigh, enodeLow, msg.sender);
     }
     
     //USNOD02 - OK
-    function removeLocalNode(bytes32 enodeHigh, bytes32 enodeLow) public onlyActiveAdmin {
+    function deleteLocalNode(bytes32 enodeHigh, bytes32 enodeLow) public onlyActiveAdmin {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         NodeData memory nodeA = allowedNodes[key];
@@ -81,7 +81,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
             revert InvalidOrganization(accOrg);
         } else {
             delete allowedNodes[key];
-            emit NodeRemoved(enodeHigh, enodeLow, msg.sender);
+            emit NodeDeleted(enodeHigh, enodeLow, msg.sender);
         }
         
     }

@@ -22,7 +22,7 @@ interface NodeRulesV2 is NodeRulesProxy {
     }
 
     event NodeAdded(bytes32 enodeHigh, bytes32 enodeLow, address admin);
-    event NodeRemoved(bytes32 enodeHigh, bytes32 enodeLow, address admin);
+    event NodeDeleted(bytes32 enodeHigh, bytes32 enodeLow, address admin);
     event NodeUpdated(bytes32 enodeHigh, bytes32 enodeLow, address admin);
     event NodeStatusUpdated(bytes32 enodeHigh, bytes32 enodeLow, address admin);
 
@@ -35,9 +35,9 @@ interface NodeRulesV2 is NodeRulesProxy {
     error InactiveNode(bytes32 enodeHigh, bytes32 enodeLow);
 
     function addLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external;
-    function removeLocalNode(bytes32 enodeHigh, bytes32 enodeLow) external;
+    function deleteLocalNode(bytes32 enodeHigh, bytes32 enodeLow) external;
     function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name, uint organization) external;
-    function removeNode(bytes32 enodeHigh, bytes32 enodeLow) external;
+    function deleteNode(bytes32 enodeHigh, bytes32 enodeLow) external;
     function updateNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external;
     function updateNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool status) external;
 
