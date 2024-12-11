@@ -30,9 +30,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     //USNOD01 - OK
     function addLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name) public onlyActiveAdmin {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
-        if (_nodeExists(key)) {
-            revert NodeAlreadyExists(enodeHigh, enodeLow, "This node already exists.");
-        }
+        _revertIfDuplicateNode(enodeHigh, enodeLow, key);
 
         AccountRulesV2.AccountData memory acc = contractRules.getAccount(msg.sender);
         uint organization = acc.orgId;
@@ -44,9 +42,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     //USNOD05 - não sei se vai pegar o erro OrganizationNotFound do Organization, e se essa verificação é suficiente
     function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name, uint organization) public onlyGovernance {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
-        if (_nodeExists(key)) {
-            revert NodeAlreadyExists(enodeHigh, enodeLow, "This node already exists.");
-        }
+        _revertIfDuplicateNode(enodeHigh, enodeLow, key);
 
         bool isOrgActive = contractOrganization.isOrganizationActive(organization);
 
@@ -56,7 +52,6 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         } else {
             revert InvalidOrganization(organization);
         }
-        
     }
 
     //USNOD06 - OK
@@ -183,6 +178,12 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
             revert InactiveNode(enodeHigh, enodeLow);
         }
         
+    }
+
+    function _revertIfDuplicateNode(bytes32 enodeHigh, bytes32 enodeLow, uint nodeKey) private view {
+        if(_nodeExists(nodeKey)) {
+            revert DuplicateNode(enodeHigh, enodeLow);
+        }
     }
 
     function _revertIfNodeNotFound(bytes32 enodeHigh, bytes32 enodeLow, uint nodeKey) private view {

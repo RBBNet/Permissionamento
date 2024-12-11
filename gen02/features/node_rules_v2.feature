@@ -50,4 +50,4 @@ Funcionalidade: Gestão de nós
   Cenário: Tentativa de cadastro de um nó já existente
     Quando o administrador "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" informa o enodeHigh "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7", o enodeLow "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "2" do nó para cadastrá-lo
     Quando o administrador "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" informa o enodeHigh "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7", o enodeLow "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "2" do nó para cadastrá-lo
-    Então o erro recebido é "NodeAlreadyExists"
+    Então o erro recebido é "DuplicateNode"
