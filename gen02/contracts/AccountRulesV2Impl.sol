@@ -86,7 +86,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
 
     modifier sameOrganization(address account) {
         if(accounts[msg.sender].orgId != accounts[account].orgId) {
-            revert NotLocalAccount(account, "The informed account is not from the same organization");
+            revert NotLocalAccount(account);
         }
         _;
     }

@@ -61,25 +61,16 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     function deleteLocalNode(bytes32 enodeHigh, bytes32 enodeLow) public onlyActiveAdmin {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
-
-        AccountRulesV2.AccountData memory acc = accountsContract.getAccount(msg.sender);
-        if(acc.orgId != allowedNodes[key].orgId){
-            revert InvalidOrganization(acc.orgId);
-        }
-        
+        _revertIfNotSameOrganization(enodeHigh, enodeLow, key);
         delete allowedNodes[key];
         emit NodeDeleted(enodeHigh, enodeLow, msg.sender);
     }
     
     //USNOD03 - ok? É suficiente?
-    function updateNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name) public onlyActiveAdmin {
+    function updateLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name) public onlyActiveAdmin {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
-
-        AccountRulesV2.AccountData memory acc = accountsContract.getAccount(msg.sender);
-        if(acc.orgId != allowedNodes[key].orgId){
-            revert InvalidOrganization(acc.orgId);
-        } 
+        _revertIfNotSameOrganization(enodeHigh, enodeLow, key);
 
         if(!isValidNodeType(nodeType)){
             revert InvalidArgument("Invalid node type.");
@@ -145,6 +136,13 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     function _revertIfNodeNotFound(bytes32 enodeHigh, bytes32 enodeLow, uint nodeKey) private view {
         if(!_nodeExists(nodeKey)) {
             revert NodeNotFound(enodeHigh, enodeLow);
+        }
+    }
+
+    function _revertIfNotSameOrganization(bytes32 enodeHigh, bytes32 enodeLow, uint nodeKey) private view {
+        AccountRulesV2.AccountData memory acc = accountsContract.getAccount(msg.sender);
+        if(acc.orgId != allowedNodes[nodeKey].orgId){
+            revert NotLocalNode(enodeHigh, enodeLow);
         }
     }
 

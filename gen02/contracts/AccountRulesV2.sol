@@ -31,7 +31,7 @@ interface AccountRulesV2 is AccountRulesProxy, IAccessControl {
     error InvalidAccount(address account, string message);
     error DuplicateAccount(address account);
     error AccountNotFound(address account);
-    error NotLocalAccount(address account, string message);
+    error NotLocalAccount(address account);
     error InvalidOrganization(uint orgId, string message);
     error InvalidRole(bytes32 roleId, string message);
     error InvalidHash(bytes32 hash, string message);

@@ -29,6 +29,7 @@ interface NodeRulesV2 is NodeRulesProxy {
     error InvalidArgument(string message);
     error InactiveAccount(address account, string message);
     error InvalidOrganization(uint orgId);
+    error NotLocalNode(bytes32 enodeHigh, bytes32 enodeLow);
     error DuplicateNode(bytes32 enodeHigh, bytes32 enodeLow);
     error NodeNotFound(bytes32 enodeHigh, bytes32 enodeLow);
     error InvalidState(string message);
@@ -38,7 +39,7 @@ interface NodeRulesV2 is NodeRulesProxy {
     function deleteLocalNode(bytes32 enodeHigh, bytes32 enodeLow) external;
     function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name, uint organization) external;
     function deleteNode(bytes32 enodeHigh, bytes32 enodeLow) external;
-    function updateNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external;
+    function updateLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external;
     function updateNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool status) external;
 
 }
