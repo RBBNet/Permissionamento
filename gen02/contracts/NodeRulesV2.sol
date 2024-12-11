@@ -30,7 +30,7 @@ interface NodeRulesV2 is NodeRulesProxy {
     error InactiveAccount(address account, string message);
     error InvalidOrganization(uint orgId);
     error NodeAlreadyExists(bytes32 enodeHigh, bytes32 enodeLow, string message);
-    error NodeDoesntExist(bytes32 enodeHigh, bytes32 enodeLow, string message);
+    error NodeNotFound(bytes32 enodeHigh, bytes32 enodeLow);
     error InvalidState(string message);
     error InactiveNode(bytes32 enodeHigh, bytes32 enodeLow);
 

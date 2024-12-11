@@ -41,11 +41,11 @@ Funcionalidade: Gestão de nós
 
   Cenário: Tentativa de cadastro por um Administrador Global inativo
     Quando o administrador inativo "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" informa o enodeHigh "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b", o enodeLow "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33", o nome "validator01" e o tipo "2" do nó para cadastrá-lo
-    Então o nó de enodeHigh "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b" e enodeLow "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33" recebe o erro "NodeDoesntExist"
+    Então o nó de enodeHigh "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b" e enodeLow "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33" recebe o erro "NodeNotFound"
 
   Cenário: Tentativa de cadastro por um Administrador Local inativo
     Quando o administrador inativo "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E" informa o enodeHigh "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b", o enodeLow "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33", o nome "validator01" e o tipo "2" do nó para cadastrá-lo
-    Então o nó de enodeHigh "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b" e enodeLow "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33" recebe o erro "NodeDoesntExist"
+    Então o nó de enodeHigh "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b" e enodeLow "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33" recebe o erro "NodeNotFound"
 
   Cenário: Tentativa de cadastro de um nó já existente
     Quando o administrador "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" informa o enodeHigh "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7", o enodeLow "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "2" do nó para cadastrá-lo

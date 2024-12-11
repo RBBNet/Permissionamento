@@ -62,10 +62,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     //USNOD06 - OK
     function removeNode(bytes32 enodeHigh, bytes32 enodeLow) public onlyGovernance {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
-        if (!_nodeExists(key)) {
-            revert NodeDoesntExist(enodeHigh, enodeLow, "Node does not exist");
-        }
-
+        _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         delete allowedNodes[key];
         emit NodeRemoved(enodeHigh, enodeLow, msg.sender);
     }
@@ -73,10 +70,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     //USNOD02 - OK
     function removeLocalNode(bytes32 enodeHigh, bytes32 enodeLow) public onlyActiveAdmin {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
-        if (!_nodeExists(key)) {
-            revert NodeDoesntExist(enodeHigh, enodeLow, "Node does not exist");
-        }
-
+        _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         NodeData memory nodeA = allowedNodes[key];
         uint nodeOrg = nodeA.orgId;
 
@@ -95,9 +89,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     //USNOD03 - ok? É suficiente?
     function updateNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name) public onlyActiveAdmin {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
-        if (!_nodeExists(key)) {
-            revert NodeDoesntExist(enodeHigh, enodeLow, "Node does not exist");
-        }
+        _revertIfNodeNotFound(enodeHigh, enodeLow, key);
 
         NodeData memory nodeA = allowedNodes[key];
         uint nodeOrg = nodeA.orgId;
@@ -125,10 +117,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     //USNOD04 - dúvida
     function updateNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool status) public onlyActiveAdmin {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
-        if (!_nodeExists(key)) {
-            revert NodeDoesntExist(enodeHigh, enodeLow, "Node does not exist.");
-        }
-
+        _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         allowedNodes[key].status = status;
         emit NodeStatusUpdated(enodeHigh, enodeLow, msg.sender);
     }
@@ -136,10 +125,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     //USNOD07 - OK
     function isNodeActive(bytes32 enodeHigh, bytes32 enodeLow) public view returns (bool){
         uint256 key = _calculateKey(enodeHigh, enodeLow);
-        if (!_nodeExists(key)){
-            revert NodeDoesntExist(enodeHigh, enodeLow, "Node does not exist.");
-        }
-
+        _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         NodeData memory node = allowedNodes[key];
         uint nodeOrg = node.orgId;
         bool isOrgActive = contractOrganization.isOrganizationActive(nodeOrg);
@@ -155,11 +141,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     //USNOD08
     function getNode(bytes32 enodeHigh, bytes32 enodeLow) public view returns (NodeData memory){
         uint256 key = _calculateKey(enodeHigh, enodeLow);
-
-        if (!_nodeExists(key)){
-            revert NodeDoesntExist(enodeHigh, enodeLow, "Node does not exist.");
-        }
-        
+        _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         return allowedNodes[key];
     }
 
@@ -201,6 +183,12 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
             revert InactiveNode(enodeHigh, enodeLow);
         }
         
+    }
+
+    function _revertIfNodeNotFound(bytes32 enodeHigh, bytes32 enodeLow, uint nodeKey) private view {
+        if(!_nodeExists(nodeKey)) {
+            revert NodeNotFound(enodeHigh, enodeLow);
+        }
     }
 
     function _nodeExists(uint nodeKey) private view returns(bool) {
