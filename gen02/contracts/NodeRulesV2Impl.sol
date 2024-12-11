@@ -8,20 +8,20 @@ import "./Organization.sol";
 
 contract NodeRulesV2Impl is NodeRulesV2, Governable {
 
-    AccountRulesV2 public immutable contractRules;
-    Organization public immutable contractOrganization;
+    AccountRulesV2 public immutable accountsContract;
+    Organization public immutable organizationsContract;
     mapping (uint => NodeData) public allowedNodes;
 
-    constructor(address rulesAddress, address organizationAddress, AdminProxy adminProxy) Governable(adminProxy) {
-        contractRules = AccountRulesV2(rulesAddress); // Define o endereço do contrato 
-        contractOrganization = Organization(organizationAddress);
+    constructor(address accountAddress, address organizationAddress, AdminProxy adminProxy) Governable(adminProxy) {
+        accountsContract = AccountRulesV2(accountAddress); // Define o endereço do contrato 
+        organizationsContract = Organization(organizationAddress);
     }
     
     modifier onlyActiveAdmin() {
-        if(!contractRules.hasRole(GLOBAL_ADMIN_ROLE, msg.sender) && !contractRules.hasRole(LOCAL_ADMIN_ROLE, msg.sender)) {
+        if(!accountsContract.hasRole(GLOBAL_ADMIN_ROLE, msg.sender) && !accountsContract.hasRole(LOCAL_ADMIN_ROLE, msg.sender)) {
             revert UnauthorizedAccess(msg.sender);
         }
-        if(!contractRules.isAccountActive(msg.sender)) {
+        if(!accountsContract.isAccountActive(msg.sender)) {
             revert InactiveAccount(msg.sender, "The account or the respective organization is not active");
         }
         _;
@@ -32,7 +32,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfDuplicateNode(enodeHigh, enodeLow, key);
 
-        AccountRulesV2.AccountData memory acc = contractRules.getAccount(msg.sender);
+        AccountRulesV2.AccountData memory acc = accountsContract.getAccount(msg.sender);
         uint organization = acc.orgId;
 
         allowedNodes[key] = NodeData(enodeHigh, enodeLow, nodeType, name, organization, true);
@@ -44,7 +44,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfDuplicateNode(enodeHigh, enodeLow, key);
 
-        bool isOrgActive = contractOrganization.isOrganizationActive(organization);
+        bool isOrgActive = organizationsContract.isOrganizationActive(organization);
 
         if (isOrgActive){
             allowedNodes[key] = NodeData(enodeHigh, enodeLow, nodeType, name, organization, true);
@@ -69,7 +69,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         NodeData memory nodeA = allowedNodes[key];
         uint nodeOrg = nodeA.orgId;
 
-        AccountRulesV2.AccountData memory acc = contractRules.getAccount(msg.sender);
+        AccountRulesV2.AccountData memory acc = accountsContract.getAccount(msg.sender);
         uint accOrg = acc.orgId;
 
         if (accOrg != nodeOrg){
@@ -89,7 +89,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         NodeData memory nodeA = allowedNodes[key];
         uint nodeOrg = nodeA.orgId;
 
-        AccountRulesV2.AccountData memory acc = contractRules.getAccount(msg.sender);
+        AccountRulesV2.AccountData memory acc = accountsContract.getAccount(msg.sender);
         uint accOrg = acc.orgId;
 
         if (accOrg != nodeOrg){
@@ -123,7 +123,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         NodeData memory node = allowedNodes[key];
         uint nodeOrg = node.orgId;
-        bool isOrgActive = contractOrganization.isOrganizationActive(nodeOrg);
+        bool isOrgActive = organizationsContract.isOrganizationActive(nodeOrg);
         bool nodeStatus = node.status;
 
         if (isOrgActive && nodeStatus) {
