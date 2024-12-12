@@ -16,7 +16,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     mapping (uint => uint) public globalAdminsCount;
     mapping (bytes32 => bool) public validRoles;
     EnumerableSet.AddressSet private _restrictedSmartContracts;
-    mapping (address => address[]) public restrictedSmartContractsAllowedAddresses;
+    mapping (address => address[]) public restrictedSmartContractsAllowedSenders;
 
     modifier onlyActiveAdmin() {
         if(!hasRole(GLOBAL_ADMIN_ROLE, msg.sender) && !hasRole(LOCAL_ADMIN_ROLE, msg.sender)) {
@@ -199,12 +199,12 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         if(restricted) {
             // Acesso ao smart contract deve ser restrito
             _restrictedSmartContracts.add(smartContract);
-            restrictedSmartContractsAllowedAddresses[smartContract] = allowedSenders;
+            restrictedSmartContractsAllowedSenders[smartContract] = allowedSenders;
         }
         else {
             // Acesso ao smart contract deve ser liberado
             _restrictedSmartContracts.remove(smartContract);
-            delete restrictedSmartContractsAllowedAddresses[smartContract];
+            delete restrictedSmartContractsAllowedSenders[smartContract];
         }
 
         emit SmartContractAccessUpdated(smartContract, restricted, allowedSenders, msg.sender);
@@ -242,7 +242,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
 
         if(_restrictedSmartContracts.contains(target)) {
             // Chamada a smart contract de acesso restrito
-            address[] memory allowedSenders = restrictedSmartContractsAllowedAddresses[target];
+            address[] memory allowedSenders = restrictedSmartContractsAllowedSenders[target];
             for(uint i = 0; i < allowedSenders.length; ++i) {
                 if(sender == allowedSenders[i]) {
                     return true;
