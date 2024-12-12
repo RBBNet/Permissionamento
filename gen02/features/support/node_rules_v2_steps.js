@@ -1,13 +1,6 @@
 const assert = require('assert');
 const { Given, When, Then } = require('@cucumber/cucumber');
 const hre = require("hardhat");
-const { createOrganization, getBoolean } = require('./setup.js');
-const web3 = require('web3');
-async function addNode(signer, enodeHigh, enodeLow, name, type) {
-    await this.nodeRules.connect(signer).addNode(enodeHigh, enodeLow, type, name);
-    const added = await this.nodeRules.getNode(enodeHigh, enodeLow);
-    assert.ok(added[0] === enodeHigh);
-}
 
 //forma mais bonita do que vários ifs
 function typeToNumber(type) {
@@ -21,44 +14,34 @@ function typeToNumber(type) {
     return typeMap[type] !== undefined ? typeMap[type] : null;  // Retorna null ou um valor padrão se o tipo não for encontrado
 }
 
-async function removeNode(signer, enodeHigh, enodeLow) {
-    await this.nodeRules.connect(signer).removeNode(enodeHigh, enodeLow);
-    try {
-        await this.nodeRules.getNode(enodeHigh, enodeLow);
-    } catch(error){
-        assert.ok(error.message.includes(`NodeDoesntExist("${enodeHigh}", "${enodeLow}", "Node does not exist.")`));
-    }
-
-}
-
 function checkErrorMessage(error, expectedMessage) {
     assert.ok(error.message.includes(expectedMessage));
 }
 
-Given("que o contrato de nós está implantado", async function() {
+Given('que o contrato de nós está implantado', async function() {
     this.nodeRules = await hre.ethers.deployContract("NodeRulesV2Impl", [this.accountRulesContract, this.organizationContractAddress, this.adminMockContractAddress]);
     const contractAddress = await this.nodeRules.getAddress();
     assert.ok(contractAddress != null);
 });
 
-When(/^a conta "([^"]*)" informa o endereço "([^"]*)" "([^"]*)", o nome "([^"]*)" e o tipo "([^"]*)" do nó para cadastrá-lo$/, async function (admin, enodeHigh, enodeLow, name, type) {
+When('a conta {string} informa o endereço {string} {string}, o nome {string} e o tipo {string} do nó para cadastrá-lo', async function (admin, enodeHigh, enodeLow, name, type) {
     const signer = await hre.ethers.getSigner(admin);
     type = typeToNumber(type);
     try {
-        await addNode.call(this, signer, enodeHigh, enodeLow, name, type);
+        await this.nodeRules.connect(signer).addLocalNode(enodeHigh, enodeLow, type, name);
     } catch (e) {
         this.error = e;
     }
 });
 
-Then(/^o evento "([^"]*)" é emitido para a conta "([^"]*)"$/, async function (event, admin) {
+Then('o evento {string} é emitido para a conta {string}', async function (event, admin) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.nodeRules.queryFilter(event, 0, block);
     const eventAdmin = events[0].args[2];
     assert.ok(eventAdmin === admin);
 });
 
-Then(/^o nó de enodeHigh "([^"]*)" e enodeLow "([^"]*)" tem a mesma organização que o administrador "([^"]*)"$/, async function (enodeHigh, enodeLow, admin) {
+Then('o nó de enodeHigh {string} e enodeLow {string} tem a mesma organização que o administrador {string}', async function (enodeHigh, enodeLow, admin) {
     const nodeInfo = await this.nodeRules.getNode(enodeHigh, enodeLow);
     const nodeOrg = parseInt(nodeInfo[4]);
     const adminInfo = await this.accountRulesContract.getAccount(admin);
@@ -76,7 +59,7 @@ Then(/^o nó de enodeHigh "([^"]*)" e enodeLow "([^"]*)" tem a mesma organizaç�
 //     }
 // });
 
-Then(/^o nó de enodeHigh "([^"]*)" e enodeLow "([^"]*)" recebe o erro "([^"]*)"$/, async function (enodeHigh, enodeLow, expectedErrorMessage) {
+Then('o nó de enodeHigh {string} e enodeLow {string} recebe o erro {string}', async function (enodeHigh, enodeLow, expectedErrorMessage) {
     try {
         await this.nodeRules.getNode(enodeHigh, enodeLow);
     } catch (error) {
@@ -84,19 +67,20 @@ Then(/^o nó de enodeHigh "([^"]*)" e enodeLow "([^"]*)" recebe o erro "([^"]*)"
     }
 });
 
-Then (/^o erro recebido é "([^"]*)"$/, async function (error){
+Then('o erro recebido é {string}', function (error) {
     checkErrorMessage(this.error, error);
 });
 
-When(/^a conta "([^"]*)" informa o endereço "([^"]*)" "([^"]*)" para exclusão$/, async function (admin, enodeHigh, enodeLow) {
+When('a conta {string} informa o endereço {string} {string} para exclusão', async function (admin, enodeHigh, enodeLow) {
     const signer = await hre.ethers.getSigner(admin);
     try {
-        await removeNode.call(this, signer, enodeHigh, enodeLow);
+        await this.nodeRules.connect(signer).deleteLocalNode(enodeHigh, enodeLow);
     } catch(error) {
         this.error = error;
     }
 });
-When(/^a conta de governança "([^"]*)" informa o enodeHigh "([^"]*)", o enodeLow "([^"]*)", o nome "([^"]*)", a organização "([^"]*)" e o tipo "([^"]*)" do nó para cadastrá-lo$/, async function (admin, enodeHigh, enodeLow, name, org, type) {
+
+When('a conta de governança {string} informa o enodeHigh {string}, o enodeLow {string}, o nome {string}, a organização {string} e o tipo {string} do nó para cadastrá-lo', async function (admin, enodeHigh, enodeLow, name, org, type) {
     const signer = await hre.ethers.getSigner(admin);
     try{
         await this.nodeRules.connect(signer).addNodeByGovernance(enodeHigh, enodeLow,type,name,org);

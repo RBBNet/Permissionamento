@@ -44,32 +44,32 @@ Funcionalidade: Gestão de nós
   Cenário: Tentativa de cadastro por um Administrador Global inativo
     Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" informa o endereço "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b" "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
     Então o erro recebido é "InactiveAccount"
-    Então o nó de enodeHigh "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b" e enodeLow "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33" recebe o erro "NodeDoesntExist"
+    Então o nó de enodeHigh "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b" e enodeLow "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33" recebe o erro "NodeNotFound"
 
   Cenário: Tentativa de cadastro por um Administrador Local inativo
     Quando a conta "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E" informa o endereço "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b" "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
     Então o erro recebido é "InactiveAccount"
-    Então o nó de enodeHigh "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b" e enodeLow "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33" recebe o erro "NodeDoesntExist"
+    Então o nó de enodeHigh "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b" e enodeLow "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33" recebe o erro "NodeNotFound"
 
   Cenário: Tentativa de cadastro de um nó já existente
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
     Quando a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
-    Então o erro recebido é "NodeAlreadyExists"
+    Então o erro recebido é "DuplicateNode"
 
   Cenário: Tentativa de cadastro por uma conta que não é administradora
     Quando a conta "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
     Então o erro recebido é "UnauthorizedAccess"
-    Então o nó de enodeHigh "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" e enodeLow "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeDoesntExist"
+    Então o nó de enodeHigh "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" e enodeLow "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeNotFound"
 
   Cenário: Exclusão de nó realizada por um Administrador Global ativo e vinculado a uma organização ativa
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" para exclusão
-    Então o evento "NodeRemoved" é emitido para a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    Então o evento "NodeDeleted" é emitido para a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
 
   Cenário: Exclusão de nó realizada por um Administrador Local ativo e vinculado a uma organização ativa
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
     Quando a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" para exclusão
-    Então o evento "NodeRemoved" é emitido para a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097"
+    Então o evento "NodeDeleted" é emitido para a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097"
 
   Cenário: Tentativa de exclusão por um Administrador Global inativo
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
@@ -86,11 +86,11 @@ Funcionalidade: Gestão de nós
   Cenário: Tentativa de exclusão de nó vinculado a outra organização
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
     Quando a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" para exclusão
-    Então o erro recebido é "InvalidOrganization"
+    Então o erro recebido é "NotLocalNode"
     # verifica se o nó ainda existe
     E o nó de enodeHigh "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" e enodeLow "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" tem a mesma organização que o administrador "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
 
   Cenário: Exclusão de nó que não existe
     Quando a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" para exclusão
-    Então o erro recebido é "NodeDoesntExist"
+    Então o erro recebido é "NodeNotFound"
 
