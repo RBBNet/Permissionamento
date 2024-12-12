@@ -36,7 +36,7 @@ When('a conta {string} informa o endereço {string} {string}, o nome {string} e 
 
 Then('o evento {string} é emitido para a conta {string}', async function (event, admin) {
     const block = await hre.ethers.provider.getBlockNumber();
-    const events = await this.nodeRules.queryFilter(event, 0, block);
+    const events = await this.nodeRules.queryFilter(event, block, block);
     const eventAdmin = events[0].args[2];
     assert.ok(eventAdmin === admin);
 });
