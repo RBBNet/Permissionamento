@@ -196,8 +196,26 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         return globalAdminsCount[orgId];
     }
 
-    function setAccountTargetAccess(address account, bool restricted, address[] calldata allowedTargets) public {
-        // TODO Implementar
+    function setAccountTargetAccess(address account, bool restricted, address[] calldata allowedTargets) public
+        onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account) {
+        if(restricted) {
+            // Acesso da conta deve ser restrito
+            if(allowedTargets.length == 0) {
+                revert InvalidArgument("At least one allowed target must be informed");
+            }
+            _restrictedAccounts.add(account);
+            restrictedAccountsAllowedTargets[account] = allowedTargets;
+        }
+        else {
+            // Acesso da conta deve ser liberado
+            if(allowedTargets.length > 0) {
+                revert InvalidArgument("No allowed target should have been informed");
+            }
+            _restrictedAccounts.remove(account);
+            delete restrictedAccountsAllowedTargets[account];
+        }
+
+        emit AccountTargetAccessUpdated(account, restricted, allowedTargets, msg.sender);
     }
 
     function setSmartContractSenderAccess(address smartContract, bool restricted, address[] calldata allowedSenders) public
@@ -245,14 +263,20 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
             return false;
         }
  
-        if(address(0) == target) {
-            // Implantação de smart contract
-            return hasRole(DEPLOYER_ROLE, sender) || hasRole(LOCAL_ADMIN_ROLE, sender) || hasRole(GLOBAL_ADMIN_ROLE, sender);
+        if(_restrictedAccounts.contains(sender)) {
+            // Conta tem acesso restrito a alguns targets
+            address[] storage allowedTargets = restrictedAccountsAllowedTargets[sender];
+            for(uint i = 0; i < allowedTargets.length; ++i) {
+                if(sender == allowedTargets[i]) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         if(_restrictedSmartContracts.contains(target)) {
             // Chamada a smart contract de acesso restrito
-            address[] memory allowedSenders = restrictedSmartContractsAllowedSenders[target];
+            address[] storage allowedSenders = restrictedSmartContractsAllowedSenders[target];
             for(uint i = 0; i < allowedSenders.length; ++i) {
                 if(sender == allowedSenders[i]) {
                     return true;
@@ -260,7 +284,12 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
             }
             return false;
         }
- 
+
+        if(address(0) == target) {
+            // Implantação de smart contract
+            return hasRole(DEPLOYER_ROLE, sender) || hasRole(LOCAL_ADMIN_ROLE, sender) || hasRole(GLOBAL_ADMIN_ROLE, sender);
+        }
+
         return true;
     }
 
