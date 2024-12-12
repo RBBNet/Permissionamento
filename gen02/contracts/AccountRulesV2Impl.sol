@@ -129,6 +129,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     function updateLocalAccountRole(address account, bytes32 roleId) public
         onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account)
         validRole(roleId) notGlobalAdminRole(roleId) {
+        // TODO validar dataHash conforme papel
         AccountData storage acc = accounts[account];
         _revokeRole(acc.roleId, account);
         acc.roleId = roleId;
@@ -139,6 +140,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     function updateLocalAccountDataHash(address account, bytes32 dataHash) public
         onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account)
         validHash(dataHash) {
+        // TODO validar dataHash conforme papel
         AccountData storage acc = accounts[account];
         acc.dataHash = dataHash;
         emit AccountDataHashUpdated(acc.account, acc.orgId, acc.dataHash, msg.sender);
@@ -154,6 +156,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     function addAccount(address account, uint orgId, bytes32 roleId, bytes32 dataHash) public
         onlyGovernance validAccount(account) inexistentAccount(account) validOrganization(orgId)
         validRole(roleId) validHash(dataHash) {
+        // TODO validar dataHash conforme papel
         _addAccount(account, orgId, roleId, dataHash);
     }
 
