@@ -83,7 +83,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Governança configura restrição de acesso a smart contract
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" configura restrição de acesso ao endereço "0x0000000000000000000000000000000000008888" permitindo acesso somente pelas contas ""
     Então a configuração de acesso ocorre com sucesso
-    E o evento "SmartContractAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "true" permitindo as contas "" executado pelo admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "true" permitindo as contas "" executado pelo admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
     # Todas as contas ficam sem poder chamar o smart contract
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "false"
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "false"
@@ -93,7 +93,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Governança remove restrição de acesso a smart contract
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" remove restrição de acesso ao endereço "0x0000000000000000000000000000000000008888"
     Então a configuração de acesso ocorre com sucesso
-    E o evento "SmartContractAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "false" permitindo as contas "" executado pelo admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "false" permitindo as contas "" executado pelo admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
     # Todas as contas ficam sem poder chamar o smart contract
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
@@ -104,7 +104,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Governança configura restrição de acesso a smart contract
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" configura restrição de acesso ao endereço "0x0000000000000000000000000000000000008888" permitindo acesso somente pelas contas "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC,0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
     Então a configuração de acesso ocorre com sucesso
-    E o evento "SmartContractAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "true" permitindo as contas "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC,0x70997970C51812dc3A010C7d01b50e0d17dc79C8" executado pelo admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "true" permitindo as contas "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC,0x70997970C51812dc3A010C7d01b50e0d17dc79C8" executado pelo admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
 
     # Todas as contas ficam sem poder chamar o smart contract
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "false"
@@ -115,7 +115,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Governança remove restrição de acesso a smart contract
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" remove restrição de acesso ao endereço "0x0000000000000000000000000000000000008888"
     Então a configuração de acesso ocorre com sucesso
-    E o evento "SmartContractAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "false" permitindo as contas "" executado pelo admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "false" permitindo as contas "" executado pelo admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
     # Todas as contas ficam sem poder chamar o smart contract
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"

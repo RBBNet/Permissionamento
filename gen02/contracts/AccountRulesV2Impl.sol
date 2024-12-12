@@ -15,7 +15,9 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     mapping (address => AccountData) public accounts;
     mapping (uint => uint) public globalAdminsCount;
     mapping (bytes32 => bool) public validRoles;
+    EnumerableSet.AddressSet private _restrictedAccounts;
     EnumerableSet.AddressSet private _restrictedSmartContracts;
+    mapping (address => address[]) public restrictedAccountsAllowedTargets;
     mapping (address => address[]) public restrictedSmartContractsAllowedSenders;
 
     modifier onlyActiveAdmin() {
@@ -194,7 +196,11 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         return globalAdminsCount[orgId];
     }
 
-    function setSmartContractAccess(address smartContract, bool restricted, address[] calldata allowedSenders) public
+    function setAccountTargetAccess(address account, bool restricted, address[] calldata allowedTargets) public {
+        // TODO Implementar
+    }
+
+    function setSmartContractSenderAccess(address smartContract, bool restricted, address[] calldata allowedSenders) public
         onlyGovernance validAccount(smartContract) {
         if(restricted) {
             // Acesso ao smart contract deve ser restrito
@@ -207,7 +213,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
             delete restrictedSmartContractsAllowedSenders[smartContract];
         }
 
-        emit SmartContractAccessUpdated(smartContract, restricted, allowedSenders, msg.sender);
+        emit SmartContractSenderAccessUpdated(smartContract, restricted, allowedSenders, msg.sender);
     }
 
     function getAccount(address account) public view existentAccount(account) returns (AccountData memory) {
@@ -217,6 +223,10 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     function isAccountActive(address account) public view returns (bool) {
         AccountData storage acc = accounts[account];
         return acc.active && organizations.isOrganizationActive(acc.orgId);
+    }
+
+    function restrictedAccounts() public view returns (address[] memory) {
+        return _restrictedAccounts.values();
     }
 
     function restrictedSmartContracts() public view returns (address[] memory) {

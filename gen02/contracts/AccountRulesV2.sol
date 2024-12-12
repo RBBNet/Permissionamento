@@ -24,7 +24,8 @@ interface AccountRulesV2 is AccountRulesProxy, IAccessControl {
     event AccountRoleUpdated(address account, uint orgId, bytes32 roleId, address admin);
     event AccountDataHashUpdated(address account, uint orgId, bytes32 dataHash, address admin);
     event AccountStatusUpdated(address account, uint orgId, bool active, address admin);
-    event SmartContractAccessUpdated(address smartContract, bool restricted, address[] allowedSenders, address admin);
+    event AccountTargetAccessUpdated(address account, bool restricted, address[] allowedTargets, address admin);
+    event SmartContractSenderAccessUpdated(address smartContract, bool restricted, address[] allowedSenders, address admin);
 
     error InvalidArgument(string message);
     error InactiveAccount(address account, string message);
@@ -46,7 +47,8 @@ interface AccountRulesV2 is AccountRulesProxy, IAccessControl {
     function addAccount(address account, uint orgId, bytes32 roleId, bytes32 dataHash) external;
     function deleteAccount(address account) external;
 
-    function setSmartContractAccess(address smartContract, bool restricted, address[] calldata allowedSenders) external;
+    function setAccountTargetAccess(address account, bool restricted, address[] calldata allowedTargets) external;
+    function setSmartContractSenderAccess(address smartContract, bool restricted, address[] calldata allowedSenders) external;
 
     function isAccountActive(address account) external view returns (bool);
     function getAccount(address account) external view returns (AccountData memory);

@@ -247,7 +247,7 @@ When('a conta {string} configura restrição de acesso ao endereço {string} per
     try {
         const signer = await hre.ethers.getSigner(admin);
         assert.ok(signer != null);
-        await this.accountRulesContract.connect(signer).setSmartContractAccess(target, true, getSenders(addresses));
+        await this.accountRulesContract.connect(signer).setSmartContractSenderAccess(target, true, getSenders(addresses));
     }
     catch(error) {
         this.accessConfigurationError = error;
@@ -267,7 +267,7 @@ When('a conta {string} remove restrição de acesso ao endereço {string}', asyn
     try {
         const signer = await hre.ethers.getSigner(admin);
         assert.ok(signer != null);
-        await this.accountRulesContract.connect(signer).setSmartContractAccess(target, false, []);
+        await this.accountRulesContract.connect(signer).setSmartContractSenderAccess(target, false, []);
     }
     catch(error) {
         this.accessConfigurationError = error;
