@@ -39,8 +39,9 @@ Critérios de aceitação:
 3. O administrador somente pode alterar contas vinculadas à sua organização.
 4. O papel informado deve ser válido.
 5. A alteração não pode envolver o papel de Administrador Global, seja no estado original ou no estado final da alteração.
-6. O novo papel é atribuído à conta.
-7. A ocorrência da alteração deve emitir um evento, registrando:
+6. O hash dos dados cadastrais da conta não pode estar vazio/zerado, caso o novo papel da conta seja diferente de Administrador Local.
+7. O novo papel é atribuído à conta.
+8. A ocorrência da alteração deve emitir um evento, registrando:
    1. O endereço da conta
    2. O identificador da organização
    3. O novo papel informado para a conta
@@ -54,7 +55,7 @@ Critérios de aceitação:
 2. O administrador informa o endereço da conta e o novo hash a ser atribuído.
 3. O administrador somente pode alterar contas vinculadas à sua organização.
 4. O papel da conta a ser alterada não pode ser de Administrador Global.
-5. O hash dos dados cadastrais da conta não pode estar vazio/zerado.
+5. O hash dos dados cadastrais da conta não pode estar vazio/zerado, caso o papel da conta seja diferente de Administrador Local.
 6. O hash é atribuído à conta.
 7. A ocorrência da alteração deve emitir um evento, registrando:
    1. O endereço da conta
@@ -84,9 +85,10 @@ Critérios de aceitação:
 1. Somente o processo de governança pode realizar o cadastro.
 2. São informados o identificador da organização responsável pela conta, o endereço, o papel desejado e um hash dos dados cadastrais da conta mantidos *off chain* pela organização.
 3. A organização responsável e o papel desejado devem ser válidos.
-4. A conta não pode já estar cadastrada.
-5. A conta é criada e vinculada à organização informada.
-6. A ocorrência do cadastro deve emitir um evento, registrando:
+4. O hash dos dados cadastrais da conta não pode estar vazio/zerado, caso o papel da conta seja diferente de Administrador Global e Administrador Local.
+5. A conta não pode já estar cadastrada.
+6. A conta é criada e vinculada à organização informada.
+7. A ocorrência do cadastro deve emitir um evento, registrando:
    1. O endereço da conta
    2. O identificador da organização
    3. O papel
@@ -118,9 +120,9 @@ Critérios de aceitação:
    3. No caso de haver restrição, a lista de endereços com permissão de acesso.
       1. A lista de endereços é opcional.
       2. Caso seja indicada restrição de acesso e a lista não seja informada, o *smart contract* ficará completamente inacessível (desativado).
-3. Caso seja indicada limitação de acesso, o endereço do *smart contract* é adicionado à lista de restrição de acesso, juntamente com os endereços permitidos (se houver), para restringir a execução do *smart contract*.
-4. Caso **não** seja indicada limitação de acesso, o endereço do *smart contract* é removido da lista de restrição de acesso, liberando completamente, para qualquer chamador, a execução do *smart contract*.
-5. A ocorrência da desativação deve emitir um evento, registrando:
+3. Caso seja indicada limitação de acesso, o endereço do *smart contract* é adicionado à lista de *smart contracts* com restrição de acesso, juntamente com os endereços permitidos (se houver), para restringir a execução do *smart contract*.
+4. Caso **não** seja indicada limitação de acesso, o endereço do *smart contract* é removido da lista de *smart contracts* com restrição de acesso, liberando completamente, para qualquer chamador, a execução do *smart contract*.
+5. A ocorrência da configuração deve emitir um evento, registrando:
    1. O endereço do *smart contract*
    2. Se foi configurada restrição de acesso
    3. Lista de endereços com acesso permitido
@@ -150,5 +152,26 @@ Critérios de aceitação:
 Critérios de aceitação:
 1. Besu informa endereço de origem e endereço de destino da transação.
 2. Somente contas ativas e vinculadas a organizações ativas são consideradas endereços de origem válidos.
-3. Caso o endereço de destino conste na lista de restrição de acesso de *smart contracts*, então o endereço de origem deve constar como endereço permitido. Caso contrário o acesso é negado.
-4. Transações de implantação de *smart contract* (endereço destino igual a `0x0`) somente podem ser enviadas por contas com papel Administrador Global, Administador Local ou Implantador de Aplicações.
+3. Caso o endereço de origem conste na lista de contas com restrição de acesso, então o endereço de destino deve constar como permitido. Caso contrário, o acesso é negado.
+4. Caso o endereço de destino conste na lista de *smart contracts* com restrições de acesso, então o endereço de origem deve constar como permitido. Caso contrário, o acesso é negado.
+5. Transações de implantação de *smart contract* (endereço destino igual a `0x0`) somente podem ser enviadas por contas com papel Administrador Global, Administador Local ou Implantador de Aplicações.
+
+
+## USACC12 - Administrador configura restrições de acesso de uma conta de sua organização para que esta só possa realizar transações para um conjunto determinado de endereços ou seja liberada para realizar transações para quaisquer endereços<a id="usacc12"></a>
+
+Critérios de aceitação:
+1. Somente Administradores Globais ou Administradores Locais ativos, vinculados a organizações ativas, podem realizar a configuração.
+2. São informados:
+   1. A conta a ter seu acesso configurado.
+   2. Se o acesso deve ser restringido ou não.
+   3. No caso de haver restrição, a lista de endereços que a conta terá permissão para enviar transações.
+      1. A lista deve conter ao menos um endereço.
+3. O administrador somente pode configurar contas vinculadas à sua organização.
+4. O papel da conta a ser configurada não pode ser de Administrador Global.
+5. Caso seja indicada limitação de acesso, a conta é adicionada à lista de contas com restrição de acesso, juntamente com o conjunto de endereços permitidos.
+6. Caso **não** seja indicada limitação de acesso, a conta é removida da lista de restrição de acesso, liberando-a para enviar transações para qualquer endereço.
+7. A ocorrência da configuração deve emitir um evento, registrando:
+   1. A conta configurada
+   2. Se foi configurada restrição de acesso
+   3. Lista de endereços permitidos
+   4. O administrador que realizou a configuração
