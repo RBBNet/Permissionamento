@@ -36,11 +36,28 @@ https://github.com/cucumber/cucumber-js/blob/main/docs/debugging.md
 
 Ajustar variável de ambiente `DEBUG=cucumber`
 
+
 #### Hardhat
 
 https://hardhat.org/hardhat-runner/docs/troubleshooting/verbose-logging
 
 Ajustar variável de ambiente `HARDHAT_VERBOSE=true`
+
+
+#### Log nos *smart contracts*
+
+O Hardhat permite utilizar função de log na console, de forma análoga ao Javascript (ver referência abaixo).
+
+Exemplo:
+```
+import "hardhat/console.sol";
+
+...
+
+console.log("Parametros %s e %s", p1, p2);
+```
+
+**ATENÇÃO**: Esse recurso deve ser usado apenas em testes locais, de forma temporária. Tal recurso **não** pode ser usado para utilização efetiva no código final. **Remova quaisquer referências do tipo antes de fazer commit do código**.
 
 
 ### Implantação Local
