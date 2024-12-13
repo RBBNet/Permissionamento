@@ -11,7 +11,7 @@ function typeToNumber(type) {
         "ObserverBoot": 5
     };
 
-    return typeMap[type] !== undefined ? typeMap[type] : null;  // Retorna null ou um valor padrão se o tipo não for encontrado
+    return typeMap[type] !== undefined ? typeMap[type] : 9;  // Retorna null ou um valor padrão se o tipo não for encontrado
 }
 
 function checkErrorMessage(error, expectedMessage) {
@@ -48,17 +48,6 @@ Then('o nó de enodeHigh {string} e enodeLow {string} tem a mesma organização 
     const adminOrg = parseInt(adminInfo[0]);
     assert.ok(nodeOrg === adminOrg);
 });
-
-// When(/^o administrador inativo "([^"]*)" informa o endereço "([^"]*)" mais "([^"]*)", o nome "([^"]*)" e o tipo "([^"]*)" do nó para cadastrá-lo$/, async function (admin, enodeHigh, enodeLow, name, type) {
-//     const signer = await hre.ethers.getSigner(admin);
-//     type = typeToNumber(type);
-//     try {
-//         await this.nodeRules.connect(signer).addNode(enodeHigh, enodeLow, type, name);
-//     } catch (error) {
-//         checkErrorMessage(error, `InactiveAccount("${admin}", "The account or the respective organization is not active")`);
-//     }
-// });
-
 Then('o nó de enodeHigh {string} e enodeLow {string} recebe o erro {string}', async function (enodeHigh, enodeLow, expectedErrorMessage) {
     try {
         await this.nodeRules.getNode(enodeHigh, enodeLow);
@@ -89,4 +78,21 @@ When('a conta de governança {string} informa o enodeHigh {string}, o enodeLow {
     } catch(error) {
         this.error = error;
     }
+});
+When('a conta {string} informa o endereço {string} {string}, o nome {string} e o tipo {string} para alterá-lo', async function (admin, enodeHigh, enodeLow, name, type) {
+
+    try{
+        this.oldInfo = await this.nodeRules.getNode(enodeHigh, enodeLow);
+        const signer = await hre.ethers.getSigner(admin);
+        type = typeToNumber(type);
+        await this.nodeRules.connect(signer).updateLocalNode(enodeHigh, enodeLow, type, name);
+        this.newInfo = await this.nodeRules.getNode(enodeHigh, enodeLow);
+        assert.ok(this.newInfo[3] !== this.oldInfo[3]);
+    } catch(error) {
+        this.error = error;
+    }
+});
+Then('o nome do nó {string} {string} continua o mesmo', async function (enodeHigh, enodeLow) {
+    this.newInfo = await this.nodeRules.getNode(enodeHigh, enodeLow);
+    assert.ok(this.newInfo[3] === this.oldInfo[3]);
 });
