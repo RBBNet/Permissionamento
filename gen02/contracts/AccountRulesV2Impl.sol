@@ -270,7 +270,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
             // Conta tem acesso restrito a alguns targets
             address[] storage allowedTargets = restrictedAccountsAllowedTargets[sender];
             for(uint i = 0; i < allowedTargets.length; ++i) {
-                if(sender == allowedTargets[i]) {
+                if(target == allowedTargets[i]) {
                     return true;
                 }
             }
