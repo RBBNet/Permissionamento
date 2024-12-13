@@ -49,6 +49,11 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     E verifico se a conta "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65" está ativa o resultado é "false"
     E a lista de organizações é "1,BNDES,true|2,TCU,true"
 
+
+  ##############################################################################
+  # Permissionamento de transações
+  ##############################################################################
+
   Cenário: Transação permitida a smart contract
     # Administrador global do BNDES pode chamar smart contract
     Então a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
@@ -78,6 +83,52 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     E a conta "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" chamar o endereço "0x0000000000000000000000000000000000000000" tem verificação de permissionamento "true"
     # Usuário do BNDES não pode chamar smart contract
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000000000" tem verificação de permissionamento "false"
+
+
+  ##############################################################################
+  # Restrição de acesso de contas
+  ##############################################################################
+
+  Cenário: Configuração de restrição de acesso por Administrador Global e Administrador Local
+    Então a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
+    E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "true"
+    E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x000000000000000000000000000000000000aaaa" tem verificação de permissionamento "true"
+
+    # Administrador Global do BNDES configura restrição de acesso para conta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" configura restrição de acesso para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" permitindo acesso somente aos endereços "0x0000000000000000000000000000000000008888,0x0000000000000000000000000000000000009999"
+    Então a configuração de acesso ocorre com sucesso
+    E o evento "AccountTargetAccessUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com restrição "true" permitindo acesso aos endereços "0x0000000000000000000000000000000000008888,0x0000000000000000000000000000000000009999" executado pelo admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
+    E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "true"
+    E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x000000000000000000000000000000000000aaaa" tem verificação de permissionamento "false"
+
+    # Administrador Local do BNDES libera restrição de acesso para conta
+    Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" remove restrição de acesso para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    Então a configuração de acesso ocorre com sucesso
+    E o evento "AccountTargetAccessUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com restrição "false" permitindo acesso aos endereços "" executado pelo admin "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+    E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
+    E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "true"
+    E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x000000000000000000000000000000000000aaaa" tem verificação de permissionamento "true"
+
+  Cenário: Tentativa de configuração de restrição de acesso de conta por conta sem privilégio de acesso
+
+  Cenário: Tentativa de configuração de restrição de acesso de conta por conta não autorizada ("por fora" da governança)
+    # Administrador global do BNDES tenta configurar acesso a smart contract
+    #Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" configura restrição de acesso ao endereço "0x0000000000000000000000000000000000008888" permitindo acesso somente pelas contas "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC,0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    #Então ocorre erro "UnauthorizedAccess" na tentativa de configuração de acesso
+
+  Cenário: Tentativa de configuração de restrição de acesso de conta por conta inválida
+  
+  Cenário: Tentativa de configuração de restrição de acesso de conta sem indicar endereços
+
+  Cenário: Tentativa de remoção de restrição de acesso de conta indicando endereços
+
+  Cenário: Tentativa de configuração de restrição de acesso de conta de outra organização
+
+
+  ##############################################################################
+  # Restrição de acesso a smart contracts
+  ##############################################################################
 
   Cenário: Smart contract com restrição de acesso total
     # Governança configura restrição de acesso a smart contract

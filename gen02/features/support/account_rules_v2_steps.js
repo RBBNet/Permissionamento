@@ -247,19 +247,19 @@ When('a conta {string} configura restrição de acesso ao endereço {string} per
     try {
         const signer = await hre.ethers.getSigner(admin);
         assert.ok(signer != null);
-        await this.accountRulesContract.connect(signer).setSmartContractSenderAccess(target, true, getSenders(addresses));
+        await this.accountRulesContract.connect(signer).setSmartContractSenderAccess(target, true, getAdresses(addresses));
     }
     catch(error) {
         this.accessConfigurationError = error;
     }
 });
 
-function getSenders(addresses) {
-    let senders = [];
+function getAdresses(addresses) {
+    let addressArray = [];
     if(addresses.length > 0) {
-        senders = addresses.split(",");
+        addressArray = addresses.split(",");
     }
-    return senders;
+    return addressArray;
 }
 
 When('a conta {string} remove restrição de acesso ao endereço {string}', async function(admin, target) {
@@ -291,6 +291,45 @@ Then('o evento {string} foi emitido para o smart contract {string} com restriç�
         found =
             events[i].fragment.name == event &&
             events[i].args[0] == target &&
+            events[i].args[1] == getBoolean(restricted) &&
+            events[i].args[2].toString() == addresses &&
+            events[i].args[3] == admin;
+    }
+    assert.ok(found);
+});
+
+When('a conta {string} configura restrição de acesso para a conta {string} permitindo acesso somente aos endereços {string}', async function(admin, account, targets) {
+    this.accessConfigurationError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.accountRulesContract.connect(signer).setAccountTargetAccess(account, true, getAdresses(targets));
+    }
+    catch(error) {
+        this.accessConfigurationError = error;
+    }
+});
+
+When('a conta {string} remove restrição de acesso para a conta {string}', async function(admin, account) {
+    this.accessConfigurationError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.accountRulesContract.connect(signer).setAccountTargetAccess(account, false, []);
+    }
+    catch(error) {
+        this.accessConfigurationError = error;
+    }
+});
+
+Then('o evento {string} foi emitido para a conta {string} com restrição {string} permitindo acesso aos endereços {string} executado pelo admin {string}', async function(event, account, restricted, addresses, admin) {
+    const block = await hre.ethers.provider.getBlockNumber();
+    const events = await this.accountRulesContract.queryFilter(event, block, block);
+    let found = false;
+    for (let i = 0; i < events.length && !found; i++) {
+        found =
+            events[i].fragment.name == event &&
+            events[i].args[0] == account &&
             events[i].args[1] == getBoolean(restricted) &&
             events[i].args[2].toString() == addresses &&
             events[i].args[3] == admin;
