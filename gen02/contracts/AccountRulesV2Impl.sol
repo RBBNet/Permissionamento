@@ -116,8 +116,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     }
 
     function addLocalAccount(address account, bytes32 roleId, bytes32 dataHash) public
-        onlyActiveAdmin validAccount(account) inexistentAccount(account) validRole(roleId) notGlobalAdminRole(roleId)
-        validHash(dataHash) {
+        onlyActiveAdmin validAccount(account) inexistentAccount(account) validRole(roleId) notGlobalAdminRole(roleId) {
         _addAccount(account, accounts[msg.sender].orgId, roleId, dataHash);
     }
 
@@ -155,17 +154,23 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
 
     function addAccount(address account, uint orgId, bytes32 roleId, bytes32 dataHash) public
         onlyGovernance validAccount(account) inexistentAccount(account) validOrganization(orgId)
-        validRole(roleId) validHash(dataHash) {
-        // TODO validar dataHash conforme papel
+        validRole(roleId) {
         _addAccount(account, orgId, roleId, dataHash);
     }
 
     function _addAccount(address account, uint orgId, bytes32 roleId, bytes32 dataHash) private {
+        _revertIfInvalidDataHash(roleId, dataHash);
         AccountData memory newAccount = AccountData(orgId, account, roleId, dataHash, true);
         accounts[account] = newAccount;
         _grantRole(roleId, account);
         _incrementGlobalAdminCount(orgId, roleId);
         emit AccountAdded(newAccount.account, newAccount.orgId, newAccount.roleId, newAccount.dataHash, msg.sender);
+    }
+
+    function _revertIfInvalidDataHash(bytes32 roleId, bytes32 hash) private pure {
+        if(hash == 0 && roleId != GLOBAL_ADMIN_ROLE && roleId != LOCAL_ADMIN_ROLE) {
+            revert InvalidHash(hash, "Data hash cannot be 0x0");
+        }
     }
 
     function deleteAccount(address account) public onlyGovernance existentAccount(account) {
