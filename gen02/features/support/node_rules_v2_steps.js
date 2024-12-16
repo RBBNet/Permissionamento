@@ -48,6 +48,7 @@ Then('o nó de enodeHigh {string} e enodeLow {string} tem a mesma organização 
     const adminOrg = parseInt(adminInfo[0]);
     assert.ok(nodeOrg === adminOrg);
 });
+
 Then('o nó de enodeHigh {string} e enodeLow {string} recebe o erro {string}', async function (enodeHigh, enodeLow, expectedErrorMessage) {
     try {
         await this.nodeRules.getNode(enodeHigh, enodeLow);
@@ -79,6 +80,7 @@ When('a conta de governança {string} informa o enodeHigh {string}, o enodeLow {
         this.error = error;
     }
 });
+
 When('a conta {string} informa o endereço {string} {string}, o nome {string} e o tipo {string} para alterá-lo', async function (admin, enodeHigh, enodeLow, name, type) {
 
     try{
@@ -92,6 +94,7 @@ When('a conta {string} informa o endereço {string} {string}, o nome {string} e 
         this.error = error;
     }
 });
+
 Then('o nome do nó {string} {string} continua o mesmo', async function (enodeHigh, enodeLow) {
     this.newInfo = await this.nodeRules.getNode(enodeHigh, enodeLow);
     assert.ok(this.newInfo[3] === this.oldInfo[3]);
