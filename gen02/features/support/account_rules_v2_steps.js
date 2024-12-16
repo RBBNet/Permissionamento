@@ -322,6 +322,18 @@ When('a conta {string} remove restrição de acesso para a conta {string}', asyn
     }
 });
 
+When('a conta {string} remove restrição de acesso para a conta {string} indicando permissão de acesso somente aos endereços {string}', async function(admin, account, targets) {
+    this.accessConfigurationError = null;
+    try {
+        const signer = await hre.ethers.getSigner(admin);
+        assert.ok(signer != null);
+        await this.accountRulesContract.connect(signer).setAccountTargetAccess(account, false, getAdresses(targets));
+    }
+    catch(error) {
+        this.accessConfigurationError = error;
+    }
+});
+
 Then('o evento {string} foi emitido para a conta {string} com restrição {string} permitindo acesso aos endereços {string} executado pelo admin {string}', async function(event, account, restricted, addresses, admin) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.accountRulesContract.queryFilter(event, block, block);
