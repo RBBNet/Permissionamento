@@ -135,7 +135,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
 
     function _revertIfNotSameOrganization(bytes32 enodeHigh, bytes32 enodeLow, uint nodeKey) private view {
         AccountRulesV2.AccountData memory acc = accountsContract.getAccount(msg.sender);
-        if(acc.orgId != allowedNodes[nodeKey].orgId){
+        if(acc.orgId != allowedNodes[nodeKey].orgId) {
             revert NotLocalNode(enodeHigh, enodeLow);
         }
     }
@@ -149,8 +149,8 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     }
 
     function _revertIfInvalidName(string calldata name) private pure {
-        if (bytes(name).length < 0){
-            revert InvalidName("Node name cannot be empty.");
+        if(bytes(name).length < 0) {
+            revert InvalidArgument("Node name cannot be empty.");
         }
     }
 
