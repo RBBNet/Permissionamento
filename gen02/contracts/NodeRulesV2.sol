@@ -34,12 +34,13 @@ interface NodeRulesV2 is NodeRulesProxy {
     error NodeNotFound(bytes32 enodeHigh, bytes32 enodeLow);
     error InvalidState(string message);
     error InactiveNode(bytes32 enodeHigh, bytes32 enodeLow);
+    error InvalidName(string message);
 
     function addLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external;
     function deleteLocalNode(bytes32 enodeHigh, bytes32 enodeLow) external;
     function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name, uint organization) external;
     function deleteNode(bytes32 enodeHigh, bytes32 enodeLow) external;
     function updateLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external;
-    function updateNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool status) external;
+    function updateLocalNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool status) external;
 
 }

@@ -29,22 +29,22 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
 
     //USNOD01 - OK
     function addLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name) public onlyActiveAdmin {
-        uint256 key = _calculateKey(enodeHigh, enodeLow);
-        _revertIfDuplicateNode(enodeHigh, enodeLow, key);
         AccountRulesV2.AccountData memory acc = accountsContract.getAccount(msg.sender);
-        allowedNodes[key] = NodeData(enodeHigh, enodeLow, nodeType, name, acc.orgId, true);
-        emit NodeAdded(enodeHigh, enodeLow, msg.sender);
+        _addNode(enodeHigh, enodeLow, nodeType, name, acc.orgId);
     }
 
-    //USNOD05 - não sei se vai pegar o erro OrganizationNotFound do Organization, e se essa verificação é suficiente
+    //USNOD05 - OK
     function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name, uint organization) public onlyGovernance {
-        uint256 key = _calculateKey(enodeHigh, enodeLow);
-        _revertIfDuplicateNode(enodeHigh, enodeLow, key);
-
         if(!organizationsContract.isOrganizationActive(organization)) {
             revert InvalidOrganization(organization);
         }
+        _addNode(enodeHigh, enodeLow, nodeType, name, organization);
+    }
 
+    function _addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name, uint organization) private {
+        uint256 key = _calculateKey(enodeHigh, enodeLow);
+        _revertIfDuplicateNode(enodeHigh, enodeLow, key);
+        _revertIfInvalidName(name);
         allowedNodes[key] = NodeData(enodeHigh, enodeLow, nodeType, name, organization, true);
         emit NodeAdded(enodeHigh, enodeLow, msg.sender);
     }
@@ -66,28 +66,22 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         emit NodeDeleted(enodeHigh, enodeLow, msg.sender);
     }
     
-    //USNOD03 - ok? É suficiente?
+    //USNOD03 - pode mudar apenas o nome ou apenas o tipo?
     function updateLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name) public onlyActiveAdmin {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         _revertIfNotSameOrganization(enodeHigh, enodeLow, key);
-
-        if(!isValidNodeType(nodeType)){
-            revert InvalidArgument("Invalid node type.");
-        }
-
-        if(bytes(name).length > 0) {
-            allowedNodes[key].name = name;
-        }
-        
+        _revertIfInvalidName(name);
         allowedNodes[key].nodeType = nodeType;
+	allowedNodes[key].name = name;
         emit NodeUpdated(enodeHigh, enodeLow, msg.sender);
     }
 
-    //USNOD04 - dúvida
-    function updateNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool status) public onlyActiveAdmin {
+    //USNOD04 - OK
+    function updateLocalNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool status) public onlyActiveAdmin {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
+        _revertIfNotSameOrganization(enodeHigh, enodeLow, key);
         allowedNodes[key].status = status;
         emit NodeStatusUpdated(enodeHigh, enodeLow, msg.sender);
     }
@@ -154,8 +148,10 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         return uint(keccak256(abi.encodePacked(enodeHigh, enodeLow)));
     }
 
-    function isValidNodeType(NodeType _type) public pure returns (bool) {
-        return _type == NodeType.Boot || _type == NodeType.Validator || _type == NodeType.Writer || _type == NodeType.ObserverBoot;
+    function _revertIfInvalidName(string calldata name) private pure {
+        if (bytes(name).length < 0){
+            revert InvalidName("Node name cannot be empty.");
+        }
     }
 
 }
