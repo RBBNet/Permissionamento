@@ -12,9 +12,15 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     Organization public immutable organizationsContract;
     mapping (uint => NodeData) public allowedNodes;
 
-    constructor(address accountAddress, address organizationAddress, AdminProxy adminProxy) Governable(adminProxy) {
-        accountsContract = AccountRulesV2(accountAddress); // Define o endereço do contrato 
-        organizationsContract = Organization(organizationAddress);
+    constructor(Organization orgs, AccountRulesV2 accs, AdminProxy adminProxy) Governable(adminProxy) {
+        if(address(orgs) == address(0)) {
+            revert InvalidArgument("Invalid address for Organization management smart contract");
+        }
+        if(address(accs) == address(0)) {
+            revert InvalidArgument("Invalid address for Account management smart contract");
+        }
+        organizationsContract = orgs;
+        accountsContract = accs;
     }
     
     modifier onlyActiveAdmin() {

@@ -21,7 +21,7 @@ function checkErrorMessage(error, expectedMessage) {
 }
 
 Given('que o contrato de nós está implantado', async function() {
-    this.nodeRules = await hre.ethers.deployContract("NodeRulesV2Impl", [this.accountRulesContract, this.organizationContractAddress, this.adminMockContractAddress]);
+    this.nodeRules = await hre.ethers.deployContract("NodeRulesV2Impl", [this.organizationContractAddress, this.accountRulesContract, this.adminMockContractAddress]);
     const contractAddress = await this.nodeRules.getAddress();
     assert.ok(contractAddress != null);
 });
