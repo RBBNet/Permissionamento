@@ -235,7 +235,8 @@ contract Governance {
     }
 
     function executeProposal(uint proposalId) public onlyActiveGlobalAdmin existentProposal(proposalId) 
-        onlyActiveOrFinishedProposal(proposalId) onlyParticipantOrganization(proposalId) onlyDefinedProposal(proposalId) {
+        onlyActiveOrFinishedProposal(proposalId) onlyParticipantOrganization(proposalId) onlyDefinedProposal(proposalId)
+        returns (bytes[] memory) {
         ProposalData storage proposal = proposals[proposalId];
         if(proposal.status != ProposalStatus.Finished) {
             _finishProposal(proposal);
@@ -244,9 +245,12 @@ contract Governance {
         proposal.status = ProposalStatus.Executed;
         emit ProposalExecuted(proposalId, msg.sender);
 
+        bytes[] memory returnedValues = new bytes[](proposal.targets.length);
         for (uint i = 0; i < proposal.targets.length; ++i) {
-            Address.functionCall(proposal.targets[i], proposal.calldatas[i]);
+            returnedValues[i] = Address.functionCall(proposal.targets[i], proposal.calldatas[i]);
         }
+
+        return returnedValues;
     }
 
     function getProposal(uint proposalId) public view existentProposal(proposalId) returns (ProposalData memory) {
