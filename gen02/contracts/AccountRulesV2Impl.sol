@@ -106,7 +106,6 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
             // utilizando suas posições no array para identificar as organizações.
             address account = accs[i];
             uint orgId = i + 1;
-            // TODO Deveria ser necessário informar hash?
             _addAccount(account, orgId, GLOBAL_ADMIN_ROLE, 0);
         }
         validRoles[GLOBAL_ADMIN_ROLE] = true;
