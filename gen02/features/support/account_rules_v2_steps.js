@@ -187,6 +187,10 @@ When('a conta {string} atualiza a situação ativa da conta local {string} para 
     }
 });
 
+Then('a atualização é realizada com sucesso', function() {
+    assert.ok(this.updateError == null);
+});
+
 Then('ocorre erro {string} na tentativa de atualização de conta', function(error) {
     assert.ok(this.updateError != null);
     assert.ok(this.updateError.message.includes(error));
