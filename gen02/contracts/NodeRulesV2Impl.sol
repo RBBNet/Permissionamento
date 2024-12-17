@@ -149,7 +149,8 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     }
 
     function _revertIfInvalidName(string calldata name) private pure {
-        if(bytes(name).length < 0) {
+
+        if(bytes(name).length == 0) {
             revert InvalidArgument("Node name cannot be empty.");
         }
     }
