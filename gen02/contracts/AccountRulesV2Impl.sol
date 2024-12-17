@@ -137,10 +137,9 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     }
 
     function updateLocalAccountDataHash(address account, bytes32 dataHash) public
-        onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account)
-        validHash(dataHash) {
-        // TODO validar dataHash conforme papel
+        onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account) {
         AccountData storage acc = accounts[account];
+        _revertIfInvalidDataHash(acc.roleId, dataHash);
         acc.dataHash = dataHash;
         emit AccountDataHashUpdated(acc.account, acc.orgId, acc.dataHash, msg.sender);
     }
