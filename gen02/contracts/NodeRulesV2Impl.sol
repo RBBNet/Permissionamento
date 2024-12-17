@@ -121,10 +121,10 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         uint16
     ) public view returns (bytes32) {
         if(isNodeActive(sourceEnodeHigh, sourceEnodeLow) && isNodeActive(destinationEnodeHigh, destinationEnodeLow)) {
-            return 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF;
-        } else {
-            return 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF;
+            return CONNECTION_ALLOWED;
         }
+        
+        return CONNECTION_DENIED;
     }
 
     function _revertIfDuplicateNode(bytes32 enodeHigh, bytes32 enodeLow, uint nodeKey) private view {
