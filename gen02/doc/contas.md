@@ -31,37 +31,25 @@ Critérios de aceitação:
    3. O administrador que realizou a ação
 
 
-## USACC03 – Administrador altera papel de uma conta de sua organização para elevar ou rebaixar privilégios de acesso<a id="usacc03"></a>
+## USACC03 – Administrador altera uma conta de sua organização para modificar privilégios de acesso e/ou manter informação de auditoria atualizada<a id="usacc03"></a>
 
 Critérios de aceitação:
 1. Somente Administradores Globais ou Administradores Locais ativos, vinculados a organizações ativas, podem realizar a alteração.
-2. O administrador informa o endereço da conta e o novo papel a ser atribuído.
+2. O administrador informa o endereço da conta, o novo papel e o novo hash cadastral a serem atribuídos.
 3. O administrador somente pode alterar contas vinculadas à sua organização.
 4. O papel informado deve ser válido.
 5. A alteração não pode envolver o papel de Administrador Global, seja no estado original ou no estado final da alteração.
-6. O hash dos dados cadastrais da conta não pode estar vazio/zerado, caso o novo papel da conta seja diferente de Administrador Local.
-7. O novo papel é atribuído à conta.
+6. O hash dos dados cadastrais não pode estar vazio/zerado, caso o novo papel da conta seja diferente de Administrador Local.
+7. O novo papel e o novo hash são atribuídos à conta.
 8. A ocorrência da alteração deve emitir um evento, registrando:
    1. O endereço da conta
    2. O identificador da organização
    3. O novo papel informado para a conta
-   4. O administrador que realizou a ação
+   4. O novo hash informado para a conta
+   5. O administrador que realizou a ação
 
 
-## USACC04 – Administrador altera hash de dados cadastrais de uma conta de sua organização para manter a informação de auditoria atualizada<a id="usacc04"></a>
-
-Critérios de aceitação:
-1. Somente Administradores Globais ou Administradores Locais ativos, vinculados a organizações ativas, podem realizar a alteração.
-2. O administrador informa o endereço da conta e o novo hash a ser atribuído.
-3. O administrador somente pode alterar contas vinculadas à sua organização.
-4. O papel da conta a ser alterada não pode ser de Administrador Global.
-5. O hash dos dados cadastrais da conta não pode estar vazio/zerado, caso o papel da conta seja diferente de Administrador Local.
-6. O hash é atribuído à conta.
-7. A ocorrência da alteração deve emitir um evento, registrando:
-   1. O endereço da conta
-   2. O identificador da organização
-   3. O novo hash informado para a conta
-   4. O administrador que realizou a ação
+## ~~USACC04~~
 
 
 ## USACC05 – Administrador altera situação de conta da sua organização para que perca temporariamente ou para que readquira privilégios de acesso<a id="usacc05"></a>

@@ -298,17 +298,12 @@ Funcionalidade: Gestão de contas
     E a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" adiciona a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     E verifico se a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" está ativa o resultado é "true"
 
-    # Administrador global do BNDES atualiza papel da conta local
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza o papel da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "LOCAL_ADMIN_ROLE"
-    Então a atualização é realizada com sucesso
-    E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 1 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e situação ativa "true"
-    E o evento "AccountRoleUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, papel "LOCAL_ADMIN_ROLE" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
-    E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" não consta na lista de contas do papel "USER_ROLE"
-    # Administrador global do BNDES atualiza hash da conta local
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza o hash cadastral da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "0x0000000000000000000000000000000000000000000000000000000000000003"
+    # Administrador global do BNDES atualiza conta local
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000003"
     Então a atualização é realizada com sucesso
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 1 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000003" e situação ativa "true"
-    E o evento "AccountDataHashUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, data hash "0x0000000000000000000000000000000000000000000000000000000000000003" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000003" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" não consta na lista de contas do papel "USER_ROLE"
     # Administrador global do BNDES atualiza status da conta local
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a situação ativa da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "false"
     Então a atualização é realizada com sucesso
@@ -316,17 +311,12 @@ Funcionalidade: Gestão de contas
     E o evento "AccountStatusUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, situação ativa "false" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E verifico se a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" está ativa o resultado é "false"
 
-    # Administrador local do BNDES atualiza papel da conta local
-    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" atualiza o papel da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "USER_ROLE"
-    Então a atualização é realizada com sucesso
-    E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 1 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000003" e situação ativa "false"
-    E o evento "AccountRoleUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, papel "USER_ROLE" e admin "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec"
-    E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" não consta na lista de contas do papel "LOCAL_ADMIN_ROLE"
-    # Administrador local do BNDES atualiza hash da conta local
-    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" atualiza o hash cadastral da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "0x0000000000000000000000000000000000000000000000000000000000000004"
+    # Administrador local do BNDES atualiza conta local
+    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" atualiza a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000004"
     Então a atualização é realizada com sucesso
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 1 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000004" e situação ativa "false"
-    E o evento "AccountDataHashUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, data hash "0x0000000000000000000000000000000000000000000000000000000000000004" e admin "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec"
+    E o evento "AccountUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000004" e admin "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec"
+    E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" não consta na lista de contas do papel "LOCAL_ADMIN_ROLE"
     # Administrador local do BNDES atualiza status da conta local
     Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" atualiza a situação ativa da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "true"
     Então a atualização é realizada com sucesso
@@ -339,37 +329,44 @@ Funcionalidade: Gestão de contas
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
     # Administrador global do BNDES atualiza hash da conta local
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza o hash cadastral da conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" para "0x0000000000000000000000000000000000000000000000000000000000000000"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
     Então a atualização é realizada com sucesso
     E a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
-    E o evento "AccountDataHashUpdated" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountUpdated" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+
+  Cenário: Atualização de conta para administrador local com hash zerado
+    # Administrador global do BNDES adiciona novo usuário
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
+    Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
+    # Administrador global do BNDES atualiza papel e hash da conta local
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
+    Então a atualização é realizada com sucesso
+    E a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
+    E o evento "AccountUpdated" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
 
   Cenário: Atualização de papel de conta local com hash válido
     # Administrador global do BNDES adiciona novo administrador local
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
     # Administrador global do BNDES altera papel da conta para implantador de smart contracts
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza o papel da conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" para "DEPLOYER_ROLE"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "DEPLOYER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     Então a atualização é realizada com sucesso
     E a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "DEPLOYER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
-    E o evento "AccountRoleUpdated" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "DEPLOYER_ROLE" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountUpdated" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "DEPLOYER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" não consta na lista de contas do papel "LOCAL_ADMIN_ROLE"
     # Administrador global do BNDES altera papel da conta para usuário
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza o papel da conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" para "USER_ROLE"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     Então a atualização é realizada com sucesso
     E a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
-    E o evento "AccountRoleUpdated" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "USER_ROLE" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountUpdated" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" não consta na lista de contas do papel "DEPLOYER_ROLE"
 
   Cenário: Tentativa de atualização de conta local com conta não permissionada
     # Administrador global do BNDES adiciona novo administrador local
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     E verifico se a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" está ativa o resultado é "true"
-    # Uma conta qualquer tenta atualizar o papel de uma conta local
-    Quando a conta "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" atualiza o papel da conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" para "USER_ROLE"
-    Então ocorre erro "UnauthorizedAccess" na tentativa de atualização de conta
-    # Uma conta qualquer tenta atualizar o hash de uma conta local
-    Quando a conta "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" atualiza o hash cadastral da conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" para "0x0000000000000000000000000000000000000000000000000000000000000002"
+    # Uma conta qualquer tenta atualizar uma conta local
+    Quando a conta "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" atualiza a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     Então ocorre erro "UnauthorizedAccess" na tentativa de atualização de conta
     # Uma conta qualquer tenta atualizar o status de uma conta local
     Quando a conta "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" atualiza a situação ativa da conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" para "false"
@@ -382,22 +379,16 @@ Funcionalidade: Gestão de contas
     # Administrador global do BNDES adiciona nova conta de usuário 0x3C44
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     E verifico se a conta "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" está ativa o resultado é "true"
-    # Nova conta de usuário 0x7099 tenta alterar papel da conta 0x3C44
-    Quando a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" atualiza o papel da conta local "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" para "LOCAL_ADMIN_ROLE"
-    Então ocorre erro "UnauthorizedAccess" na tentativa de atualização de conta
-    # Nova conta de usuário 0x7099 tenta alterar hash da conta 0x3C44
-    Quando a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" atualiza o hash cadastral da conta local "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" para "0x0000000000000000000000000000000000000000000000000000000000000002"
+    # Nova conta de usuário 0x7099 tenta alterar conta 0x3C44
+    Quando a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" atualiza a conta local "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     Então ocorre erro "UnauthorizedAccess" na tentativa de atualização de conta
     # Nova conta de usuário 0x7099 tenta alterar status da conta 0x3C44
     Quando a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" atualiza a situação ativa da conta local "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" para "false"
     Então ocorre erro "UnauthorizedAccess" na tentativa de atualização de conta
 
   Cenário: Tentativa de atualização de conta local com administrador de organização inativa
-    # Administrador global da OrgExc tenta atualizar papel de conta local
-    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" atualiza o papel da conta local "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" para "LOCAL_ADMIN_ROLE"
-    Então ocorre erro "InactiveAccount" na tentativa de atualização de conta
-    # Administrador global da OrgExc tenta atualizar hash de conta local
-    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" atualiza o hash cadastral da conta local "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" para "0x0000000000000000000000000000000000000000000000000000000000000002"
+    # Administrador global da OrgExc tenta atualizar conta local
+    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" atualiza a conta local "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     Então ocorre erro "InactiveAccount" na tentativa de atualização de conta
     # Administrador global da OrgExc tenta atualizar status de conta local
     Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" atualiza a situação ativa da conta local "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" para "false"
@@ -407,11 +398,8 @@ Funcionalidade: Gestão de contas
     # Administrador global do BNDES adiciona nova conta de usuário 0x7099
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     E verifico se a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" está ativa o resultado é "true"
-    # Administrador global do TCU tenta atualizar papel de conta do BNDES
-    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" atualiza o papel da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "LOCAL_ADMIN_ROLE"
-    Então ocorre erro "NotLocalAccount" na tentativa de atualização de conta
-    # Administrador global do TCU tenta atualizar hash de conta do BNDES
-    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" atualiza o hash cadastral da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "0x0000000000000000000000000000000000000000000000000000000000000002"
+    # Administrador global do TCU tenta atualizar conta do BNDES
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" atualiza a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     Então ocorre erro "NotLocalAccount" na tentativa de atualização de conta
     # Administrador global do TCU tenta atualizar status de conta do BNDES
     Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" atualiza a situação ativa da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "false"
@@ -421,11 +409,8 @@ Funcionalidade: Gestão de contas
     # Governança adiciona novo administrador global para o BNDES
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" na organização 1 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     E verifico se a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" está ativa o resultado é "true"
-    # Administrador global do BNDES tenta atualizar papel de outro administrador global
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza o papel da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "LOCAL_ADMIN_ROLE"
-    Então ocorre erro "InvalidRole" na tentativa de atualização de conta
-    # Administrador global do BNDES tenta atualizar hash de outro administrador global
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza o hash cadastral da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "0x0000000000000000000000000000000000000000000000000000000000000002"
+    # Administrador global do BNDES tenta atualizar outro administrador global
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     Então ocorre erro "InvalidRole" na tentativa de atualização de conta
     # Administrador global do BNDES tenta atualizar status de outro administrador global
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a situação ativa da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "false"
@@ -433,10 +418,7 @@ Funcionalidade: Gestão de contas
 
   Cenário: Tentativa de atualização de conta local inexistente
     # Administrador global do BNDES tenta atualizar papel de conta inexistente
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza o papel da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "LOCAL_ADMIN_ROLE"
-    Então ocorre erro "AccountNotFound" na tentativa de atualização de conta
-    # Administrador global do BNDES tenta atualizar hash de conta inexistente
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza o hash cadastral da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "0x0000000000000000000000000000000000000000000000000000000000000002"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     Então ocorre erro "AccountNotFound" na tentativa de atualização de conta
     # Administrador global do BNDES tenta atualizar status de conta inexistente
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a situação ativa da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "false"
@@ -446,8 +428,8 @@ Funcionalidade: Gestão de contas
     # Administrador global do BNDES adiciona nova conta de usuário 0x7099
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     E verifico se a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" está ativa o resultado é "true"
-    # Administrador global do BNDES tenta atualizar papel de conta local com papel inválido
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza o papel da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "UNKNOWN_ROLE"
+    # Administrador global do BNDES tenta atualizar conta local com papel inválido
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "UNKNOWN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     Então ocorre erro "InvalidRole" na tentativa de atualização de conta
 
   Cenário: Tentativa de "promoção" de conta local para administrador global
@@ -455,33 +437,18 @@ Funcionalidade: Gestão de contas
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     E verifico se a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" está ativa o resultado é "true"
     # Administrador global do BNDES tenta atualizar papel da conta local para administrador global
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza o papel da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "GLOBAL_ADMIN_ROLE"
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     Então ocorre erro "InvalidRole" na tentativa de atualização de conta
 
   Cenário: Tentativa de atualização de papel de conta local com hash zerado
     # Administrador global do BNDES adiciona novo administrador local com hash zerado
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
     Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
-    # Administrador global do BNDES tenta altera papel da conta para implantador de smart contracts
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza o papel da conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" para "DEPLOYER_ROLE"
+    # Administrador global do BNDES tenta altera papel da conta para implantador de smart contracts com hash zerado
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "DEPLOYER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
     Então ocorre erro "InvalidHash" na tentativa de atualização de conta
-    # Administrador global do BNDES altera papel da conta para usuário
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza o papel da conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" para "USER_ROLE"
-    Então ocorre erro "InvalidHash" na tentativa de atualização de conta
-
-  Cenário: Tentativa de atualização de conta local com hash zerado
-    # Administrador global do BNDES adiciona nova conta de usuário 0x7099
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
-    E verifico se a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" está ativa o resultado é "true"
-    # Administrador global do BNDES tenta atualizar conta local com hash zerado
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza o hash cadastral da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "0x0000000000000000000000000000000000000000000000000000000000000000"
-    Então ocorre erro "InvalidHash" na tentativa de atualização de conta
-
-    # Administrador global do BNDES adiciona nova conta de implantação 0x1CBd
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "DEPLOYER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
-    E verifico se a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" está ativa o resultado é "true"
-    # Administrador global do BNDES tenta atualizar conta local com hash zerado
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza o hash cadastral da conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" para "0x0000000000000000000000000000000000000000000000000000000000000000"
+    # Administrador global do BNDES altera papel da conta para usuário com hash zerado
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
     Então ocorre erro "InvalidHash" na tentativa de atualização de conta
 
 

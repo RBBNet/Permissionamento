@@ -124,23 +124,16 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         _deleteAccount(account);
     }
 
-    function updateLocalAccountRole(address account, bytes32 roleId) public
+    function updateLocalAccount(address account, bytes32 roleId, bytes32 dataHash) public
         onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account)
         validRole(roleId) notGlobalAdminRole(roleId) {
+        _revertIfInvalidDataHash(roleId, dataHash);
         AccountData storage acc = accounts[account];
-        _revertIfInvalidDataHash(roleId, acc.dataHash);
         _revokeRole(acc.roleId, account);
         acc.roleId = roleId;
         _grantRole(acc.roleId, account);
-        emit AccountRoleUpdated(acc.account, acc.orgId, acc.roleId, msg.sender);
-    }
-
-    function updateLocalAccountDataHash(address account, bytes32 dataHash) public
-        onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account) {
-        AccountData storage acc = accounts[account];
-        _revertIfInvalidDataHash(acc.roleId, dataHash);
         acc.dataHash = dataHash;
-        emit AccountDataHashUpdated(acc.account, acc.orgId, acc.dataHash, msg.sender);
+        emit AccountUpdated(acc.account, acc.orgId, acc.roleId, dataHash, msg.sender);
     }
 
     function updateLocalAccountStatus(address account, bool active) public
