@@ -136,3 +136,15 @@ Then('o estado do nó {string} {string} é {string}', async function(enodeHigh, 
    const nodeStatus = await this.nodeRules.isNodeActive(enodeHigh, enodeLow);
    assert.ok(nodeStatus === status);
 });
+
+When('a conta de governança {string} informa o endereço {string} {string}, o tipo {string}, o nome {string} e a organização {string}', async function(admin, enodeHigh, enodeLow, type, name, organization){
+    const signer = await hre.ethers.getSigner(admin);
+    try{
+        type = typeToNumber(type);
+        organization = parseInt(organization);
+        await this.nodeRules.connect(signer).addNode(enodeHigh, enodeLow, type, name, organization);
+    } catch(error){
+        this.error = error;
+    }
+
+});

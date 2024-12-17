@@ -172,7 +172,6 @@ Funcionalidade: Gestão de nós
     E o evento "NodeStatusUpdated" é emitido para o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" e a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
     E o estado do nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" é "false"
 
-
   Cenário: Alteração de situação realizada por um Administrador Local ativo e vinculado a uma organização ativa
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
     E a transação ocorre com sucesso
@@ -220,3 +219,44 @@ Funcionalidade: Gestão de nós
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" para mudar sua situação para "false"
     Então ocorre um erro na transação
     E o erro recebido é "NodeNotFound"
+
+  Cenário: Cadastro válido de nó pela Governança
+    Quando a conta de governança "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o tipo "Validator", o nome "validator01" e a organização "4"
+    E a transação ocorre com sucesso
+    Então o evento "NodeAdded" é emitido para o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" e a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" é da organização "4", tem o nome "validator01" e tipo "2"
+
+  Cenário: Tentativa de cadastro de nó pela Governança com organização inválida
+    Quando a conta de governança "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o tipo "Validator", o nome "validator01" e a organização "5"
+    E ocorre um erro na transação
+    Então o erro recebido é "InvalidOrganization"
+    E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeNotFound"
+
+  Cenário: Tentativa de cadastro de nó pela Governança com nó já existente
+    Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
+    E a transação ocorre com sucesso
+    Quando a conta de governança "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o tipo "Validator", o nome "validator01" e a organização "4"
+    Então ocorre um erro na transação
+    E o erro recebido é "DuplicateNode"
+
+  Cenário: Cadastro de nó pela Governança sem informações obrigatórias
+    Quando a conta de governança "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o tipo "", o nome "" e a organização "4"
+    Então ocorre um erro na transação
+
+  Cenário: Tentativa indevida de cadastro de nó por usuário não administrador com os poderes da Governança
+    Quando a conta de governança "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o tipo "Validator", o nome "validator01" e a organização "4"
+    Então ocorre um erro na transação
+    E o erro recebido é "UnauthorizedAccess"
+    E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeNotFound"
+
+  Cenário: Tentativa indevida de cadastro de nó por Administrador Global com os poderes da Governança
+    Quando a conta de governança "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o tipo "Validator", o nome "validator01" e a organização "4"
+    Então ocorre um erro na transação
+    E o erro recebido é "UnauthorizedAccess"
+    E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeNotFound"
+
+  Cenário: Tentativa indevida de cadastro de nó por Administrador Local com os poderes da Governança
+    Quando a conta de governança "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o tipo "Validator", o nome "validator01" e a organização "4"
+    Então ocorre um erro na transação
+    E o erro recebido é "UnauthorizedAccess"
+    E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeNotFound"
