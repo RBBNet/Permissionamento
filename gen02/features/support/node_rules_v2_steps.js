@@ -1,6 +1,8 @@
 const assert = require('assert');
 const { Given, When, Then } = require('@cucumber/cucumber');
 const hre = require("hardhat");
+const {boolean} = require("hardhat/internal/core/params/argumentTypes");
+const {getBoolean} = require("./setup");
 
 //forma mais bonita do que vários ifs
 function typeToNumber(type) {
@@ -118,4 +120,19 @@ Then('as alterações do nó {string} {string} são feitas com sucesso', async f
 Then('o nome do nó {string} {string} continua o mesmo', async function (enodeHigh, enodeLow) {
     this.newInfo = await this.nodeRules.getNode(enodeHigh, enodeLow);
     assert.ok(this.newInfo[3] === this.oldInfo[3]);
+});
+When('a conta {string} informa o endereço {string} {string} para mudar sua situação para {string}', async function (admin, enodeHigh, enodeLow, status) {
+    const signer = await hre.ethers.getSigner(admin);
+    status = getBoolean(status);
+    try {
+        await this.nodeRules.connect(signer).updateLocalNodeStatus(enodeHigh, enodeLow, status);
+    } catch(error){
+        this.error = error;
+    }
+});
+
+Then('o estado do nó {string} {string} é {string}', async function(enodeHigh, enodeLow, status){
+   status = getBoolean(status);
+   const nodeStatus = await this.nodeRules.isNodeActive(enodeHigh, enodeLow);
+   assert.ok(nodeStatus === status);
 });
