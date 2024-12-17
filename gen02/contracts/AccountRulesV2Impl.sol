@@ -128,8 +128,8 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     function updateLocalAccountRole(address account, bytes32 roleId) public
         onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account)
         validRole(roleId) notGlobalAdminRole(roleId) {
-        // TODO validar dataHash conforme papel
         AccountData storage acc = accounts[account];
+        _revertIfInvalidDataHash(roleId, acc.dataHash);
         _revokeRole(acc.roleId, account);
         acc.roleId = roleId;
         _grantRole(acc.roleId, account);
