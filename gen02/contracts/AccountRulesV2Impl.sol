@@ -106,7 +106,6 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
             // utilizando suas posições no array para identificar as organizações.
             address account = accs[i];
             uint orgId = i + 1;
-            // TODO Deveria ser necessário informar hash?
             _addAccount(account, orgId, GLOBAL_ADMIN_ROLE, 0);
         }
         validRoles[GLOBAL_ADMIN_ROLE] = true;
@@ -128,8 +127,8 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     function updateLocalAccountRole(address account, bytes32 roleId) public
         onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account)
         validRole(roleId) notGlobalAdminRole(roleId) {
-        // TODO validar dataHash conforme papel
         AccountData storage acc = accounts[account];
+        _revertIfInvalidDataHash(roleId, acc.dataHash);
         _revokeRole(acc.roleId, account);
         acc.roleId = roleId;
         _grantRole(acc.roleId, account);
@@ -137,10 +136,9 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     }
 
     function updateLocalAccountDataHash(address account, bytes32 dataHash) public
-        onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account)
-        validHash(dataHash) {
-        // TODO validar dataHash conforme papel
+        onlyActiveAdmin existentAccount(account) sameOrganization(account) notGlobalAdminAccount(account) {
         AccountData storage acc = accounts[account];
+        _revertIfInvalidDataHash(acc.roleId, dataHash);
         acc.dataHash = dataHash;
         emit AccountDataHashUpdated(acc.account, acc.orgId, acc.dataHash, msg.sender);
     }
