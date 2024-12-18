@@ -148,3 +148,12 @@ When('a conta de governança {string} informa o endereço {string} {string}, o t
     }
 
 });
+
+When('a conta de governança {string} informa o endereço {string} {string} do nó para removê-lo', async function(admin, enodeHigh, enodeLow){
+   const signer = await hre.ethers.getSigner(admin);
+   try{
+       await this.nodeRules.connect(signer).deleteNode(enodeHigh, enodeLow);
+   } catch(error){
+       this.error = error;
+   }
+});

@@ -260,3 +260,40 @@ Funcionalidade: Gestão de nós
     Então ocorre um erro na transação
     E o erro recebido é "UnauthorizedAccess"
     E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeNotFound"
+
+  Cenário: Remoção de nó válido pela Governança
+    Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
+    E a transação ocorre com sucesso
+    Quando a conta de governança "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" do nó para removê-lo
+    E a transação ocorre com sucesso
+    Então o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeNotFound"
+
+  Cenário: Remoção de nó inexistente pela Governança
+    Quando a conta de governança "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" do nó para removê-lo
+    Então ocorre um erro na transação
+    E o erro recebido é "NodeNotFound"
+
+  Cenário: Tentativa indevida de remoção de nó por usuário não administrador
+    Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
+    E a transação ocorre com sucesso
+    Quando a conta de governança "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" do nó para removê-lo
+    Então ocorre um erro na transação
+    E o erro recebido é "UnauthorizedAccess"
+    E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" é da organização "4", tem o nome "validator01" e tipo "2"
+
+  Cenário: Tentativa indevida de remoção de nó por administrador global
+    Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
+    E a transação ocorre com sucesso
+    Quando a conta de governança "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" do nó para removê-lo
+    Então ocorre um erro na transação
+    E o erro recebido é "UnauthorizedAccess"
+    E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" é da organização "4", tem o nome "validator01" e tipo "2"
+
+  Cenário: Tentativa indevida de remoção de nó por administrador local
+    Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
+    E a transação ocorre com sucesso
+    Quando a conta de governança "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" do nó para removê-lo
+    Então ocorre um erro na transação
+    E o erro recebido é "UnauthorizedAccess"
+    E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" é da organização "4", tem o nome "validator01" e tipo "2"
+
