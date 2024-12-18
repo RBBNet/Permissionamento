@@ -79,7 +79,7 @@ npm run ignition-mock
 2. Implantar os contratos de permissionamento:
 
 ```shell
-npm run ignition
+npm run ignition-local
 ```
 
 

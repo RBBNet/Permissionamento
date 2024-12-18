@@ -6,7 +6,8 @@
     "test": "cucumber-js",
     "compile": "npx hardhat compile",
     "ignition-mock": "npx hardhat ignition deploy ignition/modules/AdminMockModule.js --network local",
-    "ignition": "npx hardhat ignition deploy ignition/modules/PermissionamentoModule.js --parameters ignition/parameters.json --network local"
+    "ignition-local": "npx hardhat ignition deploy ignition/modules/PermissionamentoModule.js --parameters ignition/parameters-local.json --network local",
+    "ignition-local-besu": "npx hardhat ignition deploy ignition/modules/PermissionamentoModule.js --parameters ignition/parameters-local.json --network local_besu"
   },
   "repository": {
     "type": "git",

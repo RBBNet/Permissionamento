@@ -9,7 +9,8 @@ typechain/
 typechain-types/
 coverage/
 coverage.json/
-*/ignition/deployments/chain-31337
+*/ignition/deployments*
 pyvenv.cfg
 Lib
 Scripts
+node-data*
