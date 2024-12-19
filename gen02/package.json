@@ -5,9 +5,10 @@
   "scripts": {
     "test": "cucumber-js",
     "compile": "npx hardhat compile",
-    "deploy-hardhat-mock": "npx hardhat ignition deploy ignition/modules/AdminMock.js --network local",
-    "deploy-hardhat-gen02": "npx hardhat ignition deploy ignition/modules/Gen02.js --parameters ignition/parameters-local.json --network local",
-    "deploy-local-gen02": "npx hardhat ignition deploy ignition/modules/Gen02.js --parameters ignition/parameters-local.json --network local_besu"
+    "deploy-hardhat-mock": "npx hardhat run deploy/AdminMock.js --network local",
+    "deploy-hardhat-gen02": "npx hardhat run deploy/Gen02.js --network local",
+    "deploy-local-gen02": "npx hardhat run deploy/Gen02.js --network local_besu",
+    "deploy-local-migratetogen02": "npx hardhat run deploy/MigrateToGen02.js --network local_besu"
   },
   "repository": {
     "type": "git",

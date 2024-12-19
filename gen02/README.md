@@ -68,9 +68,19 @@ console.log("Parametros %s e %s", p1, p2);
 npx hardhat node
 ```
 
-2. Para implantar os *smart contracts* (scripts configurados no [`package.json`](package.json)) da gen02 em nó local Hardhat:
+2. Abrir outro terminal/console.
 
-2.1. Implantar contrato *mock* de [`AdminProxy`](../gen01/contracts/AdminProxy.sol):
+3. Definir a variável de ambiente `` contendo o caminho do arquivo dos parâmetros de configuração. Para o caso de implantação local o arquivo [`deploy/parameters-local.json`](deploy/parameters-local.json) já foi preparado.
+
+O ajuste da variável de ambiente pode ser feito via arquivo `.env` ou ajustando o valor diretamente no terminal:
+
+```shell
+set CONFIG_PARAMETERS=deploy/parameters-local.json
+```
+
+3. Para implantar os *smart contracts* (scripts configurados no [`package.json`](package.json)) da gen02 em nó local Hardhat:
+
+   3.1. Implantar contrato *mock* de [`AdminProxy`](../gen01/contracts/AdminProxy.sol):
 
 ```shell
 npm run deploy-hardhat-mock
@@ -78,7 +88,7 @@ npm run deploy-hardhat-mock
 
 **Observação**: Para efeitos de teste local da gen02 no Hardhat, não é necessário implantar a gen01. Mas é necessário ter um contrato de `AdminProxy`. Por isso esse mock se faz necessário.
 
-2.2. Implantar os contratos de permissionamento:
+   3.2. Implantar os contratos de permissionamento:
 
 ```shell
 npm run deploy-hardhat-gen02
