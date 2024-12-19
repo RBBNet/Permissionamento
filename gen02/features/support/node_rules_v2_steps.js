@@ -157,3 +157,16 @@ When('a conta de governança {string} informa o endereço {string} {string} do n
        this.error = error;
    }
 });
+
+When('o nó {string} {string} pede conexão ao nó {string} {string}', async function (sourceHigh, sourceLow, destHigh, destLow){
+   try{
+       const bytes = '0x00000000000000000000000000000000'
+       this.connResult = await this.nodeRules.connectionAllowed(sourceHigh, sourceLow, bytes, 0, destHigh, destLow, bytes, 0);
+   } catch (error) {
+       this.error = error;
+   }
+});
+
+Then('o resultado da conexão é {string}', async function(result){
+   assert.ok(this.connResult = result);
+});
