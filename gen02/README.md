@@ -121,6 +121,7 @@ npm run deploy-local-gen02
 - [Deploying your contracts](https://hardhat.org/hardhat-runner/docs/guides/deploying)
 - [Deploying a module](https://hardhat.org/ignition/docs/guides/deploy)
 - [Hardhat Network](https://hardhat.org/hardhat-network/docs/overview)
+- [hardhat-ethers helpers](https://hardhat.org/hardhat-runner/plugins/nomicfoundation-hardhat-ethers#helpers)
 - [Testing contracts](https://hardhat.org/hardhat-runner/docs/guides/test-contracts)
 - [Debugging with Hardhat Network](https://hardhat.org/tutorial/debugging-with-hardhat-network)
   - console.log [overview](https://hardhat.org/hardhat-network/docs/overview#console.log)
