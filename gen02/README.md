@@ -60,26 +60,41 @@ console.log("Parametros %s e %s", p1, p2);
 **ATENÇÃO**: Esse recurso deve ser usado apenas em testes locais, de forma temporária. Tal recurso **não** pode ser usado para utilização efetiva no código final. **Remova quaisquer referências do tipo antes de fazer commit do código**.
 
 
-### Implantação Local
+### Implantação Local no Hardhat
 
-Para inicar o Hardhat:
+1. Para inicar o Hardhat:
 
 ```shell
 npx hardhat node
 ```
 
-Para implantar os *smart contracts* (scripts configurados no `package.json`) em nó local Hardhat:
+2. Para implantar os *smart contracts* (scripts configurados no [`package.json`](package.json)) da gen02 em nó local Hardhat:
 
-1. Implantar contrato *mock* de [`AdminProxy`](../gen01/contracts/AdminProxy.sol):
+2.1. Implantar contrato *mock* de [`AdminProxy`](../gen01/contracts/AdminProxy.sol):
 
 ```shell
-npm run ignition-mock
+npm run deploy-hardhat-mock
 ```
 
-2. Implantar os contratos de permissionamento:
+**Observação**: Para efeitos de teste local da gen02 no Hardhat, não é necessário implantar a gen01. Mas é necessário ter um contrato de `AdminProxy`. Por isso esse mock se faz necessário.
+
+2.2. Implantar os contratos de permissionamento:
 
 ```shell
-npm run ignition-local
+npm run deploy-hardhat-gen02
+```
+
+
+### Implantação Local no Besu
+
+1. Para iniciar o Besu localmente, veja o procedimento no documento [besu.md](../besu.md).
+
+2. Para implantar a gen01, veja o procedimento no documento [README.md](../gen01/README.md) do projeto da gen01.
+
+3. Para implantar os *smart contracts* (scripts configurados no [`package.json`](package.json)) da gen02 em nó local Besu:
+
+```shell
+npm run deploy-local-gen02
 ```
 
 
