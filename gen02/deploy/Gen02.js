@@ -57,7 +57,8 @@ async function deployGen02(parameters) {
     console.log(` Governance implantado no endereço ${governanceContract.target}`);
     
     console.log('Adicionando smart contract de governança como admin');
-    await adminContract.addAdmin(governanceContract);
+    const addAdminResp = await adminContract.addAdmin(governanceContract);
+    await addAdminResp.wait();
     // Verificações
     assert.ok(await adminContract.isAuthorized(governanceContract));
     console.log(' Governance adicionado como admin\n');
