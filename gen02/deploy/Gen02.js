@@ -2,6 +2,8 @@ const hre = require('hardhat');
 const assert = require('assert');
 const { getParameters, getParameter } = require('./util.js');
 
+const GLOBAL_ADMIN_ROLE = '0xd6e7d8560c69c7c18c2b8f3b45430215d788f128f0c04bc4a3607fe05eb5399f';
+
 async function deployGen02(parameters) {
     console.log('--------------------------------------------------');
     console.log('Implantando gen02\n');
@@ -18,31 +20,46 @@ async function deployGen02(parameters) {
 
     console.log('Implantando smart contract de gestão de organizações');
     const organizationsContract = await hre.ethers.deployContract('OrganizationImpl', [organizations, adminContract]);
-    // TODO verificações
     await organizationsContract.waitForDeployment();
+    // Verificações
+    assert.equal(await organizationsContract.idSeed(), organizations.length);
+    for(let i = 0; i < organizations.length; ++i) {
+        const org = await organizationsContract.getOrganization(i+1);
+        assert.equal(org.name, organizations[i].name);
+        assert.equal(org.canVote, organizations[i].canVote);
+        assert.ok(await organizationsContract.isOrganizationActive(i+1));
+    }
     console.log(` OrganizationImpl implantado no endereço ${organizationsContract.target}`);
 
     console.log('Implantando smart contract de gestão de contas');
     const accountsContract = await hre.ethers.deployContract('AccountRulesV2Impl', [organizationsContract, globalAdmins, adminContract]);
-    // TODO verificações
     await accountsContract.waitForDeployment();
+    // Verificações
+    for(let i = 0; i < globalAdmins.length; ++i) {
+        const acc = await accountsContract.getAccount(globalAdmins[i]);
+        assert.equal(acc.orgId, i+1);
+        assert.equal(acc.roleId, GLOBAL_ADMIN_ROLE);
+        assert.ok(await accountsContract.isAccountActive(globalAdmins[i]));
+    }
     console.log(` AccountRulesV2Impl implantado no endereço ${accountsContract.target}`);
 
     console.log('Implantando smart contract de gestão de nós');
     const nodesContract = await hre.ethers.deployContract('NodeRulesV2Impl', [organizationsContract, accountsContract, adminContract]);
-    // TODO verificações
     await nodesContract.waitForDeployment();
+    // TODO verificações?
     console.log(` NodeRulesV2Impl implantado no endereço ${nodesContract.target}`);
 
     console.log('Implantando smart contract de governança');
     const governanceContract = await hre.ethers.deployContract('Governance', [organizationsContract, accountsContract]);
-    // TODO verificações
     await governanceContract.waitForDeployment();
+    // Verificações
+    assert.equal(await governanceContract.idSeed(), 0);
     console.log(` Governance implantado no endereço ${governanceContract.target}`);
     
     console.log('Adicionando smart contract de governança como admin');
     await adminContract.addAdmin(governanceContract);
-    // TODO verificações
+    // Verificações
+    assert.ok(await adminContract.isAuthorized(governanceContract));
     console.log(' Governance adicionado como admin\n');
 }
 
