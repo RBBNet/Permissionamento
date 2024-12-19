@@ -21,6 +21,7 @@
   "author": "RBB",
   "license": "GPL-3.0-only",
   "devDependencies": {
+    "dotenv": "^7.0.0",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "hardhat": "^2.22.13",
     "@openzeppelin/contracts": "^5.1.0",
