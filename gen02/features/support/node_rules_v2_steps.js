@@ -10,7 +10,9 @@ function typeToNumber(type) {
         "Validator": 2,
         "Boot": 1,
         "Writer": 3,
-        "ObserverBoot": 5
+        "WriterPartner":4,
+        "ObserverBoot": 5,
+        "Other":6
     };
 
     return typeMap[type] !== undefined ? typeMap[type] : 9;  // Retorna null ou um valor padrão se o tipo não for encontrado

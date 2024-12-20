@@ -12,7 +12,9 @@ interface NodeRulesV2 is NodeRulesProxy {
         Boot,
         Validator,
         Writer,
-        ObserverBoot
+        WriterPartner,
+        ObserverBoot,
+        Other
     }
 
     struct NodeData {
