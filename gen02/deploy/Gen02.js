@@ -1,12 +1,14 @@
 const hre = require('hardhat');
 const assert = require('assert');
-const { getParameters, getParameter } = require('./util.js');
+const { getParameters, getParameter, diagnostics } = require('./util.js');
 
 const GLOBAL_ADMIN_ROLE = '0xd6e7d8560c69c7c18c2b8f3b45430215d788f128f0c04bc4a3607fe05eb5399f';
 
 async function deployGen02(parameters) {
+    await diagnostics();
+    
     console.log('--------------------------------------------------');
-    console.log('Implantando gen02\n');
+    console.log('Implantando gen02');
     
     const adminAddress = getParameter(parameters, 'adminAddress');
     const organizations = getParameter(parameters, 'organizations');

@@ -1,12 +1,11 @@
 const fs = require('fs');
+const hre = require('hardhat');
 
 function getParameters() {
     const paramsPath = process.env['CONFIG_PARAMETERS'];
     if(paramsPath == undefined) {
         throw new Error('Variável de ambiente CONFIG_PARAMETERS não foi definida');
     }
-    
-    console.log(`Utilizando parâmetros de configuração do arquivo ${paramsPath}`);
     return JSON.parse(fs.readFileSync(paramsPath, 'utf8'));
 }
 
@@ -18,7 +17,17 @@ function getParameter(parameters, name) {
     return value;
 }
 
+async function diagnostics() {
+    console.log('--------------------------------------------------');
+
+    console.log(`Parâmetros de configuração: ${process.env['CONFIG_PARAMETERS']}`);
+
+    const accs = await hre.ethers.getSigners();
+    console.log(`Conta em uso: ${accs[0].address}`);
+}
+
 module.exports = {
     getParameters: getParameters,
-    getParameter: getParameter
+    getParameter: getParameter,
+    diagnostics: diagnostics
 }

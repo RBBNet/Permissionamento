@@ -62,15 +62,15 @@ console.log("Parametros %s e %s", p1, p2);
 
 ### Implantação Local no Hardhat
 
-1. Para inicar o Hardhat:
+1. Inicie o Hardhat:
 
 ```shell
 npx hardhat node
 ```
 
-2. Abrir outro terminal/console.
+2. Abra outro terminal/console.
 
-3. Definir a variável de ambiente `` contendo o caminho do arquivo dos parâmetros de configuração. Para o caso de implantação local o arquivo [`deploy/parameters-local.json`](deploy/parameters-local.json) já foi preparado.
+3. Defina a variável de ambiente `CONFIG_PARAMETERS` contendo o caminho do arquivo com os parâmetros de configuração. Para o caso de implantação local o arquivo [`deploy/parameters-local.json`](deploy/parameters-local.json) já foi preparado.
 
 O ajuste da variável de ambiente pode ser feito via arquivo `.env` ou ajustando o valor diretamente no terminal:
 
@@ -78,9 +78,7 @@ O ajuste da variável de ambiente pode ser feito via arquivo `.env` ou ajustando
 set CONFIG_PARAMETERS=deploy/parameters-local.json
 ```
 
-3. Para implantar os *smart contracts* (scripts configurados no [`package.json`](package.json)) da gen02 em nó local Hardhat:
-
-   3.1. Implantar contrato *mock* de [`AdminProxy`](../gen01/contracts/AdminProxy.sol):
+4. Implante o contrato *mock* de [`AdminProxy`](contracts/AdminProxy.sol):
 
 ```shell
 npm run deploy-hardhat-mock
@@ -88,7 +86,7 @@ npm run deploy-hardhat-mock
 
 **Observação**: Para efeitos de teste local da gen02 no Hardhat, não é necessário implantar a gen01. Mas é necessário ter um contrato de `AdminProxy`. Por isso esse mock se faz necessário.
 
-   3.2. Implantar os contratos de permissionamento:
+5. Implante os contratos de permissionamento:
 
 ```shell
 npm run deploy-hardhat-gen02
@@ -97,14 +95,95 @@ npm run deploy-hardhat-gen02
 
 ### Implantação Local no Besu
 
-1. Para iniciar o Besu localmente, veja o procedimento no documento [besu.md](../besu.md).
+Este projeto já contém pronta a configuração de um nó Besu validator. Para enter como esse foi preparado e funciona localmente, veja o documento [besu.md](../besu.md).
 
-2. Para implantar a gen01, veja o procedimento no documento [README.md](../gen01/README.md) do projeto da gen01.
+1. Inicie o Besu:
 
-3. Para implantar os *smart contracts* (scripts configurados no [`package.json`](package.json)) da gen02 em nó local Besu:
+```shell
+besu --config-file besu/config.toml
+```
+
+2. Abra outro terminal/console.
+
+3. Defina a variável de ambiente `CONFIG_PARAMETERS` contendo o caminho do arquivo com os parâmetros de configuração. Para o caso de implantação local o arquivo [`deploy/parameters-local.json`](deploy/parameters-local.json) já foi preparado.
+
+O ajuste da variável de ambiente pode ser feito via arquivo `.env` ou ajustando o valor diretamente no terminal:
+
+```shell
+set CONFIG_PARAMETERS=deploy/parameters-local.json
+```
+
+4. A gen02 foi feita para trabalhar com base em contratos da gen01. Portanto, algumas dependências são necessárias para que funcione corretamente. Nesse ponto, deve-se optar por:
+   1. Implantar e utilizar a gen01 por completo (sendo que os contratos de [`NodeIngress`](../gen01/contracts/NodeIngress.sol) e [`AccountIngress`](../gen01/contracts/AccountIngress.sol) da gen01 já são implantados automaticamente via arquivo [genesis](../besu/genesis.json)). Nesse caso, vá para o passo 5.
+   2. Implantar e utilizar o contrato *mock* de `AdminProxy`. Nesse caso, vá para o passo 6.
+
+
+5. **Caso vá utilizar a gen01**, veja o procedimento de implantação no documento [README.md](../gen01/README.md) do projeto da gen01.
+
+Ao final da implantação, guarde o endereço onde foi implantado o contrado de `Admin`:
+
+```
+Validation step finished
+   > Admin contract deployed with address = 0x72bb9c7ffbE2Ed234e53bc64862DdA6d9fFF333b
+```
+   
+6. **Caso NÃO vá utilizar a gen01**, implante o contrato *mock* de [`AdminProxy`](contracts/AdminProxy.sol):
+
+```shell
+npm run deploy-local-mock
+```
+
+Ao final da implantação, guarde o endereço onde foi implantado o contrado de `AdminMock`:
+
+```
+AdminMock implantado no endereço 0x5FbDB2315678afecb367f032d93F642f64180aa3
+```
+
+7. Copie o endereço do contrato de `Admin` ou `AdminMock` no arquivo [`deploy/parameters-local.json`](deploy/parameters-local.json), no parâmetro `adminAddress`:
+
+```
+{
+    "adminAddress": "0x0x5FbDB2315678afecb367f032d93F642f64180aa3
+    ...
+}
+```
+
+8. Implante os contratos da gen02:
 
 ```shell
 npm run deploy-local-gen02
+```
+
+Ao final da implantação, copie os endereços dos contratos de `OrganizationImpl`, `AccountRulesV2Impl`, `NodeRulesV2Impl` e `Governance`:
+
+```
+Implantando smart contract de gestão de organizações
+ OrganizationImpl implantado no endereço 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+Implantando smart contract de gestão de contas
+ AccountRulesV2Impl implantado no endereço 0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9
+Implantando smart contract de gestão de nós
+ NodeRulesV2Impl implantado no endereço 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
+Implantando smart contract de governança
+ Governance implantado no endereço 0x5FC8d32690cc91D4c39d9d3abcBD16989F875707
+```
+
+9. Copie os endereços dos contratos da gen02 no arquivo [`deploy/parameters-local.json`](deploy/parameters-local.json), nos parâmetros `adminAddress`:
+
+```
+{
+    ...
+    "organizationAddress": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+    "accountRulesV2Address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+    "nodeRulesV2Address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+    "governanceAddress": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+    ...
+}
+```
+
+10. Realize a migração da gen01 para a gen02:
+
+```shell
+npm run deploy-local-migratetogen02
 ```
 
 

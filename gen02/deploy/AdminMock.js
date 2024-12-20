@@ -1,18 +1,23 @@
 const hre = require('hardhat');
 const assert = require('assert');
+const { diagnostics } = require('./util.js');
 
 async function deployAdminMock() {
+    await diagnostics();
+    
     console.log('--------------------------------------------------');
     console.log('Implantando AdminMock');
     const adminMockContract = await hre.ethers.deployContract('AdminMock');
     await adminMockContract.waitForDeployment();
     console.log(` AdminMock implantado no endereço ${adminMockContract.target}`);
 
-    const defaultAdminAccount = '0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199';
+    const accs = await hre.ethers.getSigners();
+    const defaultAdminAccount = accs[0].address;
     console.log(`Acrescentando conta ${defaultAdminAccount} como admin`);
-    await adminMockContract.addAdmin(defaultAdminAccount);
+    const resp = await adminMockContract.addAdmin(defaultAdminAccount);
+    await resp.wait();
     // Verificando
-    let isAdmin = await adminMockContract.admins(defaultAdminAccount);
+    let isAdmin = await adminMockContract.isAuthorized(defaultAdminAccount);
     assert.ok(isAdmin);
     console.log(' Conta adicionanda como admin\n');
 }

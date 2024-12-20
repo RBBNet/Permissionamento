@@ -2,7 +2,7 @@
 
 Caso se queira executar uma rede de bancada, com um único nó validator, pode-se usar a configuração já preparada na pasta [`besu`](besu). Para tanto, basta iniciar o Besu da seguinte maneira:
 
-```
+```shell
 besu --config-file besu/config.toml
 ```
 

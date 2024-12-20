@@ -12,8 +12,8 @@ module.exports = {
     local_besu: {
       url: "http://127.0.0.1:8545",
       chainId: 648629,
-      accounts: ["0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"],
-      from: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+      accounts: ["0x701b615bbdfb9de65240bc28bd21bbc0d996645a3dd57e7b12bc2bdf6f192c82"],
+      from: "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     }
   },
   solidity: "0.8.26"
