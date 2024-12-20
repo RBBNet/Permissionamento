@@ -92,7 +92,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         _revertIfNotSameOrganization(enodeHigh, enodeLow, key);
         allowedNodes[key].status = status;
-        emit NodeStatusUpdated(enodeHigh, enodeLow, msg.sender);
+        emit NodeStatusUpdated(enodeHigh, enodeLow, msg.sender, status);
     }
 
     //USNOD07 - OK
