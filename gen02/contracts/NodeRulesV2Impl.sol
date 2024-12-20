@@ -59,8 +59,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     function deleteNode(bytes32 enodeHigh, bytes32 enodeLow) public onlyGovernance {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
-        delete allowedNodes[key];
-        emit NodeDeleted(enodeHigh, enodeLow, msg.sender);
+        _deleteNode(enodeHigh, enodeLow, key);
     }
     
     //USNOD02 - OK
@@ -68,7 +67,11 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         _revertIfNotSameOrganization(enodeHigh, enodeLow, key);
-        delete allowedNodes[key];
+        _deleteNode(enodeHigh, enodeLow, key);
+    }
+    
+    function _deleteNode(bytes32 enodeHigh, bytes32 enodeLow, uint nodeKey) private {
+        delete allowedNodes[nodeKey];
         emit NodeDeleted(enodeHigh, enodeLow, msg.sender);
     }
     
@@ -79,7 +82,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         _revertIfNotSameOrganization(enodeHigh, enodeLow, key);
         _revertIfInvalidName(name);
         allowedNodes[key].nodeType = nodeType;
-	allowedNodes[key].name = name;
+        allowedNodes[key].name = name;
         emit NodeUpdated(enodeHigh, enodeLow, msg.sender);
     }
 
@@ -155,7 +158,6 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     }
 
     function _revertIfInvalidName(string calldata name) private pure {
-
         if(bytes(name).length == 0) {
             revert InvalidArgument("Node name cannot be empty.");
         }
