@@ -87,12 +87,12 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     }
 
     //USNOD04 - OK
-    function updateLocalNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool status) public onlyActiveAdmin {
+    function updateLocalNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool active) public onlyActiveAdmin {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         _revertIfNotSameOrganization(enodeHigh, enodeLow, key);
-        allowedNodes[key].status = status;
-        emit NodeStatusUpdated(enodeHigh, enodeLow, msg.sender, status);
+        allowedNodes[key].status = active;
+        emit NodeStatusUpdated(enodeHigh, enodeLow, active, msg.sender);
     }
 
     //USNOD07 - OK

@@ -133,6 +133,13 @@ When('a conta {string} informa o endereço {string} {string} para mudar sua situ
     }
 });
 
+Then('o evento NodeStatusUpdated é emitido para o nó {string} {string} e a conta {string}', async function (enodeHigh, enodeLow, admin) {
+    const block = await hre.ethers.provider.getBlockNumber();
+    const events = await this.nodeRules.queryFilter("NodeStatusUpdated", block, block);
+    const eventAdmin = events[0].args[3];
+    assert.ok(eventAdmin === admin);
+});
+
 Then('o estado do nó {string} {string} é {string}', async function(enodeHigh, enodeLow, status){
    status = getBoolean(status);
    const nodeStatus = await this.nodeRules.isNodeActive(enodeHigh, enodeLow);

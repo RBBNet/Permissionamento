@@ -169,7 +169,7 @@ Funcionalidade: Gestão de nós
     E a transação ocorre com sucesso
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" para mudar sua situação para "false"
     Então a transação ocorre com sucesso
-    E o evento "NodeStatusUpdated" é emitido para o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" e a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+    E o evento NodeStatusUpdated é emitido para o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" e a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
     E o estado do nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" é "false"
 
   Cenário: Alteração de situação realizada por um Administrador Local ativo e vinculado a uma organização ativa
@@ -177,7 +177,7 @@ Funcionalidade: Gestão de nós
     E a transação ocorre com sucesso
     Quando a conta "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" para mudar sua situação para "false"
     Então a transação ocorre com sucesso
-    E o evento "NodeStatusUpdated" é emitido para o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" e a conta "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65"
+    E o evento NodeStatusUpdated é emitido para o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" e a conta "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65"
     E o estado do nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" é "false"
 
   Cenário: Tentativa de alteração de situação por um Administrador Global inativo
