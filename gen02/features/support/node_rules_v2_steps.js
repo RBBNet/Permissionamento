@@ -66,7 +66,7 @@ Then('o nó {string} {string} é da organização {string}, tem o nome {string} 
     assert.ok(nodeOrg === organization);
 });
 
-Then('o nó {string} {string} recebe o erro {string}', async function (enodeHigh, enodeLow, expectedErrorMessage) {
+Then('se uma consulta é realizada ao nó {string} {string} recebe-se o erro {string}', async function (enodeHigh, enodeLow, expectedErrorMessage) {
     try {
         await this.nodeRules.getNode(enodeHigh, enodeLow);
     } catch (error) {

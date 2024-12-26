@@ -33,27 +33,27 @@ Funcionalidade: Gestão de nós
 
   Cenário: Cadastro realizado por um Administrador Global ativo e vinculado a uma organização ativa
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
-    E a transação ocorre com sucesso
-    Então o evento "NodeAdded" é emitido para o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    Então a transação ocorre com sucesso
+    E o evento "NodeAdded" é emitido para o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" é da organização "1", tem o nome "validator01" e tipo "2"
 
   Cenário: Cadastro realizado por um Administrador Local ativo e vinculado a uma organização ativa
     Quando a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" informa o endereço "0x852345fa7a92fc5f4923f0ed480d0106288cf17f7712ed80edfb121e3b6a9af0" "0x8bdfde3661ea90ee3d94f7b6a0e8934f3d8e3eaecb2a8b8de3b6b4be66ef305c", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
-    E a transação ocorre com sucesso
-    Então o evento "NodeAdded" é emitido para o nó "0x852345fa7a92fc5f4923f0ed480d0106288cf17f7712ed80edfb121e3b6a9af0" "0x8bdfde3661ea90ee3d94f7b6a0e8934f3d8e3eaecb2a8b8de3b6b4be66ef305c" pela conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097"
+    Então a transação ocorre com sucesso
+    E o evento "NodeAdded" é emitido para o nó "0x852345fa7a92fc5f4923f0ed480d0106288cf17f7712ed80edfb121e3b6a9af0" "0x8bdfde3661ea90ee3d94f7b6a0e8934f3d8e3eaecb2a8b8de3b6b4be66ef305c" pela conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097"
     E o nó "0x852345fa7a92fc5f4923f0ed480d0106288cf17f7712ed80edfb121e3b6a9af0" "0x8bdfde3661ea90ee3d94f7b6a0e8934f3d8e3eaecb2a8b8de3b6b4be66ef305c" é da organização "1", tem o nome "validator01" e tipo "2"
 
   Cenário: Tentativa de cadastro por um Administrador Global inativo
     Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" informa o endereço "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b" "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
-    E ocorre um erro na transação
-    Então o erro recebido é "InactiveAccount"
-    E o nó "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b" "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33" recebe o erro "NodeNotFound"
+    Então ocorre um erro na transação
+    E o erro recebido é "InactiveAccount"
+    E se uma consulta é realizada ao nó "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b" "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33" recebe-se o erro "NodeNotFound"
 
   Cenário: Tentativa de cadastro por um Administrador Local inativo
     Quando a conta "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E" informa o endereço "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b" "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
     E ocorre um erro na transação
     Então o erro recebido é "InactiveAccount"
-    E o nó "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b" "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33" recebe o erro "NodeNotFound"
+    E se uma consulta é realizada ao nó "0xed75e39936d130a4698193dbc87d95520f57efb94f14343e5c948df0aab08a1b" "0xa50bea35df61679258485e24896d112e47ea0758b91bbbee2468ef37e82a4a33" recebe-se o erro "NodeNotFound"
 
   Cenário: Tentativa de cadastro de um nó já existente
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
@@ -66,7 +66,7 @@ Funcionalidade: Gestão de nós
     Quando a conta "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
     Então ocorre um erro na transação
     E o erro recebido é "UnauthorizedAccess"
-    E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeNotFound"
+    E se uma consulta é realizada ao nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe-se o erro "NodeNotFound"
 
   Cenário: Exclusão de nó realizada por um Administrador Global ativo e vinculado a uma organização ativa
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
@@ -90,7 +90,7 @@ Funcionalidade: Gestão de nós
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" para exclusão
     Então ocorre um erro na transação
     E o erro recebido é "InactiveAccount"
-    E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeNotFound"
+    E se uma consulta é realizada ao nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe-se o erro "NodeNotFound"
 
   Cenário: Tentativa de exclusão por um Administrador Local inativo
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
@@ -100,7 +100,7 @@ Funcionalidade: Gestão de nós
     Quando a conta "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" para exclusão
     Então ocorre um erro na transação
     E o erro recebido é "InactiveAccount"
-    E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeNotFound"
+    E se uma consulta é realizada ao nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe-se o erro "NodeNotFound"
 
   Cenário: Tentativa de exclusão de nó vinculado a outra organização
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
@@ -187,7 +187,7 @@ Funcionalidade: Gestão de nós
     E a transação ocorre com sucesso
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" para mudar sua situação para "true"
     Então ocorre um erro na transação
-    E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeNotFound"
+    E se uma consulta é realizada ao nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe-se o erro "NodeNotFound"
     E o estado do nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" é "false"
 
   Cenário: Tentativa de alteração de situação por um Administrador Local inativo
@@ -197,7 +197,7 @@ Funcionalidade: Gestão de nós
     E a transação ocorre com sucesso
     Quando a conta "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" para mudar sua situação para "true"
     Então ocorre um erro na transação
-    E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeNotFound"
+    E se uma consulta é realizada ao nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe-se o erro "NodeNotFound"
     E o estado do nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" é "false"
 
   Cenário: Tentativa de alteração de situação de nó vinculado a outra organização
@@ -230,7 +230,7 @@ Funcionalidade: Gestão de nós
     Quando a conta de governança "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o tipo "Validator", o nome "validator01" e a organização "5"
     E ocorre um erro na transação
     Então o erro recebido é "InvalidOrganization"
-    E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeNotFound"
+    E se uma consulta é realizada ao nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe-se o erro "NodeNotFound"
 
   Cenário: Tentativa de cadastro de nó pela Governança com nó já existente
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
@@ -247,26 +247,26 @@ Funcionalidade: Gestão de nós
     Quando a conta de governança "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o tipo "Validator", o nome "validator01" e a organização "4"
     Então ocorre um erro na transação
     E o erro recebido é "UnauthorizedAccess"
-    E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeNotFound"
+    E se uma consulta é realizada ao nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe-se o erro "NodeNotFound"
 
   Cenário: Tentativa indevida de cadastro de nó por Administrador Global com os poderes da Governança
     Quando a conta de governança "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o tipo "Validator", o nome "validator01" e a organização "4"
     Então ocorre um erro na transação
     E o erro recebido é "UnauthorizedAccess"
-    E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeNotFound"
+    E se uma consulta é realizada ao nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe-se o erro "NodeNotFound"
 
   Cenário: Tentativa indevida de cadastro de nó por Administrador Local com os poderes da Governança
     Quando a conta de governança "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o tipo "Validator", o nome "validator01" e a organização "4"
     Então ocorre um erro na transação
     E o erro recebido é "UnauthorizedAccess"
-    E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeNotFound"
+    E se uma consulta é realizada ao nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe-se o erro "NodeNotFound"
 
   Cenário: Remoção de nó válido pela Governança
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
     E a transação ocorre com sucesso
     Quando a conta de governança "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" do nó para removê-lo
     E a transação ocorre com sucesso
-    Então o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe o erro "NodeNotFound"
+    Então se uma consulta é realizada ao nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe-se o erro "NodeNotFound"
 
   Cenário: Remoção de nó inexistente pela Governança
     Quando a conta de governança "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" do nó para removê-lo
