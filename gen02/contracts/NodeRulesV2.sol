@@ -27,10 +27,10 @@ interface NodeRulesV2 is NodeRulesProxy {
         bool active;
     }
 
-    event NodeAdded(bytes32 enodeHigh, bytes32 enodeLow, address admin);
-    event NodeDeleted(bytes32 enodeHigh, bytes32 enodeLow, address admin);
-    event NodeUpdated(bytes32 enodeHigh, bytes32 enodeLow, address admin);
-    event NodeStatusUpdated(bytes32 enodeHigh, bytes32 enodeLow, bool newStatus, address admin);
+    event NodeAdded(bytes32 indexed enodeHigh, bytes32 indexed enodeLow, address admin);
+    event NodeDeleted(bytes32 indexed enodeHigh, bytes32 indexed enodeLow, address admin);
+    event NodeUpdated(bytes32 indexed enodeHigh, bytes32 indexed enodeLow, address admin);
+    event NodeStatusUpdated(bytes32 indexed enodeHigh, bytes32 indexed enodeLow, bool newStatus, address admin);
 
     error InvalidArgument(string message);
     error InactiveAccount(address account, string message);

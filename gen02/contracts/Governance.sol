@@ -25,13 +25,13 @@ contract Governance {
         string cancelationReason;
     }
 
-    event ProposalCreated(uint proposalId, address creator);
-    event OrganizationVoted(uint proposalId, address admin, bool approve);
-    event ProposalCanceled(uint proposalId);
-    event ProposalFinished(uint proposalId);
-    event ProposalApproved(uint proposalId);
-    event ProposalRejected(uint proposalId);
-    event ProposalExecuted(uint proposalId, address executor);
+    event ProposalCreated(uint indexed proposalId, address creator);
+    event OrganizationVoted(uint indexed proposalId, address admin, bool approve);
+    event ProposalCanceled(uint indexed proposalId);
+    event ProposalFinished(uint indexed proposalId);
+    event ProposalApproved(uint indexed proposalId);
+    event ProposalRejected(uint indexed proposalId);
+    event ProposalExecuted(uint indexed proposalId, address executor);
 
     error UnauthorizedAccess(address account, string message);
     error IllegalState(string message);

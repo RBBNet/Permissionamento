@@ -19,12 +19,12 @@ interface AccountRulesV2 is AccountRulesProxy, IAccessControl {
         bool active;
     }
 
-    event AccountAdded(address account, uint orgId, bytes32 roleId, bytes32 dataHash, address admin);
-    event AccountDeleted(address account, uint orgId, address admin);
-    event AccountUpdated(address account, uint orgId, bytes32 roleId, bytes32 dataHash, address admin);
-    event AccountStatusUpdated(address account, uint orgId, bool active, address admin);
-    event AccountTargetAccessUpdated(address account, bool restricted, address[] allowedTargets, address admin);
-    event SmartContractSenderAccessUpdated(address smartContract, bool restricted, address[] allowedSenders, address admin);
+    event AccountAdded(address indexed account, uint indexed orgId, bytes32 roleId, bytes32 dataHash, address admin);
+    event AccountDeleted(address indexed account, uint indexed orgId, address admin);
+    event AccountUpdated(address indexed account, uint indexed orgId, bytes32 roleId, bytes32 dataHash, address admin);
+    event AccountStatusUpdated(address indexed account, uint indexed orgId, bool active, address admin);
+    event AccountTargetAccessUpdated(address indexed account, bool indexed restricted, address[] allowedTargets, address admin);
+    event SmartContractSenderAccessUpdated(address indexed smartContract, bool indexed restricted, address[] allowedSenders, address admin);
 
     error InvalidArgument(string message);
     error InactiveAccount(address account, string message);

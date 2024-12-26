@@ -9,9 +9,9 @@ interface Organization {
         bool canVote;
     }
 
-    event OrganizationAdded(uint orgId);
-    event OrganizationUpdated(uint orgId);
-    event OrganizationDeleted(uint orgId);
+    event OrganizationAdded(uint indexed orgId);
+    event OrganizationUpdated(uint indexed orgId);
+    event OrganizationDeleted(uint indexed orgId);
 
     error OrganizationNotFound(uint orgId);
     error IllegalState(string message);
