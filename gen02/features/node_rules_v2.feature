@@ -73,6 +73,8 @@ Funcionalidade: Gestão de nós
     E o erro recebido é "UnauthorizedAccess"
     E se uma consulta é realizada ao nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe-se o erro "NodeNotFound"
 
+  Cenário: Tentativa de cadastro de nó com nome inválido
+
 
   ##############################################################################
   # Exclusão de nós locais
