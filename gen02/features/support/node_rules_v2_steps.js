@@ -46,7 +46,7 @@ When('a conta {string} informa o endereço {string} {string}, o nome {string} e 
     }
 });
 
-Then('o evento {string} é emitido para o nó {string} {string} e a conta {string}', async function (event, enodeHigh, enodeLow, admin) {
+Then('o evento {string} é emitido para o nó {string} {string} pela conta {string}', async function (event, enodeHigh, enodeLow, admin) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.nodeRules.queryFilter(event, block, block);
     const eventAdmin = events[0].args[2];
@@ -133,7 +133,7 @@ When('a conta {string} informa o endereço {string} {string} para mudar sua situ
     }
 });
 
-Then('o evento NodeStatusUpdated é emitido para o nó {string} {string} e a conta {string}', async function (enodeHigh, enodeLow, admin) {
+Then('o evento NodeStatusUpdated é emitido para o nó {string} {string} pela conta {string}', async function (enodeHigh, enodeLow, admin) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.nodeRules.queryFilter("NodeStatusUpdated", block, block);
     const eventAdmin = events[0].args[3];
