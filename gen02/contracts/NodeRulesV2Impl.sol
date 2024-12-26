@@ -91,7 +91,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         _revertIfNotSameOrganization(enodeHigh, enodeLow, key);
-        allowedNodes[key].status = active;
+        allowedNodes[key].active = active;
         emit NodeStatusUpdated(enodeHigh, enodeLow, active, msg.sender);
     }
 
@@ -99,7 +99,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     function isNodeActive(bytes32 enodeHigh, bytes32 enodeLow) public view returns (bool){
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         NodeData storage node = allowedNodes[key];
-        if(organizationsContract.isOrganizationActive(node.orgId) && node.status) {
+        if(organizationsContract.isOrganizationActive(node.orgId) && node.active) {
             return true;
         }
         return false;

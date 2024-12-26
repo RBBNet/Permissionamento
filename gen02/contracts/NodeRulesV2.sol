@@ -24,7 +24,7 @@ interface NodeRulesV2 is NodeRulesProxy {
         NodeType nodeType;
         string name;
         uint orgId;
-        bool status;
+        bool active;
     }
 
     event NodeAdded(bytes32 enodeHigh, bytes32 enodeLow, address admin);
