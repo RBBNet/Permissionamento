@@ -98,7 +98,6 @@ When('a conta de governança {string} informa o enodeHigh {string}, o enodeLow {
     }
 });
 
-
 When('a conta {string} informa o endereço {string} {string}, o nome {string} e o tipo {string} para alterá-lo', async function (admin, enodeHigh, enodeLow, name, type) {
     try{
         this.oldInfo = await this.nodeRules.getNode(enodeHigh, enodeLow);
@@ -124,6 +123,7 @@ Then('o nome do nó {string} {string} continua o mesmo', async function (enodeHi
     this.newInfo = await this.nodeRules.getNode(enodeHigh, enodeLow);
     assert.ok(this.newInfo[3] === this.oldInfo[3]);
 });
+
 When('a conta {string} informa o endereço {string} {string} para mudar sua situação para {string}', async function (admin, enodeHigh, enodeLow, status) {
     const signer = await hre.ethers.getSigner(admin);
     status = getBoolean(status);
