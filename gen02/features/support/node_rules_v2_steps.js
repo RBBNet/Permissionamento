@@ -46,12 +46,13 @@ When('a conta {string} informa o endereço {string} {string}, o nome {string} e 
     }
 });
 
-Then('o evento {string} é emitido para o nó {string} {string} pela conta {string}', async function (event, enodeHigh, enodeLow, admin) {
+Then('o evento {string} é emitido para o nó {string} {string} pela conta {string} e organização {int}', async function (event, enodeHigh, enodeLow, admin, organization) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.nodeRules.queryFilter(event, block, block);
     assert.equal(events[0].args[0], enodeHigh);
     assert.equal(events[0].args[1], enodeLow);
-    assert.equal(events[0].args[2], admin);
+    assert.equal(parseInt(events[0].args[2]), organization);
+    assert.equal(events[0].args[3], admin);
 });
 
 Then('o nó {string} {string} é da organização {string}, tem o nome {string} e tipo {string}', async function (enodeHigh, enodeLow, organization, name, type) {
@@ -59,7 +60,7 @@ Then('o nó {string} {string} é da organização {string}, tem o nome {string} 
     const nodeType = parseInt(nodeInfo[2]);
     const nodeName = nodeInfo[3];
     const nodeOrg = parseInt(nodeInfo[4]);
-    type = parseInt(type); //precisa castar o tipo string recebido para int
+    type = typeToNumber(type);
     organization = parseInt(organization) //mesma coisa aqui
     assert.ok(nodeType === type);
     assert.ok(nodeName === name);

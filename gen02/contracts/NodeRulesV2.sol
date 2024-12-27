@@ -27,8 +27,8 @@ interface NodeRulesV2 is NodeRulesProxy {
         bool active;
     }
 
-    event NodeAdded(bytes32 indexed enodeHigh, bytes32 indexed enodeLow, address admin);
-    event NodeDeleted(bytes32 indexed enodeHigh, bytes32 indexed enodeLow, address admin);
+    event NodeAdded(bytes32 indexed enodeHigh, bytes32 indexed enodeLow, uint indexed orgId, address admin);
+    event NodeDeleted(bytes32 indexed enodeHigh, bytes32 indexed enodeLow, uint indexed orgId, address admin);
     event NodeUpdated(bytes32 indexed enodeHigh, bytes32 indexed enodeLow, address admin);
     event NodeStatusUpdated(bytes32 indexed enodeHigh, bytes32 indexed enodeLow, bool active, address admin);
 
