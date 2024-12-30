@@ -84,7 +84,8 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         _revertIfInvalidName(name);
         allowedNodes[key].nodeType = nodeType;
         allowedNodes[key].name = name;
-        emit NodeUpdated(enodeHigh, enodeLow, msg.sender);
+        AccountRulesV2.AccountData memory acc = accountsContract.getAccount(msg.sender);
+        emit NodeUpdated(enodeHigh, enodeLow, acc.orgId, msg.sender);
     }
 
     function updateLocalNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool active) public onlyActiveAdmin {
@@ -92,7 +93,8 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         _revertIfNotSameOrganization(enodeHigh, enodeLow, key);
         allowedNodes[key].active = active;
-        emit NodeStatusUpdated(enodeHigh, enodeLow, active, msg.sender);
+        AccountRulesV2.AccountData memory acc = accountsContract.getAccount(msg.sender);
+        emit NodeStatusUpdated(enodeHigh, enodeLow, acc.orgId, active, msg.sender);
     }
 
     function isNodeActive(bytes32 enodeHigh, bytes32 enodeLow) public view returns (bool){
