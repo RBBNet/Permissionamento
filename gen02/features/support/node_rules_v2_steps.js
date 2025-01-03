@@ -135,13 +135,14 @@ When('a conta {string} informa o endereço {string} {string} para mudar sua situ
     }
 });
 
-Then('o evento {string} é emitido para o nó {string} {string} com situação ativa {string} pela conta {string}', async function (event, enodeHigh, enodeLow, active, admin) {
+Then('o evento {string} é emitido para o nó {string} {string} com situação ativa {string} pela conta {string} e organização {int}', async function (event, enodeHigh, enodeLow, active, admin, organization) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.nodeRules.queryFilter(event, block, block);
     assert.equal(events[0].args[0], enodeHigh);
     assert.equal(events[0].args[1], enodeLow);
-    assert.equal(events[0].args[2], getBoolean(active));
-    assert.equal(events[0].args[3], admin)
+    assert.equal(events[0].args[2], organization)
+    assert.equal(events[0].args[3], getBoolean(active));
+    assert.equal(events[0].args[4], admin)
 });
 
 Then('o estado do nó {string} {string} é {string}', async function(enodeHigh, enodeLow, status){
