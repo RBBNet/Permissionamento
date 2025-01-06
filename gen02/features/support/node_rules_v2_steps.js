@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { Given, When, Then } = require('@cucumber/cucumber');
+const { defineParameterType, Given, When, Then } = require('@cucumber/cucumber');
 const hre = require("hardhat");
 const {boolean} = require("hardhat/internal/core/params/argumentTypes");
 const {getBoolean} = require("./setup");
@@ -17,6 +17,12 @@ function typeToNumber(type) {
 
     return typeMap[type] !== undefined ? typeMap[type] : 9;  // Retorna null ou um valor padrão se o tipo não for encontrado
 }
+
+defineParameterType({
+    name: "boolean",
+    regexp: /true|false/,
+    transformer: (s) => s === "true"
+});
 
 function checkErrorMessage(error, expectedMessage) {
     assert.ok(error.message.includes(expectedMessage));
@@ -55,13 +61,13 @@ Then('o evento {string} é emitido para o nó {string} {string} pela conta {stri
     assert.equal(events[0].args[3], admin);
 });
 
-Then('o nó {string} {string} é da organização {string}, tem o nome {string} e tipo {string}', async function (enodeHigh, enodeLow, organization, name, type) {
+Then('o nó {string} {string} é da organização {int}, tem o nome {string} e tipo {string}', async function (enodeHigh, enodeLow, organization, name, type) {
     const nodeInfo = await this.nodeRules.getNode(enodeHigh, enodeLow);
     const nodeType = parseInt(nodeInfo[2]);
     const nodeName = nodeInfo[3];
     const nodeOrg = parseInt(nodeInfo[4]);
     type = typeToNumber(type);
-    organization = parseInt(organization) //mesma coisa aqui
+
     assert.ok(nodeType === type);
     assert.ok(nodeName === name);
     assert.ok(nodeOrg === organization);
@@ -110,24 +116,13 @@ When('a conta {string} informa o endereço {string} {string}, o nome {string} e 
     }
 });
 
-Then('as alterações do nó {string} {string} são feitas com sucesso', async function(enodeHigh, enodeLow){
-    try{
-        this.newInfo = await this.nodeRules.getNode(enodeHigh, enodeLow);
-        assert.ok(this.newInfo[3] !== this.oldInfo[3]);
-    } catch (error) {
-        this.error = error;
-    }
-
-})
-
 Then('o nome do nó {string} {string} continua o mesmo', async function (enodeHigh, enodeLow) {
     this.newInfo = await this.nodeRules.getNode(enodeHigh, enodeLow);
     assert.ok(this.newInfo[3] === this.oldInfo[3]);
 });
 
-When('a conta {string} informa o endereço {string} {string} para mudar sua situação para {string}', async function (admin, enodeHigh, enodeLow, status) {
+When('a conta {string} informa o endereço {string} {string} para mudar sua situação para {boolean}', async function (admin, enodeHigh, enodeLow, status) {
     const signer = await hre.ethers.getSigner(admin);
-    status = getBoolean(status);
     try {
         await this.nodeRules.connect(signer).updateLocalNodeStatus(enodeHigh, enodeLow, status);
     } catch(error){
@@ -135,18 +130,18 @@ When('a conta {string} informa o endereço {string} {string} para mudar sua situ
     }
 });
 
-Then('o evento {string} é emitido para o nó {string} {string} com situação ativa {string} pela conta {string} e organização {int}', async function (event, enodeHigh, enodeLow, active, admin, organization) {
+Then('o evento {string} é emitido para o nó {string} {string} com situação ativa {boolean} pela conta {string} e organização {int}', async function (event, enodeHigh, enodeLow, active, admin, organization) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.nodeRules.queryFilter(event, block, block);
     assert.equal(events[0].args[0], enodeHigh);
     assert.equal(events[0].args[1], enodeLow);
     assert.equal(events[0].args[2], organization)
-    assert.equal(events[0].args[3], getBoolean(active));
+    assert.equal(events[0].args[3], active);
     assert.equal(events[0].args[4], admin)
 });
 
-Then('o estado do nó {string} {string} é {string}', async function(enodeHigh, enodeLow, status){
-   status = getBoolean(status);
+Then('o estado do nó {string} {string} é {boolean}', async function(enodeHigh, enodeLow, status){
+
    const nodeStatus = await this.nodeRules.isNodeActive(enodeHigh, enodeLow);
    assert.ok(nodeStatus === status);
 });
