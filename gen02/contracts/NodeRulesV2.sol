@@ -46,7 +46,7 @@ interface NodeRulesV2 is NodeRulesProxy {
     function updateLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external;
     function updateLocalNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool active) external;
 
-    function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name, uint organization) external;
+    function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name, uint orgId) external;
     function deleteNode(bytes32 enodeHigh, bytes32 enodeLow) external;
 
     function isNodeActive(bytes32 enodeHigh, bytes32 enodeLow) external view returns (bool);

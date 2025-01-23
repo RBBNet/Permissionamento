@@ -6,8 +6,6 @@ import "./Governable.sol";
 import "./AccountRulesV2.sol";
 import "./Organization.sol";
 
-//As histórias de usuário mudaram. Mudar também as funções e os testes!!!
-
 contract NodeRulesV2Impl is NodeRulesV2, Governable {
 
     AccountRulesV2 public immutable accountsContract;
@@ -35,46 +33,42 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         _;
     }
 
-    //USNOD01 - OK
     function addLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name) public onlyActiveAdmin {
         AccountRulesV2.AccountData memory acc = accountsContract.getAccount(msg.sender);
         _addNode(enodeHigh, enodeLow, nodeType, name, acc.orgId);
     }
 
-    function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name, uint organization) public onlyGovernance {
-        if(!organizationsContract.isOrganizationActive(organization)) {
-            revert InvalidOrganization(organization);
+    function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name, uint orgId) public onlyGovernance {
+        if(!organizationsContract.isOrganizationActive(orgId)) {
+            revert InvalidOrganization(orgId);
         }
-        _addNode(enodeHigh, enodeLow, nodeType, name, organization);
+        _addNode(enodeHigh, enodeLow, nodeType, name, orgId);
     }
 
-    function _addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name, uint organization) private {
+    function _addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name, uint orgId) private {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfDuplicateNode(enodeHigh, enodeLow, key);
         _revertIfInvalidName(name);
-        allowedNodes[key] = NodeData(enodeHigh, enodeLow, nodeType, name, organization, true);
-        emit NodeAdded(enodeHigh, enodeLow, organization, msg.sender);
+        allowedNodes[key] = NodeData(enodeHigh, enodeLow, nodeType, name, orgId, true);
+        emit NodeAdded(enodeHigh, enodeLow, orgId, msg.sender);
     }
 
     function deleteNode(bytes32 enodeHigh, bytes32 enodeLow) public onlyGovernance {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
-        NodeData memory data = getNode(enodeHigh, enodeLow);
-        _deleteNode(enodeHigh, enodeLow, key, data.orgId);
+        _deleteNode(enodeHigh, enodeLow, key, allowedNodes[key].orgId);
     }
 
-    //USNOD02 - OK
     function deleteLocalNode(bytes32 enodeHigh, bytes32 enodeLow) public onlyActiveAdmin {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         _revertIfNotSameOrganization(enodeHigh, enodeLow, key);
-        AccountRulesV2.AccountData memory acc = accountsContract.getAccount(msg.sender);
-        _deleteNode(enodeHigh, enodeLow, key, acc.orgId);
+        _deleteNode(enodeHigh, enodeLow, key, allowedNodes[key].orgId);
     }
     
-    function _deleteNode(bytes32 enodeHigh, bytes32 enodeLow, uint nodeKey, uint org) private {
+    function _deleteNode(bytes32 enodeHigh, bytes32 enodeLow, uint nodeKey, uint orgId) private {
         delete allowedNodes[nodeKey];
-        emit NodeDeleted(enodeHigh, enodeLow, org, msg.sender);
+        emit NodeDeleted(enodeHigh, enodeLow, orgId, msg.sender);
     }
 
     function updateLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name) public onlyActiveAdmin {
@@ -84,8 +78,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         _revertIfInvalidName(name);
         allowedNodes[key].nodeType = nodeType;
         allowedNodes[key].name = name;
-        AccountRulesV2.AccountData memory acc = accountsContract.getAccount(msg.sender);
-        emit NodeUpdated(enodeHigh, enodeLow, acc.orgId, msg.sender);
+        emit NodeUpdated(enodeHigh, enodeLow, allowedNodes[key].orgId, msg.sender);
     }
 
     function updateLocalNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool active) public onlyActiveAdmin {
@@ -93,8 +86,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         _revertIfNotSameOrganization(enodeHigh, enodeLow, key);
         allowedNodes[key].active = active;
-        AccountRulesV2.AccountData memory acc = accountsContract.getAccount(msg.sender);
-        emit NodeStatusUpdated(enodeHigh, enodeLow, acc.orgId, active, msg.sender);
+        emit NodeStatusUpdated(enodeHigh, enodeLow, allowedNodes[key].orgId, active, msg.sender);
     }
 
     function isNodeActive(bytes32 enodeHigh, bytes32 enodeLow) public view returns (bool){
@@ -112,7 +104,6 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         return allowedNodes[key];
     }
 
-    //USNOD09 - ok
     function connectionAllowed(
         bytes32 sourceEnodeHigh,
         bytes32 sourceEnodeLow,
