@@ -28,10 +28,21 @@ function checkErrorMessage(error, expectedMessage) {
     assert.ok(error.message.includes(expectedMessage));
 }
 
-Given('que o contrato de nós está implantado', async function() {
-    this.nodeRules = await hre.ethers.deployContract("NodeRulesV2Impl", [this.organizationContractAddress, this.accountRulesContract, this.adminMockContractAddress]);
-    const contractAddress = await this.nodeRules.getAddress();
-    assert.ok(contractAddress != null);
+Given('implanto o smart contract de gestão de nós', async function() {
+    this.NodeRulesContractDeployError = null;
+    try {
+        this.nodeRules = await hre.ethers.deployContract("NodeRulesV2Impl", [this.organizationContractAddress, this.accountRulesContract, this.adminMockContractAddress]);
+        assert.ok(this.nodeRules != null);
+        const contractAddress = await this.nodeRules.getAddress();
+        assert.ok(contractAddress != null);
+    }
+    catch(error) {
+        this.NodeRulesContractDeployError = error;
+    }
+});
+
+Then('a implantação do smart contract de gestão de nós ocorre com sucesso', function() {
+    assert.ok(this.NodeRulesContractDeployError == null);
 });
 
 Then('a transação ocorre com sucesso', async function() {

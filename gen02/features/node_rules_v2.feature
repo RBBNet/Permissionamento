@@ -1,35 +1,36 @@
 # language: pt
 
 Funcionalidade: Gestão de nós
-  Contexto:
-#    1. implantar contrato de admin (mock)
-#    2. adicionar 4 organizações à array de orgs
-#    3. implantar contrato de organizações
-#    4. adicionar 4 administradores globais
-#    5. adicionar o contrato de gestão de contas
-#    6. adicionar administradores locais
-#    7. implantar contrato de nós
 
+  Contexto:
+    # 1. implantar contrato de admin (mock)
     Dado que o smart contract de gestão de endereços de admin está implantado
     E o endereço "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" é admin
+    # 2. adicionar 4 organizações à array de orgs
     E a organização "BNDES" com direito de voto "true"
     E a organização "TCU" com direito de voto "true"
     E a organização "EXEMPLO" com direito de voto "true"
     E a organização "EXEMPLO2" com direito de voto "true"
+    # 3. implantar contrato de organizações
     E implanto o smart contract de gestão de organizações
     E a implantação do smart contract de gestão de organizações ocorre com sucesso
+    # 4. adicionar 4 administradores globais
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a"
     E a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0"
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+    # 5. implantar o contrato de gestão de contas
     E implanto o smart contract de gestão de contas
+    # 6. adicionar administradores locais
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000004"
     E a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" adiciona a conta local "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     E a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" adiciona a conta local "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000003"
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" adiciona a conta local "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000005"
     E a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3
     E verifico se a organização 3 está ativa o resultado é "false"
-    Dado que o contrato de nós está implantado
+    # 7. implantar contrato de nós
+    E implanto o smart contract de gestão de nós
+    E a implantação do smart contract de gestão de nós ocorre com sucesso
 
 
   ##############################################################################
@@ -132,11 +133,11 @@ Funcionalidade: Gestão de nós
     Quando a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" para exclusão
     Então ocorre um erro na transação
     E o erro recebido é "NodeNotFound"
-#
-#
-#  ##############################################################################
-#  # Alteração de nós locais
-#  ##############################################################################
+
+
+   ##############################################################################
+   # Alteração de nós locais
+   ##############################################################################
 
   Cenário: Alteração de cadastro realizada por um Administrador Global ativo e vinculado a uma organização ativa
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
@@ -240,10 +241,10 @@ Funcionalidade: Gestão de nós
     Então ocorre um erro na transação
     E o erro recebido é "NodeNotFound"
 
-#
-#  ##############################################################################
-#  # Adição de nós via Governança
-#  ##############################################################################
+
+   ##############################################################################
+   # Adição de nós via Governança
+   ##############################################################################
 
   Cenário: Cadastro válido de nó pela Governança
     Quando a conta de governança "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o tipo "Validator", o nome "validator01" e a organização "4"
@@ -287,9 +288,9 @@ Funcionalidade: Gestão de nós
     E se uma consulta é realizada ao nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" recebe-se o erro "NodeNotFound"
 
 
-#  ##############################################################################
-#  # Exclusão de nós via Governança
-  ##############################################################################
+   ##############################################################################
+   # Exclusão de nós via Governança
+   ##############################################################################
 
   Cenário: Remoção de nó válido pela Governança
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
@@ -328,9 +329,9 @@ Funcionalidade: Gestão de nós
     E o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" é da organização 4, tem o nome "validator01" e tipo "Validator"
 
 
-#  ##############################################################################
-#  # Permissão de conectividade entre nós
-#  ##############################################################################
+   ##############################################################################
+   # Permissão de conectividade entre nós
+   ##############################################################################
 
   Cenário: Conexão entre dois nós ativos
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
