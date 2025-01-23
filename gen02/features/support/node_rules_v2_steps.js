@@ -118,7 +118,7 @@ Then('o nome do nó {string} {string} continua o mesmo', async function (enodeHi
     assert.ok(this.newInfo[3] === this.oldInfo[3]);
 });
 
-When('a conta {string} informa o endereço {string} {string} para mudar sua situação para {boolean}', async function (admin, enodeHigh, enodeLow, status) {
+When('a conta {string} informa o endereço {string} {string} para mudar sua situação ativa para {boolean}', async function (admin, enodeHigh, enodeLow, status) {
     const signer = await hre.ethers.getSigner(admin);
     try {
         await this.nodeRules.connect(signer).updateLocalNodeStatus(enodeHigh, enodeLow, status);
@@ -137,7 +137,7 @@ Then('o evento {string} é emitido para o nó {string} {string} com situação a
     assert.equal(events[0].args[4], admin)
 });
 
-Then('o estado do nó {string} {string} é {boolean}', async function(enodeHigh, enodeLow, status){
+Then('a situação ativa do nó {string} {string} é {boolean}', async function(enodeHigh, enodeLow, status){
    const nodeStatus = await this.nodeRules.isNodeActive(enodeHigh, enodeLow);
    assert.ok(nodeStatus === status);
 });
