@@ -49,8 +49,9 @@ Then('a transação ocorre com sucesso', async function() {
    assert.ok(this.error === undefined);
 });
 
-Then('ocorre um erro na transação', async function(){
+Then('ocorre erro {string} na transação', async function(error){
     assert.ok(this.error);
+    checkErrorMessage(this.error, error);
 })
 
 When('a conta {string} informa o endereço {string} {string}, o nome {string} e o tipo {string} do nó para cadastrá-lo', async function (admin, enodeHigh, enodeLow, name, type) {
@@ -92,25 +93,10 @@ Then('se uma consulta é realizada ao nó {string} {string} recebe-se o erro {st
     }
 });
 
-Then('o erro recebido é {string}', function (error) {
-    checkErrorMessage(this.error, error);
-});
-
 When('a conta {string} informa o endereço {string} {string} para exclusão', async function (admin, enodeHigh, enodeLow) {
     const signer = await hre.ethers.getSigner(admin);
     try {
         await this.nodeRules.connect(signer).deleteLocalNode(enodeHigh, enodeLow);
-    } catch(error) {
-        this.error = error;
-    }
-});
-
-When('a conta de governança {string} informa o enodeHigh {string}, o enodeLow {string}, o nome {string}, a organização {string} e o tipo {string} do nó para cadastrá-lo', async function (admin, enodeHigh, enodeLow, name, org, type) {
-    const signer = await hre.ethers.getSigner(admin);
-    try{
-        await this.nodeRules.connect(signer).addNodeByGovernance(enodeHigh, enodeLow,type,name,org);
-        const added = await this.nodeRules.getNode(enodeHigh, enodeLow);
-        assert.ok(added[0] === enodeHigh);
     } catch(error) {
         this.error = error;
     }
@@ -152,21 +138,18 @@ Then('o evento {string} é emitido para o nó {string} {string} com situação a
 });
 
 Then('o estado do nó {string} {string} é {boolean}', async function(enodeHigh, enodeLow, status){
-
    const nodeStatus = await this.nodeRules.isNodeActive(enodeHigh, enodeLow);
    assert.ok(nodeStatus === status);
 });
 
-When('a conta de governança {string} informa o endereço {string} {string}, o tipo {string}, o nome {string} e a organização {string}', async function(admin, enodeHigh, enodeLow, type, name, organization){
+When('a conta de governança {string} informa o endereço {string} {string}, o tipo {string}, o nome {string} e a organização {int} para cadastrá-lo', async function(admin, enodeHigh, enodeLow, type, name, organization) {
     const signer = await hre.ethers.getSigner(admin);
     try{
         type = typeToNumber(type);
-        organization = parseInt(organization);
         await this.nodeRules.connect(signer).addNode(enodeHigh, enodeLow, type, name, organization);
     } catch(error){
         this.error = error;
     }
-
 });
 
 When('a conta de governança {string} informa o endereço {string} {string} do nó para removê-lo', async function(admin, enodeHigh, enodeLow){
