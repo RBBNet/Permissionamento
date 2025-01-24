@@ -59,11 +59,12 @@ Then('o evento {string} é emitido para o nó {string} {string} pela conta {stri
     assert.equal(events[0].args[3], admin);
 });
 
-Then('o nó {string} {string} é da organização {int}, tem o nome {string} e tipo {string}', async function (enodeHigh, enodeLow, organization, name, type) {
+Then('o nó {string} {string} é da organização {int}, tem o nome {string}, tipo {string} e situação ativa {boolean}', async function (enodeHigh, enodeLow, organization, name, type, active) {
     const nodeInfo = await this.nodeRules.getNode(enodeHigh, enodeLow);
     assert.equal(parseInt(nodeInfo[2]), getNodeType(type));
     assert.equal(nodeInfo[3], name);
     assert.equal(parseInt(nodeInfo[4]), organization);
+    assert.equal(nodeInfo[5], active);
 });
 
 Then('se uma consulta é realizada ao nó {string} {string} recebe-se o erro {string}', async function (enodeHigh, enodeLow, expectedErrorMessage) {
