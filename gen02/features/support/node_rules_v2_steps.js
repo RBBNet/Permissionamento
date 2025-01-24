@@ -88,6 +88,7 @@ Then('o nó {string} {string} é da organização {int}, tem o nome {string} e t
 Then('se uma consulta é realizada ao nó {string} {string} recebe-se o erro {string}', async function (enodeHigh, enodeLow, expectedErrorMessage) {
     try {
         await this.nodeRules.getNode(enodeHigh, enodeLow);
+        assert.fail('Deveria ter ocorrido erro na consulta de nó');
     } catch (error) {
         checkErrorMessage(error, expectedErrorMessage);
     }
