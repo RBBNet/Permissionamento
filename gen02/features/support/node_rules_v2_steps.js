@@ -32,7 +32,7 @@ Then('a implantação do smart contract de gestão de nós ocorre com sucesso', 
 });
 
 Then('a transação ocorre com sucesso', async function() {
-   assert.ok(this.error === undefined);
+    assert.ok(this.error === undefined);
 });
 
 Then('ocorre erro {string} na transação', async function(error){
@@ -61,12 +61,9 @@ Then('o evento {string} é emitido para o nó {string} {string} pela conta {stri
 
 Then('o nó {string} {string} é da organização {int}, tem o nome {string} e tipo {string}', async function (enodeHigh, enodeLow, organization, name, type) {
     const nodeInfo = await this.nodeRules.getNode(enodeHigh, enodeLow);
-    const nodeType = parseInt(nodeInfo[2]);
-    const nodeName = nodeInfo[3];
-    const nodeOrg = parseInt(nodeInfo[4]);
-    assert.ok(nodeType === getNodeType(type));
-    assert.ok(nodeName === name);
-    assert.ok(nodeOrg === organization);
+    assert.equal(parseInt(nodeInfo[2]), getNodeType(type));
+    assert.equal(nodeInfo[3], name);
+    assert.equal(parseInt(nodeInfo[4]), organization);
 });
 
 Then('se uma consulta é realizada ao nó {string} {string} recebe-se o erro {string}', async function (enodeHigh, enodeLow, expectedErrorMessage) {
@@ -127,7 +124,7 @@ Then('o evento {string} é emitido para o nó {string} {string} com situação a
 
 Then('a situação ativa do nó {string} {string} é {boolean}', async function(enodeHigh, enodeLow, status){
    const nodeStatus = await this.nodeRules.isNodeActive(enodeHigh, enodeLow);
-   assert.ok(nodeStatus === status);
+   assert.equal(nodeStatus, status);
 });
 
 When('a conta de governança {string} informa o endereço {string} {string}, o tipo {string}, o nome {string} e a organização {int} para cadastrá-lo', async function(admin, enodeHigh, enodeLow, type, name, organization) {
@@ -150,10 +147,11 @@ When('a conta de governança {string} informa o endereço {string} {string} do n
    }
 });
 
+const BYTES_ZERO = '0x00000000000000000000000000000000'
+
 When('o nó {string} {string} tenta se conectar ao nó {string} {string}', async function (sourceHigh, sourceLow, destHigh, destLow) {
    try{
-       const bytes = '0x00000000000000000000000000000000'
-       this.connResult = await this.nodeRules.connectionAllowed(sourceHigh, sourceLow, bytes, 0, destHigh, destLow, bytes, 0);
+       this.connResult = await this.nodeRules.connectionAllowed(sourceHigh, sourceLow, BYTES_ZERO, 0, destHigh, destLow, BYTES_ZERO, 0);
    }
    catch (error) {
        this.error = error;
@@ -162,5 +160,5 @@ When('o nó {string} {string} tenta se conectar ao nó {string} {string}', async
 
 Then('o resultado da conexão é {string}', async function(result){
    assert.ok(this.error === undefined);
-   assert.ok(this.connResult == getConnectionResult(result));
+   assert.equal(this.connResult, getConnectionResult(result));
 });
