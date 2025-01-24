@@ -329,3 +329,35 @@ Then('ocorre erro {string} na consulta de conta', function(error) {
     assert.ok(this.getAccountError != null);
     assert.ok(this.getAccountError.message.includes(error));
 });
+
+Then('a quantidade total de contas é {int}', async function(expectedNumberOfAccounts) {
+    const actualNumberOfAccounts = await this.accountRulesContract.getNumberOfAccounts();
+    assert.equal(actualNumberOfAccounts, expectedNumberOfAccounts);
+});
+
+When('consulto as contas a partir da página {int} com tamanho de página {int}', async function(page, pageSize) {
+    this.getAccountError = null;
+    try {
+        this.queryResult = await this.accountRulesContract.getAccounts(page, pageSize);
+    }
+    catch(error) {
+        this.getAccountError = error;
+    }
+});
+
+Then('o resultado da consulta de contas é {string}', async function(accsList) {
+    assert.ok(this.getAccountError == null);
+    
+    //console.log(this.queryResult);
+    
+    const expectedAccs = accsList.split('|');
+    assert.equal(this.queryResult.length, expectedAccs.length);
+    for(i = 0; i < expectedAccs.length; ++i) {
+        const acc = expectedAccs[i].split(',');
+        assert.ok(this.queryResult[i].length == 5);
+        assert.ok(acc.length == 5);
+        assert.equal(this.queryResult[i][0], BigInt(acc[0]));
+        /*assert.equal(actualOrgs[i][1], org[1]);
+        assert.equal(actualOrgs[i][2], getBoolean(org[2]));*/
+    }
+});

@@ -163,3 +163,25 @@ Critérios de aceitação:
    2. Se foi configurada restrição de acesso
    3. Lista de endereços permitidos
    4. O administrador que realizou a configuração
+
+
+## USACC11 - Observador consulta o número total de contas existentes para poder preparar paginação da consultas de dados cadastrais<a id="usacc11"></a>
+
+Critérios de aceitação:
+1. Qualquer pessoa pode realizar a consulta.
+2. Observador solicita o número total de contas existentes.
+3. A quantidade total de contas é retornada.
+
+**Observação**: Esta informação é importante para dimensionar melhor consultas ao cadastro de contas, que pode vir a ter muitos dados, evitando problemas de desempenho.
+
+
+## USACC12 - Observador consulta contas para obter seus dados cadastrais<a id="usacc12"></a>
+
+Critérios de aceitação:
+1. Qualquer pessoa pode realizar a consulta.
+2. Observador informa parâmetros de paginação para consultar todas as contas cadastradas:
+   1. Página de resultado a ser retornada: Deve ser maior ou igual a 1 e não pode exceder a quantidade total de páginas (de acordo com a quantidade total de contas e o tamanho das páginas).
+   2. Tamanho da página de resultados a ser retornada: Deve ser maior ou igual a 1.
+3. É retornada uma lista com os dados cadastrais de contas correspondente à página de dados solicitada.
+
+**Observação**: Não há quaisquer critérios de filtragem ou parâmetros de ordenação para o resultado. Tampouco há garantia de consistência da ordem dos elementos entre consultas.

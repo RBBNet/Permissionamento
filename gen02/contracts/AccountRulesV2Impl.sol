@@ -13,6 +13,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
 
     Organization immutable public organizations;
     mapping (address => AccountData) public accounts;
+    EnumerableSet.AddressSet private _accountsAddresses;
     mapping (uint => uint) public globalAdminsCount;
     mapping (bytes32 => bool) public validRoles;
     EnumerableSet.AddressSet private _restrictedAccounts;
@@ -153,6 +154,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         _revertIfInvalidDataHash(roleId, dataHash);
         AccountData memory newAccount = AccountData(orgId, account, roleId, dataHash, true);
         accounts[account] = newAccount;
+        _accountsAddresses.add(account);
         _grantRole(roleId, account);
         _incrementGlobalAdminCount(orgId, roleId);
         emit AccountAdded(newAccount.account, newAccount.orgId, newAccount.roleId, newAccount.dataHash, msg.sender);
@@ -175,6 +177,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         AccountData memory acc = accounts[account];
         _revokeRole(acc.roleId, account);
         delete accounts[account];
+        _accountsAddresses.remove(account);
         _decrementGlobalAdminCount(acc.orgId, acc.roleId);
         emit AccountDeleted(account, acc.orgId, msg.sender);
     }
@@ -240,6 +243,32 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     function isAccountActive(address account) public view returns (bool) {
         AccountData storage acc = accounts[account];
         return acc.active && organizations.isOrganizationActive(acc.orgId);
+    }
+
+    function getNumberOfAccounts() public view returns (uint) {
+        return _accountsAddresses.length();
+    }
+
+    function getAccounts(uint page, uint pageSize) public view returns (AccountData[] memory) {
+        if(page < 1) {
+            revert InvalidArgument("Page must be greater or equal to 1 ");
+        }
+        if(pageSize < 1) {
+            revert InvalidArgument("Page size must be greater or equal to 1 ");
+        }
+        uint start = (page - 1) * pageSize;
+        if(start > _accountsAddresses.length()) {
+            revert InvalidArgument("Page is beyond data length");
+        }
+        uint stop = start + pageSize;
+        if(stop > _accountsAddresses.length()) {
+            stop = _accountsAddresses.length();
+        }
+        AccountData[] memory accs = new AccountData[](stop - start);
+        for(uint i = start; i < stop; ++i) {
+            accs[i - start] = accounts[_accountsAddresses.at(i)];
+        }
+        return accs;
     }
 
     function restrictedAccounts() public view returns (address[] memory) {
