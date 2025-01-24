@@ -122,7 +122,7 @@ Then('o evento {string} é emitido para o nó {string} {string} com situação a
     assert.equal(events[0].args[4], admin)
 });
 
-Then('a situação ativa do nó {string} {string} é {boolean}', async function(enodeHigh, enodeLow, status){
+Then('verifico se o nó {string} {string} está ativo o resultado é {boolean}', async function(enodeHigh, enodeLow, status){
    const nodeStatus = await this.nodeRules.isNodeActive(enodeHigh, enodeLow);
    assert.equal(nodeStatus, status);
 });

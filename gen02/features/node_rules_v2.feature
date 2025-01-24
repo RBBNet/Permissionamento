@@ -180,7 +180,7 @@ Funcionalidade: Gestão de nós
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" para mudar sua situação ativa para false
     Então a transação ocorre com sucesso
     E o evento "NodeStatusUpdated" é emitido para o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" com situação ativa false pela conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" e organização 4
-    E a situação ativa do nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" é false
+    E verifico se o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" está ativo o resultado é false
 
   Cenário: Alteração de situação realizada por um Administrador Local ativo e vinculado a uma organização ativa
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
@@ -188,7 +188,7 @@ Funcionalidade: Gestão de nós
     Quando a conta "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" para mudar sua situação ativa para false
     Então a transação ocorre com sucesso
     E o evento "NodeStatusUpdated" é emitido para o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" com situação ativa false pela conta "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65" e organização 4
-    E a situação ativa do nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" é false
+    E verifico se o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" está ativo o resultado é false
 
   Cenário: Tentativa de alteração de situação por um Administrador Global inativo
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
@@ -211,13 +211,13 @@ Funcionalidade: Gestão de nós
     E a transação ocorre com sucesso
     Quando a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" para mudar sua situação ativa para false
     Então ocorre erro "NotLocalNode" na transação
-    E a situação ativa do nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" é true
+    E verifico se o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" está ativo o resultado é true
 
   Cenário: Tentativa de alteração de nó por uma conta que não é administradora
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
     Quando a conta "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" para mudar sua situação ativa para false
     Então ocorre erro "UnauthorizedAccess" na transação
-    E a situação ativa do nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" é true
+    E verifico se o nó "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" está ativo o resultado é true
 
   Cenário: Alteração de nó com endereço inexistente
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" informa o endereço "0xf752f5cfcbd9be4ee1abfd8e53633ac522e180ad5214efd45d96f9de7a2476e7" "0x35d6256dbd86220376457c5a4ac8dc68b413d0b0785a73b98879a58010c65646" para mudar sua situação ativa para false
