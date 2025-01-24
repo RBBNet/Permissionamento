@@ -16,6 +16,31 @@ function getBoolean(value) {
     }    
 }
 
+
+const typeMap = {
+    "Validator": 2,
+    "Boot": 1,
+    "Writer": 3,
+    "WriterPartner":4,
+    "ObserverBoot": 5,
+    "Other":6
+};
+
+function getNodeType(type) {
+    if(typeMap[type] == undefined) {
+        throw new Error('Tipo de nó inválido: ' + type);
+    }
+    return typeMap[type];
+}
+
+function getConnectionResult(result) {
+    switch(result) {
+        case 'CONNECTION_ALLOWED': return '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+        case 'CONNECTION_DENIED': return '0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+        default: throw new Error('Resultado inválido: ' + result);
+    }
+}
+
 function getRoleId(role) {
     switch(role) {
         case 'GLOBAL_ADMIN_ROLE': return '0xd6e7d8560c69c7c18c2b8f3b45430215d788f128f0c04bc4a3607fe05eb5399f';
@@ -73,6 +98,8 @@ module.exports = {
     createOrganization: createOrganization,
     getBoolean: getBoolean,
     getRoleId: getRoleId,
+    getNodeType: getNodeType,
+    getConnectionResult: getConnectionResult,
     getProposalStatus: getProposalStatus,
     getProposalResult: getProposalResult,
     getVote: getVote,

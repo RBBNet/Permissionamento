@@ -2,21 +2,7 @@ const assert = require('assert');
 const { defineParameterType, Given, When, Then } = require('@cucumber/cucumber');
 const hre = require("hardhat");
 const {boolean} = require("hardhat/internal/core/params/argumentTypes");
-const {getBoolean} = require("./setup");
-
-//forma mais bonita do que vários ifs
-function typeToNumber(type) {
-    const typeMap = {
-        "Validator": 2,
-        "Boot": 1,
-        "Writer": 3,
-        "WriterPartner":4,
-        "ObserverBoot": 5,
-        "Other":6
-    };
-
-    return typeMap[type] !== undefined ? typeMap[type] : 9;  // Retorna null ou um valor padrão se o tipo não for encontrado
-}
+const { getNodeType, getConnectionResult } = require("./setup");
 
 defineParameterType({
     name: "boolean",
@@ -56,10 +42,10 @@ Then('ocorre erro {string} na transação', async function(error){
 
 When('a conta {string} informa o endereço {string} {string}, o nome {string} e o tipo {string} do nó para cadastrá-lo', async function (admin, enodeHigh, enodeLow, name, type) {
     const signer = await hre.ethers.getSigner(admin);
-    type = typeToNumber(type);
     try {
-        await this.nodeRules.connect(signer).addLocalNode(enodeHigh, enodeLow, type, name);
-    } catch (e) {
+        await this.nodeRules.connect(signer).addLocalNode(enodeHigh, enodeLow, getNodeType(type), name);
+    }
+    catch (e) {
         this.error = e;
     }
 });
@@ -78,9 +64,7 @@ Then('o nó {string} {string} é da organização {int}, tem o nome {string} e t
     const nodeType = parseInt(nodeInfo[2]);
     const nodeName = nodeInfo[3];
     const nodeOrg = parseInt(nodeInfo[4]);
-    type = typeToNumber(type);
-
-    assert.ok(nodeType === type);
+    assert.ok(nodeType === getNodeType(type));
     assert.ok(nodeName === name);
     assert.ok(nodeOrg === organization);
 });
@@ -89,7 +73,8 @@ Then('se uma consulta é realizada ao nó {string} {string} recebe-se o erro {st
     try {
         await this.nodeRules.getNode(enodeHigh, enodeLow);
         assert.fail('Deveria ter ocorrido erro na consulta de nó');
-    } catch (error) {
+    }
+    catch (error) {
         checkErrorMessage(error, expectedErrorMessage);
     }
 });
@@ -98,7 +83,8 @@ When('a conta {string} informa o endereço {string} {string} para exclusão', as
     const signer = await hre.ethers.getSigner(admin);
     try {
         await this.nodeRules.connect(signer).deleteLocalNode(enodeHigh, enodeLow);
-    } catch(error) {
+    }
+    catch(error) {
         this.error = error;
     }
 });
@@ -107,9 +93,9 @@ When('a conta {string} informa o endereço {string} {string}, o nome {string} e 
     try{
         this.oldInfo = await this.nodeRules.getNode(enodeHigh, enodeLow);
         const signer = await hre.ethers.getSigner(admin);
-        type = typeToNumber(type);
-        await this.nodeRules.connect(signer).updateLocalNode(enodeHigh, enodeLow, type, name);
-    } catch(error) {
+        await this.nodeRules.connect(signer).updateLocalNode(enodeHigh, enodeLow, getNodeType(type), name);
+    }
+    catch(error) {
         this.error = error;
     }
 });
@@ -123,7 +109,8 @@ When('a conta {string} informa o endereço {string} {string} para mudar sua situ
     const signer = await hre.ethers.getSigner(admin);
     try {
         await this.nodeRules.connect(signer).updateLocalNodeStatus(enodeHigh, enodeLow, status);
-    } catch(error){
+    }
+    catch(error){
         this.error = error;
     }
 });
@@ -146,31 +133,34 @@ Then('a situação ativa do nó {string} {string} é {boolean}', async function(
 When('a conta de governança {string} informa o endereço {string} {string}, o tipo {string}, o nome {string} e a organização {int} para cadastrá-lo', async function(admin, enodeHigh, enodeLow, type, name, organization) {
     const signer = await hre.ethers.getSigner(admin);
     try{
-        type = typeToNumber(type);
-        await this.nodeRules.connect(signer).addNode(enodeHigh, enodeLow, type, name, organization);
-    } catch(error){
+        await this.nodeRules.connect(signer).addNode(enodeHigh, enodeLow, getNodeType(type), name, organization);
+    }
+    catch(error){
         this.error = error;
     }
 });
 
-When('a conta de governança {string} informa o endereço {string} {string} do nó para removê-lo', async function(admin, enodeHigh, enodeLow){
+When('a conta de governança {string} informa o endereço {string} {string} do nó para removê-lo', async function(admin, enodeHigh, enodeLow) {
    const signer = await hre.ethers.getSigner(admin);
    try{
        await this.nodeRules.connect(signer).deleteNode(enodeHigh, enodeLow);
-   } catch(error){
+   }
+   catch(error){
        this.error = error;
    }
 });
 
-When('o nó {string} {string} pede conexão ao nó {string} {string}', async function (sourceHigh, sourceLow, destHigh, destLow){
+When('o nó {string} {string} tenta se conectar ao nó {string} {string}', async function (sourceHigh, sourceLow, destHigh, destLow) {
    try{
        const bytes = '0x00000000000000000000000000000000'
        this.connResult = await this.nodeRules.connectionAllowed(sourceHigh, sourceLow, bytes, 0, destHigh, destLow, bytes, 0);
-   } catch (error) {
+   }
+   catch (error) {
        this.error = error;
    }
 });
 
 Then('o resultado da conexão é {string}', async function(result){
-   assert.ok(this.connResult = result);
+   assert.ok(this.error === undefined);
+   assert.ok(this.connResult == getConnectionResult(result));
 });
