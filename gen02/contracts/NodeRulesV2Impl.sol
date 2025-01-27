@@ -5,12 +5,17 @@ import "./NodeRulesV2.sol";
 import "./Governable.sol";
 import "./AccountRulesV2.sol";
 import "./Organization.sol";
+import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
 contract NodeRulesV2Impl is NodeRulesV2, Governable {
+
+    using EnumerableSet for EnumerableSet.UintSet;
 
     AccountRulesV2 public immutable accountsContract;
     Organization public immutable organizationsContract;
     mapping (uint => NodeData) public allowedNodes;
+    EnumerableSet.UintSet private _nodesKeys;
+    mapping (uint => EnumerableSet.UintSet) _nodesKeysByOrg;
 
     constructor(Organization orgs, AccountRulesV2 accs, AdminProxy adminProxy) Governable(adminProxy) {
         if(address(orgs) == address(0)) {
@@ -50,6 +55,8 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         _revertIfDuplicateNode(enodeHigh, enodeLow, key);
         _revertIfInvalidName(name);
         allowedNodes[key] = NodeData(enodeHigh, enodeLow, nodeType, name, orgId, true);
+        _nodesKeys.add(key);
+        _nodesKeysByOrg[orgId].add(key);
         emit NodeAdded(enodeHigh, enodeLow, orgId, msg.sender);
     }
 
@@ -68,6 +75,8 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     
     function _deleteNode(bytes32 enodeHigh, bytes32 enodeLow, uint nodeKey, uint orgId) private {
         delete allowedNodes[nodeKey];
+        _nodesKeys.remove(nodeKey);
+        _nodesKeysByOrg[orgId].remove(nodeKey);
         emit NodeDeleted(enodeHigh, enodeLow, orgId, msg.sender);
     }
 
@@ -102,6 +111,44 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         return allowedNodes[key];
+    }
+
+    function getNumberOfNodes() public view returns (uint) {
+        return _nodesKeys.length();
+    }
+
+    function getNumberOfNodesByOrg(uint orgId) public view returns (uint) {
+        return _nodesKeysByOrg[orgId].length();
+    }
+
+    function getNodes(uint page, uint pageSize) public view returns (NodeData[] memory) {
+        return _getNodes(_nodesKeys, page, pageSize);
+    }
+
+    function getNodesByOrg(uint orgId, uint page, uint pageSize) public view returns (NodeData[] memory) {
+        return _getNodes(_nodesKeysByOrg[orgId], page, pageSize);
+    }
+
+    function _getNodes(EnumerableSet.UintSet storage nodeKeySet, uint page, uint pageSize) private view returns (NodeData[] memory) {
+        if(page < 1) {
+            revert InvalidArgument("Page must be greater or equal to 1 ");
+        }
+        if(pageSize < 1) {
+            revert InvalidArgument("Page size must be greater or equal to 1 ");
+        }
+        uint start = (page - 1) * pageSize;
+        if(start >= nodeKeySet.length()) {
+            revert InvalidArgument("Page is beyond data length");
+        }
+        uint stop = start + pageSize;
+        if(stop > nodeKeySet.length()) {
+            stop = nodeKeySet.length();
+        }
+        NodeData[] memory nodes = new NodeData[](stop - start);
+        for(uint i = start; i < stop; ++i) {
+            nodes[i - start] = allowedNodes[nodeKeySet.at(i)];
+        }
+        return nodes;
     }
 
     function connectionAllowed(

@@ -2,7 +2,7 @@ const assert = require('assert');
 const { defineParameterType, Given, When, Then } = require('@cucumber/cucumber');
 const hre = require("hardhat");
 const {boolean} = require("hardhat/internal/core/params/argumentTypes");
-const { getNodeType, getConnectionResult } = require("./setup");
+const { getNodeType, getBoolean, getConnectionResult } = require("./setup");
 
 defineParameterType({
     name: "boolean",
@@ -162,4 +162,56 @@ When('o nó {string} {string} tenta se conectar ao nó {string} {string}', async
 Then('o resultado da conexão é {string}', async function(result){
    assert.ok(this.error === undefined);
    assert.equal(this.connResult, getConnectionResult(result));
+});
+
+When('consulto os nós a partir da página {int} com tamanho de página {int}', async function(page, pageSize) {
+    this.queryError = null;
+    try {
+        this.queryResult = await this.nodeRules.getNodes(page, pageSize);
+    }
+    catch(error) {
+        this.queryError = error;
+    }
+});
+
+When('consulto os nós da organização {int} a partir da página {int} com tamanho de página {int}', async function(orgId, page, pageSize) {
+    this.queryError = null;
+    try {
+        this.queryResult = await this.nodeRules.getNodesByOrg(orgId, page, pageSize);
+    }
+    catch(error) {
+        this.queryError = error;
+    }
+});
+
+Then('ocorre erro {string} na consulta de nós', function(error) {
+    assert.ok(this.queryError != null);
+    assert.ok(this.queryError.message.includes(error));
+});
+
+Then('a quantidade total de nós é {int}', async function(expectedNumberOfNodes) {
+    const actualNumberOfNodes = await this.nodeRules.getNumberOfNodes();
+    assert.equal(actualNumberOfNodes, expectedNumberOfNodes);
+});
+
+Then('a quantidade de nós da organização {int} é {int}', async function(orgId, expectedNumberOfNodes) {
+    const actualNumberOfNodes = await this.nodeRules.getNumberOfNodesByOrg(orgId);
+    assert.equal(actualNumberOfNodes, expectedNumberOfNodes);
+});
+
+Then('o resultado da consulta de nós é {string}', async function(nodesList) {
+    assert.ok(this.queryError == null);
+    const expectedNodes = nodesList.length == 0 ? [] : nodesList.split('|');
+    assert.equal(this.queryResult.length, expectedNodes.length);
+    for(i = 0; i < expectedNodes.length; ++i) {
+        const node = expectedNodes[i].split(',');
+        assert.ok(this.queryResult[i].length == 6);
+        assert.ok(node.length == 6);
+        assert.equal(this.queryResult[i][0], node[0]);
+        assert.equal(this.queryResult[i][1], node[1]);
+        assert.equal(this.queryResult[i][2], getNodeType(node[2]));
+        assert.equal(this.queryResult[i][3], node[3]);
+        assert.equal(this.queryResult[i][4], BigInt(node[4]));
+        assert.equal(this.queryResult[i][5], getBoolean(node[5]));
+    }
 });
