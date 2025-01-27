@@ -187,12 +187,12 @@ Critérios de aceitação:
 **Observação**: Não há quaisquer critérios de filtragem ou parâmetros de ordenação para o resultado. Tampouco há garantia de consistência da ordem dos elementos entre consultas.
 
 
-## USACC13 - Observador consulta o número de contas existentes de uma organização para poder preparar paginação da consultas de dados cadastrais de contas<a id="usacc13"></a>
+## USACC13 - Observador consulta o número de contas de uma organização para poder preparar paginação da consultas de dados cadastrais de contas<a id="usacc13"></a>
 
 Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.
 2. Observador informa identificador de uma organização.
-3. A quantidade de contas existentes para a organização informada é retornada.
+3. A quantidade de contas da organização informada é retornada.
 
 **Observação**: Esta informação é importante para dimensionar consultas ao cadastro de contas, que pode vir a ter muitos dados, evitando problemas de desempenho.
 
@@ -203,7 +203,7 @@ Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.
 2. Observador informa parâmetros para realização da consulta:
    1. Identificador da organização desejada.
-   2. Página de resultado a ser retornada: Deve ser maior ou igual a 1 e não pode exceder a quantidade total de páginas (de acordo com a quantidade total de contas e o tamanho das páginas).
+   2. Página de resultado a ser retornada: Deve ser maior ou igual a 1 e não pode exceder a quantidade total de páginas (de acordo com a quantidade de contas e o tamanho das páginas).
    3. Tamanho da página de resultados a ser retornada: Deve ser maior ou igual a 1.
 3. É retornada uma lista com os dados cadastrais de contas da organização informada, correspondente à página de dados solicitada.
 
