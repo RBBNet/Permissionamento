@@ -1,6 +1,6 @@
 # language: pt
 
-Funcionalidade: Gestão de contas
+Funcionalidade: Consultas de contas
 
   Contexto:
     Dado que o smart contract de gestão de endereços de admin está implantado
