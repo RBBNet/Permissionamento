@@ -14,6 +14,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     Organization immutable public organizations;
     mapping (address => AccountData) public accounts;
     EnumerableSet.AddressSet private _accountsAddresses;
+    mapping (uint => EnumerableSet.AddressSet) _accountsAddressesByOrg;
     mapping (uint => uint) public globalAdminsCount;
     mapping (bytes32 => bool) public validRoles;
     EnumerableSet.AddressSet private _restrictedAccounts;
@@ -155,6 +156,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         AccountData memory newAccount = AccountData(orgId, account, roleId, dataHash, true);
         accounts[account] = newAccount;
         _accountsAddresses.add(account);
+        _accountsAddressesByOrg[orgId].add(account);
         _grantRole(roleId, account);
         _incrementGlobalAdminCount(orgId, roleId);
         emit AccountAdded(newAccount.account, newAccount.orgId, newAccount.roleId, newAccount.dataHash, msg.sender);
@@ -178,6 +180,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         _revokeRole(acc.roleId, account);
         delete accounts[account];
         _accountsAddresses.remove(account);
+        _accountsAddressesByOrg[acc.orgId].remove(account);
         _decrementGlobalAdminCount(acc.orgId, acc.roleId);
         emit AccountDeleted(account, acc.orgId, msg.sender);
     }
@@ -249,7 +252,19 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         return _accountsAddresses.length();
     }
 
+    function getNumberOfAccountsByOrg(uint orgId) public view returns (uint) {
+        return _accountsAddressesByOrg[orgId].length();
+    }
+
     function getAccounts(uint page, uint pageSize) public view returns (AccountData[] memory) {
+        return _getAccounts(_accountsAddresses, page, pageSize);
+    }
+
+    function getAccountsByOrg(uint orgId, uint page, uint pageSize) public view returns (AccountData[] memory) {
+        return _getAccounts(_accountsAddressesByOrg[orgId], page, pageSize);
+    }
+
+    function _getAccounts(EnumerableSet.AddressSet storage addressSet, uint page, uint pageSize) private view returns (AccountData[] memory) {
         if(page < 1) {
             revert InvalidArgument("Page must be greater or equal to 1 ");
         }
@@ -261,12 +276,12 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
             revert InvalidArgument("Page is beyond data length");
         }
         uint stop = start + pageSize;
-        if(stop > _accountsAddresses.length()) {
-            stop = _accountsAddresses.length();
+        if(stop > addressSet.length()) {
+            stop = addressSet.length();
         }
         AccountData[] memory accs = new AccountData[](stop - start);
         for(uint i = start; i < stop; ++i) {
-            accs[i - start] = accounts[_accountsAddresses.at(i)];
+            accs[i - start] = accounts[addressSet.at(i)];
         }
         return accs;
     }

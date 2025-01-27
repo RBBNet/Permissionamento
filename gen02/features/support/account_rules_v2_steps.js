@@ -335,6 +335,11 @@ Then('a quantidade total de contas é {int}', async function(expectedNumberOfAcc
     assert.equal(actualNumberOfAccounts, expectedNumberOfAccounts);
 });
 
+Then('a quantidade de contas da organização {int} é {int}', async function(orgId, expectedNumberOfAccounts) {
+    const actualNumberOfAccounts = await this.accountRulesContract.getNumberOfAccountsByOrg(orgId);
+    assert.equal(actualNumberOfAccounts, expectedNumberOfAccounts);
+});
+
 When('consulto as contas a partir da página {int} com tamanho de página {int}', async function(page, pageSize) {
     this.getAccountError = null;
     try {
@@ -345,19 +350,28 @@ When('consulto as contas a partir da página {int} com tamanho de página {int}'
     }
 });
 
+When('consulto as contas da organização {int} a partir da página {int} com tamanho de página {int}', async function(orgId, page, pageSize) {
+    this.getAccountError = null;
+    try {
+        this.queryResult = await this.accountRulesContract.getAccountsByOrg(orgId, page, pageSize);
+    }
+    catch(error) {
+        this.getAccountError = error;
+    }
+});
+
 Then('o resultado da consulta de contas é {string}', async function(accsList) {
     assert.ok(this.getAccountError == null);
-    
-    //console.log(this.queryResult);
-    
-    const expectedAccs = accsList.split('|');
+    const expectedAccs = accsList.length == 0 ? [] : accsList.split('|');
     assert.equal(this.queryResult.length, expectedAccs.length);
     for(i = 0; i < expectedAccs.length; ++i) {
         const acc = expectedAccs[i].split(',');
         assert.ok(this.queryResult[i].length == 5);
         assert.ok(acc.length == 5);
         assert.equal(this.queryResult[i][0], BigInt(acc[0]));
-        /*assert.equal(actualOrgs[i][1], org[1]);
-        assert.equal(actualOrgs[i][2], getBoolean(org[2]));*/
+        assert.equal(this.queryResult[i][1], acc[1]);
+        assert.equal(this.queryResult[i][2], getRoleId(acc[2]));
+        assert.equal(this.queryResult[i][3], acc[3]);
+        assert.equal(this.queryResult[i][4], getBoolean(acc[4]));
     }
 });
