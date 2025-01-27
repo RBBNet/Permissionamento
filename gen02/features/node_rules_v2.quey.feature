@@ -108,7 +108,11 @@ Funcionalidade: Consultas de nós
     
   Cenário: Consulta de todos os nós com paginação além do tamanho do resultado
     Quando consulto os nós a partir da página 2 com tamanho de página 8
-    Então ocorre erro "InvalidArgument" na consulta de nós
+    Então o resultado da consulta de nós é ""
+    Quando consulto os nós a partir da página 2 com tamanho de página 9
+    Então o resultado da consulta de nós é ""
+    Quando consulto os nós a partir da página 3 com tamanho de página 8
+    Então o resultado da consulta de nós é ""
 
 
   ##############################################################################
@@ -146,7 +150,7 @@ Funcionalidade: Consultas de nós
 
   Cenário: Consulta de nós de organização que não existe
     Quando consulto os nós da organização 10 a partir da página 1 com tamanho de página 100
-    Então ocorre erro "InvalidArgument" na consulta de nós
+    Então o resultado da consulta de nós é ""
     E a quantidade de nós da organização 10 é 0
 
   Cenário: Consulta de nós por organização com parâmetro de página inválido
@@ -159,4 +163,8 @@ Funcionalidade: Consultas de nós
     
   Cenário: Consulta de nós por organização com paginação além do tamanho do resultado
     Quando consulto os nós da organização 1 a partir da página 2 com tamanho de página 4
-    Então ocorre erro "InvalidArgument" na consulta de nós
+    Então o resultado da consulta de nós é ""
+    Quando consulto os nós da organização 1 a partir da página 2 com tamanho de página 5
+    Então o resultado da consulta de nós é ""
+    Quando consulto os nós da organização 1 a partir da página 3 com tamanho de página 4
+    Então o resultado da consulta de nós é ""

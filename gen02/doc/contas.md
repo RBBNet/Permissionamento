@@ -180,7 +180,7 @@ Critérios de aceitação:
 Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.
 2. Observador informa parâmetros de paginação para consultar todas as contas cadastradas:
-   1. Página de resultado a ser retornada: Deve ser maior ou igual a 1 e não pode exceder a quantidade total de páginas (de acordo com a quantidade total de contas e o tamanho das páginas).
+   1. Página de resultado a ser retornada: Deve ser maior ou igual a 1.
    2. Tamanho da página de resultados a ser retornada: Deve ser maior ou igual a 1.
 3. É retornada uma lista com os dados cadastrais de contas correspondente à página de dados solicitada.
 
@@ -203,7 +203,7 @@ Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.
 2. Observador informa parâmetros para realização da consulta:
    1. Identificador da organização desejada.
-   2. Página de resultado a ser retornada: Deve ser maior ou igual a 1 e não pode exceder a quantidade total de páginas (de acordo com a quantidade de contas e o tamanho das páginas).
+   2. Página de resultado a ser retornada: Deve ser maior ou igual a 1.
    3. Tamanho da página de resultados a ser retornada: Deve ser maior ou igual a 1.
 3. É retornada uma lista com os dados cadastrais de contas da organização informada, correspondente à página de dados solicitada.
 

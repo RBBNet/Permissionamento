@@ -104,7 +104,11 @@ Funcionalidade: Consultas de contas
     
   Cenário: Consulta de todas as contas com paginação além do tamanho do resultado
     Quando consulto as contas a partir da página 2 com tamanho de página 7
-    Então ocorre erro "InvalidArgument" na consulta de conta
+    Então o resultado da consulta de contas é ""
+    Quando consulto as contas a partir da página 2 com tamanho de página 8
+    Então o resultado da consulta de contas é ""
+    Quando consulto as contas a partir da página 3 com tamanho de página 7
+    Então o resultado da consulta de contas é ""
 
 
   ##############################################################################
@@ -140,7 +144,7 @@ Funcionalidade: Consultas de contas
 
   Cenário: Consulta de contas de organização que não existe
     Quando consulto as contas da organização 10 a partir da página 1 com tamanho de página 100
-    Então ocorre erro "InvalidArgument" na consulta de conta
+    Então o resultado da consulta de contas é ""
     E a quantidade de contas da organização 10 é 0
 
   Cenário: Consulta de contas por organização com parâmetro de página inválido
@@ -153,4 +157,8 @@ Funcionalidade: Consultas de contas
     
   Cenário: Consulta de contas por organização com paginação além do tamanho do resultado
     Quando consulto as contas da organização 1 a partir da página 2 com tamanho de página 3
-    Então ocorre erro "InvalidArgument" na consulta de conta
+    Então o resultado da consulta de contas é ""
+    Quando consulto as contas da organização 1 a partir da página 2 com tamanho de página 4
+    Então o resultado da consulta de contas é ""
+    Quando consulto as contas da organização 1 a partir da página 3 com tamanho de página 3
+    Então o resultado da consulta de contas é ""

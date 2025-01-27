@@ -272,8 +272,8 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
             revert InvalidArgument("Page size must be greater or equal to 1 ");
         }
         uint start = (page - 1) * pageSize;
-        if(start >= addressSet.length()) {
-            revert InvalidArgument("Page is beyond data length");
+        if(start > addressSet.length()) {
+            start = addressSet.length();
         }
         uint stop = start + pageSize;
         if(stop > addressSet.length()) {

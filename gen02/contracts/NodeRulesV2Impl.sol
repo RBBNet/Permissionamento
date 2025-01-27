@@ -137,8 +137,8 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
             revert InvalidArgument("Page size must be greater or equal to 1 ");
         }
         uint start = (page - 1) * pageSize;
-        if(start >= nodeKeySet.length()) {
-            revert InvalidArgument("Page is beyond data length");
+        if(start > nodeKeySet.length()) {
+            start = nodeKeySet.length();
         }
         uint stop = start + pageSize;
         if(stop > nodeKeySet.length()) {
