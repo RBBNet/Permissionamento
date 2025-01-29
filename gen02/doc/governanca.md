@@ -125,3 +125,16 @@ Critérios de aceitação:
 
 - Deveria haver requisito para que os partícipes patronos pudessem vetar propostas, conforme previsto no [Regulamento da RBB](https://github.com/RBBNet/rbb/blob/master/governanca/reunioes_comite_executivo/2022-11-29_reuniao/2022-11-29-Ata-Reuni%C3%A3o-Governan%C3%A7a-RBB-Assinada.pdf)?
   - **Resposta**: Avaliou-se que o *smart contract* de governança não precisaria dessa funcionalidade, baseado na premissa de confiança que o processo decisório *off chain* da governança, onde os vetos deverão de fato ocorrer, será respeitado, não havendo efetivo cadastro de propostas já vetas ou rejeitadas no Comitê Executivo. Dessa maneira, mantém-se o *smart contract* com implementação mais simples.
+  
+
+## Diagramas
+
+
+### Diagrama de estados de situação de uma proposta
+
+![Situação de uma proposta](img/ProposalStatus.png)
+
+
+### Diagrama de estados do resultado de uma proposta
+
+![Resultado de uma proposta](img/ProposalResult.png)
