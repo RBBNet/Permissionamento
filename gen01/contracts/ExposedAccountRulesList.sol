@@ -5,23 +5,28 @@ import "./AccountRulesList.sol";
 
 contract ExposedAccountRulesList is AccountRulesList {
 
+    //@audit trocar nome do metodo para não ter o _ como prefixo
     function _size() public view returns (uint256) {
         return size();
     }
 
-    function _exists(address _account) public view returns (bool) {
-        return exists(_account);
+    //@audit trocar nome do metodo para não ter o _ como prefixo
+    function _exists(address account) public view returns (bool) { // @audit-ok mudança do nome para ficar sem _
+        return exists(account);
     }
 
-    function _add(address _account) public returns (bool) {
-        return add(_account);
+    //@audit trocar nome do metodo para não ter o _ como prefixo
+    function _add(address account) public returns (bool) { // @audit-ok mudança do nome para ficar sem _
+        return add(account);
     }
 
-    function _addAll(address[] memory accounts) public returns (bool) {
+    //@audit trocar nome do metodo para não ter o _ como prefixo
+    function _addAll(address[] calldata accounts) external returns (bool) { //@audit-ok mudando a visibilidade e para calldata
         return addAll(accounts, msg.sender);
     }
 
-    function _remove(address _account) public returns (bool) {
-        return remove(_account);
+    //@audit trocar nome do metodo para não ter o _ como prefixoz
+    function _remove(address account) public returns (bool) { // @audit-ok mudança do nome para ficar sem _
+        return remove(account);
     }
 }

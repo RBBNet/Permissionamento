@@ -32,9 +32,9 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         _;
     }
 
-    modifier validAccount(address account) {
+    modifier validAddressAccount(address account) { //@audit-ok criação do modifier
         if(account == address(0)) {
-            revert InvalidAccount(account, "Address cannot be 0x0");
+            revert InvalidAddressAccount(account, "Address cannot be 0x0");
         }
         _;
     }
@@ -117,7 +117,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     }
 
     function addLocalAccount(address account, bytes32 roleId, bytes32 dataHash) public
-        onlyActiveAdmin validAccount(account) inexistentAccount(account) validRole(roleId) notGlobalAdminRole(roleId) {
+        onlyActiveAdmin validAddressAccount(account) inexistentAccount(account) validRole(roleId) notGlobalAdminRole(roleId) {
         _addAccount(account, accounts[msg.sender].orgId, roleId, dataHash);
     }
 
@@ -131,9 +131,9 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         validRole(roleId) notGlobalAdminRole(roleId) {
         _revertIfInvalidDataHash(roleId, dataHash);
         AccountData storage acc = accounts[account];
-        _revokeRole(acc.roleId, account);
+        _revokeRole(acc.roleId, account); // deveria verificar se o retorno foi ok ou nao
         acc.roleId = roleId;
-        _grantRole(acc.roleId, account);
+        _grantRole(acc.roleId, account); // deveria verificar se o retorno foi ok ou nao
         acc.dataHash = dataHash;
         emit AccountUpdated(acc.account, acc.orgId, acc.roleId, dataHash, msg.sender);
     }
@@ -146,7 +146,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     }
 
     function addAccount(address account, uint orgId, bytes32 roleId, bytes32 dataHash) public
-        onlyGovernance validAccount(account) inexistentAccount(account) validOrganization(orgId)
+        onlyGovernance validAddressAccount(account) inexistentAccount(account) validOrganization(orgId)
         validRole(roleId) {
         _addAccount(account, orgId, roleId, dataHash);
     }
@@ -157,7 +157,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         accounts[account] = newAccount;
         _accountsAddresses.add(account);
         _accountsAddressesByOrg[orgId].add(account);
-        _grantRole(roleId, account);
+        _grantRole(roleId, account); // deveria verificar se o retorno foi ok ou nao
         _incrementGlobalAdminCount(orgId, roleId);
         emit AccountAdded(newAccount.account, newAccount.orgId, newAccount.roleId, newAccount.dataHash, msg.sender);
     }
@@ -169,7 +169,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     }
 
     function deleteAccount(address account) public onlyGovernance existentAccount(account) {
-        if(_getGlobalAdminCount(accounts[account].orgId) < 2) {
+        if(_getGlobalAdminCount(accounts[account].orgId) < 2) { //modifier?
             revert IllegalState("At least 1 global administrator must be active");
         }
         _deleteAccount(account);
@@ -177,7 +177,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
 
     function _deleteAccount(address account) private {
         AccountData memory acc = accounts[account];
-        _revokeRole(acc.roleId, account);
+        _revokeRole(acc.roleId, account); // deveria verificar se o retorno foi ok ou nao
         delete accounts[account];
         _accountsAddresses.remove(account);
         _accountsAddressesByOrg[acc.orgId].remove(account);
@@ -224,7 +224,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     }
 
     function setSmartContractSenderAccess(address smartContract, bool restricted, address[] calldata allowedSenders) public
-        onlyGovernance validAccount(smartContract) {
+        onlyGovernance validAddressAccount(smartContract) {
         if(restricted) {
             // Acesso ao smart contract deve ser restrito
             _restrictedSmartContracts.add(smartContract);
@@ -330,7 +330,9 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
 
         if(address(0) == target) {
             // Implantação de smart contract
-            return hasRole(DEPLOYER_ROLE, sender) || hasRole(LOCAL_ADMIN_ROLE, sender) || hasRole(GLOBAL_ADMIN_ROLE, sender);
+            return hasRole(DEPLOYER_ROLE, sender) ||
+             hasRole(LOCAL_ADMIN_ROLE, sender) || 
+             hasRole(GLOBAL_ADMIN_ROLE, sender);
         }
 
         return true;

@@ -11,7 +11,7 @@ contract OrganizationImpl is Organization, Governable {
 
     uint public idSeed = 0;
     mapping (uint => OrganizationData) public organizations;
-    EnumerableSet.UintSet private _organizationIds;
+    EnumerableSet.UintSet private organizationIds;
 
     modifier existentOrganization(uint orgId) {
         if(organizations[orgId].id == 0) {
@@ -32,10 +32,11 @@ contract OrganizationImpl is Organization, Governable {
     }
 
     function _addOrganization(string memory name, bool canVote) private returns (uint) {
-        uint newId = ++idSeed;
+        uint newId = ++idSeed; //@audit operação custosa
         OrganizationData memory newOrg = OrganizationData(newId, name, canVote);
         organizations[newId] = newOrg;
-        _organizationIds.add(newId);
+        bool success = organizationIds.add(newId); //@audit-ok retorno estava sendo ignorado (poderia levar a um falso entendimento) 
+        require(success, "Failed to add organization ID"); 
         emit OrganizationAdded(newId);
         return newId;
     }
@@ -48,11 +49,12 @@ contract OrganizationImpl is Organization, Governable {
     }
 
     function deleteOrganization(uint orgId) public onlyGovernance existentOrganization(orgId) {
-        if(_organizationIds.length() < 3) {
+        if(organizationIds.length() < 3) {
             revert IllegalState("At least 2 organizations must be active");
         }
         delete organizations[orgId];
-        _organizationIds.remove(orgId);
+        bool success = organizationIds.remove(orgId); //@audit-ok retorno estava sendo ignorado (poderia levar a um falso entendimento) 
+        require(success, "Failed to remove organization ID");
         emit OrganizationDeleted(orgId);
     }
 
@@ -65,15 +67,15 @@ contract OrganizationImpl is Organization, Governable {
     }
 
     function getOrganizations() public view returns (OrganizationData[] memory) {
-        OrganizationData[] memory orgs = new OrganizationData[](_organizationIds.length());
-        for(uint i = 0; i < _organizationIds.length(); ++i) {
-            orgs[i] = organizations[_organizationIds.at(i)];
+        OrganizationData[] memory orgs = new OrganizationData[](organizationIds.length());
+        for(uint i = 0; i < organizationIds.length(); ++i) {
+            orgs[i] = organizations[organizationIds.at(i)];
         }
         return orgs;
     }
 
-    function organizationIds() public view returns (uint[] memory) {
-        return _organizationIds.values();
+    function organizationIdsValues() public view returns (uint[] memory) {
+        return organizationIds.values();
     }
 
 }

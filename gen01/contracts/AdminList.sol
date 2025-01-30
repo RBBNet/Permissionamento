@@ -20,35 +20,37 @@ contract AdminList {
     address[] public allowlist;
     mapping (address => uint256) private indexOf; //1 based indexing. 0 means non-existent
 
+    //@audit internal, mas nunca é usada (dead code)
     function size() internal view returns (uint256) {
         return allowlist.length;
     }
 
-    function exists(address _account) internal view returns (bool) {
-        return indexOf[_account] != 0;
+    function exists(address account) internal view returns (bool) { // @audit-ok mudança do nome para ficar sem _
+        return indexOf[account] != 0;
     }
 
-    function add(address _account) internal returns (bool) {
-        if (indexOf[_account] == 0) {
-            indexOf[_account] = allowlist.push(_account);
+    function add(address account) internal returns (bool) { // @audit-ok mudança do nome para ficar sem _
+        if (indexOf[account] == 0) {
+            indexOf[account] = allowlist.push(account);
             return true;
         }
         return false;
     }
 
-    function addAll(address[] memory accounts, address _grantor) internal returns (bool) {
+    //@audit internal, mas nunca é usada (dead code)
+    function addAll(address[] memory accounts, address grantor) internal returns (bool) { // @audit-ok mudança do nome para ficar sem _
         bool allAdded = true;
         for (uint i = 0; i<accounts.length; i++) {
             if (msg.sender == accounts[i]) {
-                emit AdminAdded(false, accounts[i], _grantor, block.timestamp, "Adding own account as Admin is not permitted");
-                allAdded = allAdded && false;
+                emit AdminAdded(false, accounts[i], grantor, block.timestamp, "Adding own account as Admin is not permitted");
+                allAdded = allAdded && false; //@audit sempre vai ser falso
             } else if (exists(accounts[i])) {
-                emit AdminAdded(false, accounts[i], _grantor, block.timestamp, "Account is already an Admin");
-                allAdded = allAdded && false;
+                emit AdminAdded(false, accounts[i], grantor, block.timestamp, "Account is already an Admin");
+                allAdded = allAdded && false; //@audit sempre vai ser falso
             }  else {
                 bool result = add(accounts[i]);
                 string memory message = result ? "Admin account added successfully" : "Account is already an Admin";
-                emit AdminAdded(result, accounts[i], _grantor, block.timestamp, message);
+                emit AdminAdded(result, accounts[i], grantor, block.timestamp, message);
                 allAdded = allAdded && result;
             }
         }
@@ -56,8 +58,9 @@ contract AdminList {
         return allAdded;
     }
 
-    function remove(address _account) internal returns (bool) {
-        uint256 index = indexOf[_account];
+    //@audit internal, mas nunca é usada (dead code)
+    function remove(address account) internal returns (bool) { // @audit-ok mudança do nome para ficar sem _
+        uint256 index = indexOf[account];
         if (index > 0 && index <= allowlist.length) { //1-based indexing
             //move last address into index being vacated (unless we are dealing with last index)
             if (index != allowlist.length) {
@@ -68,7 +71,7 @@ contract AdminList {
 
             //shrink array
             allowlist.length -= 1;
-            indexOf[_account] = 0;
+            indexOf[account] = 0;
             return true;
         }
         return false;

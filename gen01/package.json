@@ -9,7 +9,8 @@
   "scripts": {
     "compile": "yarn hardhat compile",
     "deploy": "yarn hardhat run scripts/deploy/deploy_contracts.js",
-    "test": "yarn hardhat test"
+    "test": "yarn hardhat test",
+    "slither": "slither . --solc-remaps "
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",

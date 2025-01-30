@@ -36,6 +36,7 @@ interface AccountRulesV2 is AccountRulesProxy, IAccessControl {
     error InvalidRole(bytes32 roleId, string message);
     error InvalidHash(bytes32 hash, string message);
     error IllegalState(string message);
+    error InvalidAddressAccount(address addressAccount, string message);
 
     function addLocalAccount(address account, bytes32 roleId, bytes32 dataHash) external;
     function deleteLocalAccount(address account) external;

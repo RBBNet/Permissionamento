@@ -4,16 +4,16 @@ import "./NodeRulesProxy.sol";
 import "./Ingress.sol";
 
 
-contract NodeIngress is Ingress {
+contract NodeIngress is Ingress, NodeRulesProxy {
     // version of this contract: semver eg 1.2.14 represented like 001002014
-    uint private version = 1000000;
+    uint private constant VERSION_OF_CONTRACT = 1000000;
 
     event NodePermissionsUpdated(
         bool addsRestrictions
     );
 
-    function getContractVersion() public view returns(uint) {
-        return version;
+    function getContractVersion() public pure returns(uint) { //@audit-ok mudando visibilidade para pure
+        return VERSION_OF_CONTRACT;
     }
 
     function emitRulesChangeEvent(bool addsRestrictions) public {

@@ -12,12 +12,12 @@ contract AccountRules is AccountRulesProxy, AccountRulesList {
     // this will be used to protect data when upgrading contracts
     bool private readOnlyMode = false;
     // version of this contract: semver like 1.2.14 represented like 001002014
-    uint private version = 1000000;
+    uint private constant VERSION_OF_CONTRACT = 1000000;  //@audit-ok inserção de constante e em capwords
 
     AccountIngress private ingressContract;
 
     modifier onlyOnEditMode() {
-        require(!readOnlyMode, "In read only mode: rules cannot be modified");
+        require(!readOnlyMode, "In read only mode: rules cannot be modified"); //@audit-ok removendo redundância booleana
         _;
     }
 
@@ -29,14 +29,14 @@ contract AccountRules is AccountRulesProxy, AccountRulesList {
         _;
     }
 
-    constructor (AccountIngress _ingressContract) public {
-        ingressContract = _ingressContract;
+    constructor (AccountIngress newIngressContract) public { //@audit-ok mudança do nome para não ter os _
+        ingressContract = newIngressContract;
         add(msg.sender);
     }
 
     // VERSION
     function getContractVersion() public view returns (uint) {
-        return version;
+        return VERSION_OF_CONTRACT;
     }
 
     // READ ONLY MODE
@@ -45,13 +45,13 @@ contract AccountRules is AccountRulesProxy, AccountRulesList {
     }
 
     function enterReadOnly() public onlyAdmin returns (bool) {
-        require(readOnlyMode == false, "Already in read only mode");
+        require(!readOnlyMode, "Already in read only mode"); //@audit-ok removendo redundância booleana
         readOnlyMode = true;
         return true;
     }
 
     function exitReadOnly() public onlyAdmin returns (bool) {
-        require(readOnlyMode == true, "Not in read only mode");
+        require(readOnlyMode, "Not in read only mode");
         readOnlyMode = false;
         return true;
     }
@@ -62,8 +62,8 @@ contract AccountRules is AccountRulesProxy, AccountRulesList {
         uint256, // value
         uint256, // gasPrice
         uint256, // gasLimit
-        bytes memory // payload
-    ) public view returns (bool) {
+        bytes calldata // payload
+    ) external view returns (bool) {
         if (
             accountPermitted (sender)
         ) {
@@ -74,9 +74,9 @@ contract AccountRules is AccountRulesProxy, AccountRulesList {
     }
 
     function accountPermitted(
-        address _account
+        address account //@audit-ok mudança do nome para ficar sem _
     ) public view returns (bool) {
-        return exists(_account);
+        return exists(account);
     }
 
     function addAccount(
@@ -107,7 +107,7 @@ contract AccountRules is AccountRulesProxy, AccountRulesList {
         return allowlist;
     }
 
-    function addAccounts(address[] memory accounts) public onlyAdmin returns (bool) {
+    function addAccounts(address[] calldata accounts) external onlyAdmin returns (bool) { // @audit-ok mudança da visibilidade e de memory
         return addAll(accounts, msg.sender);
     }
 }

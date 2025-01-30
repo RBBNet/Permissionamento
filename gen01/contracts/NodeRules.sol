@@ -24,7 +24,7 @@ contract NodeRules is NodeRulesProxy, NodeRulesList {
     // this will be used to protect data when upgrading contracts
     bool readOnlyMode = false;
     // version of this contract: semver like 1.2.14 represented like 001002014
-    uint version = 1000000;
+    uint private constant VERSION_OF_CONTRACT = 1000000; //@audit-ok privada, constante
 
     NodeIngress private nodeIngressContract;
 
@@ -53,7 +53,7 @@ contract NodeRules is NodeRulesProxy, NodeRulesList {
 
     // VERSION
     function getContractVersion() public view returns (uint) {
-        return version;
+        return VERSION_OF_CONTRACT;
     }
 
     // READ ONLY MODE
@@ -62,13 +62,13 @@ contract NodeRules is NodeRulesProxy, NodeRulesList {
     }
 
     function enterReadOnly() public onlyAdmin returns (bool) {
-        require(readOnlyMode == false, "Already in read only mode");
+        require(!readOnlyMode, "Already in read only mode"); //@audit-ok removendo redundância booleana
         readOnlyMode = true;
         return true;
     }
 
     function exitReadOnly() public onlyAdmin returns (bool) {
-        require(readOnlyMode == true, "Not in read only mode");
+        require(readOnlyMode, "Not in read only mode"); //@audit-ok removendo redundância booleana
         readOnlyMode = false;
         return true;
     }
@@ -110,9 +110,9 @@ contract NodeRules is NodeRulesProxy, NodeRulesList {
         bytes32 enodeLow,
         NodeType nodeType,
         bytes6 geoHash,
-        string memory name,
-        string memory organization
-    ) public onlyAdmin onlyOnEditMode onlyOwner returns (bool){
+        string calldata name,
+        string calldata organization
+    ) external onlyAdmin onlyOnEditMode onlyOwner returns (bool){
         bool added = add(enodeHigh, enodeLow, nodeType, geoHash, name, organization);
         return added;
     }
@@ -121,14 +121,16 @@ contract NodeRules is NodeRulesProxy, NodeRulesList {
         owner = address(0);
     }
 
+    //@audit
+    //possível caso de reentrância
     function addEnode(
         bytes32 enodeHigh,
         bytes32 enodeLow,
         NodeType nodeType,
         bytes6 geoHash,
-        string memory name,
-        string memory organization
-    ) public onlyAdmin onlyOnEditMode returns (bool) {
+        string calldata name,
+        string calldata organization
+    ) external onlyAdmin onlyOnEditMode returns (bool) {
         bool added = add(enodeHigh, enodeLow, nodeType, geoHash, name, organization);
 
         if (added) {
@@ -143,6 +145,8 @@ contract NodeRules is NodeRulesProxy, NodeRulesList {
         return added;
     }
 
+    //@audit
+    //possível caso de reentrância
     function removeEnode(
         bytes32 enodeHigh,
         bytes32 enodeLow
@@ -166,8 +170,8 @@ contract NodeRules is NodeRulesProxy, NodeRulesList {
     }
 
     function getByIndex(uint index) public view returns (bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, bytes6 geoHash, string memory name, string memory organization) {
-        if (index >= 0 && index < size()) {
-            enode memory item = allowlist[index];
+        if (index < size()) { //@audit-ok os tipos uint256 são sempre maiores ou iguais a zero entao index >= 0 é uma tautologia
+            Enode memory item = allowlist[index]; // @audit-ok mudando para Enode
             return (item.enodeHigh, item.enodeLow, item.nodeType, item.geoHash, item.name, item.organization);
         }
     }

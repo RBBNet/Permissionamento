@@ -23,31 +23,34 @@ contract AccountRulesList {
         return allowlist.length;
     }
 
-    function exists(address _account) internal view returns (bool) {
-        return indexOf[_account] != 0;
+    //@audit internal, mas nunca é usada (dead code)
+    function exists(address account) internal view returns (bool) { // @audit-ok mudança do nome para ficar sem _
+        return indexOf[account] != 0;
     }
 
-    function add(address _account) internal returns (bool) {
-        if (indexOf[_account] == 0) {
-            indexOf[_account] = allowlist.push(_account);
+    function add(address account) internal returns (bool) { // @audit-ok mudança do nome para ficar sem _
+        if (indexOf[account] == 0) {
+            indexOf[account] = allowlist.push(account);
             return true;
         }
         return false;
     }
 
-    function addAll(address[] memory accounts, address _grantor) internal returns (bool) {
+    //@audit internal, mas nunca é usada (dead code)
+    function addAll(address[] memory accounts, address grantor) internal returns (bool) { // @audit-ok mudança do nome para ficar sem _
         bool allAdded = true;
         for (uint i = 0; i < accounts.length; i++) {
             bool added = add(accounts[i]);
-            emit AccountAdded(added, accounts[i], _grantor, block.timestamp);
+            emit AccountAdded(added, accounts[i], grantor, block.timestamp);
             allAdded = allAdded && added;
         }
 
         return allAdded;
     }
 
-    function remove(address _account) internal returns (bool) {
-        uint256 index = indexOf[_account];
+    //@audit internal, mas nunca é usada (dead code)
+    function remove(address account) internal returns (bool) { // @audit-ok mudança do nome para ficar sem _
+        uint256 index = indexOf[account];
         if (index > 0 && index <= allowlist.length) { //1-based indexing
             //move last address into index being vacated (unless we are dealing with last index)
             if (index != allowlist.length) {
@@ -58,7 +61,7 @@ contract AccountRulesList {
 
             //shrink array
             allowlist.length -= 1;
-            indexOf[_account] = 0;
+            indexOf[account] = 0;
             return true;
         }
         return false;

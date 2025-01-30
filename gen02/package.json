@@ -9,7 +9,8 @@
     "deploy-hardhat-gen02": "npx hardhat run deploy/Gen02.js --network local",
     "deploy-local-mock": "npx hardhat run deploy/AdminMock.js --network local_besu",
     "deploy-local-gen02": "npx hardhat run deploy/Gen02.js --network local_besu",
-    "deploy-local-migratetogen02": "npx hardhat run deploy/MigrateToGen02.js --network local_besu"
+    "deploy-local-migratetogen02": "npx hardhat run deploy/MigrateToGen02.js --network local_besu",
+    "slither": "slither . --solc-remaps @openzeppelin=node_modules/@openzeppelin"
   },
   "repository": {
     "type": "git",

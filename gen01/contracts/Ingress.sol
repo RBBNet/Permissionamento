@@ -3,10 +3,10 @@ pragma solidity 0.5.9;
 import "./AdminProxy.sol";
 
 
-contract Ingress {
+contract Ingress is AdminProxy{
     // Contract keys
-    bytes32 public RULES_CONTRACT = 0x72756c6573000000000000000000000000000000000000000000000000000000; // "rules"
-    bytes32 public ADMIN_CONTRACT = 0x61646d696e697374726174696f6e000000000000000000000000000000000000; // "administration"
+    bytes32 public constant RULES_CONTRACT = keccak256(abi.encodePacked("rules")); //@audit-ok removendo literais extensos
+    bytes32 public constant ADMIN_CONTRACT = keccak256(abi.encodePacked("administration")); //@audit-ok removendo literais extensos
 
     // Registry mapping indexing
     mapping(bytes32 => address) internal registry;
@@ -52,12 +52,12 @@ contract Ingress {
         return true;
     }
 
-    function removeContract(bytes32 _name) public returns(bool) {
-        require(_name > 0, "Contract name must not be empty.");
+    function removeContract(bytes32 name) public returns(bool) {
+        require(name > 0, "Contract name must not be empty.");
         require(contractKeys.length > 0, "Must have at least one registered contract to execute delete operation.");
         require(isAuthorized(msg.sender), "Not authorized to update contract registry.");
 
-        uint256 index = indexOf[_name];
+        uint256 index = indexOf[name];
         if (index > 0 && index <= contractKeys.length) { //1-based indexing
             //move last address into index being vacated (unless we are dealing with last index)
             if (index != contractKeys.length) {
@@ -68,9 +68,9 @@ contract Ingress {
 
             //shrink contract keys array
             contractKeys.pop();
-            indexOf[_name] = 0;
-            registry[_name] = address(0);
-            emit RegistryUpdated(address(0), _name);
+            indexOf[name] = 0;
+            registry[name] = address(0);
+            emit RegistryUpdated(address(0), name);
             return true;
         }
         return false;

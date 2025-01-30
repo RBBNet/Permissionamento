@@ -38,15 +38,20 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         _;
     }
 
+    modifier onlyActiveOrganization(orgId) { // add modoifier
+        if(!organizationsContract.isOrganizationActive(orgId)) {
+            revert InvalidOrganization(orgId);
+        }
+        _;
+    }
+
+
     function addLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name) public onlyActiveAdmin {
         AccountRulesV2.AccountData memory acc = accountsContract.getAccount(msg.sender);
         _addNode(enodeHigh, enodeLow, nodeType, name, acc.orgId);
     }
 
-    function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name, uint orgId) public onlyGovernance {
-        if(!organizationsContract.isOrganizationActive(orgId)) {
-            revert InvalidOrganization(orgId);
-        }
+    function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name, uint orgId) public onlyGovernance onlyActiveOrganization(orgId){
         _addNode(enodeHigh, enodeLow, nodeType, name, orgId);
     }
 
