@@ -36,7 +36,7 @@ contract OrganizationImpl is Organization, Governable {
         OrganizationData memory newOrg = OrganizationData(newId, name, canVote);
         organizations[newId] = newOrg;
         _organizationIds.add(newId);
-        emit OrganizationAdded(newId);
+        emit OrganizationAdded(newId, name, canVote);
         return newId;
     }
 
@@ -44,7 +44,7 @@ contract OrganizationImpl is Organization, Governable {
         OrganizationData storage org = organizations[orgId];
         org.name = name;
         org.canVote = canVote;
-        emit OrganizationUpdated(orgId);
+        emit OrganizationUpdated(orgId, name, canVote);
     }
 
     function deleteOrganization(uint orgId) public onlyGovernance existentOrganization(orgId) {

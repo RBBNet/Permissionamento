@@ -35,11 +35,11 @@ Funcionalidade: Gestão de organizações
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "Dataprev" e direito de voto "true"
     Então a organização 3 é "Dataprev" e direito de voto "true"
     E verifico se a organização 3 está ativa o resultado é "true"
-    E o evento "OrganizationAdded" foi emitido para a organização 3
+    E o evento "OrganizationAdded" foi emitido para a organização 3 com nome "Dataprev" e direito de voto "true"
     # Governança adiciona a PUC-Rio com organização 4
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "PUC-Rio" e direito de voto "false"
     Então a organização 4 é "PUC-Rio" e direito de voto "false"
-    E o evento "OrganizationAdded" foi emitido para a organização 4
+    E o evento "OrganizationAdded" foi emitido para a organização 4 com nome "PUC-Rio" e direito de voto "false"
     E verifico se a organização 4 está ativa o resultado é "true"
     # Verificação da lista de organizações
     E a lista de organizações é "1,BNDES,true|2,TCU,true|3,Dataprev,true|4,PUC-Rio,false"
@@ -53,7 +53,7 @@ Funcionalidade: Gestão de organizações
     # Governança altera organização 1
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" atualiza a organização 1 com nome "Banco Nacional de Desenvolvimento Econômico e Social" e direito de voto "false"
     Então a organização 1 é "Banco Nacional de Desenvolvimento Econômico e Social" e direito de voto "false"
-    E o evento "OrganizationUpdated" foi emitido para a organização 1
+    E o evento "OrganizationUpdated" foi emitido para a organização 1 com nome "Banco Nacional de Desenvolvimento Econômico e Social" e direito de voto "false"
 
   Cenário: Tentativa de atualização de organização por conta não autorizada ("por fora" da governança)
     # Uma conta que não é a da Governança tenta atualizar organização
@@ -70,7 +70,7 @@ Funcionalidade: Gestão de organizações
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "OrgExc" e direito de voto "true"
     Então a organização 3 é "OrgExc" e direito de voto "true"
     E verifico se a organização 3 está ativa o resultado é "true"
-    E o evento "OrganizationAdded" foi emitido para a organização 3
+    E o evento "OrganizationAdded" foi emitido para a organização 3 com nome "OrgExc" e direito de voto "true"
     E a lista de organizações é "1,BNDES,true|2,TCU,true|3,OrgExc,true"
     # Governança exclui a organização 3
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3

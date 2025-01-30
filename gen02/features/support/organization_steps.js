@@ -86,6 +86,20 @@ Then('o evento {string} foi emitido para a organização {int}', async function(
     assert.ok(found);
 });
 
+Then('o evento {string} foi emitido para a organização {int} com nome {string} e direito de voto {string}', async function(event, orgId, name, canVote) {
+    const block = await hre.ethers.provider.getBlockNumber();
+    const events = await this.organizationContract.queryFilter(event, block, block);
+    let found = false;
+    for (let i = 0; i < events.length && !found; i++) {
+        found =
+            events[i].fragment.name == event &&
+            events[i].args[0] == orgId &&
+            events[i].args[1] == name &&
+            events[i].args[2] == getBoolean(canVote);
+    }
+    assert.ok(found);
+});
+
 Then('ocorre erro {string} na tentativa de adição de organização', function(error) {
     assert.ok(this.addError != null);
     assert.ok(this.addError.message.includes(error));

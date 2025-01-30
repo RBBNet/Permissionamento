@@ -9,6 +9,8 @@ Critérios de aceitação:
 4. A organização é criada.
 5. A ocorrência do cadastro da organização deve emitir um evento, registrando:
    1. O identificador da organização
+   2. O nome da organização
+   3. A indicação se a mesma pode participar de votações
 6. O identificador criado para a organização é retornado.
 
 
@@ -21,6 +23,8 @@ Critérios de aceitação:
 4. As informações de novo nome e nova indicação de participação em votação são atualizadas.
 5. A alteração do cadastro da organização deve emitir um evento, registrando:
    1. O identificador da organização
+   2. O novo nome
+   3. A nova indicação se a mesma pode participar de votações
 
 
 ## USORG03 - Governança exclui organização participante para desabilitar nós, contas e rotação de validadores vinculadas<a id="usorg03"></a>

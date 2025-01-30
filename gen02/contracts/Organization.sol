@@ -9,8 +9,8 @@ interface Organization {
         bool canVote;
     }
 
-    event OrganizationAdded(uint indexed orgId);
-    event OrganizationUpdated(uint indexed orgId);
+    event OrganizationAdded(uint indexed orgId, string name, bool canVote);
+    event OrganizationUpdated(uint indexed orgId, string name, bool canVote);
     event OrganizationDeleted(uint indexed orgId);
 
     error OrganizationNotFound(uint orgId);
