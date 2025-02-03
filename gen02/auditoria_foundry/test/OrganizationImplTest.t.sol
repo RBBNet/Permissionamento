@@ -168,48 +168,33 @@ contract OrganizationImplTest is Test {
         - Apenas se a organização já existe
         - Precisa de ao menos 2 organizações ativas
     */
-    //@audit error
-    // function testFuzz_DeleteOrganization(uint orgId, address caller) public {
-    //     vm.assume(caller != address(0));
+    function testFuzz_DeleteOrganization(uint orgId, address caller) public {
+        vm.assume(caller != address(0));
 
-    //     // criação de mais 2 organizações
-    //     vm.startPrank(addr1);
-    //     for (uint i = 0; i < 2; i++) {
-    //         orgImpl.addOrganization(string(abi.encodePacked("Organization", i)), true);
-    //     }
-    //     vm.stopPrank();
+        bool authorized = (uint256(keccak256(abi.encode(caller))) % 2 == 0);
+        adminProxy.setAuthorized(caller, authorized);
 
-    //     // 4 orgs ativas: 1, 2, 3, 4
-    //     bool isGovernance = (uint256(keccak256(abi.encode(caller))) % 2 == 0);
-    //     adminProxy.setAuthorized(caller, isGovernance);
+        vm.startPrank(addr1); 
+        uint extra1 = orgImpl.addOrganization("OrganizacaoExtraUm", false);
+        uint extra2 = orgImpl.addOrganization("OrganizacaoExtraDois", true);
+        vm.stopPrank();
+
         
-    //     vm.prank(caller);
-
-    //     if (!isGovernance) { // não é governança
-           
-    //         vm.expectRevert(abi.encodeWithSelector(Governable.UnauthorizedAccess.selector, caller));
-    //         orgImpl.deleteOrganization(orgId);
-
-    //     } else { // eh governança
-
-    //         if (orgId == 0 || orgId > 4) { // organização não existe
-
-    //             vm.expectRevert(abi.encodeWithSelector(Organization.OrganizationNotFound.selector, orgId));
-    //             orgImpl.deleteOrganization(orgId);
-
-    //         } else { // org existe
-
-    //             assertTrue(adminProxy.isAuthorized(caller));
-
-    //             orgImpl.deleteOrganization(orgId);
-
-    //             bool active = orgImpl.isOrganizationActive(orgId);
-    //             assertFalse(active); // foi realmente deletada?
-
-    //             // tentando deletar novamente então deve reverter
-    //             vm.expectRevert(abi.encodeWithSelector(Organization.OrganizationNotFound.selector, orgId));
-    //             orgImpl.deleteOrganization(orgId);
-    //         }
-    //     }
-    // }
+        vm.prank(caller);
+        if(!authorized) {
+            vm.expectRevert(abi.encodeWithSelector(Governable.UnauthorizedAccess.selector, caller));
+            orgImpl.deleteOrganization(orgId);
+        } else {
+            // Se orgId for inválido
+            if(orgId == 0 || (orgId != 1 && orgId != 2 && orgId != extra1 && orgId != extra2)) {
+                vm.expectRevert(abi.encodeWithSelector(Organization.OrganizationNotFound.selector, orgId));
+                orgImpl.deleteOrganization(orgId);
+            } else {
+                orgImpl.deleteOrganization(orgId);
+                bool active = orgImpl.isOrganizationActive(orgId);
+                assertFalse(active, "Org deve ter sido removida");
+            }
+        }
+    }
+    
 }

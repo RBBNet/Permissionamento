@@ -117,7 +117,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     }
 
     function addLocalAccount(address account, bytes32 roleId, bytes32 dataHash) public
-        onlyActiveAdmin validAccount(account) inexistentAccount(account) validRole(roleId) notGlobalAdminRole(roleId) {
+         validAccount(account) notGlobalAdminRole(roleId) inexistentAccount(account) validRole(roleId) onlyActiveAdmin{
         _addAccount(account, accounts[msg.sender].orgId, roleId, dataHash);
     }
 
@@ -288,6 +288,10 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
 
     function restrictedAccounts() public view returns (address[] memory) {
         return _restrictedAccounts.values();
+    }
+
+    function restrictedAccountsContains(address account) external view returns (bool) {
+        return _restrictedAccounts.contains(account);
     }
 
     function restrictedSmartContracts() public view returns (address[] memory) {
