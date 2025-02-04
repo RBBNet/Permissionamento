@@ -20,6 +20,13 @@ contract OrganizationImpl is Organization, Governable {
         _;
     }
 
+    modifier onlyIfMinimumActiveOrganizations() {
+        if(_organizationIds.length() < 3) {
+            revert IllegalState("At least 2 organizations must be active");
+        }
+        _;
+    }
+
     constructor(OrganizationData[] memory orgs, AdminProxy adminsProxy) Governable(adminsProxy) {
         require(orgs.length >= 2, "At least 2 organizations must exist");
         for(uint i = 0; i < orgs.length; ++i) {
@@ -47,10 +54,7 @@ contract OrganizationImpl is Organization, Governable {
         emit OrganizationUpdated(orgId, name, canVote);
     }
 
-    function deleteOrganization(uint orgId) public onlyGovernance existentOrganization(orgId) {
-        if(_organizationIds.length() < 3) {
-            revert IllegalState("At least 2 organizations must be active");
-        }
+    function deleteOrganization(uint orgId) public onlyGovernance existentOrganization(orgId) onlyIfMinimumActiveOrganizations {
         delete organizations[orgId];
         _organizationIds.remove(orgId);
         emit OrganizationDeleted(orgId);

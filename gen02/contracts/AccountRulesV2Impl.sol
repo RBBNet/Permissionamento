@@ -95,6 +95,13 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         _;
     }
 
+    modifier onlyIfMinimumGlobalAdmins(address account) {
+        if(_getGlobalAdminCount(accounts[account].orgId) < 2) {
+            revert IllegalState("At least 1 global administrator must be active");
+        }
+        _;
+    }
+
     constructor(Organization orgs, address[] memory accs, AdminProxy adminsProxy) Governable(adminsProxy) {
         if(address(orgs) == address(0)) {
             revert InvalidArgument("Invalid address for Organization management smart contract");
@@ -168,10 +175,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         }
     }
 
-    function deleteAccount(address account) public onlyGovernance existentAccount(account) {
-        if(_getGlobalAdminCount(accounts[account].orgId) < 2) {
-            revert IllegalState("At least 1 global administrator must be active");
-        }
+    function deleteAccount(address account) public onlyGovernance existentAccount(account) onlyIfMinimumGlobalAdmins(account) {
         _deleteAccount(account);
     }
 
