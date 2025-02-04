@@ -5,7 +5,7 @@ import "./NodeRulesV2.sol";
 import "./Governable.sol";
 import "./AccountRulesV2.sol";
 import "./Organization.sol";
-import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+import "./Pagination.sol";
 
 contract NodeRulesV2Impl is NodeRulesV2, Governable {
 
@@ -121,32 +121,19 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         return _nodesKeysByOrg[orgId].length();
     }
 
-    function getNodes(uint page, uint pageSize) public view returns (NodeData[] memory) {
-        return _getNodes(_nodesKeys, page, pageSize);
+    function getNodes(uint pageNumber, uint pageSize) public view returns (NodeData[] memory) {
+        return _getNodes(_nodesKeys, pageNumber, pageSize);
     }
 
-    function getNodesByOrg(uint orgId, uint page, uint pageSize) public view returns (NodeData[] memory) {
-        return _getNodes(_nodesKeysByOrg[orgId], page, pageSize);
+    function getNodesByOrg(uint orgId, uint pageNumber, uint pageSize) public view returns (NodeData[] memory) {
+        return _getNodes(_nodesKeysByOrg[orgId], pageNumber, pageSize);
     }
 
-    function _getNodes(EnumerableSet.UintSet storage nodeKeySet, uint page, uint pageSize) private view returns (NodeData[] memory) {
-        if(page < 1) {
-            revert InvalidArgument("Page must be greater or equal to 1 ");
-        }
-        if(pageSize < 1) {
-            revert InvalidArgument("Page size must be greater or equal to 1 ");
-        }
-        uint start = (page - 1) * pageSize;
-        if(start > nodeKeySet.length()) {
-            start = nodeKeySet.length();
-        }
-        uint stop = start + pageSize;
-        if(stop > nodeKeySet.length()) {
-            stop = nodeKeySet.length();
-        }
-        NodeData[] memory nodes = new NodeData[](stop - start);
-        for(uint i = start; i < stop; ++i) {
-            nodes[i - start] = allowedNodes[nodeKeySet.at(i)];
+    function _getNodes(EnumerableSet.UintSet storage nodeKeySet, uint pageNumber, uint pageSize) private view returns (NodeData[] memory) {
+        uint[] memory page = Pagination.getUintPage(nodeKeySet, pageNumber, pageSize);
+        NodeData[] memory nodes = new NodeData[](page.length);
+        for(uint i = 0; i < nodes.length; ++i) {
+            nodes[i] = allowedNodes[page[i]];
         }
         return nodes;
     }

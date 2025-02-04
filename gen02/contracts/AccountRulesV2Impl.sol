@@ -5,7 +5,7 @@ import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import "./AccountRulesV2.sol";
 import "./Governable.sol";
 import "./Organization.sol";
-import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+import "./Pagination.sol";
 
 contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
 
@@ -260,32 +260,19 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         return _accountsAddressesByOrg[orgId].length();
     }
 
-    function getAccounts(uint page, uint pageSize) public view returns (AccountData[] memory) {
-        return _getAccounts(_accountsAddresses, page, pageSize);
+    function getAccounts(uint pageNumber, uint pageSize) public view returns (AccountData[] memory) {
+        return _getAccounts(_accountsAddresses, pageNumber, pageSize);
     }
 
-    function getAccountsByOrg(uint orgId, uint page, uint pageSize) public view returns (AccountData[] memory) {
-        return _getAccounts(_accountsAddressesByOrg[orgId], page, pageSize);
+    function getAccountsByOrg(uint orgId, uint pageNumber, uint pageSize) public view returns (AccountData[] memory) {
+        return _getAccounts(_accountsAddressesByOrg[orgId], pageNumber, pageSize);
     }
 
-    function _getAccounts(EnumerableSet.AddressSet storage addressSet, uint page, uint pageSize) private view returns (AccountData[] memory) {
-        if(page < 1) {
-            revert InvalidArgument("Page must be greater or equal to 1 ");
-        }
-        if(pageSize < 1) {
-            revert InvalidArgument("Page size must be greater or equal to 1 ");
-        }
-        uint start = (page - 1) * pageSize;
-        if(start > addressSet.length()) {
-            start = addressSet.length();
-        }
-        uint stop = start + pageSize;
-        if(stop > addressSet.length()) {
-            stop = addressSet.length();
-        }
-        AccountData[] memory accs = new AccountData[](stop - start);
-        for(uint i = start; i < stop; ++i) {
-            accs[i - start] = accounts[addressSet.at(i)];
+    function _getAccounts(EnumerableSet.AddressSet storage addressSet, uint pageNumber, uint pageSize) private view returns (AccountData[] memory) {
+        address[] memory page = Pagination.getAddressPage(addressSet, pageNumber, pageSize);
+        AccountData[] memory accs = new AccountData[](page.length);
+        for(uint i = 0; i < accs.length; ++i) {
+            accs[i] = accounts[page[i]];
         }
         return accs;
     }

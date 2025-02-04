@@ -56,7 +56,7 @@ interface NodeRulesV2 is NodeRulesProxy {
     function getNode(bytes32 enodeHigh, bytes32 enodeLow) external view returns (NodeData memory);
     function getNumberOfNodes() external view returns (uint);
     function getNumberOfNodesByOrg(uint orgId) external view returns (uint);
-    function getNodes(uint page, uint pageSize) external view returns (NodeData[] memory);
-    function getNodesByOrg(uint orgId, uint page, uint pageSize) external view returns (NodeData[] memory);
+    function getNodes(uint pageNumber, uint pageSize) external view returns (NodeData[] memory);
+    function getNodesByOrg(uint orgId, uint pageNumber, uint pageSize) external view returns (NodeData[] memory);
 
 }
