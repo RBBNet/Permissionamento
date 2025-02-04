@@ -16,10 +16,12 @@ interface Organization {
     error OrganizationNotFound(uint orgId);
     error IllegalState(string message);
 
+    // Funções disponíveis apenas para a governança
     function addOrganization(string calldata name, bool canVote) external returns (uint);
     function updateOrganization(uint orgId, string calldata name, bool canVote) external;
     function deleteOrganization(uint orgId) external;
 
+    // Funções disponíveis publicamente
     function isOrganizationActive(uint orgId) external view returns (bool);
     function getOrganization(uint orgId) external view returns (OrganizationData memory);
     function getOrganizations() external view returns (OrganizationData[] memory);

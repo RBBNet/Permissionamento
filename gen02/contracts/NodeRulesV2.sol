@@ -41,14 +41,17 @@ interface NodeRulesV2 is NodeRulesProxy {
     error InvalidState(string message);
     error InactiveNode(bytes32 enodeHigh, bytes32 enodeLow);
 
+    // Funções disponíveis apenas para administradores (globais e locais)
     function addLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external;
     function deleteLocalNode(bytes32 enodeHigh, bytes32 enodeLow) external;
     function updateLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name) external;
     function updateLocalNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool active) external;
 
+    // Funções disponíveis apenas para a governança
     function addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string memory name, uint orgId) external;
     function deleteNode(bytes32 enodeHigh, bytes32 enodeLow) external;
 
+    // Funções disponíveis publicamente
     function isNodeActive(bytes32 enodeHigh, bytes32 enodeLow) external view returns (bool);
     function getNode(bytes32 enodeHigh, bytes32 enodeLow) external view returns (NodeData memory);
     function getNumberOfNodes() external view returns (uint);

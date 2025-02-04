@@ -37,17 +37,19 @@ interface AccountRulesV2 is AccountRulesProxy, IAccessControl {
     error InvalidHash(bytes32 hash, string message);
     error IllegalState(string message);
 
+    // Funções disponíveis apenas para administradores (globais e locais)
     function addLocalAccount(address account, bytes32 roleId, bytes32 dataHash) external;
     function deleteLocalAccount(address account) external;
     function updateLocalAccount(address account, bytes32 roleId, bytes32 dataHash) external;
     function updateLocalAccountStatus(address account, bool active) external;
+    function setAccountTargetAccess(address account, bool restricted, address[] calldata allowedTargets) external;
 
+    // Funções disponíveis apenas para a governança
     function addAccount(address account, uint orgId, bytes32 roleId, bytes32 dataHash) external;
     function deleteAccount(address account) external;
-
-    function setAccountTargetAccess(address account, bool restricted, address[] calldata allowedTargets) external;
     function setSmartContractSenderAccess(address smartContract, bool restricted, address[] calldata allowedSenders) external;
 
+    // Funções disponíveis publicamente
     function isAccountActive(address account) external view returns (bool);
     function getAccount(address account) external view returns (AccountData memory);
     function getNumberOfAccounts() external view returns (uint);
