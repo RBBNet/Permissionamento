@@ -165,7 +165,7 @@ Critérios de aceitação:
    4. O administrador que realizou a configuração
 
 
-## USACC11 - Observador consulta o número total de contas existentes para poder preparar paginação da consultas de dados cadastrais de contas<a id="usacc11"></a>
+## USACC11 - Observador consulta o número total de contas existentes para poder preparar paginação da consulta de dados cadastrais de contas<a id="usacc11"></a>
 
 Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.
@@ -187,7 +187,7 @@ Critérios de aceitação:
 **Observação**: Não há quaisquer critérios de filtragem ou parâmetros de ordenação para o resultado. Tampouco há garantia de consistência da ordem dos elementos entre consultas.
 
 
-## USACC13 - Observador consulta o número de contas de uma organização para poder preparar paginação da consultas de dados cadastrais de contas<a id="usacc13"></a>
+## USACC13 - Observador consulta o número de contas de uma organização para poder preparar paginação da consulta de dados cadastrais de contas<a id="usacc13"></a>
 
 Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.

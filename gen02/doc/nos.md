@@ -133,7 +133,7 @@ Critérios de aceitação:
 **Observação**: Não há quaisquer critérios de filtragem ou parâmetros de ordenação para o resultado. Tampouco há garantia de consistência da ordem dos elementos entre consultas.
 
 
-## USNOD12 - Observador consulta o número de nós de uma organização para poder preparar paginação da consultas de dados cadastrais de nós<a id="usnod12"></a>
+## USNOD12 - Observador consulta o número de nós de uma organização para poder preparar paginação da consulta de dados cadastrais de nós<a id="usnod12"></a>
 
 Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.
