@@ -3,9 +3,12 @@ pragma solidity 0.8.26;
 
 import "./Organization.sol";
 import "./AccountRulesV2.sol";
+import "./Pagination.sol";
 import {Address} from "@openzeppelin/contracts/utils/Address.sol";
 
 contract Governance {
+
+    using EnumerableSet for EnumerableSet.UintSet;
 
     enum ProposalStatus { Undefined, Active, Canceled, Finished, Executed }
     enum ProposalResult { Undefined, Approved, Rejected }
@@ -43,6 +46,7 @@ contract Governance {
     AccountRulesV2 immutable public accounts;
     mapping (uint => ProposalData) public proposals;
     mapping (uint => mapping(uint => ProposalVote)) public votes;
+    EnumerableSet.UintSet private _proposalIds;
 
     modifier onlyActiveGlobalAdmin() {
         if(!accounts.hasRole(GLOBAL_ADMIN_ROLE, msg.sender)) {
@@ -142,6 +146,7 @@ contract Governance {
                 proposalOrgs.push(allOrgs[i].id);
             }
         }
+        _proposalIds.add(proposalId);
 
         emit ProposalCreated(proposal.id, proposal.creator);
 
@@ -264,6 +269,19 @@ contract Governance {
             orgVotes[i] = votes[proposalId][orgs[i]];
         }
         return orgVotes;
+    }
+
+    function getNumberOfProposals() public view returns (uint) {
+        return _proposalIds.length();
+    }
+
+    function getProposals(uint pageNumber, uint pageSize) public view returns (ProposalData[] memory) {
+        uint[] memory page = Pagination.getUintPage(_proposalIds, pageNumber, pageSize);
+        ProposalData[] memory props = new ProposalData[](page.length);
+        for(uint i = 0; i < props.length; ++i) {
+            props[i] = proposals[page[i]];
+        }
+        return props;
     }
 
 }

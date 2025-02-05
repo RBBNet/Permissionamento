@@ -265,3 +265,38 @@ Then('ocorre erro {string} na execução da proposta', function(error) {
     assert.ok(this.executionError != null);
     assert.ok(this.executionError.message.includes(error));
 });
+
+Then('a quantidade total de propostas é {int}', async function(expectedNumberOfProposals) {
+    const actualNumberOfProposals = await this.govenanceContract.getNumberOfProposals();
+    assert.equal(actualNumberOfProposals, expectedNumberOfProposals);
+});
+
+When('consulto as propostas a partir da página {int} com tamanho de página {int}', async function(page, pageSize) {
+    this.queryError = null;
+    try {
+        this.queryResult = await this.govenanceContract.getProposals(page, pageSize);
+    }
+    catch(error) {
+        this.queryError = error;
+    }
+});
+
+Then('ocorre erro {string} na consulta de proposta', function(error) {
+    assert.ok(this.queryError != null);
+    assert.ok(this.queryError.message.includes(error));
+});
+
+Then('o resultado da consulta de propostas é {string}', async function(list) {
+    assert.ok(this.queryError == null);
+    const expectedResults = list.length == 0 ? [] : list.split('|');
+    assert.equal(this.queryResult.length, expectedResults.length);
+    for(i = 0; i < expectedResults.length; ++i) {
+        const result = expectedResults[i].split(',');
+        assert.ok(this.queryResult[i].length == 11);
+        assert.ok(result.length == 4);
+        assert.equal(this.queryResult[i][0], result[0]);
+        assert.equal(this.queryResult[i][3], result[1]);
+        assert.equal(this.queryResult[i][4], result[2]);
+        assert.equal(this.queryResult[i][5], result[3]);
+    }
+});
