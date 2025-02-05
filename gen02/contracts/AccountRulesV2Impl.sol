@@ -277,8 +277,11 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         return accs;
     }
 
-    function getAccountTargetAccess(address account) public view returns (address[] memory) {
-        return restrictedAccountsAllowedTargets[account];
+    function getAccountTargetAccess(address account) public view returns (bool restricted, address[] memory) {
+        return (
+            _restrictedAccounts.contains(account),
+            restrictedAccountsAllowedTargets[account]
+        );
     }
 
     function getNumberOfRestrictedAccounts() public view returns (uint) {
@@ -289,8 +292,19 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         return Pagination.getAddressPage(_restrictedAccounts, pageNumber, pageSize);
     }
 
-    function restrictedSmartContracts() public view returns (address[] memory) {
-        return _restrictedSmartContracts.values();
+    function getSmartContractSenderAccess(address smartContract) external view returns (bool restricted, address[] memory){
+        return (
+            _restrictedSmartContracts.contains(smartContract),
+            restrictedSmartContractsAllowedSenders[smartContract]
+        );
+    }
+
+    function getNumberOfRestrictedSmartContracts() external view returns (uint) {
+        return _restrictedSmartContracts.length();
+    }
+
+    function getRestrictedSmartContracts(uint pageNumber, uint pageSize) external view returns (address[] memory) {
+        return Pagination.getAddressPage(_restrictedSmartContracts, pageNumber, pageSize);
     }
 
     function transactionAllowed(

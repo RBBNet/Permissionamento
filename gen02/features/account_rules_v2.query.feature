@@ -33,6 +33,9 @@ Funcionalidade: Consultas de contas
     # Administrador global da OrgExc adiciona novas contas
     E a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" adiciona a conta local "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000004"
     E a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" adiciona a conta local "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
+    # Governança configura restrição de acesso a smart contract
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" configura restrição de acesso ao endereço "0x0000000000000000000000000000000000008888" permitindo acesso somente pelas contas ""
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" configura restrição de acesso ao endereço "0x0000000000000000000000000000000000009999" permitindo acesso somente pelas contas "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266,0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
     # Verificando cadastro das organizações
     E a lista de organizações é "1,BNDES,true|2,TCU,true|3,OrgExc,true"
     # Verificando cadastro das contas
@@ -45,6 +48,7 @@ Funcionalidade: Consultas de contas
     E a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" é da organização 3 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000004" e situação ativa "true"
     E a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" é da organização 3 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e situação ativa "true"
     E a quantidade total de contas com restrições de acesso configuradas é 2
+    E a quantidade total de smart contracts com restrições de acesso configuradas é 2
     # Governança exclui a OrgExc, logo, suas contas ficarão inativas
     E a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3
     E verifico se a organização 3 está ativa o resultado é "false"
@@ -172,10 +176,10 @@ Funcionalidade: Consultas de contas
   # Consulta de contas com restrições de acesso configuradas
   ##############################################################################
 
-  Cenário: Consulta de restrições de acesso
-    Quando consulto as restrições de acesso da conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" obtenho o resultado ""
-    Quando consulto as restrições de acesso da conta "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" obtenho o resultado "0x0000000000000000000000000000000000000001,0x0000000000000000000000000000000000000002"
-    Quando consulto as restrições de acesso da conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" obtenho o resultado "0x0000000000000000000000000000000000008888,0x0000000000000000000000000000000000009999"
+  Cenário: Consulta de restrições de acesso de contas
+    Quando consulto as restrições de acesso da conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" recebo indicação de restrição configurada "false" com acesso aos endereços ""
+    Quando consulto as restrições de acesso da conta "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" recebo indicação de restrição configurada "true" com acesso aos endereços "0x0000000000000000000000000000000000000001,0x0000000000000000000000000000000000000002"
+    Quando consulto as restrições de acesso da conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" recebo indicação de restrição configurada "true" com acesso aos endereços "0x0000000000000000000000000000000000008888,0x0000000000000000000000000000000000009999"
 
   Cenário: Consulta de contas com restrições de acesso configuradas
     Quando consulto as contas com restrições de acesso configuradas a partir da página 1 com tamanho de página 10
@@ -193,6 +197,37 @@ Funcionalidade: Consultas de contas
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" remove restrição de acesso para a conta "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
     Então a configuração de acesso ocorre com sucesso
     E a quantidade total de contas com restrições de acesso configuradas é 2
-    Quando consulto as restrições de acesso da conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" obtenho o resultado ""
+    Quando consulto as restrições de acesso da conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" recebo indicação de restrição configurada "false" com acesso aos endereços ""
     Quando consulto as contas com restrições de acesso configuradas a partir da página 1 com tamanho de página 10
     Então o resultado da consulta de contas com restrições de acesso configuradas é "0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF,0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+
+
+  ##############################################################################
+  # Consulta de smart contracts com restrições de acesso configuradas
+  ##############################################################################
+
+  Cenário: Consulta de restrições de acesso de smart contracts
+    Quando consulto as restrições de acesso do smart contract "0x0000000000000000000000000000000000000001" recebo indicação de restrição configurada "false" com acesso pelos endereços ""
+    Quando consulto as restrições de acesso do smart contract "0x0000000000000000000000000000000000008888" recebo indicação de restrição configurada "true" com acesso pelos endereços ""
+    Quando consulto as restrições de acesso do smart contract "0x0000000000000000000000000000000000009999" recebo indicação de restrição configurada "true" com acesso pelos endereços "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266,0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    # Governança reconfigura restrição de acesso a smart contract
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" configura restrição de acesso ao endereço "0x0000000000000000000000000000000000008888" permitindo acesso somente pelas contas "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    Quando consulto as restrições de acesso do smart contract "0x0000000000000000000000000000000000008888" recebo indicação de restrição configurada "true" com acesso pelos endereços "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    E a quantidade total de smart contracts com restrições de acesso configuradas é 2
+
+  Cenário: Consulta de smart contracts com restrições de acesso configuradas
+    Quando consulto os smart contracts com restrições de acesso configuradas a partir da página 1 com tamanho de página 10
+    Então o resultado da consulta de smart contracts com restrições de acesso configuradas é "0x0000000000000000000000000000000000008888,0x0000000000000000000000000000000000009999"
+    # Governança configura restrição de acesso a outro smart contract
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" configura restrição de acesso ao endereço "0x0000000000000000000000000000000000001111" permitindo acesso somente pelas contas "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    Então a configuração de acesso ocorre com sucesso
+    E a quantidade total de smart contracts com restrições de acesso configuradas é 3
+    Quando consulto os smart contracts com restrições de acesso configuradas a partir da página 1 com tamanho de página 10
+    Então o resultado da consulta de smart contracts com restrições de acesso configuradas é "0x0000000000000000000000000000000000008888,0x0000000000000000000000000000000000009999,0x0000000000000000000000000000000000001111"
+    # Administrador Local do BNDES libera restrição de acesso para conta
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" remove restrição de acesso ao endereço "0x0000000000000000000000000000000000008888"
+    Então a configuração de acesso ocorre com sucesso
+    E a quantidade total de smart contracts com restrições de acesso configuradas é 2
+    Quando consulto as restrições de acesso do smart contract "0x0000000000000000000000000000000000008888" recebo indicação de restrição configurada "false" com acesso pelos endereços ""
+    Quando consulto os smart contracts com restrições de acesso configuradas a partir da página 1 com tamanho de página 10
+    Então o resultado da consulta de contas com restrições de acesso configuradas é "0x0000000000000000000000000000000000001111,0x0000000000000000000000000000000000009999"

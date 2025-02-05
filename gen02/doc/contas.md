@@ -215,7 +215,9 @@ Critérios de aceitação:
 Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.
 2. Observador informa endereço da conta a ser consultada.
-3. É retornada a lista de endereços de destino para os quais a conta pode enviar transações; ou uma lista vazia, caso a conta não possua restrições de acesso configuradas.
+3. São retornados:
+   1. Indicação se a conta tem restrição de acesso configurada.
+   2. Lista de endereços de destino para os quais a conta pode enviar transações.
 
 
 ## USACC16 - Observador consulta o número de contas com restrições de acesso configuradas para poder preparar paginação de dados<a id="usacc16"></a>
@@ -223,7 +225,7 @@ Critérios de aceitação:
 Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.
 2. Observador solicita o número total de contas com restrições de acesso configuradas.
-3. A quantidade total de contas com restrições de acesso configuradas.
+3. A quantidade total de contas com restrições de acesso configuradas é retornada.
 
 **Observação**: Esta informação é importante para dimensionar consultas que podem retornar muitos resultados, evitando problemas de desempenho.
 
@@ -236,5 +238,37 @@ Critérios de aceitação:
    1. Página de resultado a ser retornada: Deve ser maior ou igual a 1.
    2. Tamanho da página de resultados a ser retornada: Deve ser maior ou igual a 1.
 3. É retornada uma lista com os endereços das contas, correspondente à página de dados solicitada.
+
+**Observação**: Não há quaisquer critérios de filtragem ou parâmetros de ordenação para o resultado. Tampouco há garantia de consistência da ordem dos elementos entre consultas.
+
+
+## USACC18 - Observador consulta endereço de *smart contract* para verificar restrições de acesso configuradas<a id="usacc18"></a>
+
+Critérios de aceitação:
+1. Qualquer pessoa pode realizar a consulta.
+2. Observador informa endereço do *smart contract* a ser consultado.
+3. São retornados:
+   1. Indicação se o *smart contract* tem restrição de acesso configurada.
+   2. Lista de endereços de origem a partir dos quais o *smart contract* pode receber transações. Essa lista pode ser vazia, indicando que o *smart contract* está impedido de receber transações.
+
+
+## USACC19 - Observador consulta o número de *smart contracts* com restrições de acesso configuradas para poder preparar paginação de dados<a id="usacc19"></a>
+
+Critérios de aceitação:
+1. Qualquer pessoa pode realizar a consulta.
+2. Observador solicita o número total de *smart contracts* com restrições de acesso configuradas.
+3. A quantidade total de *smart contracts* com restrições de acesso configuradas é retornada.
+
+**Observação**: Esta informação é importante para dimensionar consultas que podem retornar muitos resultados, evitando problemas de desempenho.
+
+
+## USACC20 - Observador consulta *smart contracts* com restrições de acesso configuradas para que possa consultar as retrições configuradas<a id="usacc20"></a>
+
+Critérios de aceitação:
+1. Qualquer pessoa pode realizar a consulta.
+2. Observador informa parâmetros de paginação para consultar todas os *smart contracts* com restrições de acesso configuradas:
+   1. Página de resultado a ser retornada: Deve ser maior ou igual a 1.
+   2. Tamanho da página de resultados a ser retornada: Deve ser maior ou igual a 1.
+3. É retornada uma lista com os endereços dos *smart contracts*, correspondente à página de dados solicitada.
 
 **Observação**: Não há quaisquer critérios de filtragem ou parâmetros de ordenação para o resultado. Tampouco há garantia de consistência da ordem dos elementos entre consultas.

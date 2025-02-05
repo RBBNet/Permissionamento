@@ -380,9 +380,11 @@ Then('o resultado da consulta de contas é {string}', async function(accsList) {
     }
 });
 
-When('consulto as restrições de acesso da conta {string} obtenho o resultado {string}', async function(account, targetList) {
+When('consulto as restrições de acesso da conta {string} recebo indicação de restrição configurada {string} com acesso aos endereços {string}', async function(account, restricted, targetList) {
     const expectedTargets = targetList.length == 0 ? [] : targetList.split(',');
-    const targets = await this.accountRulesContract.getAccountTargetAccess(account);
+    const result = await this.accountRulesContract.getAccountTargetAccess(account);
+    assert.equal(result[0], getBoolean(restricted));
+    const targets = result[1];
     assert.equal(targets.length, expectedTargets.length);
     for(i = 0; i < expectedTargets.length; ++i) {
         assert.equal(targets[i], expectedTargets[i]);
@@ -412,3 +414,39 @@ Then('o resultado da consulta de contas com restrições de acesso configuradas 
         assert.equal(this.queryResult[i], expectedAccs[i]);
     }
 });
+
+Then('a quantidade total de smart contracts com restrições de acesso configuradas é {int}', async function(expectedNumberOfContracts) {
+    const actualNumberOfContracts = await this.accountRulesContract.getNumberOfRestrictedSmartContracts();
+    assert.equal(actualNumberOfContracts, expectedNumberOfContracts);
+});
+
+When('consulto as restrições de acesso do smart contract {string} recebo indicação de restrição configurada {string} com acesso pelos endereços {string}', async function(smartContract, restricted, senderList) {
+    const expectedSenders = senderList.length == 0 ? [] : senderList.split(',');
+    const result = await this.accountRulesContract.getSmartContractSenderAccess(smartContract);
+    assert.equal(result[0], getBoolean(restricted));
+    const senders = result[1];
+    assert.equal(senders.length, expectedSenders.length);
+    for(i = 0; i < expectedSenders.length; ++i) {
+        assert.equal(senders[i], expectedSenders[i]);
+    }
+});
+
+When('consulto os smart contracts com restrições de acesso configuradas a partir da página {int} com tamanho de página {int}', async function(page, pageSize) {
+    this.getAccountError = null;
+    try {
+        this.queryResult = await this.accountRulesContract.getRestrictedSmartContracts(page, pageSize);
+    }
+    catch(error) {
+        this.getAccountError = error;
+    }
+});
+
+Then('o resultado da consulta de smart contracts com restrições de acesso configuradas é {string}', function(accsList) {
+    assert.ok(this.getAccountError == null);
+    const expectedAccs = accsList.length == 0 ? [] : accsList.split(',');
+    assert.equal(this.queryResult.length, expectedAccs.length);
+    for(i = 0; i < expectedAccs.length; ++i) {
+        assert.equal(this.queryResult[i], expectedAccs[i]);
+    }
+});
+
