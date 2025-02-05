@@ -120,14 +120,14 @@ Critérios de aceitação:
 2. Observador informa o identificador da proposta.
 3. São retornados os votos realizados por cada organização participante.
 
-## USGOV07 - Observador consulta o número total de propostas existentes para poder preparar paginação da consultas de dados cadastrais de propostas<a id="usgov07"></a>
+## USGOV07 - Observador consulta o número total de propostas existentes para poder preparar paginação de dados<a id="usgov07"></a>
 
 Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.
 2. Observador solicita o número total de propostas existentes.
 3. A quantidade total de propostas é retornada.
 
-**Observação**: Esta informação é importante para dimensionar consultas ao cadastro de propostas, que pode vir a ter muitos dados, evitando problemas de desempenho.
+**Observação**: Esta informação é importante para dimensionar consultas que podem retornar muitos resultados, evitando problemas de desempenho.
 
 
 ## USGOV08 - Observador consulta propostas para obter seus dados cadastrais<a id="usgov08"></a>

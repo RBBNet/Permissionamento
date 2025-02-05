@@ -111,14 +111,14 @@ Critérios de aceitação:
 3. A conexão só é permitida caso ambos os nós tenham permissão. Caso contrário, a conexão é negada.
 
 
-## USNOD10 - Observador consulta o número total de nós para poder preparar paginação da consulta de dados cadastrais de nós<a id="usnod10"></a>
+## USNOD10 - Observador consulta o número total de nós para poder preparar paginação de dados<a id="usnod10"></a>
 
 Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.
 2. Observador solicita o número total de nós existentes.
 3. A quantidade total de nós é retornada.
 
-**Observação**: Esta informação é importante para dimensionar consultas ao cadastro de nós, que pode vir a ter muitos dados, evitando problemas de desempenho.
+**Observação**: Esta informação é importante para dimensionar consultas que podem retornar muitos resultados, evitando problemas de desempenho.
 
 
 ## USNOD11 - Observador consulta nós para obter seus dados cadastrais<a id="usnod11"></a>
@@ -133,14 +133,14 @@ Critérios de aceitação:
 **Observação**: Não há quaisquer critérios de filtragem ou parâmetros de ordenação para o resultado. Tampouco há garantia de consistência da ordem dos elementos entre consultas.
 
 
-## USNOD12 - Observador consulta o número de nós de uma organização para poder preparar paginação da consulta de dados cadastrais de nós<a id="usnod12"></a>
+## USNOD12 - Observador consulta o número de nós de uma organização para poder preparar paginação de dados<a id="usnod12"></a>
 
 Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.
 2. Observador informa identificador de uma organização.
 3. A quantidade de nós da organização informada é retornada.
 
-**Observação**: Esta informação é importante para dimensionar consultas ao cadastro de nós, que pode vir a ter muitos dados, evitando problemas de desempenho.
+**Observação**: Esta informação é importante para dimensionar consultas que podem retornar muitos resultados, evitando problemas de desempenho.
 
 
 ## USNOD13 - Observador consulta nós de uma organização para obter seus dados cadastrais<a id="usnod13"></a>
