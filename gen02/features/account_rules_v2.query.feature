@@ -76,7 +76,7 @@ Funcionalidade: Consultas de contas
     Quando consulto as contas a partir da página 7 com tamanho de página 1
     Então o resultado da consulta de contas é "3,0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc,USER_ROLE,0x0000000000000000000000000000000000000000000000000000000000000002,true"
 
-  Cenário: Consulta de todas as contas com páginação em sequência
+  Cenário: Consulta de todas as contas com paginação em sequência
     Quando consulto as contas a partir da página 1 com tamanho de página 2
     Então o resultado da consulta de contas é "1,0x71bE63f3384f5fb98995898A86B02Fb2426c5788,GLOBAL_ADMIN_ROLE,0x0000000000000000000000000000000000000000000000000000000000000000,true|2,0xFABB0ac9d68B0B445fB7357272Ff202C5651694a,GLOBAL_ADMIN_ROLE,0x0000000000000000000000000000000000000000000000000000000000000000,true"
     Quando consulto as contas a partir da página 2 com tamanho de página 2
