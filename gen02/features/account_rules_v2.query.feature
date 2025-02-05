@@ -96,11 +96,11 @@ Funcionalidade: Consultas de contas
   
   Cenário: Consulta de todas as contas com parâmetro de página inválido
     Quando consulto as contas a partir da página 0 com tamanho de página 10
-    Então ocorre erro "InvalidArgument" na consulta de conta
+    Então ocorre erro "InvalidPaginationParameter" na consulta de conta
     
   Cenário: Consulta de todas as contas com parâmetro de tamanho de página inválido
     Quando consulto as contas a partir da página 1 com tamanho de página 0
-    Então ocorre erro "InvalidArgument" na consulta de conta
+    Então ocorre erro "InvalidPaginationParameter" na consulta de conta
     
   Cenário: Consulta de todas as contas com paginação além do tamanho do resultado
     Quando consulto as contas a partir da página 2 com tamanho de página 7
@@ -149,11 +149,11 @@ Funcionalidade: Consultas de contas
 
   Cenário: Consulta de contas por organização com parâmetro de página inválido
     Quando consulto as contas da organização 1 a partir da página 0 com tamanho de página 10
-    Então ocorre erro "InvalidArgument" na consulta de conta
+    Então ocorre erro "InvalidPaginationParameter" na consulta de conta
     
   Cenário: Consulta de contas por organização com parâmetro de tamanho de página inválido
     Quando consulto as contas da organização 1 a partir da página 1 com tamanho de página 0
-    Então ocorre erro "InvalidArgument" na consulta de conta
+    Então ocorre erro "InvalidPaginationParameter" na consulta de conta
     
   Cenário: Consulta de contas por organização com paginação além do tamanho do resultado
     Quando consulto as contas da organização 1 a partir da página 2 com tamanho de página 3

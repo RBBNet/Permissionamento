@@ -8,14 +8,14 @@ library Pagination {
     using EnumerableSet for EnumerableSet.UintSet;
     using EnumerableSet for EnumerableSet.AddressSet;
 
-    error InvalidArgument(string message);
+    error InvalidPaginationParameter(string message);
 
     function getUintPage(EnumerableSet.UintSet storage set, uint pageNumber, uint pageSize) internal view returns(uint[] memory) {
         if(pageNumber < 1) {
-            revert InvalidArgument("Page must be greater or equal to 1 ");
+            revert InvalidPaginationParameter("Page must be greater or equal to 1 ");
         }
         if(pageSize < 1) {
-            revert InvalidArgument("Page size must be greater or equal to 1 ");
+            revert InvalidPaginationParameter("Page size must be greater or equal to 1 ");
         }
         uint start = (pageNumber - 1) * pageSize;
         if(start > set.length()) {
@@ -34,10 +34,10 @@ library Pagination {
 
     function getAddressPage(EnumerableSet.AddressSet storage set, uint pageNumber, uint pageSize) internal view returns(address[] memory) {
         if(pageNumber < 1) {
-            revert InvalidArgument("Page must be greater or equal to 1 ");
+            revert InvalidPaginationParameter("Page must be greater or equal to 1 ");
         }
         if(pageSize < 1) {
-            revert InvalidArgument("Page size must be greater or equal to 1 ");
+            revert InvalidPaginationParameter("Page size must be greater or equal to 1 ");
         }
         uint start = (pageNumber - 1) * pageSize;
         if(start > set.length()) {

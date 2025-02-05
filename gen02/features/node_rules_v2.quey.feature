@@ -100,11 +100,11 @@ Funcionalidade: Consultas de nós
 
   Cenário: Consulta de todos os nós com parâmetro de página inválido
     Quando consulto os nós a partir da página 0 com tamanho de página 10
-    Então ocorre erro "InvalidArgument" na consulta de nós
+    Então ocorre erro "InvalidPaginationParameter" na consulta de nós
     
   Cenário: Consulta de todos os nós com parâmetro de tamanho de página inválido
     Quando consulto os nós a partir da página 1 com tamanho de página 0
-    Então ocorre erro "InvalidArgument" na consulta de nós
+    Então ocorre erro "InvalidPaginationParameter" na consulta de nós
     
   Cenário: Consulta de todos os nós com paginação além do tamanho do resultado
     Quando consulto os nós a partir da página 2 com tamanho de página 8
@@ -155,11 +155,11 @@ Funcionalidade: Consultas de nós
 
   Cenário: Consulta de nós por organização com parâmetro de página inválido
     Quando consulto os nós da organização 1 a partir da página 0 com tamanho de página 10
-    Então ocorre erro "InvalidArgument" na consulta de nós
+    Então ocorre erro "InvalidPaginationParameter" na consulta de nós
     
   Cenário: Consulta de nós por organização com parâmetro de tamanho de página inválido
     Quando consulto os nós da organização 1 a partir da página 1 com tamanho de página 0
-    Então ocorre erro "InvalidArgument" na consulta de nós
+    Então ocorre erro "InvalidPaginationParameter" na consulta de nós
     
   Cenário: Consulta de nós por organização com paginação além do tamanho do resultado
     Quando consulto os nós da organização 1 a partir da página 2 com tamanho de página 4

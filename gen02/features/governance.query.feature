@@ -72,11 +72,11 @@ Funcionalidade: Governança do permissionamento - Cenários de consultas
 
   Cenário: Consulta de todas as propostas com parâmetro de página inválido
     Quando consulto as propostas a partir da página 0 com tamanho de página 10
-    Então ocorre erro "InvalidArgument" na consulta de proposta
+    Então ocorre erro "InvalidPaginationParameter" na consulta de proposta
     
   Cenário: Consulta de todas as propostas com parâmetro de tamanho de página inválido
     Quando consulto as propostas a partir da página 1 com tamanho de página 0
-    Então ocorre erro "InvalidArgument" na consulta de proposta
+    Então ocorre erro "InvalidPaginationParameter" na consulta de proposta
     
   Cenário: Consulta de todas as propostas com paginação além do tamanho do resultado
     Quando consulto as propostas a partir da página 2 com tamanho de página 6
