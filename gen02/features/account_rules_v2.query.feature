@@ -27,6 +27,9 @@ Funcionalidade: Consultas de contas
     # Administrador global do BNDES adiciona novas contas
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000005"
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000006"
+    # Administrador global do BNDES configura restrições de acesso para as contas
+    E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" configura restrição de acesso para a conta "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" permitindo acesso somente aos endereços "0x0000000000000000000000000000000000000001,0x0000000000000000000000000000000000000002"
+    E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" configura restrição de acesso para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" permitindo acesso somente aos endereços "0x0000000000000000000000000000000000008888,0x0000000000000000000000000000000000009999"
     # Administrador global da OrgExc adiciona novas contas
     E a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" adiciona a conta local "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000004"
     E a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" adiciona a conta local "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
@@ -41,6 +44,7 @@ Funcionalidade: Consultas de contas
     E a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" é da organização 3 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     E a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" é da organização 3 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000004" e situação ativa "true"
     E a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" é da organização 3 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e situação ativa "true"
+    E a quantidade total de contas com restrições de acesso configuradas é 2
     # Governança exclui a OrgExc, logo, suas contas ficarão inativas
     E a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3
     E verifico se a organização 3 está ativa o resultado é "false"
@@ -162,3 +166,33 @@ Funcionalidade: Consultas de contas
     Então o resultado da consulta de contas é ""
     Quando consulto as contas da organização 1 a partir da página 3 com tamanho de página 3
     Então o resultado da consulta de contas é ""
+
+
+  ##############################################################################
+  # Consulta de contas com restrições de acesso configuradas
+  ##############################################################################
+
+  Cenário: Consulta de restrições de acesso
+    Quando consulto as restrições de acesso da conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" obtenho o resultado ""
+    Quando consulto as restrições de acesso da conta "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" obtenho o resultado "0x0000000000000000000000000000000000000001,0x0000000000000000000000000000000000000002"
+    Quando consulto as restrições de acesso da conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" obtenho o resultado "0x0000000000000000000000000000000000008888,0x0000000000000000000000000000000000009999"
+
+  Cenário: Consulta de contas com restrições de acesso configuradas
+    Quando consulto as contas com restrições de acesso configuradas a partir da página 1 com tamanho de página 10
+    Então o resultado da consulta de contas com restrições de acesso configuradas é "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266,0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    # Administrador do BNDES adiciona nova conta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000015"
+    Então a adição é realizada com sucesso
+    # Administrador do BNDES configura restrição de acesso para a nova conta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" configura restrição de acesso para a conta "0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF" permitindo acesso somente aos endereços "0x0000000000000000000000000000000000008888,0x0000000000000000000000000000000000009999"
+    Então a configuração de acesso ocorre com sucesso
+    E a quantidade total de contas com restrições de acesso configuradas é 3
+    Quando consulto as contas com restrições de acesso configuradas a partir da página 1 com tamanho de página 10
+    Então o resultado da consulta de contas com restrições de acesso configuradas é "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266,0x70997970C51812dc3A010C7d01b50e0d17dc79C8,0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF"
+    # Administrador Local do BNDES libera restrição de acesso para conta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" remove restrição de acesso para a conta "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+    Então a configuração de acesso ocorre com sucesso
+    E a quantidade total de contas com restrições de acesso configuradas é 2
+    Quando consulto as restrições de acesso da conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" obtenho o resultado ""
+    Quando consulto as contas com restrições de acesso configuradas a partir da página 1 com tamanho de página 10
+    Então o resultado da consulta de contas com restrições de acesso configuradas é "0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF,0x70997970C51812dc3A010C7d01b50e0d17dc79C8"

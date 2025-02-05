@@ -277,8 +277,16 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         return accs;
     }
 
-    function restrictedAccounts() public view returns (address[] memory) {
-        return _restrictedAccounts.values();
+    function getAccountTargetAccess(address account) public view returns (address[] memory) {
+        return restrictedAccountsAllowedTargets[account];
+    }
+
+    function getNumberOfRestrictedAccounts() public view returns (uint) {
+        return _restrictedAccounts.length();
+    }
+
+    function getRestrictedAccounts(uint pageNumber, uint pageSize) external view returns (address[] memory) {
+        return Pagination.getAddressPage(_restrictedAccounts, pageNumber, pageSize);
     }
 
     function restrictedSmartContracts() public view returns (address[] memory) {

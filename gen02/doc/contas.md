@@ -165,14 +165,14 @@ Critérios de aceitação:
    4. O administrador que realizou a configuração
 
 
-## USACC11 - Observador consulta o número total de contas existentes para poder preparar paginação da consulta de dados cadastrais de contas<a id="usacc11"></a>
+## USACC11 - Observador consulta o número total de contas existentes para poder preparar paginação de dados<a id="usacc11"></a>
 
 Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.
 2. Observador solicita o número total de contas existentes.
 3. A quantidade total de contas é retornada.
 
-**Observação**: Esta informação é importante para dimensionar consultas ao cadastro de contas, que pode vir a ter muitos dados, evitando problemas de desempenho.
+**Observação**: Esta informação é importante para dimensionar consultas que podem retornar muitos resultados, evitando problemas de desempenho.
 
 
 ## USACC12 - Observador consulta contas para obter seus dados cadastrais<a id="usacc12"></a>
@@ -187,14 +187,14 @@ Critérios de aceitação:
 **Observação**: Não há quaisquer critérios de filtragem ou parâmetros de ordenação para o resultado. Tampouco há garantia de consistência da ordem dos elementos entre consultas.
 
 
-## USACC13 - Observador consulta o número de contas de uma organização para poder preparar paginação da consulta de dados cadastrais de contas<a id="usacc13"></a>
+## USACC13 - Observador consulta o número de contas de uma organização para poder preparar paginação de dados<a id="usacc13"></a>
 
 Critérios de aceitação:
 1. Qualquer pessoa pode realizar a consulta.
 2. Observador informa identificador de uma organização.
 3. A quantidade de contas da organização informada é retornada.
 
-**Observação**: Esta informação é importante para dimensionar consultas ao cadastro de contas, que pode vir a ter muitos dados, evitando problemas de desempenho.
+**Observação**: Esta informação é importante para dimensionar consultas que podem retornar muitos resultados, evitando problemas de desempenho.
 
 
 ## USACC14 - Observador consulta contas de uma organização para obter seus dados cadastrais<a id="usacc12"></a>
@@ -206,5 +206,35 @@ Critérios de aceitação:
    2. Página de resultado a ser retornada: Deve ser maior ou igual a 1.
    3. Tamanho da página de resultados a ser retornada: Deve ser maior ou igual a 1.
 3. É retornada uma lista com os dados cadastrais de contas da organização informada, correspondente à página de dados solicitada.
+
+**Observação**: Não há quaisquer critérios de filtragem ou parâmetros de ordenação para o resultado. Tampouco há garantia de consistência da ordem dos elementos entre consultas.
+
+
+## USACC15 - Observador consulta conta para verificar restrições de acesso configuradas<a id="usacc15"></a>
+
+Critérios de aceitação:
+1. Qualquer pessoa pode realizar a consulta.
+2. Observador informa endereço da conta a ser consultada.
+3. É retornada a lista de endereços de destino para os quais a conta pode enviar transações; ou uma lista vazia, caso a conta não possua restrições de acesso configuradas.
+
+
+## USACC16 - Observador consulta o número de contas com restrições de acesso configuradas para poder preparar paginação de dados<a id="usacc16"></a>
+
+Critérios de aceitação:
+1. Qualquer pessoa pode realizar a consulta.
+2. Observador solicita o número total de contas com restrições de acesso configuradas.
+3. A quantidade total de contas com restrições de acesso configuradas.
+
+**Observação**: Esta informação é importante para dimensionar consultas que podem retornar muitos resultados, evitando problemas de desempenho.
+
+
+## USACC17 - Observador consulta contas com restrições de acesso configuradas para que possa consultar as retrições configuradas<a id="usacc17"></a>
+
+Critérios de aceitação:
+1. Qualquer pessoa pode realizar a consulta.
+2. Observador informa parâmetros de paginação para consultar todas as contas com restrições de acesso configuradas:
+   1. Página de resultado a ser retornada: Deve ser maior ou igual a 1.
+   2. Tamanho da página de resultados a ser retornada: Deve ser maior ou igual a 1.
+3. É retornada uma lista com os endereços das contas, correspondente à página de dados solicitada.
 
 **Observação**: Não há quaisquer critérios de filtragem ou parâmetros de ordenação para o resultado. Tampouco há garantia de consistência da ordem dos elementos entre consultas.

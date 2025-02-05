@@ -83,6 +83,10 @@ Then('o evento {string} foi emitido para a conta {string}, organização {int}, 
     assert.ok(found);
 });
 
+Then('a adição é realizada com sucesso', function() {
+    assert.ok(this.addError == null);
+});
+
 Then('ocorre erro {string} na tentativa de adição de conta', function(error) {
     assert.ok(this.addError != null);
     assert.ok(this.addError.message.includes(error));
@@ -373,5 +377,38 @@ Then('o resultado da consulta de contas é {string}', async function(accsList) {
         assert.equal(this.queryResult[i][2], getRoleId(acc[2]));
         assert.equal(this.queryResult[i][3], acc[3]);
         assert.equal(this.queryResult[i][4], getBoolean(acc[4]));
+    }
+});
+
+When('consulto as restrições de acesso da conta {string} obtenho o resultado {string}', async function(account, targetList) {
+    const expectedTargets = targetList.length == 0 ? [] : targetList.split(',');
+    const targets = await this.accountRulesContract.getAccountTargetAccess(account);
+    assert.equal(targets.length, expectedTargets.length);
+    for(i = 0; i < expectedTargets.length; ++i) {
+        assert.equal(targets[i], expectedTargets[i]);
+    }
+});
+
+Then('a quantidade total de contas com restrições de acesso configuradas é {int}', async function(expectedNumberOfAccounts) {
+    const actualNumberOfAccounts = await this.accountRulesContract.getNumberOfRestrictedAccounts();
+    assert.equal(actualNumberOfAccounts, expectedNumberOfAccounts);
+});
+
+When('consulto as contas com restrições de acesso configuradas a partir da página {int} com tamanho de página {int}', async function(page, pageSize) {
+    this.getAccountError = null;
+    try {
+        this.queryResult = await this.accountRulesContract.getRestrictedAccounts(page, pageSize);
+    }
+    catch(error) {
+        this.getAccountError = error;
+    }
+});
+
+Then('o resultado da consulta de contas com restrições de acesso configuradas é {string}', function(accsList) {
+    assert.ok(this.getAccountError == null);
+    const expectedAccs = accsList.length == 0 ? [] : accsList.split(',');
+    assert.equal(this.queryResult.length, expectedAccs.length);
+    for(i = 0; i < expectedAccs.length; ++i) {
+        assert.equal(this.queryResult[i], expectedAccs[i]);
     }
 });

@@ -56,7 +56,9 @@ interface AccountRulesV2 is AccountRulesProxy, IAccessControl {
     function getAccounts(uint pageNumber, uint pageSize) external view returns (AccountData[] memory);
     function getNumberOfAccountsByOrg(uint orgId) external view returns (uint);
     function getAccountsByOrg(uint orgId, uint pageNumber, uint pageSize) external view returns (AccountData[] memory);
-    function restrictedAccounts() external view returns (address[] memory);
+    function getAccountTargetAccess(address account) external view returns (address[] memory);
+    function getNumberOfRestrictedAccounts() external view returns (uint);
+    function getRestrictedAccounts(uint pageNumber, uint pageSize) external view returns (address[] memory);
     function restrictedSmartContracts() external view returns (address[] memory);
 
 }
