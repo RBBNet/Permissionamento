@@ -33,35 +33,40 @@ Procedimento:
 
 # Implantação da segunda geração de permissionamento
 
-**Observação**: No contexto deste macroprocesso, deve-se entender o termo **Admin** como uma conta cadastrada no *smart contract* [`Admin`](../../gen01/contracts/Admin.sol) da **primeira geração** do permissionamento. Podemos também chamá-lo de *"Administrador Master"*. E o termo **Administrador Global** deve ser entendido como uma conta cadastrada no *smart contract* [`AccountRulesV2`](../contracts/AccountRulesV2.sol) da **segunda geração** do permissionamento, com o perfil de acesso de gestão global da RBB.
+**Observação**: No contexto deste macroprocesso, deve-se entender o termo **Administrador Master** como uma conta cadastrada no *smart contract* [`Admin`](../../gen01/contracts/Admin.sol) da **primeira geração** do permissionamento. E o termo **Administrador Global** deve ser entendido como uma conta cadastrada no *smart contract* [`AccountRulesV2`](../contracts/AccountRulesV2.sol) da **segunda geração** do permissionamento, com o perfil de acesso de gestão global da RBB.
 
 Procedimento:
-- Organizações devem criar chaves para suas contas de administradores globais.
-- Administrador Master implanta smart contracts de: organizações; contas; nós; e governança/votação.
-- Administrador Master configura ligações entre os *smart contracts*.
-- Administrador Master pré-cadastra e ativa:
-  - Organizações participantes (necessário para as que têm nó)
-  - Seus Administradores Globais
-  - Seus nós
-- Administrador Master finaliza implantação.
-- Administradores Globais verificam cadastros e, havendo necessidade, cadastram demais contas e nós necessários.
-  - Eventuais ajustes podem ser feitos, já respeitando as novas regras de permissionamento (ainda que o reponteiramento ainda não tenha sido feito neste momento).
-  - Ajustes locais podem ser feitos diretamente pelos Administradores das organizações.
-  - Votações podem já ser necessárias, caso se deseje fazer algum ajuste global.
+- Organizações devem criar chaves para suas contas de Administradores Globais.
+- Algum partícipe implanta smart contracts de: organizações; contas; nós; e governança/votação.
+  - São configuradas as referências entre os *smart contracts*.
+  - São pré-cadastradas:
+    - Organizações participantes (necessário para as que têm nó).
+    - Um único Administrador Global para cada organização (outros Administradores Globais podem ser adicionados posteriormente).
+  - ***Smart contract* de governança é cadastrado como Administrador Master.**
+- Administradores Globais verificam e complementam cadastros de suas próprias organizações:
+  - Novas contas podem ser cadastradas.
+  - Os nós das organizações **têm** que ser cadastrados.
   - **Este passo é essencial antes do reponteiramento do permissionamento.**
-- Administrador Master realiza reponteiramento do *smart contract* de regras (rules) de nós (`NodeIngress`) para o novo *smart contract* de nós.
-- Administrador Master realiza reponteiramento do *smart contract* de regras (rules) de contas (`AccountIngress`) para o novo *smart contract* de contas. 
-- **As regras de Admin permanecem inalteradas**, tanto para nós como para contas, sendo administradas através de uma lista de endereços no *smart contract* [`Admin`](../../gen01/contracts/Admin.sol) da **primeira geração** do permissionamento.
+- Caso necessário, novos Administradores Globais podem ser cadastrados por um Administrador Master:
+  - Pode-se já usar o *smart contract* de governança (que já foi cadastrado como Administrador Master) e fazer-se uma proposta/votação; ou
+  - Um outro Administrador Master qualquer pode realizar o cadastro.
+- Administrador Master realiza reponteiramento do *smart contract* de regras (rules) de nós (`NodeIngress`) para o novo *smart contract* de gestão nós.
+- Administrador Master realiza reponteiramento do *smart contract* de regras (rules) de contas (`AccountIngress`) para o novo *smart contract* de gestão de contas.
+- **As regras de Administrador Master permanecerão inalteradas**, sendo administradas através de uma lista de endereços no *smart contract* [`Admin`](../../gen01/contracts/Admin.sol) da **primeira geração** do permissionamento.
+  - Só estes Administradores Master podem realizar o reponteiramento.
+  - Só estes Administradores Master poderão executar certas funções dos *smart contracts* da segunda geração.
 - Administrador Master cadastra *smart contract* de governança/votação como Administrador Master.
-- Administrador Global (de qualquer organização) cria proposta para remover todas as demais contas Administrador Master, deixando ativa apenas a conta do *smart contract* de governança/votação.
+- Um administrador Global (de qualquer organização) cria proposta para remover todas as demais contas Administrador Master, deixando ativa apenas a conta do *smart contract* de governança/votação.
+  - **Observação**: Um Administrador Master não pode remover a si mesmo.
 - Organizações votam para aprovar a proposta.
-- Todas as demais contas Administrador Master são removidas.
+- Um Administrador Global (de qualquer organização) executa a proposta aprovada.
+  - Nesse momento, todas as demais contas Administrador Master são removidas.
   - Dessa forma, para todos os efeitos, após a aprovaçao da proposta, só o novo *smart contract* de governança/votação será Administrador Master (no conceito da primeira geração do permissionamento) e, portanto, só ele pode poderá autorizar um novo reponteiramento (através de votação).
 
 
 # Implantação de novo permissionamento (terceira geração em diante)
 
-Pelo macroprocesso acima (de implantação da segunda geração de permissionamento), somente o *smart contract* de governança/aplicação conseguirá realizar chamadas ao `NodeIngress` e ao `AccountIngress` para reponteirar o permissionamento.
+De acordo com a implantação da segunda geração de permissionamento, somente o *smart contract* de governança/aplicação conseguirá realizar chamadas ao `NodeIngress` e ao `AccountIngress` para reponteirar o permissionamento.
 
 Procedimento:
 - Novo(s) *smart contract(s)* de permissionamento é(são) implantado(s).
@@ -73,9 +78,8 @@ Procedimento:
 # Implantação de novo mecanismo de governança/votação
 
 Procedimento:
-- Novo *smart contract* de votação é implantado.
-- Administrador Global (de qualquer organização) cria proposta para:
-  - Adicionar o novo *smart contract* como Admin
-  - Remover o *smart contract* que se deseja substituir como Admin
+- Novo *smart contract* de governança/votação é implantado.
+- Administrador Global (de qualquer organização) cria proposta para adicionar o novo *smart contract* como Administrador Master
 - Organizações votam para aprovar a proposta.
-- Novo mecanismo/*smart contract* é configurado.
+- Novo *smart contract* é configurado como Administrador Master.
+- Novo *smart contract* deve ser acionado, conforme suas regras de funcionamento, para remover o *smart contract* da segunda geração como Administrador Master.
