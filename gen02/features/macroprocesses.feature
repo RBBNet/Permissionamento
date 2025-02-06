@@ -94,3 +94,43 @@ Funcionalidade: Macroprocessos de gestão da RBB
     # Verificando o resultado da execução, se organização e admin global foram criados
     Então a organização 9 é "IBICT" e direito de voto "true"
     E a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096" é da organização 9 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
+
+  Cenário: Saída de uma organização
+    # Preparando cenário - Adcionando uma nova organização via governança
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "OrgExc" e direito de voto "true"
+    Então a organização 9 é "OrgExc" e direito de voto "true"
+    E verifico se a organização 9 está ativa o resultado é "true"
+
+    # Preparação de passos para uma proposta
+    Dado o alvo "OrganizationImpl" para chamada da função "deleteOrganization(uint256)" com parâmetros "9"
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria proposta com descrição "Exclusão da OrgExc"
+    Então a proposta é criada com sucesso
+    E o evento "ProposalCreated" é emitido para a proposta pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5,6,7,8,9" e votos "NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted"
+    # Administrador Global do BNDES vota para aprovar a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do TCU vota para aprovar a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do Dataprev vota para aprovar a proposta
+    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do SERPRO vota para aprovar a proposta
+    Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global da Prodemge vota para aprovar a proposta
+    Quando a conta "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Proposta é aprovada por maioria
+    E o evento "ProposalApproved" é emitido para a proposta
+    E a proposta tem situação "Active", resultado "Approved", organizações "1,2,3,5,6,7,8,9" e votos "Approval,Approval,Approval,NotVoted,NotVoted,Approval,Approval,NotVoted"
+    # Administrador Global do BNDES executa a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" executa a proposta
+    Então a proposta é executada com sucesso
+    E o evento "ProposalFinished" é emitido para a proposta
+    E o evento "ProposalExecuted" é emitido para a proposta pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E a proposta tem situação "Executed", resultado "Approved", organizações "1,2,3,5,6,7,8,9" e votos "Approval,Approval,Approval,NotVoted,NotVoted,Approval,Approval,NotVoted"
+    # Verificando o resultado da execução, se organização foi excluída
+    E verifico se a organização 9 está ativa o resultado é "false"
