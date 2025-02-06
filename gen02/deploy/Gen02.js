@@ -18,6 +18,10 @@ async function deployGen02(parameters) {
         throw new Error(`Listas de organizações e contas de administradores globais não têm o mesmo tamanho: ${organizations.length} != ${globalAdmins.length}`);
     }
 
+    // Usando o contrato AdminMock apenas como referência de interface,
+    // já que todas as suas funções também estão presentes no contrato Admin da gen01
+    // e ele também implementa a interface AdminProxy.
+    // Na prática, o que importa é o endereço configurado.
     const adminContract = await hre.ethers.getContractAt('AdminMock', adminAddress);
 
     console.log('Implantando smart contract de gestão de organizações');
