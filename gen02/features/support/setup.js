@@ -92,6 +92,7 @@ function getProposalVote(vote) {
 Before(function() {
     this.organizations = [];
     this.accounts = [];
+    this.proposalCalls = [];
 });
 
 module.exports = {

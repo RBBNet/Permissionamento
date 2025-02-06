@@ -9,6 +9,8 @@ Given('implanto o smart contract de governança do permissionamento', async func
     try {
         this.govenanceContract = await hre.ethers.deployContract("Governance", [this.organizationContractAddress, this.accountRulesContractAddress]);
         assert.ok(this.govenanceContract != null);
+        this.govenanceContractAddress = await this.govenanceContract.getAddress();
+        assert.ok(this.govenanceContractAddress != null);
     }
     catch(error) {
         this.govenanceContractDeployError = error;
