@@ -67,7 +67,7 @@ Then('a conta {string} não consta na lista de contas do papel {string}', async 
     assert.equal(hasRole, false);
 });
 
-Then('o evento {string} foi emitido para a conta {string}, organização {int}, papel {string}, data hash {string} e admin {string}', async function (event, account, orgId, role, dataHash, admin) {
+Then('o evento {string} foi emitido para a conta {string}, organização {int}, papel {string} e data hash {string}', async function (event, account, orgId, role, dataHash) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.accountRulesContract.queryFilter(event, 0, block);
     let found = false;
@@ -77,8 +77,7 @@ Then('o evento {string} foi emitido para a conta {string}, organização {int}, 
             events[i].args[0] == account &&
             events[i].args[1] == orgId &&
             events[i].args[2] == getRoleId(role) &&
-            events[i].args[3] == dataHash &&
-            events[i].args[4] == admin;
+            events[i].args[3] == dataHash;
     }
     assert.ok(found);
 });
@@ -130,7 +129,7 @@ Then('ocorre erro {string} na tentativa de exclusão de conta', function(error) 
     assert.ok(this.deleteError.message.includes(error));
 });
 
-Then('o evento {string} foi emitido para a conta {string}, organização {int} e admin {string}', async function (event, account, orgId, admin) {
+Then('o evento {string} foi emitido para a conta {string} da organização {int}', async function (event, account, orgId) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.accountRulesContract.queryFilter(event, block, block);
     let found = false;
@@ -138,8 +137,7 @@ Then('o evento {string} foi emitido para a conta {string}, organização {int} e
         found =
             events[i].fragment.name == event &&
             events[i].args[0] == account &&
-            events[i].args[1] == orgId &&
-            events[i].args[2] == admin;
+            events[i].args[1] == orgId;
     }
     assert.ok(found);
 });
@@ -188,7 +186,7 @@ Then('ocorre erro {string} na tentativa de atualização de conta', function(err
     assert.ok(this.updateError.message.includes(error));
 });
 
-Then('o evento {string} foi emitido para a conta {string}, organização {int}, situação ativa {string} e admin {string}', async function(event, account, orgId, active, admin) {
+Then('o evento {string} foi emitido para a conta {string} da organização {int} com situação ativa {string}', async function(event, account, orgId, active) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.accountRulesContract.queryFilter(event, block, block);
     let found = false;
@@ -197,8 +195,7 @@ Then('o evento {string} foi emitido para a conta {string}, organização {int}, 
             events[i].fragment.name == event &&
             events[i].args[0] == account &&
             events[i].args[1] == orgId &&
-            events[i].args[2] == getBoolean(active) &&
-            events[i].args[3] == admin;
+            events[i].args[2] == getBoolean(active);
     }
     assert.ok(found);
 });
@@ -249,7 +246,7 @@ Then('ocorre erro {string} na tentativa de configuração de acesso', function(e
     assert.ok(this.accessConfigurationError.message.includes(error));
 });
 
-Then('o evento {string} foi emitido para o smart contract {string} com restrição {string} permitindo as contas {string} executado pelo admin {string}', async function(event, target, restricted, addresses, admin) {
+Then('o evento {string} foi emitido para o smart contract {string} com restrição {string} permitindo as contas {string}', async function(event, target, restricted, addresses) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.accountRulesContract.queryFilter(event, block, block);
     let found = false;
@@ -258,8 +255,7 @@ Then('o evento {string} foi emitido para o smart contract {string} com restriç�
             events[i].fragment.name == event &&
             events[i].args[0] == target &&
             events[i].args[1] == getBoolean(restricted) &&
-            events[i].args[2].toString() == addresses &&
-            events[i].args[3] == admin;
+            events[i].args[2].toString() == addresses;
     }
     assert.ok(found);
 });
@@ -300,7 +296,7 @@ When('a conta {string} remove restrição de acesso para a conta {string} indica
     }
 });
 
-Then('o evento {string} foi emitido para a conta {string} com restrição {string} permitindo acesso aos endereços {string} executado pelo admin {string}', async function(event, account, restricted, addresses, admin) {
+Then('o evento {string} foi emitido para a conta {string} com restrição {string} permitindo acesso aos endereços {string}', async function(event, account, restricted, addresses) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.accountRulesContract.queryFilter(event, block, block);
     let found = false;
@@ -309,8 +305,7 @@ Then('o evento {string} foi emitido para a conta {string} com restrição {strin
             events[i].fragment.name == event &&
             events[i].args[0] == account &&
             events[i].args[1] == getBoolean(restricted) &&
-            events[i].args[2].toString() == addresses &&
-            events[i].args[3] == admin;
+            events[i].args[2].toString() == addresses;
     }
     assert.ok(found);
 });

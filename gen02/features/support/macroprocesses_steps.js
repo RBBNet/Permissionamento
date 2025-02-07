@@ -52,19 +52,3 @@ When('a conta {string} cria proposta com descrição {string}', async function(a
     
     this.proposalId = await this.govenanceContract.idSeed();
 });
-
-Then('o evento {string} foi emitido para a conta {string}, organização {int}, papel {string}, data hash {string} pela governança', async function (event, account, orgId, role, dataHash) {
-    const block = await hre.ethers.provider.getBlockNumber();
-    const events = await this.accountRulesContract.queryFilter(event, block, block);
-    let found = false;
-    for (let i = 0; i < events.length && !found; i++) {
-        found =
-            events[i].fragment.name == event &&
-            events[i].args[0] == account &&
-            events[i].args[1] == orgId &&
-            events[i].args[2] == getRoleId(role) &&
-            events[i].args[3] == dataHash &&
-            events[i].args[4] == this.govenanceContractAddress;
-    }
-    assert.ok(found);
-});

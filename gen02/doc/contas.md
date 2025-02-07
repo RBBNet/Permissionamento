@@ -14,7 +14,6 @@ Critérios de aceitação:
    2. O identificador da organização
    3. O papel
    4. O hash dos dados cadastrais
-   5. O administrador que realizou a ação
 
 
 ## USACC02 - Administrador exclui conta de sua organização para que não possa mais enviar transações à rede ou executar funcionalidades de permissionamento no âmbito de sua própria organização<a id="usacc02"></a>
@@ -28,7 +27,6 @@ Critérios de aceitação:
 6. A ocorrência da exclusão deve emitir um evento, registrando:
    1. O endereço da conta
    2. O identificador da organização
-   3. O administrador que realizou a ação
 
 
 ## USACC03 – Administrador altera uma conta de sua organização para modificar privilégios de acesso e/ou manter informação de auditoria atualizada<a id="usacc03"></a>
@@ -46,7 +44,6 @@ Critérios de aceitação:
    2. O identificador da organização
    3. O novo papel informado para a conta
    4. O novo hash informado para a conta
-   5. O administrador que realizou a ação
 
 
 ## ~~USACC04~~
@@ -64,7 +61,6 @@ Critérios de aceitação:
    1. O endereço da conta
    2. O identificador da organização
    3. A nova situação informada para a conta
-   4. O administrador que realizou a ação
 
 
 ## USACC06 - Governança cadastra nova conta para que possa ser usada no envio de transações à RBB ou executar funcionalidades de permissionamento<a id="usacc06"></a>
@@ -81,7 +77,6 @@ Critérios de aceitação:
    2. O identificador da organização
    3. O papel
    4. O hash dos dados cadastrais
-   5. O endereço da Governança
 
 
 ## USACC07 - Governança exclui conta para que não tenha mais acesso à RBB<a id="usacc07"></a>
@@ -95,7 +90,6 @@ Critérios de aceitação:
 6. A ocorrência da exclusão deve emitir um evento, registrando:
    1. O endereço da conta
    2. O identificador da organização
-   5. O endereço da Governança
 
 
 ## USACC08 - Governança configura o acesso a *smart contract* para que sua execução possa ser desativada, restrita a um conjunto determinado de endereços ou liberada para qualquer endereço<a id="usacc08"></a>
@@ -114,7 +108,6 @@ Critérios de aceitação:
    1. O endereço do *smart contract*
    2. Se foi configurada restrição de acesso
    3. Lista de endereços com acesso permitido
-   4. O endereço da Governança
 
 
 ## USACC09 - Observador verifica se conta está ativa para saber se a mesma pode ter acesso à RBB<a id="usacc09"></a>
@@ -162,7 +155,6 @@ Critérios de aceitação:
    1. A conta configurada
    2. Se foi configurada restrição de acesso
    3. Lista de endereços permitidos
-   4. O administrador que realizou a configuração
 
 
 ## USACC11 - Observador consulta o número total de contas existentes para poder preparar paginação de dados<a id="usacc11"></a>

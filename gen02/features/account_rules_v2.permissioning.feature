@@ -97,7 +97,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Administrador Global do BNDES configura restrição de acesso para conta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" configura restrição de acesso para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" permitindo acesso somente aos endereços "0x0000000000000000000000000000000000008888,0x0000000000000000000000000000000000009999"
     Então a configuração de acesso ocorre com sucesso
-    E o evento "AccountTargetAccessUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com restrição "true" permitindo acesso aos endereços "0x0000000000000000000000000000000000008888,0x0000000000000000000000000000000000009999" executado pelo admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountTargetAccessUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com restrição "true" permitindo acesso aos endereços "0x0000000000000000000000000000000000008888,0x0000000000000000000000000000000000009999"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "true"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x000000000000000000000000000000000000aaaa" tem verificação de permissionamento "false"
@@ -105,7 +105,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Administrador Local do BNDES libera restrição de acesso para conta
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" remove restrição de acesso para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
     Então a configuração de acesso ocorre com sucesso
-    E o evento "AccountTargetAccessUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com restrição "false" permitindo acesso aos endereços "" executado pelo admin "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+    E o evento "AccountTargetAccessUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com restrição "false" permitindo acesso aos endereços ""
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "true"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x000000000000000000000000000000000000aaaa" tem verificação de permissionamento "true"
@@ -117,7 +117,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Administrador Global do BNDES configura restrição de acesso para conta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" configura restrição de acesso para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" permitindo acesso somente aos endereços "0x0000000000000000000000000000000000008888"
     Então a configuração de acesso ocorre com sucesso
-    E o evento "AccountTargetAccessUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com restrição "true" permitindo acesso aos endereços "0x0000000000000000000000000000000000008888" executado pelo admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountTargetAccessUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com restrição "true" permitindo acesso aos endereços "0x0000000000000000000000000000000000008888"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "false"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x000000000000000000000000000000000000aaaa" tem verificação de permissionamento "false"
@@ -125,7 +125,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Administrador Local do BNDES configura restrição de acesso para conta
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" configura restrição de acesso para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" permitindo acesso somente aos endereços "0x0000000000000000000000000000000000008888,0x0000000000000000000000000000000000009999"
     Então a configuração de acesso ocorre com sucesso
-    E o evento "AccountTargetAccessUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com restrição "true" permitindo acesso aos endereços "0x0000000000000000000000000000000000008888,0x0000000000000000000000000000000000009999" executado pelo admin "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+    E o evento "AccountTargetAccessUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com restrição "true" permitindo acesso aos endereços "0x0000000000000000000000000000000000008888,0x0000000000000000000000000000000000009999"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "true"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x000000000000000000000000000000000000aaaa" tem verificação de permissionamento "false"
@@ -133,7 +133,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Administrador Global do BNDES libera restrição de acesso para conta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" remove restrição de acesso para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
     Então a configuração de acesso ocorre com sucesso
-    E o evento "AccountTargetAccessUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com restrição "false" permitindo acesso aos endereços "" executado pelo admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountTargetAccessUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com restrição "false" permitindo acesso aos endereços ""
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "true"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x000000000000000000000000000000000000aaaa" tem verificação de permissionamento "true"
@@ -141,7 +141,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Administrador Local do BNDES libera restrição de acesso para conta
     Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" remove restrição de acesso para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
     Então a configuração de acesso ocorre com sucesso
-    E o evento "AccountTargetAccessUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com restrição "false" permitindo acesso aos endereços "" executado pelo admin "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+    E o evento "AccountTargetAccessUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com restrição "false" permitindo acesso aos endereços ""
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "true"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x000000000000000000000000000000000000aaaa" tem verificação de permissionamento "true"
@@ -204,7 +204,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Governança configura restrição de acesso a smart contract
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" configura restrição de acesso ao endereço "0x0000000000000000000000000000000000008888" permitindo acesso somente pelas contas ""
     Então a configuração de acesso ocorre com sucesso
-    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "true" permitindo as contas "" executado pelo admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "true" permitindo as contas ""
     # Todas as contas ficam sem poder chamar o smart contract
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "false"
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "false"
@@ -214,7 +214,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Governança remove restrição de acesso a smart contract
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" remove restrição de acesso ao endereço "0x0000000000000000000000000000000000008888"
     Então a configuração de acesso ocorre com sucesso
-    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "false" permitindo as contas "" executado pelo admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "false" permitindo as contas ""
     # Todas as contas restabelecem acesso ao smart contract
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
@@ -225,7 +225,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Governança configura restrição de acesso a smart contract
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" configura restrição de acesso ao endereço "0x0000000000000000000000000000000000008888" permitindo acesso somente pelas contas "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC,0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
     Então a configuração de acesso ocorre com sucesso
-    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "true" permitindo as contas "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC,0x70997970C51812dc3A010C7d01b50e0d17dc79C8" executado pelo admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "true" permitindo as contas "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC,0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
     # Algumas contas ficam sem poder chamar o smart contract
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "false"
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "false"
@@ -235,7 +235,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Governança remove restrição de acesso a smart contract
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" remove restrição de acesso ao endereço "0x0000000000000000000000000000000000008888"
     Então a configuração de acesso ocorre com sucesso
-    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "false" permitindo as contas "" executado pelo admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "false" permitindo as contas ""
     # Todas as contas restabelecem acesso ao smart contract
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
@@ -246,7 +246,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Governança configura restrição de acesso a smart contract
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" configura restrição de acesso ao endereço "0x0000000000000000000000000000000000008888" permitindo acesso somente pelas contas ""
     Então a configuração de acesso ocorre com sucesso
-    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "true" permitindo as contas "" executado pelo admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "true" permitindo as contas ""
     # Todas as contas ficam sem poder chamar o smart contract
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "false"
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "false"
@@ -256,7 +256,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Governança configura nova restrição de acesso a smart contract
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" configura restrição de acesso ao endereço "0x0000000000000000000000000000000000008888" permitindo acesso somente pelas contas "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC,0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
     Então a configuração de acesso ocorre com sucesso
-    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "true" permitindo as contas "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC,0x70997970C51812dc3A010C7d01b50e0d17dc79C8" executado pelo admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "true" permitindo as contas "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC,0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
     # Algumas contas ficam sem poder chamar o smart contract
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "false"
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "false"
@@ -266,7 +266,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Governança remove restrição de acesso a smart contract
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" remove restrição de acesso ao endereço "0x0000000000000000000000000000000000008888"
     Então a configuração de acesso ocorre com sucesso
-    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "false" permitindo as contas "" executado pelo admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "false" permitindo as contas ""
     # Todas as contas restabelecem acesso ao smart contract
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
@@ -276,7 +276,7 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     # Governança remove novamente restrição de acesso a smart contract
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" remove restrição de acesso ao endereço "0x0000000000000000000000000000000000008888"
     Então a configuração de acesso ocorre com sucesso
-    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "false" permitindo as contas "" executado pelo admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "false" permitindo as contas ""
     # Todas as contas restabelecem acesso ao smart contract
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"

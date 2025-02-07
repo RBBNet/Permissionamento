@@ -51,17 +51,17 @@ Funcionalidade: Gestão de contas
     # Administrador global do BNDES adiciona novo administrador local
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
-    E o evento "AccountAdded" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountAdded" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     # Administrador local do BNDES adiciona nova conta de usuário
     Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" adiciona a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     Então a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 1 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e situação ativa "true"
-    E o evento "AccountAdded" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e admin "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec"
+    E o evento "AccountAdded" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
 
   Cenário: Adição de conta local de Administrador Local com hash zerado
     # Administrador global do BNDES tenta adicionar conta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
     Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
-    E o evento "AccountAdded" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountAdded" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
 
   Cenário: Tentativa de adição de conta local com conta não permissionada
     # Uma conta qualquer tenta adicionar uma nova conta local
@@ -72,7 +72,7 @@ Funcionalidade: Gestão de contas
     # Administrador global do BNDES adiciona nova conta de usuário
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     Então a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 1 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e situação ativa "true"
-    E o evento "AccountAdded" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountAdded" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     # Nova conta de usuário tenta adicionar nova conta de usuário
     Quando a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" adiciona a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     Então ocorre erro "UnauthorizedAccess" na tentativa de adição de conta
@@ -86,7 +86,7 @@ Funcionalidade: Gestão de contas
     # Administrador global do BNDES adiciona novo administrador local
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
-    E o evento "AccountAdded" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountAdded" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     # Administrador global do BNDES tenta adicionar novamente o mesmo administrador local
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" adiciona a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     Então ocorre erro "DuplicateAccount" na tentativa de adição de conta
@@ -128,23 +128,23 @@ Funcionalidade: Gestão de contas
     # Governança adiciona novo administrador global para o BNDES
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" na organização 1 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
-    E o evento "AccountAdded" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o evento "AccountAdded" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     # Governança adiciona conta de usuário para o BNDES
     Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" adiciona a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     Então a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 1 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e situação ativa "true"
-    E o evento "AccountAdded" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000002" e admin "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec"
+    E o evento "AccountAdded" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
 
   Cenário: Adição de conta de Administrador Global com hash zerado
     # Governança adiciona Administrador Global com hash zerado
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" na organização 1 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
     Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
-    E o evento "AccountAdded" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o evento "AccountAdded" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
     
   Cenário: Adição de conta de Administrador Local com hash zerado
     # Governança adiciona Administrador Local com hash zerado
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" na organização 1 com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
     Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
-    E o evento "AccountAdded" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o evento "AccountAdded" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
 
   Cenário: Tentativa de adição de conta por conta não autorizada ("por fora" da governança)
     # Administrador global do BNDES tenta cadastrar diretamente outro administrador global
@@ -160,7 +160,7 @@ Funcionalidade: Gestão de contas
     # Governança adiciona conta
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" na organização 1 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
-    E o evento "AccountAdded" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o evento "AccountAdded" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     # Governança tenta adicionar novamente a mesma conta
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" na organização 1 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     Então ocorre erro "DuplicateAccount" na tentativa de adição de conta
@@ -193,14 +193,14 @@ Funcionalidade: Gestão de contas
     # Administrador local do BNDES exclui conta de usuário
     Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" exclui a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
     Então a exclusão é realizada com sucesso
-    E o evento "AccountDeleted" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1 e admin "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec"
+    E o evento "AccountDeleted" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" da organização 1
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" não consta na lista de contas do papel "USER_ROLE"
     E se tento obter os dados da conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" ocorre erro "AccountNotFound"
     E verifico se a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" está ativa o resultado é "false"
     # Administrador global do BNDES exclui administrador local
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" exclui a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec"
     Então a exclusão é realizada com sucesso
-    E o evento "AccountDeleted" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1 e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountDeleted" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" da organização 1
     E a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" não consta na lista de contas do papel "LOCAL_ADMIN_ROLE"
     E se tento obter os dados da conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" ocorre erro "AccountNotFound"
     E verifico se a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" está ativa o resultado é "false"
@@ -263,7 +263,7 @@ Funcionalidade: Gestão de contas
     # Governança exclui administrador global "original" do BNDES
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     Então a exclusão é realizada com sucesso
-    E o evento "AccountDeleted" foi emitido para a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788", organização 1 e admin "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    E o evento "AccountDeleted" foi emitido para a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" da organização 1
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" não consta na lista de contas do papel "GLOBAL_ADMIN_ROLE"
     E verifico se a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" está ativa o resultado é "false"
 
@@ -302,26 +302,26 @@ Funcionalidade: Gestão de contas
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000003"
     Então a atualização é realizada com sucesso
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 1 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000003" e situação ativa "true"
-    E o evento "AccountUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000003" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000003"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" não consta na lista de contas do papel "USER_ROLE"
     # Administrador global do BNDES atualiza status da conta local
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a situação ativa da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "false"
     Então a atualização é realizada com sucesso
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 1 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000003" e situação ativa "false"
-    E o evento "AccountStatusUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, situação ativa "false" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountStatusUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" da organização 1 com situação ativa "false"
     E verifico se a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" está ativa o resultado é "false"
 
     # Administrador local do BNDES atualiza conta local
     Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" atualiza a conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000004"
     Então a atualização é realizada com sucesso
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 1 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000004" e situação ativa "false"
-    E o evento "AccountUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000004" e admin "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec"
+    E o evento "AccountUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000004"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" não consta na lista de contas do papel "LOCAL_ADMIN_ROLE"
     # Administrador local do BNDES atualiza status da conta local
     Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" atualiza a situação ativa da conta local "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" para "true"
     Então a atualização é realizada com sucesso
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" é da organização 1 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000004" e situação ativa "true"
-    E o evento "AccountStatusUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", organização 1, situação ativa "true" e admin "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec"
+    E o evento "AccountStatusUpdated" foi emitido para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" da organização 1 com situação ativa "true"
     E verifico se a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" está ativa o resultado é "true"
 
   Cenário: Atualização de conta de administrador local com hash zerado
@@ -332,7 +332,7 @@ Funcionalidade: Gestão de contas
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
     Então a atualização é realizada com sucesso
     E a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
-    E o evento "AccountUpdated" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountUpdated" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
 
   Cenário: Atualização de conta para administrador local com hash zerado
     # Administrador global do BNDES adiciona novo usuário
@@ -342,7 +342,7 @@ Funcionalidade: Gestão de contas
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
     Então a atualização é realizada com sucesso
     E a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
-    E o evento "AccountUpdated" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountUpdated" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "LOCAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
 
   Cenário: Atualização de papel de conta local com hash válido
     # Administrador global do BNDES adiciona novo administrador local
@@ -352,13 +352,13 @@ Funcionalidade: Gestão de contas
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "DEPLOYER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     Então a atualização é realizada com sucesso
     E a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "DEPLOYER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
-    E o evento "AccountUpdated" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "DEPLOYER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountUpdated" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "DEPLOYER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" não consta na lista de contas do papel "LOCAL_ADMIN_ROLE"
     # Administrador global do BNDES altera papel da conta para usuário
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" atualiza a conta local "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     Então a atualização é realizada com sucesso
     E a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" é da organização 1 com papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
-    E o evento "AccountUpdated" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "USER_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e admin "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
+    E o evento "AccountUpdated" foi emitido para a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec", organização 1, papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" não consta na lista de contas do papel "DEPLOYER_ROLE"
 
   Cenário: Tentativa de atualização de conta local com conta não permissionada

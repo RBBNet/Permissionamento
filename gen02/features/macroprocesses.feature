@@ -91,7 +91,7 @@ Funcionalidade: Macroprocessos de gestão da RBB
     E o evento "ProposalFinished" é emitido para a proposta
     E o evento "ProposalExecuted" é emitido para a proposta pela conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788"
     E o evento "OrganizationAdded" foi emitido para a organização 9 com nome "IBICT" e direito de voto "true"
-    E o evento "AccountAdded" foi emitido para a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096", organização 9, papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" pela governança
+    E o evento "AccountAdded" foi emitido para a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096", organização 9, papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
     E a proposta tem situação "Executed", resultado "Approved", organizações "1,2,3,5,6,7,8" e votos "Approval,Approval,Approval,NotVoted,NotVoted,NotVoted,Approval"
     # Verificando o resultado da execução, se organização e admin global foram criados
     Então a organização 9 é "IBICT" e direito de voto "true"
