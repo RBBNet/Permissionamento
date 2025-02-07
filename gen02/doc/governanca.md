@@ -24,7 +24,6 @@ Critérios de aceitação:
       6. Limite de blocos para aprovação da proposta.
 5. A ocorrência da criação da proposta deve emitir um evento, registrando:
    1. O identificador da proposta
-   2. O criador da proposta
 6. O identificador da proposta é retornado como resultado.
 
 Dúvidas:
@@ -72,14 +71,13 @@ Critérios de aceitação:
 7. Registra-se o voto enviado para a organização do administrador.
 8. A ocorrência do voto deve emitir um evento, registrando:
    1. O identificador da proposta
-   2. O administrador votante
+   2. A organização do administrador votante
    3. O voto
 9. Verifica-se se já é possível atingir maioria simples (metade mais uma das organizações da lista de proposta).
    1. Caso já exista maioria simples, registra-se o resultado da proposta, de aprovação ou rejeição.
    2. Caso todos os votos já tenham sido realizados e haja empate, registra-se o resultado da proposta como rejeição.
-   3. A ocorrência da definição do resultado da proposta deve emitir um evento, registrando:
+   3. A ocorrência da definição do resultado da proposta deve emitir um evento, para aprovação ou para rejeição, registrando:
       1. O identificador da proposta
-      2. O resultado da proposta
 10. É retornada a indicação que o voto foi registrado.
 
 Dúvidas:
@@ -102,7 +100,6 @@ Critérios de aceitação:
 8. A proposta é marcada como exectudada.
    1. A ocorrência da execução da proposta deve emitir um evento, registrando:
       1. O identificador da proposta
-      2. O administrador executante
 
 
 ## USGOV05 – Observardor consulta proposta para avaliar sua situação<a id="usgov05"></a>

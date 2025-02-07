@@ -28,13 +28,13 @@ contract Governance {
         string cancelationReason;
     }
 
-    event ProposalCreated(uint indexed proposalId, address creator);
-    event OrganizationVoted(uint indexed proposalId, address admin, bool approve);
+    event ProposalCreated(uint indexed proposalId);
+    event OrganizationVoted(uint indexed proposalId, uint orgId, bool approve);
     event ProposalCanceled(uint indexed proposalId);
     event ProposalFinished(uint indexed proposalId);
     event ProposalApproved(uint indexed proposalId);
     event ProposalRejected(uint indexed proposalId);
-    event ProposalExecuted(uint indexed proposalId, address executor);
+    event ProposalExecuted(uint indexed proposalId);
 
     error UnauthorizedAccess(address account, string message);
     error IllegalState(string message);
@@ -148,7 +148,7 @@ contract Governance {
         }
         _proposalIds.add(proposalId);
 
-        emit ProposalCreated(proposal.id, proposal.creator);
+        emit ProposalCreated(proposal.id);
 
         return proposalId;
     }
@@ -179,7 +179,7 @@ contract Governance {
             votes[proposalId][acc.orgId] = ProposalVote.Rejection;
         }
 
-        emit OrganizationVoted(proposalId, msg.sender, approve);
+        emit OrganizationVoted(proposalId, acc.orgId, approve);
 
         if(proposals[proposalId].result == ProposalResult.Undefined) {
             _majorityAchieved(proposals[proposalId]);
@@ -248,7 +248,7 @@ contract Governance {
         }
 
         proposal.status = ProposalStatus.Executed;
-        emit ProposalExecuted(proposalId, msg.sender);
+        emit ProposalExecuted(proposalId);
 
         bytes[] memory returnedValues = new bytes[](proposal.targets.length);
         for (uint i = 0; i < proposal.targets.length; ++i) {

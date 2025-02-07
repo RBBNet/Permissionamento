@@ -98,19 +98,6 @@ Then('ocorre erro {string} na criação da proposta', function(error) {
     assert.ok(this.creationError.message.includes(error));
 });
 
-Then('o evento {string} é emitido para a proposta pela conta {string}', async function(event, creator) {
-    const block = await hre.ethers.provider.getBlockNumber();
-    const events = await this.govenanceContract.queryFilter(event, block, block);
-    let found = false;
-    for (let i = 0; i < events.length && !found; i++) {
-        found =
-            events[i].fragment.name == event &&
-            events[i].args[0] == this.proposalId &&
-            events[i].args[1] == creator;
-    }
-    assert.ok(found);
-});
-
 Then('a proposta tem situação {string}, resultado {string}, organizações {string} e votos {string}', async function(status, result, orgs, votes) {
     const expectedOrgs = orgs.split(',');
     const expectedVotes = votes.split(',');
@@ -211,7 +198,7 @@ Then('ocorre erro {string} no envio do voto', function(error) {
     assert.ok(this.voteError.message.includes(error));
 });
 
-Then('o evento {string} é emitido para a proposta com voto de {string} pela conta {string}', async function(event, vote, creator) {
+Then('o evento {string} é emitido para a proposta com voto de {string} pela organização {int}', async function(event, vote, orgId) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.govenanceContract.queryFilter(event, block, block);
     let found = false;
@@ -219,7 +206,7 @@ Then('o evento {string} é emitido para a proposta com voto de {string} pela con
         found =
             events[i].fragment.name == event &&
             events[i].args[0] == this.proposalId &&
-            events[i].args[1] == creator &&
+            events[i].args[1] == orgId &&
             events[i].args[2] == getVote(vote);
     }
     assert.ok(found);
