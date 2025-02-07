@@ -57,7 +57,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         allowedNodes[key] = NodeData(enodeHigh, enodeLow, nodeType, name, orgId, true);
         _nodesKeys.add(key);
         _nodesKeysByOrg[orgId].add(key);
-        emit NodeAdded(enodeHigh, enodeLow, orgId, msg.sender);
+        emit NodeAdded(enodeHigh, enodeLow, orgId, nodeType, name);
     }
 
     function deleteNode(bytes32 enodeHigh, bytes32 enodeLow) public onlyGovernance {
@@ -77,7 +77,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         delete allowedNodes[nodeKey];
         _nodesKeys.remove(nodeKey);
         _nodesKeysByOrg[orgId].remove(nodeKey);
-        emit NodeDeleted(enodeHigh, enodeLow, orgId, msg.sender);
+        emit NodeDeleted(enodeHigh, enodeLow, orgId);
     }
 
     function updateLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name) public onlyActiveAdmin {
@@ -87,7 +87,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         _revertIfInvalidName(name);
         allowedNodes[key].nodeType = nodeType;
         allowedNodes[key].name = name;
-        emit NodeUpdated(enodeHigh, enodeLow, allowedNodes[key].orgId, msg.sender);
+        emit NodeUpdated(enodeHigh, enodeLow, allowedNodes[key].orgId, nodeType, name);
     }
 
     function updateLocalNodeStatus(bytes32 enodeHigh, bytes32 enodeLow, bool active) public onlyActiveAdmin {
@@ -95,7 +95,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         _revertIfNotSameOrganization(enodeHigh, enodeLow, key);
         allowedNodes[key].active = active;
-        emit NodeStatusUpdated(enodeHigh, enodeLow, allowedNodes[key].orgId, active, msg.sender);
+        emit NodeStatusUpdated(enodeHigh, enodeLow, allowedNodes[key].orgId, active);
     }
 
     function isNodeActive(bytes32 enodeHigh, bytes32 enodeLow) public view returns (bool){

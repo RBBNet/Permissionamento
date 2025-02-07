@@ -50,13 +50,12 @@ When('a conta {string} informa o endereço {string} {string}, o nome {string} e 
     }
 });
 
-Then('o evento {string} é emitido para o nó {string} {string} pela conta {string} e organização {int}', async function (event, enodeHigh, enodeLow, admin, organization) {
+Then('o evento {string} é emitido para o nó {string} {string} da organização {int}', async function (event, enodeHigh, enodeLow, organization) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.nodeRules.queryFilter(event, block, block);
     assert.equal(events[0].args[0], enodeHigh);
     assert.equal(events[0].args[1], enodeLow);
     assert.equal(parseInt(events[0].args[2]), organization);
-    assert.equal(events[0].args[3], admin);
 });
 
 Then('o nó {string} {string} é da organização {int}, tem o nome {string}, tipo {string} e situação ativa {boolean}', async function (enodeHigh, enodeLow, organization, name, type, active) {
@@ -113,15 +112,25 @@ When('a conta {string} informa o endereço {string} {string} para mudar sua situ
     }
 });
 
-Then('o evento {string} é emitido para o nó {string} {string} com situação ativa {boolean} pela conta {string} e organização {int}', async function (event, enodeHigh, enodeLow, active, admin, organization) {
+Then('o evento {string} é emitido para o nó {string} {string} da organização {int} com situação ativa {boolean}', async function (event, enodeHigh, enodeLow, organization, active) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.nodeRules.queryFilter(event, block, block);
     assert.equal(events[0].args[0], enodeHigh);
     assert.equal(events[0].args[1], enodeLow);
     assert.equal(events[0].args[2], organization)
     assert.equal(events[0].args[3], active);
-    assert.equal(events[0].args[4], admin)
 });
+
+Then('o evento {string} é emitido para o nó {string} {string} da organização {int} com tipo {string} e nome {string}', async function (event, enodeHigh, enodeLow, organization, type, name) {
+    const block = await hre.ethers.provider.getBlockNumber();
+    const events = await this.nodeRules.queryFilter(event, block, block);
+    assert.equal(events[0].args[0], enodeHigh);
+    assert.equal(events[0].args[1], enodeLow);
+    assert.equal(events[0].args[2], organization)
+    assert.equal(events[0].args[3], getNodeType(type));
+    assert.equal(events[0].args[4], name);
+});
+
 
 Then('verifico se o nó {string} {string} está ativo o resultado é {boolean}', async function(enodeHigh, enodeLow, status){
    const nodeStatus = await this.nodeRules.isNodeActive(enodeHigh, enodeLow);

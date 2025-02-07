@@ -9,9 +9,10 @@ Critérios de aceitação:
 4. O nome e o tipo informados devem ser válidos.
 5. O nó é criado e vinculado à organização do administrador solicitante.
 6. A ocorrência do cadastro deve emitir um evento, registrando:
-   1. O endereço do nó;
+   1. O endereço do nó
    2. O identificador da organização
-   3. O administrador.
+   3. O tipo do nó
+   4. O nome do nó
 
 
 ## USNOD02 - Administrador exclui nó de sua organização para que não possa mais se conectar à RBB<a id="usnod02"></a>
@@ -23,9 +24,8 @@ Critérios de aceitação:
 4. O administrador somente pode excluir nós vinculados à sua organização.
 5. O nó é excluído.
 6. A ocorrência da exclusão deve emitir um evento, registrando:
-   1. O endereço do nó;
+   1. O endereço do nó
    2. O identificador da organização
-   3. O administrador.
 
   
 ## USNOD03 - Administrador altera cadastro de nó de sua organização para manter informações atualizadas<a id="usnod03"></a>
@@ -38,9 +38,10 @@ Critérios de aceitação:
 5. O nome e o tipo informados devem ser válidos.
 6. O novo nome e tipo são alterados no cadastro do nó.
 7. A ocorrência da alteração deve emitir um evento, registrando:
-   1. O endereço do nó;
+   1. O endereço do nó
    2. O identificador da organização
-   3. O administrador.
+   3. O novo tipo do nó
+   4. O novo nome do nó
 
 
 ## USNOD04 - Administrador altera situação de nó da sua organização para que perca temporariamente ou para que readquira possibilidade de conexão à rede<a id="usnod04"></a>
@@ -52,10 +53,9 @@ Critérios de aceitação:
 4. O administrador somente pode alterar nós vinculados à sua organização.
 5. A situação do nó é alterada.
 6. A ocorrência da alteração deve emitir um evento, registrando:
-   1. O endereço do nó;
+   1. O endereço do nó
    2. O identificador da organização
-   3. A nova situação do nó;
-   4. O administrador que realizou a ação.
+   3. A nova situação do nó
 
 
 ## USNOD05 - Governança cadastra novo nó para que receba permissão para se conectar à RBB<a id="usnod05"></a>
@@ -67,9 +67,10 @@ Critérios de aceitação:
 4. O nó não pode já estar cadastrado.
 5. O nó é criado, associado à organização indicada e com o nome e tipo indicados.
 6. A ocorrência do cadastro deve emitir um evento, registrando:
-   1. O endereço do nó;
+   1. O endereço do nó
    2. O identificador da organização
-   3. O endereço da Governança.
+   3. O tipo do nó
+   4. O nome do nó
 
 
 ## USNOD06 - Governança exclui nó para que não possa mais se conectar à RBB<a id="usnod06"></a>
@@ -80,9 +81,8 @@ Critérios de aceitação:
 3. O nó informado deve ser válido.
 4. O nó é excluído.
 5. A ocorrência da exclusão deve emitir um evento, registrando:
-   1. O endereço do nó;
+   1. O endereço do nó
    2. O identificador da organização
-   3. O endereço da Governança.
 
 
 ## USNOD07 - Observador verifica se nó está ativo para saber se pode se conectar à RBB<a id="usnod07"></a>
