@@ -5,11 +5,11 @@
   "scripts": {
     "test": "cucumber-js",
     "compile": "npx hardhat compile",
-    "deploy-hardhat-mock": "npx hardhat run deploy/AdminMock.js --network local",
-    "deploy-hardhat-gen02": "npx hardhat run deploy/Gen02.js --network local",
-    "deploy-local-mock": "npx hardhat run deploy/AdminMock.js --network local_besu",
-    "deploy-local-gen02": "npx hardhat run deploy/Gen02.js --network local_besu",
-    "deploy-local-migratetogen02": "npx hardhat run deploy/MigrateToGen02.js --network local_besu"
+    "deploy-hardhat-mock": "npx hardhat run deploy/deploy-admin-mock.js --network local",
+    "deploy-hardhat-gen02": "npx hardhat run deploy/deploy-gen02.js --network local",
+    "deploy-local-mock": "npx hardhat run deploy/deploy-admin-mock.js --network local_besu",
+    "deploy-local-gen02": "npx hardhat run deploy/deploy-gen02.js --network local_besu",
+    "deploy-local-migratetogen02": "npx hardhat run deploy/migrate-to-gen02.js --network local_besu"
   },
   "repository": {
     "type": "git",
