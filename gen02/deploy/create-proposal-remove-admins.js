@@ -3,7 +3,7 @@ const assert = require('assert');
 const { getParameters, getParameter, diagnostics } = require('./util.js');
 
 const BLOCKS_DURATION = 30000;
-const PROPOSAL_DESCRIPTION = '';
+const PROPOSAL_DESCRIPTION = 'Manter apenas a Governança como administrador master (remoção dos demais admins)';
 const REMOVE_ACCOUNT_FUNC = 'removeAdmin(address)';
 const STATUS_ACTIVE = 1;
 const RESULT_UNDEFINED = 0;
@@ -24,7 +24,12 @@ async function createProposal(parameters) {
     const adminContract = await hre.ethers.getContractAt(ADMIN_ABI, adminAddress);
     
     const allAdmins = await adminContract.getAdmins();
+    const governanceAdmin = allAdmins.filter(a => a == governanceAddress);
     const adminsToRemove = allAdmins.filter(a => a != governanceAddress);
+
+    assert.ok(governanceAdmin.length > 0, 'Smart contract de Governança não está cadastrado como admin!');
+    assert.ok(adminsToRemove.length > 0, 'Não há administradores master para remover.');
+    
     for(const admin of adminsToRemove) {
         console.log(` - ${admin}`);
     }
