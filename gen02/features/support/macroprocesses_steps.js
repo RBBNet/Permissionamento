@@ -1,10 +1,11 @@
 const assert = require('assert');
 const { Given, When, Then } = require('@cucumber/cucumber');
 const hre = require("hardhat");
-const { getRoleId } = require('./setup.js');
+const { getRoleId, getBoolean } = require('./setup.js');
 
 function getContract(context, contract) {
     switch(contract) {
+        case 'Admin': return context.adminMockContract;
         case 'OrganizationImpl': return context.organizationContract;
         case 'AccountRulesV2Impl': return context.accountRulesContract;
         default: throw new Error('Alvo desconhecido: ' + contract);
@@ -51,4 +52,9 @@ When('a conta {string} cria proposta com descrição {string}', async function(a
     }
     
     this.proposalId = await this.govenanceContract.idSeed();
+});
+
+When('se verifico se o smart contract de governança é admin master o resultado é {string}', async function(admin) {
+    const isAdmin = await this.adminMockContract.admins(this.govenanceContractAddress);
+    assert.equal(isAdmin, getBoolean(admin));
 });

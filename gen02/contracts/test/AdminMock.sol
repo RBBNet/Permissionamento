@@ -11,6 +11,10 @@ contract AdminMock is AdminProxy {
         admins[source] = true;
     }
 
+    function removeAdmin(address source) public {
+        admins[source] = false;
+    }
+
     function isAuthorized(address source) public view returns (bool) {
         return admins[source];
     }

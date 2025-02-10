@@ -24,6 +24,8 @@ Funcionalidade: Macroprocessos de gestão da RBB
     E a organização "Prodemge" com direito de voto "true"
     # SERPRO será organização 8
     E a organização "SERPRO" com direito de voto "true"
+    # OrgExc será organização 9
+    E a organização "OrgExc" com direito de voto "true"
     E implanto o smart contract de gestão de organizações
     E a implantação do smart contract de gestão de organizações ocorre com sucesso
     # Administrador global da organização 1 - BNDES
@@ -42,10 +44,12 @@ Funcionalidade: Macroprocessos de gestão da RBB
     E a conta "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E"
     # Administrador global da organização 8 - SERPRO
     E a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0"
+    # Administrador global da organização 9 - OrgExc
+    E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
     E implanto o smart contract de gestão de contas
     E a implantação do smart contract de gestão de contas ocorre com sucesso
     # Verificando cadastro das organizações
-    E a lista de organizações é "1,BNDES,true|2,TCU,true|3,DATAPREV,true|4,PUC-Rio,false|5,CPQD,true|6,RNP,true|7,Prodemge,true|8,SERPRO,true"
+    E a lista de organizações é "1,BNDES,true|2,TCU,true|3,DATAPREV,true|4,PUC-Rio,false|5,CPQD,true|6,RNP,true|7,Prodemge,true|8,SERPRO,true|9,OrgExc,true"
     # Verificando cadastro das contas
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" é da organização 1 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     E a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" é da organização 2 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
@@ -55,21 +59,51 @@ Funcionalidade: Macroprocessos de gestão da RBB
     E a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" é da organização 6 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     E a conta "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E" é da organização 7 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     E a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" é da organização 8 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
+    E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" é da organização 9 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     # Implantação do smart contract de governança
     E implanto o smart contract de governança do permissionamento
     E a implantação do smart contract de governança do permissionamento ocorre com sucesso
     E o smart contract de governança é adicionado como admin master
-    
+    # Preparação para criação da proposta para deixar apenas o smart contract de governança como admin master
+    Dado o alvo "Admin" para chamada da função "removeAdmin(address)" com parâmetros "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    # Administrador Global do BNDES cria a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria proposta com descrição "Só governança como admin master"
+    Então a proposta é criada com sucesso
+    E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5,6,7,8,9" e votos "NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted"
+    # Administrador Global do BNDES vota para aprovar a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do TCU vota para aprovar a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do Dataprev vota para aprovar a proposta
+    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do CPQD vota para aprovar a proposta
+    Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global da RNP vota para aprovar a proposta
+    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Proposta é aprovada por maioria
+    E a proposta tem situação "Active", resultado "Approved", organizações "1,2,3,5,6,7,8,9" e votos "Approval,Approval,Approval,Approval,Approval,NotVoted,NotVoted,NotVoted"
+    # Administrador Global do BNDES executa a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" executa a proposta
+    Então a proposta é executada com sucesso
+    E a proposta tem situação "Executed", resultado "Approved", organizações "1,2,3,5,6,7,8,9" e votos "Approval,Approval,Approval,Approval,Approval,NotVoted,NotVoted,NotVoted"
+    # Verificando o resultado da execução, se somente a Governança é admin master
+    E se verifico se a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" é admin master o resultado é "false"
+    E se verifico se o smart contract de governança é admin master o resultado é "true"
 
   Cenário: Entrada de uma nova organização
     # Preparação de passos para uma proposta
     Dado o alvo "OrganizationImpl" para chamada da função "addOrganization(string,bool)" com parâmetros "IBICT,true"
-    E o alvo "AccountRulesV2Impl" para chamada da função "addAccount(address,uint256,bytes32,bytes32)" com parâmetros "0xBcd4042DE499D14e55001CcbB24a551F3b954096,9,0xd6e7d8560c69c7c18c2b8f3b45430215d788f128f0c04bc4a3607fe05eb5399f,0x0000000000000000000000000000000000000000000000000000000000000000"
+    E o alvo "AccountRulesV2Impl" para chamada da função "addAccount(address,uint256,bytes32,bytes32)" com parâmetros "0xBcd4042DE499D14e55001CcbB24a551F3b954096,10,0xd6e7d8560c69c7c18c2b8f3b45430215d788f128f0c04bc4a3607fe05eb5399f,0x0000000000000000000000000000000000000000000000000000000000000000"
     # Administrador Global do BNDES cria uma proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria proposta com descrição "Inclusão do IBICT"
     Então a proposta é criada com sucesso
     E o evento "ProposalCreated" é emitido para a proposta
-    E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5,6,7,8" e votos "NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted"
+    E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5,6,7,8,9" e votos "NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted"
     # Administrador Global do BNDES vota para aprovar a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
     Então o voto é registrado com sucesso
@@ -82,27 +116,26 @@ Funcionalidade: Macroprocessos de gestão da RBB
     # Administrador Global do SERPRO vota para aprovar a proposta
     Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" envia um voto de "Approval"
     Então o voto é registrado com sucesso
+    # Administrador Global da RNP vota para aprovar a proposta
+    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
     # Proposta é aprovada por maioria
     E o evento "ProposalApproved" é emitido para a proposta
-    E a proposta tem situação "Active", resultado "Approved", organizações "1,2,3,5,6,7,8" e votos "Approval,Approval,Approval,NotVoted,NotVoted,NotVoted,Approval"
+    E a proposta tem situação "Active", resultado "Approved", organizações "1,2,3,5,6,7,8,9" e votos "Approval,Approval,Approval,NotVoted,Approval,NotVoted,Approval,NotVoted"
     # Administrador Global do BNDES executa a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" executa a proposta
     Então a proposta é executada com sucesso
     E o evento "ProposalFinished" é emitido para a proposta
     E o evento "ProposalExecuted" é emitido para a proposta
-    E o evento "OrganizationAdded" foi emitido para a organização 9 com nome "IBICT" e direito de voto "true"
-    E o evento "AccountAdded" foi emitido para a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096", organização 9, papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
-    E a proposta tem situação "Executed", resultado "Approved", organizações "1,2,3,5,6,7,8" e votos "Approval,Approval,Approval,NotVoted,NotVoted,NotVoted,Approval"
+    E o evento "OrganizationAdded" foi emitido para a organização 10 com nome "IBICT" e direito de voto "true"
+    E o evento "AccountAdded" foi emitido para a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096", organização 10, papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
+    E a proposta tem situação "Executed", resultado "Approved", organizações "1,2,3,5,6,7,8,9" e votos "Approval,Approval,Approval,NotVoted,Approval,NotVoted,Approval,NotVoted"
     # Verificando o resultado da execução, se organização e admin global foram criados
-    E a organização 9 é "IBICT" e direito de voto "true"
-    E a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096" é da organização 9 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
+    E a organização 10 é "IBICT" e direito de voto "true"
+    E a lista de organizações é "1,BNDES,true|2,TCU,true|3,DATAPREV,true|4,PUC-Rio,false|5,CPQD,true|6,RNP,true|7,Prodemge,true|8,SERPRO,true|9,OrgExc,true|10,IBICT,true"
+    E a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096" é da organização 10 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
 
   Cenário: Saída de uma organização
-    # Preparando cenário - Adcionando uma nova organização via governança
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "OrgExc" e direito de voto "true"
-    Então a organização 9 é "OrgExc" e direito de voto "true"
-    E verifico se a organização 9 está ativa o resultado é "true"
-
     # Preparação de passos para uma proposta
     Dado o alvo "OrganizationImpl" para chamada da função "deleteOrganization(uint256)" com parâmetros "9"
     # Administrador Global do BNDES cria uma proposta
@@ -137,6 +170,7 @@ Funcionalidade: Macroprocessos de gestão da RBB
     E a proposta tem situação "Executed", resultado "Approved", organizações "1,2,3,5,6,7,8,9" e votos "Approval,Approval,Approval,NotVoted,NotVoted,Approval,Approval,NotVoted"
     # Verificando o resultado da execução, se organização foi excluída
     E verifico se a organização 9 está ativa o resultado é "false"
+    E a lista de organizações é "1,BNDES,true|2,TCU,true|3,DATAPREV,true|4,PUC-Rio,false|5,CPQD,true|6,RNP,true|7,Prodemge,true|8,SERPRO,true"
 
   Cenário: Perda de chave privada de Administrador Global
     # Simulando perda de chave privada do Administrador Global do BNDES
@@ -147,7 +181,7 @@ Funcionalidade: Macroprocessos de gestão da RBB
     Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" cria proposta com descrição "Substituição de administrador global do BNDES"
     Então a proposta é criada com sucesso
     E o evento "ProposalCreated" é emitido para a proposta
-    E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5,6,7,8" e votos "NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted"
+    E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5,6,7,8,9" e votos "NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted"
     Então o voto é registrado com sucesso
     # Administrador Global do TCU vota para aprovar a proposta
     Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Approval"
@@ -160,9 +194,13 @@ Funcionalidade: Macroprocessos de gestão da RBB
     Então o voto é registrado com sucesso
     # Administrador Global do CPQD vota para aprovar a proposta
     Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do RPN vota para aprovar a proposta
+    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
     # Proposta é aprovada por maioria
     E o evento "ProposalApproved" é emitido para a proposta
-    E a proposta tem situação "Active", resultado "Approved", organizações "1,2,3,5,6,7,8" e votos "NotVoted,Approval,Approval,Approval,NotVoted,NotVoted,Approval"
+    E a proposta tem situação "Active", resultado "Approved", organizações "1,2,3,5,6,7,8,9" e votos "NotVoted,Approval,Approval,Approval,Approval,NotVoted,Approval,NotVoted"
     # Administrador Global do CPQD executa a proposta
     Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" executa a proposta
     Então a proposta é executada com sucesso
@@ -170,7 +208,7 @@ Funcionalidade: Macroprocessos de gestão da RBB
     E o evento "ProposalExecuted" é emitido para a proposta
     E o evento "AccountAdded" foi emitido para a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096", organização 1, papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
     E o evento "AccountDeleted" foi emitido para a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" da organização 1
-    E a proposta tem situação "Executed", resultado "Approved", organizações "1,2,3,5,6,7,8" e votos "NotVoted,Approval,Approval,Approval,NotVoted,NotVoted,Approval"
+    E a proposta tem situação "Executed", resultado "Approved", organizações "1,2,3,5,6,7,8,9" e votos "NotVoted,Approval,Approval,Approval,Approval,NotVoted,Approval,NotVoted"
     # Verificando o resultado da execução, se organização e admin global foram criados
     E a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096" é da organização 1 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     E se tento obter os dados da conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" ocorre erro "AccountNotFound"

@@ -18,3 +18,8 @@ Then('a autorização para o endereço {string} é {string}', async function (ac
     let auth = await this.adminMockContract.isAuthorized(account);
     assert.equal(auth, getBoolean(authorized));
 });
+
+When('se verifico se a conta {string} é admin master o resultado é {string}', async function(account, admin) {
+    const isAdmin = await this.adminMockContract.admins(account);
+    assert.equal(isAdmin, getBoolean(admin));
+});
