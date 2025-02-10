@@ -105,12 +105,17 @@ besu --config-file besu/config.toml
 
 2. Abra outro terminal/console.
 
-3. Defina a variável de ambiente `CONFIG_PARAMETERS` contendo o caminho do arquivo com os parâmetros de configuração. Para o caso de implantação local o arquivo [`deploy/parameters-local.json`](deploy/parameters-local.json) já foi preparado.
+3. Defina as seguintes variáveis de ambiente:
+   1. `CONFIG_PARAMETERS`: Caminho do arquivo com os parâmetros de configuração. Para o caso de implantação local o arquivo [`deploy/parameters-local.json`](deploy/parameters-local.json) já foi preparado.
+   2. `ACCOUNT_ADDRESS`: Endereço da conta a ser usada para envio de transações.
+   3. `PRIVATE_KEY`: Chave privada da conta a ser usada para envio de transações.
 
-O ajuste da variável de ambiente pode ser feito via arquivo `.env` ou ajustando o valor diretamente no terminal:
+O ajuste das variáveis de ambiente pode ser feito via arquivo `.env` ou ajustando o valor diretamente no terminal. Exemplo:
 
 ```shell
 set CONFIG_PARAMETERS=deploy/parameters-local.json
+set ACCOUNT_ADDRESS=0x71bE63f3384f5fb98995898A86B02Fb2426c5788
+set PRIVATE_KEY=0x701b615bbdfb9de65240bc28bd21bbc0d996645a3dd57e7b12bc2bdf6f192c82
 ```
 
 4. A gen02 foi feita para trabalhar com base em contratos da gen01. Portanto, algumas dependências são necessárias para que funcione corretamente. Nesse ponto, deve-se optar por:
