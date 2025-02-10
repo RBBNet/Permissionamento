@@ -4,6 +4,11 @@ const { getParameters, getParameter, diagnostics } = require('./util.js');
 
 const GLOBAL_ADMIN_ROLE = '0xd6e7d8560c69c7c18c2b8f3b45430215d788f128f0c04bc4a3607fe05eb5399f';
 
+const ADMIN_ABI = [
+    'function addAdmin(address) public returns (bool)',
+    'function isAuthorized(address) public view returns (bool)'
+];
+
 async function deployGen02(parameters) {
     await diagnostics();
     
@@ -18,11 +23,7 @@ async function deployGen02(parameters) {
         throw new Error(`Listas de organizações e contas de administradores globais não têm o mesmo tamanho: ${organizations.length} != ${globalAdmins.length}`);
     }
 
-    // Usando o contrato AdminMock apenas como referência de interface,
-    // já que todas as suas funções também estão presentes no contrato Admin da gen01
-    // e ele também implementa a interface AdminProxy.
-    // Na prática, o que importa é o endereço configurado.
-    const adminContract = await hre.ethers.getContractAt('AdminMock', adminAddress);
+    const adminContract = await hre.ethers.getContractAt(ADMIN_ABI, adminAddress);
 
     console.log('Implantando smart contract de gestão de organizações');
     const organizationsContract = await hre.ethers.deployContract('OrganizationImpl', [organizations, adminContract]);
