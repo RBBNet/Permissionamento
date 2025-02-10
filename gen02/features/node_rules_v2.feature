@@ -5,7 +5,7 @@ Funcionalidade: Gestão de nós
   Contexto:
     # 1. implantar contrato de admin (mock)
     Dado que o smart contract de gestão de endereços de admin está implantado
-    E o endereço "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" é admin
+    E o endereço "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" é admin master
     # 2. adicionar 4 organizações à array de orgs
     E a organização "BNDES" com direito de voto "true"
     E a organização "TCU" com direito de voto "true"

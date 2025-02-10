@@ -10,7 +10,7 @@ Given('que o smart contract de gestão de endereços de admin está implantado',
     assert.ok(this.adminMockContractAddress != null);
 });
 
-When('o endereço {string} é admin', async function(account) {
+When('o endereço {string} é admin master', async function(account) {
     await this.adminMockContract.addAdmin(account);
 });
 

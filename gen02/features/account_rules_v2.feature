@@ -7,7 +7,7 @@ Funcionalidade: Gestão de contas
     # A conta 0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199 é utilizada como admin,
     # conforme conceito da primeira geração do permissionamento, que representará
     # o smart contract de governança/votação.
-    E o endereço "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" é admin
+    E o endereço "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" é admin master
     # BNDES será organização 1
     E a organização "BNDES" com direito de voto "true"
     # TCU será organização 2

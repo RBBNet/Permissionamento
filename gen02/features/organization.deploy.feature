@@ -7,7 +7,7 @@ Funcionalidade: Implantação da gestão de organizações
     # A conta 0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199 é utilizada como admin,
     # conforme conceito da primeira geração do permissionamento, que representará
     # o smart contract de governança/votação.
-    E o endereço "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" é admin
+    E o endereço "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" é admin master
 
   Cenário: Implantação de smart contract
     # BNDES será organização 1

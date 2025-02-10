@@ -4,7 +4,7 @@ Funcionalidade: Smart contracts "governáveis"
 
   Contexto:
     Dado que o smart contract de gestão de endereços de admin está implantado
-    E o endereço "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" é admin
+    E o endereço "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" é admin master
     E implanto o smart contract governável
 
   Cenário: Acesso controlado à funcionalidade de acesso restrito
