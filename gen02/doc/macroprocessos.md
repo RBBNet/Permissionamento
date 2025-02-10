@@ -10,6 +10,8 @@ Procedimento:
 3. Organizações votam para aprovar a proposta.
 4. Governança realiza novos cadastros.
 
+Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
+
 
 # Saída de uma organização
 
@@ -18,6 +20,8 @@ Procedimento:
 2. Organizações votam para aprovar a proposta.
 3. Governança realiza a exclusão da organização.
 4. Todas as contas e nós vinculados tornam-se intrinsecamente inativos.
+
+Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
 
 
 # Perda de chave privada de Administrador Global
@@ -29,6 +33,8 @@ Procedimento:
    2. Exclusão do Administrador Global cuja chave foi perdida
 3. Organizações votam para aprovar a proposta.
 4. Governança realiza a "substituição" de contas.
+
+Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
 
 
 # Implantação da segunda geração de permissionamento
