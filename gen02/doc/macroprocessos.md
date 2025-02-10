@@ -73,6 +73,10 @@ Implementação:
 - O passo 2 é implementado pelo script [deploy-gen02.js](../deploy/deploy-gen02.js).
 - O passo 5 é implementado pelo script [migrate-to-gen02.js](../deploy/migrate-to-gen02.js).
 - O passo 6 é implementado pelo script [create-proposal-remove-admins.js](../deploy/create-proposal-remove-admins.js).
+- O passo 7 é implementado pelo script [cast-vote.js](../deploy/cast-vote.js).
+- O passo 8 é implementado pelo script [execute-proposal.js](../deploy/execute-proposal.js).
+- Ao final, recomenda-se confirmar a configuração da governança atrvés do script [verify-governance.js](../deploy/verify-governance.js).
+
 
 # Implantação de novo permissionamento (terceira geração em diante)
 
