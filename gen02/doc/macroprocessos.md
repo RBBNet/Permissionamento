@@ -5,8 +5,8 @@
 Procedimento:
 1. Nova organização cria as chaves para uma nova conta de Administrador Global.
 2. Administrador Global (de qualquer organização) cria proposta para votação de:
-  1. Inclusão de organização
-  2. Inclusão de Administrador Global da nova organização, com o endereço gerado
+   1. Inclusão de organização
+   2. Inclusão de Administrador Global da nova organização, com o endereço gerado
 3. Organizações votam para aprovar a proposta.
 4. Governança realiza novos cadastros.
 
