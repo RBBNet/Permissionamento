@@ -69,10 +69,10 @@ Procedimento:
    - Nesse momento, todas as demais contas Administrador Master são removidas.
    - Dessa forma, para todos os efeitos, após a aprovaçao da proposta, só o novo *smart contract* de governança/votação será Administrador Master (no conceito da primeira geração do permissionamento) e, portanto, só ele pode poderá autorizar um novo reponteiramento (através de votação).
 
-O passo 2 é implementado pelo script [deploy-gen02.js](../deploy/deploy-gen02.js).
-
-O passo 5 é implementado pelo script [migrate-to-gen02.js](../deploy/migrate-to-gen02.js).
-
+Implementação:
+- O passo 2 é implementado pelo script [deploy-gen02.js](../deploy/deploy-gen02.js).
+- O passo 5 é implementado pelo script [migrate-to-gen02.js](../deploy/migrate-to-gen02.js).
+- O passo 6 é implementado pelo script [create-proposal-remove-admins.js](../deploy/create-proposal-remove-admins.js).
 
 # Implantação de novo permissionamento (terceira geração em diante)
 

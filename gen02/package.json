@@ -9,7 +9,8 @@
     "deploy-hardhat-gen02": "npx hardhat run deploy/deploy-gen02.js --network local",
     "deploy-local-mock": "npx hardhat run deploy/deploy-admin-mock.js --network local_besu",
     "deploy-local-gen02": "npx hardhat run deploy/deploy-gen02.js --network local_besu",
-    "deploy-local-migratetogen02": "npx hardhat run deploy/migrate-to-gen02.js --network local_besu"
+    "deploy-local-migratetogen02": "npx hardhat run deploy/migrate-to-gen02.js --network local_besu",
+    "deploy-local-proposalremoveadmins": "npx hardhat run deploy/create-proposal-remove-admins.js --network local_besu"
   },
   "repository": {
     "type": "git",
