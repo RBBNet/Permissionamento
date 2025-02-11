@@ -74,6 +74,8 @@ Implementação:
 - O passo 5 é implementado pelo script [migrate-to-gen02.js](../deploy/migrate-to-gen02.js).
 - O passo 6 é implementado pelo script [create-proposal-remove-admins.js](../deploy/create-proposal-remove-admins.js).
 - O passo 7 é implementado pelo script [cast-vote.js](../deploy/cast-vote.js).
+  - O script deve ser executado uma vez para o voto de cada organização.
+  - Antes da execução, é necessário configurar corretamente as variáveis de ambiente para caracterizar a conta correta do Administrador Global de cada organização.
 - O passo 8 é implementado pelo script [execute-proposal.js](../deploy/execute-proposal.js).
 - Ao final, recomenda-se confirmar a configuração da governança atrvés do script [verify-governance.js](../deploy/verify-governance.js).
 
