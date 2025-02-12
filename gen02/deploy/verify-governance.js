@@ -1,19 +1,7 @@
 const hre = require('hardhat');
 const assert = require('assert');
 const { getParameters, getParameter, diagnostics } = require('./util.js');
-
-const ADMIN_ABI = [
-    'function getAdmins() public view returns (address[])'
-];
-
-const INGRESS_ABI = [
-    'function getContractAddress(bytes32) public view returns(address)',
-    'function setContractAddress(bytes32, address) public returns (bool)'
-];
-
-const RULES_CONTRACT = '0x72756c6573000000000000000000000000000000000000000000000000000000';
-const NODE_INGRESS_ADDRESS = '0x0000000000000000000000000000000000009999';
-const ACCOUNT_INGRESS_ADDRESS = '0x0000000000000000000000000000000000008888';
+const { ADMIN_ABI, INGRESS_ABI, RULES_CONTRACT, NODE_INGRESS_ADDRESS, ACCOUNT_INGRESS_ADDRESS } = require('./constants.js');
 
 async function migrate(ingressAddress) {
     const ingressContract = await hre.ethers.getContractAt(INGRESS_ABI, ingressAddress);

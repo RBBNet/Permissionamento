@@ -1,4 +1,12 @@
 const SET_CONTRACT_ADDRESS_FUNCTION = 'setContractAddress(bytes32,address)';
+const REMOVE_ADMIN_FUNC = 'removeAdmin(address)';
+
+const ADMIN_ABI = [
+    'function addAdmin(address) public returns (bool)',
+    'function removeAdmin(address) public returns (bool)',
+    'function isAuthorized(address) public view returns (bool)',
+    'function getAdmins() public view returns (address[])'
+];
 
 const INGRESS_ABI = [
     'function getContractAddress(bytes32) public view returns(address)',
@@ -22,6 +30,8 @@ const MOCK_ACCOUNT = '0x0000000000000000000000000000000000000001';
 
 module.exports = {
     SET_CONTRACT_ADDRESS_FUNCTION: SET_CONTRACT_ADDRESS_FUNCTION,
+    REMOVE_ADMIN_FUNC: REMOVE_ADMIN_FUNC,
+    ADMIN_ABI: ADMIN_ABI,
     INGRESS_ABI: INGRESS_ABI,
     NODE_INGRESS_ABI: NODE_INGRESS_ABI,
     ACCOUNT_INGRESS_ABI: ACCOUNT_INGRESS_ABI,

@@ -1,10 +1,7 @@
 const hre = require('hardhat');
 const assert = require('assert');
 const { getParameters, getParameter, diagnostics } = require('./util.js');
-
-const STATUS_ACTIVE = 1;
-const STATUS_EXECUTED = 4;
-const RESULT_APPROVED = 1;
+const { STATUS_ACTIVE, STATUS_EXECUTED, RESULT_APPROVED } = require('./constants.js');
 
 async function executeProposal(parameters) {
     await diagnostics();

@@ -1,17 +1,10 @@
 const hre = require('hardhat');
 const assert = require('assert');
 const { getParameters, getParameter, diagnostics } = require('./util.js');
-
+const { REMOVE_ADMIN_FUNC, STATUS_ACTIVE, RESULT_UNDEFINED, ADMIN_ABI } = require('./constants.js');
+        
 const BLOCKS_DURATION = 30000;
 const PROPOSAL_DESCRIPTION = 'Manter apenas a Governança como administrador master (remoção dos demais admins)';
-const REMOVE_ACCOUNT_FUNC = 'removeAdmin(address)';
-const STATUS_ACTIVE = 1;
-const RESULT_UNDEFINED = 0;
-
-const ADMIN_ABI = [
-    'function getAdmins() public view returns (address[])',
-    'function removeAdmin(address) public returns (bool)'
-];
 
 async function createProposal(parameters) {
     await diagnostics();
@@ -41,7 +34,7 @@ async function createProposal(parameters) {
     let targets = [];
     let calldatas = []
     for(const admin of adminsToRemove) {
-        const calldata = adminContract.interface.encodeFunctionData(REMOVE_ACCOUNT_FUNC, [admin]);
+        const calldata = adminContract.interface.encodeFunctionData(REMOVE_ADMIN_FUNC, [admin]);
         targets.push(adminAddress);
         calldatas.push(calldata);
         console.log(` - ${adminAddress}: ${calldata}`);

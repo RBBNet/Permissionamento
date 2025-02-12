@@ -1,8 +1,7 @@
 const hre = require('hardhat');
 const assert = require('assert');
 const { getParameters, getParameter, diagnostics } = require('./util.js');
-
-const STATUS_ACTIVE = 1;
+const { STATUS_ACTIVE } = require('./constants.js');
 
 async function castVote(parameters) {
     await diagnostics();
