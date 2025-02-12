@@ -7,6 +7,8 @@ dotenv.config();
 var accountAddress = process.env.ACCOUNT_ADDRESS;
 /* The private key associated with the address above */
 var privateKey = process.env.PRIVATE_KEY;
+/* Private keys of alternative accounts */
+var altPrivateKeys = process.env.ALT_PRIVATE_KEYS;
 
 if(accountAddress === undefined) {
     console.error();
@@ -20,6 +22,13 @@ if(privateKey === undefined) {
     console.error();
 }
 
+var privateKeys = [];
+privateKeys.push(privateKey);
+
+if(altPrivateKeys != undefined) {
+    privateKeys = privateKeys.concat(altPrivateKeys.split(','));
+}
+
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   networks: {
@@ -29,7 +38,7 @@ module.exports = {
     local_besu: {
       url: "http://127.0.0.1:8545",
       chainId: 648629,
-      accounts: [privateKey],
+      accounts: privateKeys,
       from: accountAddress
     }
   },

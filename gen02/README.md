@@ -109,6 +109,7 @@ besu --config-file besu/config.toml
    1. `CONFIG_PARAMETERS`: Caminho do arquivo com os parâmetros de configuração. Para o caso de implantação local o arquivo [`deploy/parameters-local.json`](deploy/parameters-local.json) já foi preparado.
    2. `ACCOUNT_ADDRESS`: Endereço da conta a ser usada para envio de transações.
    3. `PRIVATE_KEY`: Chave privada da conta a ser usada para envio de transações.
+   4. `ALT_PRIVATE_KEYS`: **Opcional**. Lista com chaves privadas alternativas, separadas por vírgulas, que podem ser usadas em scripts para simular o envio de transações por outras contas.
 
 O ajuste das variáveis de ambiente pode ser feito via arquivo `.env` ou ajustando o valor diretamente no terminal. Exemplo:
 

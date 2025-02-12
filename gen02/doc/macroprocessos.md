@@ -90,6 +90,8 @@ Procedimento:
 3. Organizações votam para aprovar a proposta.
 4. O reponteiramento é realizado.
 
+Este procedimento pode ser testado através do script [migrate-to-gen03-mock.js](../deploy/migrate-to-gen03-mock.js).
+
 
 # Implantação de novo mecanismo de governança/votação
 
