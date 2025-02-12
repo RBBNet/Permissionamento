@@ -24,6 +24,8 @@ async function diagnostics() {
 
     const accs = await hre.ethers.getSigners();
     console.log(`Conta em uso: ${accs[0].address}`);
+    
+    console.log();
 }
 
 module.exports = {
