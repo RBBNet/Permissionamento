@@ -1,9 +1,9 @@
 const hre = require('hardhat');
 const assert = require('assert');
-const { getParameters, getParameter, diagnostics } = require('./util.js');
+const { getParameters, getParameter, diagnostics, approveProposal, executeProposal } = require('./util.js');
 const { SET_CONTRACT_ADDRESS_FUNCTION, INGRESS_ABI, NODE_INGRESS_ABI, ACCOUNT_INGRESS_ABI, STATUS_ACTIVE,
-        STATUS_EXECUTED, RESULT_UNDEFINED, RESULT_APPROVED, RULES_CONTRACT, NODE_INGRESS_ADDRESS,
-        ACCOUNT_INGRESS_ADDRESS, GLOBAL_ADMIN_ROLE, MOCK_ACCOUNT } = require('./constants.js');
+        RESULT_UNDEFINED, RULES_CONTRACT, NODE_INGRESS_ADDRESS, ACCOUNT_INGRESS_ADDRESS, GLOBAL_ADMIN_ROLE,
+        MOCK_ACCOUNT } = require('./constants.js');
 
 async function getContractAddress(ingressAddress) {
     const ingressContract = await hre.ethers.getContractAt(INGRESS_ABI, ingressAddress);
@@ -19,44 +19,6 @@ async function verifyIngresses(addressGen03) {
     const accountIngressRuleAddress = await getContractAddress(ACCOUNT_INGRESS_ADDRESS);
     assert.equal(accountIngressRuleAddress, addressGen03, `AccountIngress está configurado para endereço errado: ${accountIngressRuleAddress}`);
     console.log(' - AccountIngress configurado corretamente');
-    console.log();
-}
-
-async function executeProposal(governanceContract, idProposal) {
-    console.log('--------------------------------------------------');
-    console.log(`Executando proposta ${idProposal}`);
-    const resp = await governanceContract.executeProposal(idProposal);
-    await resp.wait();
-    // Verificações
-    const proposal = await governanceContract.getProposal(idProposal);
-    assert.equal(proposal.status, STATUS_EXECUTED);
-    assert.equal(proposal.result, RESULT_APPROVED);
-    console.log(` Proposta ${idProposal} executada.`);
-    console.log();
-}
-
-async function approveProposal(governanceContract, idProposal, globalAdmins) {
-    console.log('--------------------------------------------------');
-    console.log(`Aprovando proposta ${idProposal}`);
-    
-    for(const admin of globalAdmins) {
-        try {
-            const signer = await hre.ethers.getSigner(admin);
-            assert.ok(signer != null);
-            const resp = await governanceContract.connect(signer).castVote(idProposal, true);
-            await resp.wait();
-            console.log(` - Admin ${admin} enviou voto de aprovação`);
-        }
-        catch(error) {
-            console.log(` - Erro ao enviar voto do admin ${admin}: ${error.message}`);
-        }
-    }
-    
-    // Verificações
-    const proposal = await governanceContract.getProposal(idProposal);
-    assert.equal(proposal.status, STATUS_ACTIVE);
-    assert.equal(proposal.result, RESULT_APPROVED);
-    console.log(` Proposta ${idProposal} aprovada.`);
     console.log();
 }
 
@@ -111,7 +73,6 @@ async function verifyAllowedTransaction(verifications) {
     
     const accountIngressContract = await hre.ethers.getContractAt(ACCOUNT_INGRESS_ABI, ACCOUNT_INGRESS_ADDRESS);
     
-    let allOk = true;
     for(const verification of verifications) {
         const sender = verification[0];
         const excpectedAllowed = verification[1];

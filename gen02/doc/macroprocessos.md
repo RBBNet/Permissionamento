@@ -101,3 +101,6 @@ Procedimento:
 3. Organizações votam para aprovar a proposta.
 4. Novo *smart contract* é configurado como Administrador Master.
 5. Novo *smart contract* deve ser acionado, conforme suas regras de funcionamento, para remover o *smart contract* da segunda geração como Administrador Master.
+
+Este procedimento pode ser testado através do script [migrate-governance-mock.js](../deploy/migrate-governance-mock.js).
+**Observação**: Este procedimento foi testado tendo-se a gen02 em vigor. **Não** foi realizado teste de migração da governança com uma geração diferente (Ex.: mock de gen03) de permissionamento.

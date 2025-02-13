@@ -3,6 +3,7 @@ const assert = require('assert');
 const { getParameters, getParameter, diagnostics } = require('./util.js');
 const { ADMIN_ABI, INGRESS_ABI, RULES_CONTRACT, NODE_INGRESS_ADDRESS, ACCOUNT_INGRESS_ADDRESS } = require('./constants.js');
 
+// TODO Teste destrutivo. Fazer assim mesmo?
 async function migrate(ingressAddress) {
     const ingressContract = await hre.ethers.getContractAt(INGRESS_ABI, ingressAddress);
     const resp = await ingressContract.setContractAddress(RULES_CONTRACT, '0x0000000000000000000000000000000000000001');
@@ -30,7 +31,7 @@ async function verifyGovernance(parameters) {
     console.log('Tentando realizar reponteiramentos');
     try {
         await migrate(NODE_INGRESS_ADDRESS);
-        console.error(' - Opa! Conseguir reponteirar o NodeIngress!');
+        assert.fail('Opa! Conseguir reponteirar o NodeIngress!');
     }
     catch(error) {
         console.log(` - NodeIngress não pôde ser reponteirado, corretamente: ${error.message}`);
@@ -38,7 +39,7 @@ async function verifyGovernance(parameters) {
     }
     try {
         await migrate(ACCOUNT_INGRESS_ADDRESS);
-        console.error(' - Opa! Conseguir reponteirar o AccountIngress!');
+        assert.fail('Opa! Conseguir reponteirar o AccountIngress!');
     }
     catch(error) {
         console.log(` - AccountIngress não pôde ser reponteirado, corretamente: ${error.message}`);
