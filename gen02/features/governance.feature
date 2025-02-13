@@ -556,7 +556,66 @@ Funcionalidade: Governança do permissionamento
     # Consultamos o smart contract de teste para obter novo resultado, ajustado pela execução da proposta
     Quando consulto o código do smart contract de teste o resultado é 2024
     Quando consulto a mensagem do smart contract de teste o resultado é "Dois mil e vinte e quatro"
+
+  Cenário: Execução de proposta com erro devido a parâmetros errados
+    # Administrador Global do BNDES cria uma proposta com erro no segundo calldata
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8,0x368b8772", limite de 30000 blocos e descrição "Ajustando código e mensagem para 2024"
+    Então a proposta é criada com sucesso
+    # Administrador Global do BNDES vota para aprovar a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do CPQD vota para aprovar a proposta
+    Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do TCU vota para aprovar a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Proposta é aprovada por maioria
+    E o evento "ProposalApproved" é emitido para a proposta
+    # Consultamos o smart contract de teste
+    Quando consulto o código do smart contract de teste o resultado é 0
+    E consulto a mensagem do smart contract de teste o resultado é "No message"
+    # Administrador Global do BNDES executa a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" executa a proposta
+    Então ocorre erro "FailedCall" na execução da proposta
+    E a proposta tem situação "Active", resultado "Approved", organizações "1,2,3,5" e votos "Approval,Approval,NotVoted,Approval"
+    # Verificando que o estado inicial do smart contract de teste não mudou
+    E consulto o código do smart contract de teste o resultado é 0
+    E consulto a mensagem do smart contract de teste o resultado é "No message"
+    # Administrador Global do BNDES cancela a proposta que não poderá ser executada
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta
+    Então a proposta é cancelada com sucesso
+    E a proposta tem situação "Canceled", resultado "Approved", organizações "1,2,3,5" e votos "Approval,Approval,NotVoted,Approval"
   
+  Cenário: Execução de proposta com chamda que é revertida
+    # Administrador Global do BNDES cria uma proposta cuja segunda chamada será revertida
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8,0x30af58d2", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    # Administrador Global do BNDES vota para aprovar a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do CPQD vota para aprovar a proposta
+    Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do TCU vota para aprovar a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Proposta é aprovada por maioria
+    E o evento "ProposalApproved" é emitido para a proposta
+    # Consultamos o smart contract de teste
+    Quando consulto o código do smart contract de teste o resultado é 0
+    # Administrador Global do BNDES executa a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" executa a proposta
+    Então ocorre erro "FailedCall" na execução da proposta
+    E a proposta tem situação "Active", resultado "Approved", organizações "1,2,3,5" e votos "Approval,Approval,NotVoted,Approval"
+    # Verificando que o estado inicial do smart contract de teste não mudou
+    E consulto o código do smart contract de teste o resultado é 0
+    E consulto a mensagem do smart contract de teste o resultado é "No message"
+    # Administrador Global do BNDES cancela a proposta que não poderá ser executada
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta
+    Então a proposta é cancelada com sucesso
+    E a proposta tem situação "Canceled", resultado "Approved", organizações "1,2,3,5" e votos "Approval,Approval,NotVoted,Approval"
+
 
   ##############################################################################
   # Consulta de proposta e votos

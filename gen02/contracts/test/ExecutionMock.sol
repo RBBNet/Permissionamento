@@ -14,4 +14,8 @@ contract ExecutionMock {
         message = newMessage;
     }
 
+    function revertTransaction() public pure {
+        revert();
+    }
+
 }
