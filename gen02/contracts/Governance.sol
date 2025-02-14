@@ -8,8 +8,6 @@ import {Address} from "@openzeppelin/contracts/utils/Address.sol";
 
 contract Governance {
 
-    using EnumerableSet for EnumerableSet.UintSet;
-
     enum ProposalStatus { Undefined, Active, Canceled, Finished, Executed }
     enum ProposalResult { Undefined, Approved, Rejected }
     enum ProposalVote { NotVoted, Approval, Rejection }
@@ -25,6 +23,7 @@ contract Governance {
         ProposalStatus status;
         ProposalResult result;
         uint[] organizations;
+        ProposalVote[] votes;
         string cancelationReason;
     }
 
@@ -45,7 +44,6 @@ contract Governance {
     Organization immutable public organizations;
     AccountRulesV2 immutable public accounts;
     ProposalData[] public proposals;
-    mapping (uint => mapping(uint => ProposalVote)) public votes;
 
     modifier onlyActiveGlobalAdmin() {
         if(!accounts.hasRole(GLOBAL_ADMIN_ROLE, msg.sender)) {
@@ -60,13 +58,8 @@ contract Governance {
     modifier onlyParticipantOrganization(uint proposalId) {
         uint orgId = accounts.getAccount(msg.sender).orgId;
         ProposalData storage proposal = _getProposal(proposalId);
-        bool participates = false;
-        for(uint i = 0; i < proposal.organizations.length && !participates; ++i) {
-            if(orgId == proposal.organizations[i]) {
-                participates = true;
-            }
-        }
-        if(!participates) {
+        uint orgNdx = _getOrganizationIndex(proposal, orgId);
+        if(orgNdx >= proposal.organizations.length) {
             revert UnauthorizedAccess(msg.sender, "Sender's organization does not participate on the proposal");
         }
         _;
@@ -139,16 +132,18 @@ contract Governance {
             ProposalStatus.Active,
             ProposalResult.Undefined,
             new uint[](0),
+            new ProposalVote[](0),
             ""
         ));
         ProposalData storage proposal = proposals[idSeed - 1];
-        uint[] storage proposalOrgs = proposal.organizations;
         Organization.OrganizationData[] memory allOrgs = organizations.getOrganizations();
         for(uint i = 0; i < allOrgs.length; ++i) {
             if(allOrgs[i].canVote) {
-                proposalOrgs.push(allOrgs[i].id);
+                proposal.organizations.push(allOrgs[i].id);
+                proposal.votes.push(ProposalVote.NotVoted);
             }
         }
+        assert(proposal.organizations.length == proposal.votes.length);
 
         emit ProposalCreated(proposal.id);
 
@@ -163,24 +158,25 @@ contract Governance {
         emit ProposalCanceled(proposalId);
     }
 
-    function castVote(uint proposalId, bool approve) public
-        onlyActiveGlobalAdmin existentProposal(proposalId) onlyActiveProposal(proposalId) onlyParticipantOrganization(proposalId)
-        returns (bool) {
+    function castVote(uint proposalId, bool approve) public onlyActiveGlobalAdmin existentProposal(proposalId) onlyActiveProposal(proposalId)
+        onlyParticipantOrganization(proposalId) returns (bool) {
+        ProposalData storage proposal = _getProposal(proposalId);
         AccountRulesV2.AccountData memory acc = accounts.getAccount(msg.sender);
-        if(votes[proposalId][acc.orgId] != ProposalVote.NotVoted) {
+        uint orgNdx = _getOrganizationIndex(proposal, acc.orgId);
+
+        if(proposal.votes[orgNdx] != ProposalVote.NotVoted) {
             revert IllegalState("Organization has already voted");
         }
 
-        ProposalData storage proposal = _getProposal(proposalId);
         if(_isFinished(proposal)) {
             return false;
         }
 
         if(approve) {
-            votes[proposalId][acc.orgId] = ProposalVote.Approval;
+            proposal.votes[orgNdx] = ProposalVote.Approval;
         }
         else {
-            votes[proposalId][acc.orgId] = ProposalVote.Rejection;
+            proposal.votes[orgNdx] = ProposalVote.Rejection;
         }
 
         emit OrganizationVoted(proposalId, acc.orgId, approve);
@@ -190,6 +186,12 @@ contract Governance {
         }
 
         return true;
+    }
+
+    function _getOrganizationIndex(ProposalData storage proposal, uint orgId) private view returns (uint) {
+        uint ndx;
+        for(ndx = 0; ndx < proposal.organizations.length && proposal.organizations[ndx] != orgId; ++ndx) { }
+        return ndx;
     }
 
     function _isFinished(ProposalData storage proposal) private returns (bool) {
@@ -211,12 +213,11 @@ contract Governance {
         uint approvalVotes = 0;
         uint rejectionVotes = 0;
 
-        for(uint i = 0; i < proposal.organizations.length; ++i) {
-            ProposalVote vote = votes[proposal.id][proposal.organizations[i]];
-            if(vote == ProposalVote.Approval) {
+        for(uint i = 0; i < proposal.votes.length; ++i) {
+            if(proposal.votes[i] == ProposalVote.Approval) {
                 ++approvalVotes;
             }
-            else if(vote == ProposalVote.Rejection) {
+            else if(proposal.votes[i] == ProposalVote.Rejection) {
                 ++rejectionVotes;
             }
         }
@@ -269,15 +270,6 @@ contract Governance {
 
     function getProposal(uint proposalId) public view existentProposal(proposalId) returns (ProposalData memory) {
         return _getProposal(proposalId);
-    }
-
-    function getVotes(uint proposalId) public view returns (ProposalVote[] memory) {
-        uint[] storage orgs = _getProposal(proposalId).organizations;
-        ProposalVote[] memory orgVotes = new ProposalVote[](orgs.length);
-        for(uint i = 0; i < orgs.length; ++i) {
-            orgVotes[i] = votes[proposalId][orgs[i]];
-        }
-        return orgVotes;
     }
 
     function getNumberOfProposals() public view returns (uint) {

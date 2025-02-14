@@ -102,16 +102,15 @@ Then('a proposta tem situação {string}, resultado {string}, organizações {st
     const expectedOrgs = orgs.split(',');
     const expectedVotes = votes.split(',');
     const proposal = await this.govenanceContract.getProposal(this.proposalId);
-    const actualVotes = await this.govenanceContract.getVotes(this.proposalId);
     assert.equal(proposal.status, getProposalStatus(status));
     assert.equal(proposal.result, getProposalResult(result));
     assert.equal(proposal.organizations.length, expectedOrgs.length);
     for(i = 0; i < expectedOrgs.length; ++i) {
         assert.equal(proposal.organizations[i], expectedOrgs[i]);
     }
-    assert.equal(actualVotes.length, expectedVotes.length);
+    assert.equal(proposal.votes.length, expectedVotes.length);
     for(i = 0; i < expectedVotes.length; ++i) {
-        assert.equal(actualVotes[i], getProposalVote(expectedVotes[i]));
+        assert.equal(proposal.votes[i], getProposalVote(expectedVotes[i]));
     }
 });
 
@@ -281,7 +280,7 @@ Then('o resultado da consulta de propostas é {string}', async function(list) {
     assert.equal(this.queryResult.length, expectedResults.length);
     for(i = 0; i < expectedResults.length; ++i) {
         const result = expectedResults[i].split(',');
-        assert.ok(this.queryResult[i].length == 11);
+        assert.ok(this.queryResult[i].length == 12);
         assert.ok(result.length == 4);
         assert.equal(this.queryResult[i][0], result[0]);
         assert.equal(this.queryResult[i][3], result[1]);
