@@ -1,5 +1,6 @@
 const fs = require('fs');
 const assert = require('assert');
+const readline = require('readline');
 const hre = require('hardhat');
 const { STATUS_ACTIVE, STATUS_EXECUTED, RESULT_APPROVED } = require('./constants.js');
 
@@ -28,6 +29,17 @@ async function diagnostics() {
     console.log(`Conta em uso: ${accs[0].address}`);
     
     console.log();
+}
+
+async function askConfirmation(question, confirmationAnswer) {
+    const cli = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
+    const answer = await new Promise(resolve => { cli.question(question, resolve); });
+    const confirmed = confirmationAnswer.toLowerCase() == answer.toLowerCase();
+    cli.close();
+    return confirmed;
 }
 
 async function executeProposal(governanceContract, idProposal) {
@@ -72,6 +84,7 @@ module.exports = {
     getParameters: getParameters,
     getParameter: getParameter,
     diagnostics: diagnostics, 
+    askConfirmation: askConfirmation,
     executeProposal: executeProposal,
     approveProposal: approveProposal
 }

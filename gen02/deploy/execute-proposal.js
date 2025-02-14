@@ -1,6 +1,6 @@
 const hre = require('hardhat');
 const assert = require('assert');
-const { getParameters, getParameter, diagnostics } = require('./util.js');
+const { getParameters, getParameter, diagnostics, askConfirmation } = require('./util.js');
 const { STATUS_ACTIVE, STATUS_EXECUTED, RESULT_APPROVED } = require('./constants.js');
 
 async function executeProposal(parameters) {
@@ -18,7 +18,11 @@ async function executeProposal(parameters) {
     console.log('--------------------------------------------------');
     console.log(`Executando proposta ${proposalBefore.id} - ${proposalBefore.description} (Status: ${proposalBefore.status})(Resultado: ${proposalBefore.result})`);
 
-    // TODO Implementar prompt para confirmar execução
+    const confirmed = await askConfirmation('Confirma execução da proposta (s/n)? ', 's');
+    if(!confirmed) {
+        console.log('Abortando...');
+        return;
+    }
     
     const resp = await governanceContract.executeProposal(proposal.id);
     await resp.wait();

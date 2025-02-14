@@ -1,6 +1,6 @@
 const hre = require('hardhat');
 const assert = require('assert');
-const { getParameters, getParameter, diagnostics } = require('./util.js');
+const { getParameters, getParameter, diagnostics, askConfirmation } = require('./util.js');
 const { STATUS_ACTIVE } = require('./constants.js');
 
 async function castVote(parameters) {
@@ -18,7 +18,11 @@ async function castVote(parameters) {
     console.log('--------------------------------------------------');
     console.log(`Enviando voto "${proposal.vote}" para proposta ${proposalBefore.id} - ${proposalBefore.description} (Situação: ${proposalBefore.status})(Resultado: ${proposalBefore.result})`);
 
-    // TODO Implementar prompt para confirmar envio de voto
+    const confirmed = await askConfirmation('Confirma envio do voto (s/n)? ', 's');
+    if(!confirmed) {
+        console.log('Abortando...');
+        return;
+    }
     
     const resp = await governanceContract.castVote(proposal.id, proposal.vote);
     await resp.wait();

@@ -1,6 +1,6 @@
 const hre = require('hardhat');
 const assert = require('assert');
-const { getParameters, getParameter, diagnostics } = require('./util.js');
+const { getParameters, getParameter, diagnostics, askConfirmation } = require('./util.js');
 const { REMOVE_ADMIN_FUNC, STATUS_ACTIVE, RESULT_UNDEFINED, ADMIN_ABI } = require('./constants.js');
         
 const BLOCKS_DURATION = 30000;
@@ -41,7 +41,11 @@ async function createProposal(parameters) {
     }
     console.log();
 
-    // TODO Implementar prompt para confirmar criação de proposta
+    const confirmed = await askConfirmation('Confirma criação de proposta (s/n)? ', 's');
+    if(!confirmed) {
+        console.log('Abortando...');
+        return;
+    }
     
     const resp = await governanceContract.createProposal(targets, calldatas, BLOCKS_DURATION, PROPOSAL_DESCRIPTION);
     await resp.wait();
