@@ -629,3 +629,4 @@ Funcionalidade: Governança do permissionamento
     
   Cenário: Consulta de proposta não existente
     Quando um observador consulta a proposta 1 ocorre erro "ProposalNotFound"
+    Quando um observador consulta a proposta 0 ocorre erro "ProposalNotFound"
