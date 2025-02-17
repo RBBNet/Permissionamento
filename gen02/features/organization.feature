@@ -49,6 +49,11 @@ Funcionalidade: Gestão de organizações
     Quando a conta "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" adiciona a organização "OrgAd" e direito de voto "true"
     Então ocorre erro "UnauthorizedAccess" na tentativa de adição de organização
 
+  Cenário: Tentativa de adição de organização com nome vazio
+    # Governança tenta adicionar organização
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "" e direito de voto "true"
+    Então ocorre erro "InvalidArgument" na tentativa de adição de organização
+
   Cenário: Atualização de organização
     # Governança altera organização 1
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" atualiza a organização 1 com nome "Banco Nacional de Desenvolvimento Econômico e Social" e direito de voto "false"
@@ -64,6 +69,11 @@ Funcionalidade: Gestão de organizações
     # Governança tenta atualizar organização
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" atualiza a organização 3 com nome "OrgInex" e direito de voto "false"
     Então ocorre erro "OrganizationNotFound" na tentativa de atualização de organização
+
+  Cenário: Tentativa de atualização de organização com nome vazio
+    # Governança tenta atualizar organização
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" atualiza a organização 1 com nome "" e direito de voto "false"
+    Então ocorre erro "InvalidArgument" na tentativa de atualização de organização
 
   Cenário: Exclusão de organização
     # Governança adiciona a OrgExc com organização 3

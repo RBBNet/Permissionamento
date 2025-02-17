@@ -14,6 +14,7 @@ interface Organization {
     event OrganizationDeleted(uint indexed orgId);
 
     error OrganizationNotFound(uint orgId);
+    error InvalidArgument(string message);
     error IllegalState(string message);
 
     // Funções disponíveis apenas para a governança
