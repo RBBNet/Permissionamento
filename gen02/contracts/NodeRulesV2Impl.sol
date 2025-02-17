@@ -38,6 +38,13 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         _;
     }
 
+    modifier validName(string calldata name) {
+        if(bytes(name).length == 0) {
+            revert InvalidArgument("Node name cannot be empty.");
+        }
+        _;
+    }
+
     function addLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name) public onlyActiveAdmin {
         AccountRulesV2.AccountData memory acc = accountsContract.getAccount(msg.sender);
         _addNode(enodeHigh, enodeLow, nodeType, name, acc.orgId);
@@ -50,10 +57,9 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         _addNode(enodeHigh, enodeLow, nodeType, name, orgId);
     }
 
-    function _addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name, uint orgId) private {
+    function _addNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name, uint orgId) private validName(name) {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfDuplicateNode(enodeHigh, enodeLow, key);
-        _revertIfInvalidName(name);
         allowedNodes[key] = NodeData(enodeHigh, enodeLow, nodeType, name, orgId, true);
         _nodesKeys.add(key);
         _nodesKeysByOrg[orgId].add(key);
@@ -80,11 +86,10 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         emit NodeDeleted(enodeHigh, enodeLow, orgId);
     }
 
-    function updateLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name) public onlyActiveAdmin {
+    function updateLocalNode(bytes32 enodeHigh, bytes32 enodeLow, NodeType nodeType, string calldata name) public onlyActiveAdmin validName(name) {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfNodeNotFound(enodeHigh, enodeLow, key);
         _revertIfNotSameOrganization(enodeHigh, enodeLow, key);
-        _revertIfInvalidName(name);
         allowedNodes[key].nodeType = nodeType;
         allowedNodes[key].name = name;
         emit NodeUpdated(enodeHigh, enodeLow, allowedNodes[key].orgId, nodeType, name);
@@ -180,12 +185,6 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
 
     function _calculateKey(bytes32 enodeHigh, bytes32 enodeLow) private pure returns(uint) {
         return uint(keccak256(abi.encodePacked(enodeHigh, enodeLow)));
-    }
-
-    function _revertIfInvalidName(string calldata name) private pure {
-        if(bytes(name).length == 0) {
-            revert InvalidArgument("Node name cannot be empty.");
-        }
     }
 
 }
