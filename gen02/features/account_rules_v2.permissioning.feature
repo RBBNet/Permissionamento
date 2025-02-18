@@ -146,6 +146,15 @@ Funcionalidade: Gestão de contas - Controle de permissionamento
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "true"
     E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x000000000000000000000000000000000000aaaa" tem verificação de permissionamento "true"
 
+  Cenário: Tentativa de hack para permitir implantação de contratos por usuário comum
+    # Usuário do BNDES não pode implantar smart contracts
+    E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000000000" tem verificação de permissionamento "false"
+    # Administrador Local do BNDES configura restrição de acesso para conta indicando endereço 0x0 (implantação) como permitido
+    Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" configura restrição de acesso para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" permitindo acesso somente aos endereços "0x0000000000000000000000000000000000000000"
+    Então a configuração de acesso ocorre com sucesso
+    # Usuário do BNDES segue não podendo implantar smart contracts
+    E a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" chamar o endereço "0x0000000000000000000000000000000000000000" tem verificação de permissionamento "false"
+
   Cenário: Tentativa de configuração de restrição de acesso de conta por conta sem privilégio de acesso
     # Conta com perfil de implantação de smart contracts tenta configurar restrição de acesso
     Quando a conta "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" configura restrição de acesso para a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" permitindo acesso somente aos endereços "0x0000000000000000000000000000000000008888,0x0000000000000000000000000000000000009999"

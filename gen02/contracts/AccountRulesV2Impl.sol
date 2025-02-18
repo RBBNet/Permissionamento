@@ -319,6 +319,11 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
             return false;
         }
  
+        if(address(0) == target) {
+            // Implantação de smart contract
+            return hasRole(DEPLOYER_ROLE, sender) || hasRole(LOCAL_ADMIN_ROLE, sender) || hasRole(GLOBAL_ADMIN_ROLE, sender);
+        }
+
         if(_restrictedAccounts.contains(sender)) {
             // Conta tem acesso restrito a alguns targets
             address[] storage allowedTargets = restrictedAccountsAllowedTargets[sender];
@@ -339,11 +344,6 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
                 }
             }
             return false;
-        }
-
-        if(address(0) == target) {
-            // Implantação de smart contract
-            return hasRole(DEPLOYER_ROLE, sender) || hasRole(LOCAL_ADMIN_ROLE, sender) || hasRole(GLOBAL_ADMIN_ROLE, sender);
         }
 
         return true;
