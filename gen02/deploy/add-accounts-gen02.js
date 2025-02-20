@@ -40,7 +40,7 @@ async function addAccounts(parameters) {
             console.log(` - Conta adicionada: ${acc.account} - ${acc.role} [${acc.dataHash}]`);
         }
         catch(error) {
-            console.log(` - Erro para conta ${acc.account}: ${error.message}`);
+            console.log(` - Erro na adição da conta ${acc.account}: ${error.message}`);
         }
     }
 }
