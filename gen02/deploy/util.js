@@ -57,6 +57,19 @@ function getRoleId(role) {
     }
 }
 
+function getNodeType(type) {
+    switch(type) {
+        case 'Boot': return 0;
+        case 'Validator': return 1;
+        case 'Writer': return 2;
+        case 'WriterPartner' : return 3;
+        case 'ObserverBoot' : return 4;
+        case 'Observer' : return 5;
+        case 'Other' : return 6;
+        default: throw new Error('Tipo de nó inválido: ' + type);
+    }
+}
+
 async function executeProposal(governanceContract, idProposal) {
     console.log('--------------------------------------------------');
     console.log(`Executando proposta ${idProposal}`);
@@ -102,6 +115,7 @@ module.exports = {
     getDefaultSigner: getDefaultSigner,
     askConfirmation: askConfirmation,
     getRoleId: getRoleId,
+    getNodeType: getNodeType,
     executeProposal: executeProposal,
     approveProposal: approveProposal
 }

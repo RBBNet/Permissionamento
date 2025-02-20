@@ -10,6 +10,7 @@
     "deploy-local-mock": "npx hardhat run deploy/deploy-admin-mock.js --network local_besu",
     "deploy-local-gen02": "npx hardhat run deploy/deploy-gen02.js --network local_besu",
     "deploy-local-addaccountsgen02": "npx hardhat run deploy/add-accounts-gen02.js --network local_besu",
+    "deploy-local-addnodesgen02": "npx hardhat run deploy/add-nodes-gen02.js --network local_besu",
     "deploy-local-migratetogen02": "npx hardhat run deploy/migrate-to-gen02.js --network local_besu",
     "deploy-local-createproposalremoveadmins": "npx hardhat run deploy/create-proposal-remove-admins.js --network local_besu",
     "deploy-local-castvote": "npx hardhat run deploy/cast-vote.js --network local_besu",
