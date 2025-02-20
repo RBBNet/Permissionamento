@@ -71,6 +71,7 @@ Procedimento:
 
 Implementação:
 - O passo 2 é implementado pelo script [deploy-gen02.js](../deploy/deploy-gen02.js).
+- O passo 3.1 é implementado pelo script [add-accounts-gen02.js](../deploy/add-accounts-gen02.js).
 - O passo 5 é implementado pelo script [migrate-to-gen02.js](../deploy/migrate-to-gen02.js).
 - O passo 6 é implementado pelo script [create-proposal-remove-admins.js](../deploy/create-proposal-remove-admins.js).
 - O passo 7 é implementado pelo script [cast-vote.js](../deploy/cast-vote.js).

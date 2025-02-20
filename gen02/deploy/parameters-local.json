@@ -1,9 +1,9 @@
 {
-    "adminAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-    "organizationAddress": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-    "accountRulesV2Address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-    "nodeRulesV2Address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
-    "governanceAddress": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+    "adminAddress": "0x72bb9c7ffbE2Ed234e53bc64862DdA6d9fFF333b",
+    "organizationAddress": "0x2bF539810D92f0DF04594fA73e9ce28c152Ac4b0",
+    "accountRulesV2Address": "0x8C847A0E6B48C6e1D77D24A33127443F0c607B02",
+    "nodeRulesV2Address": "0x8a76DBC935618bdC5610db3DF2A007EeCEF3D4Ea",
+    "governanceAddress": "0x954c90761D6cB86Cd0Ef6f2785904Ed439fB580D",
     "organizations": [
         {
             "id": 0,
@@ -55,6 +55,49 @@
         "0x2546BcD3c84621e976D8185a91A922aE77ECEc30",
         "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E",
         "0xdD2FD4581271e230360230F9337D5c0430Bf44C0"
+    ],
+    "accounts": [
+        {
+            "account": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "role": "LOCAL_ADMIN_ROLE",
+            "dataHash": "0x0000000000000000000000000000000000000000000000000000000000000001"
+        },
+        {
+            "account": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+            "role": "DEPLOYER_ROLE",
+            "dataHash": "0x0000000000000000000000000000000000000000000000000000000000000001"
+        },
+        {
+            "account": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+            "role": "USER_ROLE",
+            "dataHash": "0x0000000000000000000000000000000000000000000000000000000000000001"
+        }
+    ],
+    "nodes": [
+        {
+            "enodeHigh": "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "enodeLow": "0x0000000000000000000000000000000000000000000000000000000000000002",
+            "nodeType": "Boot",
+            "name": "boot01"
+        },
+        {
+            "enodeHigh": "0x0000000000000000000000000000000000000000000000000000000000000003",
+            "enodeLow": "0x0000000000000000000000000000000000000000000000000000000000000004",
+            "nodeType": "Validator",
+            "name": "validator01"
+        },
+        {
+            "enodeHigh": "0x0000000000000000000000000000000000000000000000000000000000000005",
+            "enodeLow": "0x0000000000000000000000000000000000000000000000000000000000000006",
+            "nodeType": "Writer",
+            "name": "writer01"
+        },
+        {
+            "enodeHigh": "0x0000000000000000000000000000000000000000000000000000000000000007",
+            "enodeLow": "0x0000000000000000000000000000000000000000000000000000000000000008",
+            "nodeType": "ObserverBoot",
+            "name": "observer-boot01"
+        }
     ],
     "proposal": {
         "id": 1,
