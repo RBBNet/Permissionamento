@@ -16,14 +16,14 @@ function getBoolean(value) {
     }    
 }
 
-
 const typeMap = {
-    "Validator": 2,
-    "Boot": 1,
-    "Writer": 3,
-    "WriterPartner":4,
-    "ObserverBoot": 5,
-    "Other":6
+    "Boot": 0,
+    "Validator": 1,
+    "Writer": 2,
+    "WriterPartner": 3,
+    "ObserverBoot": 4,
+    "Observer": 5,
+    "Other": 6
 };
 
 function getNodeType(type) {
