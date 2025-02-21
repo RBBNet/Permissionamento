@@ -8,7 +8,7 @@ import {Address} from "@openzeppelin/contracts/utils/Address.sol";
 
 contract Governance {
 
-    enum ProposalStatus { Undefined, Active, Canceled, Finished, Executed }
+    enum ProposalStatus { Active, Canceled, Finished, Executed }
     enum ProposalResult { Undefined, Approved, Rejected }
     enum ProposalVote { NotVoted, Approval, Rejection }
 

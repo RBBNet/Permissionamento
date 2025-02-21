@@ -54,11 +54,10 @@ function getRoleId(role) {
 
 function getProposalStatus(status) {
     switch(status) {
-        case 'Undefined': return 0;
-        case 'Active': return 1;
-        case 'Canceled': return 2;
-        case 'Finished' : return 3;
-        case 'Executed' : return 4;
+        case 'Active': return 0;
+        case 'Canceled': return 1;
+        case 'Finished' : return 2;
+        case 'Executed' : return 3;
         default: throw new Error('Status inválido: ' + status);
     }
 }
