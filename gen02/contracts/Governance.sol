@@ -14,7 +14,7 @@ contract Governance {
 
     struct ProposalData {
         uint id;
-        address creator;
+        uint proponentOrgId;
         address[] targets;
         bytes[] calldatas;
         uint blocksDuration;
@@ -95,7 +95,7 @@ contract Governance {
     }
 
     modifier onlyProponentOrganization(uint proposalId) {
-        if(accounts.getAccount(_getProposal(proposalId).creator).orgId != accounts.getAccount(msg.sender).orgId) {
+        if(_getProposal(proposalId).proponentOrgId != accounts.getAccount(msg.sender).orgId) {
             revert UnauthorizedAccess(msg.sender, "Sender is not from proponent organization");
         }
         _;
@@ -137,7 +137,7 @@ contract Governance {
         onlyActiveGlobalAdmin matchingCalls(targets.length, calldatas.length) validDuration(blocksDuration) nonEmpty("Description", description) returns (uint) {
         proposals.push(ProposalData(
             ++idSeed,
-            msg.sender,
+            accounts.getAccount(msg.sender).orgId,
             targets,
             calldatas,
             blocksDuration,
