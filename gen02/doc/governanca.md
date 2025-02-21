@@ -16,7 +16,7 @@ Critérios de aceitação:
    3. Com resultado indefinido.
    4. Vinculada a todas as organizações com direito de voto.
    5. São armazenados:
-      1. O criador da proposta.
+      1. A organização proponente.
       2. A lista de *targets*.
       3. A lista de *calldatas*.
       4. A descrição da proposta.
