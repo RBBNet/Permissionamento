@@ -29,7 +29,7 @@ contract Governance {
 
     event ProposalCreated(uint indexed proposalId);
     event OrganizationVoted(uint indexed proposalId, uint orgId, bool approve);
-    event ProposalCanceled(uint indexed proposalId);
+    event ProposalCanceled(uint indexed proposalId, string reason);
     event ProposalFinished(uint indexed proposalId);
     event ProposalApproved(uint indexed proposalId);
     event ProposalRejected(uint indexed proposalId);
@@ -170,7 +170,7 @@ contract Governance {
         ProposalData storage proposal = _getProposal(proposalId);
         proposal.status = ProposalStatus.Canceled;
         proposal.cancelationReason = reason;
-        emit ProposalCanceled(proposalId);
+        emit ProposalCanceled(proposalId, reason);
     }
 
     function castVote(uint proposalId, bool approve) public onlyActiveGlobalAdmin existentProposal(proposalId) onlyActiveProposal(proposalId)

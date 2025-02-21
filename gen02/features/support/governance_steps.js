@@ -211,6 +211,19 @@ Then('o evento {string} é emitido para a proposta', async function(event) {
     assert.ok(found);
 });
 
+Then('o evento {string} é emitido para a proposta com mensagem {string}', async function(event, message) {
+    const block = await hre.ethers.provider.getBlockNumber();
+    const events = await this.govenanceContract.queryFilter(event, block, block);
+    let found = false;
+    for (let i = 0; i < events.length && !found; i++) {
+        found =
+            events[i].fragment.name == event &&
+            events[i].args[0] == this.proposalId;
+            events[i].args[1] == message;
+    }
+    assert.ok(found);
+});
+
 When('consulto o código do smart contract de teste o resultado é {int}', async function(expectedResult) {
     const actualResult = await this.mockContract.code();
     assert.equal(actualResult, expectedResult);

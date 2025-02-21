@@ -146,7 +146,7 @@ Funcionalidade: Governança do permissionamento
     # Administrador Global do BNDES cancela a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta com motivo "O cadastramento da proposta foi feito de forma errada"
     Então a proposta é cancelada com sucesso
-    E o evento "ProposalCanceled" é emitido para a proposta
+    E o evento "ProposalCanceled" é emitido para a proposta com mensagem "O cadastramento da proposta foi feito de forma errada"
     E a proposta tem situação "Canceled", resultado "Undefined", organizações "1,2,3,5" e votos "NotVoted,NotVoted,NotVoted,NotVoted"
     E o motivo de cancelamento da proposta é "O cadastramento da proposta foi feito de forma errada"
 
@@ -160,7 +160,7 @@ Funcionalidade: Governança do permissionamento
     # Segundo Administrador Global do BNDES cancela a proposta
     Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" cancela a proposta com motivo "O cadastramento da proposta foi feito de forma errada"
     Então a proposta é cancelada com sucesso
-    E o evento "ProposalCanceled" é emitido para a proposta
+    E o evento "ProposalCanceled" é emitido para a proposta com mensagem "O cadastramento da proposta foi feito de forma errada"
     E a proposta tem situação "Canceled", resultado "Undefined", organizações "1,2,3,5" e votos "NotVoted,NotVoted,NotVoted,NotVoted"
 
   Cenário: Cancelamento de proposta com resultado já definido
@@ -180,7 +180,7 @@ Funcionalidade: Governança do permissionamento
     # Administrador Global do BNDES tenta cancelar a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta com motivo "Proposta não deve mais ser executada"
     Então a proposta é cancelada com sucesso
-    E o evento "ProposalCanceled" é emitido para a proposta
+    E o evento "ProposalCanceled" é emitido para a proposta com mensagem "Proposta não deve mais ser executada"
     E a proposta tem situação "Canceled", resultado "Approved", organizações "1,2,3,5" e votos "Approval,Approval,NotVoted,Approval"
 
   Cenário: Tentativa de cancelamento de proposta com Administrador Global de outra organização
@@ -232,7 +232,7 @@ Funcionalidade: Governança do permissionamento
     # Administrador Global do BNDES cancela a proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta com motivo "O cadastramento da proposta foi feito de forma errada"
     Então a proposta é cancelada com sucesso
-    E o evento "ProposalCanceled" é emitido para a proposta
+    E o evento "ProposalCanceled" é emitido para a proposta com mensagem "O cadastramento da proposta foi feito de forma errada"
     # Administrador Global do BNDES tenta cancelar a proposta novamente
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta com motivo "Cancelando novamente!"
     Então ocorre erro "IllegalState" no cancelamento da proposta
