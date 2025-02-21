@@ -101,6 +101,27 @@ contract Governance {
         _;
     }
 
+    modifier matchingCalls(uint targetsLength, uint calldatasLength) {
+        if(targetsLength != calldatasLength) {
+            revert InvalidArgument("Targets and calldatas arrays must have the same length");
+        }
+        _;
+    }
+
+    modifier validDuration(uint blocksDuration) {
+        if(blocksDuration == 0) {
+            revert InvalidArgument("Duration must be greater than zero blocks");
+        }
+        _;
+    }
+
+    modifier nonEmpty(string memory textName, string memory text) {
+        if(bytes(text).length == 0) {
+            revert InvalidArgument(string.concat(textName, " cannot be empty."));
+        }
+        _;
+    }
+
     constructor(Organization orgs, AccountRulesV2 accs) {
         if(address(orgs) == address(0)) {
             revert InvalidArgument("Invalid address for Organization management smart contract");
@@ -113,14 +134,7 @@ contract Governance {
     }
 
     function createProposal(address[] calldata targets, bytes[] memory calldatas, uint blocksDuration, string calldata description) public
-        onlyActiveGlobalAdmin returns (uint) {
-        if(targets.length != calldatas.length) {
-            revert InvalidArgument("Targets and calldatas arrays must have the same length");
-        }
-        if(blocksDuration == 0) {
-            revert InvalidArgument("Duration must be greater than zero blocks");
-        }
-
+        onlyActiveGlobalAdmin matchingCalls(targets.length, calldatas.length) validDuration(blocksDuration) nonEmpty("Description", description) returns (uint) {
         proposals.push(ProposalData(
             ++idSeed,
             msg.sender,
@@ -135,6 +149,7 @@ contract Governance {
             new ProposalVote[](0),
             ""
         ));
+
         ProposalData storage proposal = proposals[idSeed - 1];
         Organization.OrganizationData[] memory allOrgs = organizations.getOrganizations();
         for(uint i = 0; i < allOrgs.length; ++i) {
@@ -151,7 +166,7 @@ contract Governance {
     }
 
     function cancelProposal(uint proposalId, string calldata reason) public onlyActiveGlobalAdmin existentProposal(proposalId)
-        onlyProponentOrganization(proposalId) onlyActiveProposal(proposalId) {
+        onlyProponentOrganization(proposalId) onlyActiveProposal(proposalId) nonEmpty("Cancelation reason", reason) {
         ProposalData storage proposal = _getProposal(proposalId);
         proposal.status = ProposalStatus.Canceled;
         proposal.cancelationReason = reason;

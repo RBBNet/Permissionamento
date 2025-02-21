@@ -114,18 +114,6 @@ Then('a proposta tem situação {string}, resultado {string}, organizações {st
     }
 });
 
-When('a conta {string} cancela a proposta', async function(admin) {
-    this.cancelError = null;
-    try {
-        const signer = await hre.ethers.getSigner(admin);
-        assert.ok(signer != null);
-        await this.govenanceContract.connect(signer).cancelProposal(this.proposalId, "");
-    }
-    catch(error) {
-        this.cancelError = error;
-    }
-});
-
 When('a conta {string} cancela a proposta {int}', async function(admin, proposalId) {
     this.cancelError = null;
     try {

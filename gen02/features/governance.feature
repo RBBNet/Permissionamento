@@ -120,11 +120,18 @@ Funcionalidade: Governança do permissionamento
     Então ocorre erro "UnauthorizedAccess" na criação da proposta    
 
   Cenário: Tentativa de criar proposta com as listas de targets e calldatas de tamanhos diferentes
+    # Administrador Global do BNDES tenta criar uma proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvos "0x0000000000000000000000000000000000000001", com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8,0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então ocorre erro "InvalidArgument" na criação da proposta    
 
   Cenário: Tentativa de criar proposta com duração de zero blocos
+    # Administrador Global do BNDES tenta criar uma proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 0 blocos e descrição "Ajustando código para 2024"
+    Então ocorre erro "InvalidArgument" na criação da proposta    
+
+  Cenário: Tentativa de criar proposta sem descrição
+    # Administrador Global do BNDES tenta criar uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição ""
     Então ocorre erro "InvalidArgument" na criação da proposta    
 
 
@@ -151,7 +158,7 @@ Funcionalidade: Governança do permissionamento
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Segundo Administrador Global do BNDES cancela a proposta
-    Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" cancela a proposta
+    Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" cancela a proposta com motivo "O cadastramento da proposta foi feito de forma errada"
     Então a proposta é cancelada com sucesso
     E o evento "ProposalCanceled" é emitido para a proposta
     E a proposta tem situação "Canceled", resultado "Undefined", organizações "1,2,3,5" e votos "NotVoted,NotVoted,NotVoted,NotVoted"
@@ -171,7 +178,7 @@ Funcionalidade: Governança do permissionamento
     Então o voto é registrado com sucesso
     E o evento "ProposalApproved" é emitido para a proposta
     # Administrador Global do BNDES tenta cancelar a proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta com motivo "Proposta não deve mais ser executada"
     Então a proposta é cancelada com sucesso
     E o evento "ProposalCanceled" é emitido para a proposta
     E a proposta tem situação "Canceled", resultado "Approved", organizações "1,2,3,5" e votos "Approval,Approval,NotVoted,Approval"
@@ -181,7 +188,7 @@ Funcionalidade: Governança do permissionamento
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Administrador Global do TCU tenta cancelar a proposta
-    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" cancela a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" cancela a proposta com motivo "Proposta indecorosa"
     Então ocorre erro "UnauthorizedAccess" no cancelamento da proposta
 
   Cenário: Tentativa de cancelamento de proposta com conta inativa
@@ -202,7 +209,7 @@ Funcionalidade: Governança do permissionamento
     E verifico se a organização 7 está ativa o resultado é "false"
     E verifico se a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" está ativa o resultado é "false"
     # Novo administrador global tenta cancelar a proposta
-    Quando a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" cancela a proposta
+    Quando a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" cancela a proposta com motivo "O cadastramento da proposta foi feito de forma errada"
     Então ocorre erro "UnauthorizedAccess" no cancelamento da proposta
 
   Cenário: Tentativa de cancelamento de proposta com conta não cadastrada
@@ -210,7 +217,7 @@ Funcionalidade: Governança do permissionamento
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Conta não cadastrada tenta cancelar proposta
-    Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" cancela a proposta
+    Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" cancela a proposta com motivo "O cadastramento da proposta foi feito de forma errada"
     Então ocorre erro "UnauthorizedAccess" no cancelamento da proposta
 
   Cenário: Tentativa de cancelamento de proposta inexistente
@@ -223,11 +230,11 @@ Funcionalidade: Governança do permissionamento
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Administrador Global do BNDES cancela a proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta com motivo "O cadastramento da proposta foi feito de forma errada"
     Então a proposta é cancelada com sucesso
     E o evento "ProposalCanceled" é emitido para a proposta
     # Administrador Global do BNDES tenta cancelar a proposta novamente
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta com motivo "Cancelando novamente!"
     Então ocorre erro "IllegalState" no cancelamento da proposta
 
   Cenário: Tentativa de cancelamento de proposta encerrada
@@ -242,8 +249,16 @@ Funcionalidade: Governança do permissionamento
     Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Approval"
     Então o evento "ProposalFinished" é emitido para a proposta
     # Administrador Global do BNDES tenta cancelar a proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta com motivo "A proposta deve ser desfeita!"
     Então ocorre erro "IllegalState" no cancelamento da proposta
+
+  Cenário: Tentativa de cancelamento de proposta sem razão de cancelamento
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    # Administrador Global do BNDES tenta cancelar a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta com motivo ""
+    Então ocorre erro "InvalidArgument" no cancelamento da proposta
 
 
   ##############################################################################
@@ -492,7 +507,7 @@ Funcionalidade: Governança do permissionamento
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Administrador Global do BNDES cancela a proposta
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta com motivo "O cadastramento da proposta foi feito de forma errada"
     Então a proposta é cancelada com sucesso
     # Administrador Global do CPQD tenta enviar voto para aprovar a proposta
     Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Approval"
@@ -583,11 +598,11 @@ Funcionalidade: Governança do permissionamento
     E consulto o código do smart contract de teste o resultado é 0
     E consulto a mensagem do smart contract de teste o resultado é "No message"
     # Administrador Global do BNDES cancela a proposta que não poderá ser executada
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta com motivo "Proposta não poderá ser executada"
     Então a proposta é cancelada com sucesso
     E a proposta tem situação "Canceled", resultado "Approved", organizações "1,2,3,5" e votos "Approval,Approval,NotVoted,Approval"
   
-  Cenário: Execução de proposta com chamda que é revertida
+  Cenário: Execução de proposta com chamada que é revertida
     # Administrador Global do BNDES cria uma proposta cuja segunda chamada será revertida
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8,0x30af58d2", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
@@ -612,7 +627,7 @@ Funcionalidade: Governança do permissionamento
     E consulto o código do smart contract de teste o resultado é 0
     E consulto a mensagem do smart contract de teste o resultado é "No message"
     # Administrador Global do BNDES cancela a proposta que não poderá ser executada
-    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cancela a proposta com motivo "Proposta não poderá ser executada"
     Então a proposta é cancelada com sucesso
     E a proposta tem situação "Canceled", resultado "Approved", organizações "1,2,3,5" e votos "Approval,Approval,NotVoted,Approval"
 
