@@ -88,6 +88,14 @@ function getProposalVote(vote) {
     }
 }
 
+function arraysMatch(actual, expected) {
+    let match = actual.length == expected.length;
+    for(let i = 0; i < actual.length && match; ++i) {
+        match = actual[i] == expected[i];
+    }
+    return match;
+}
+
 Before(function() {
     this.organizations = [];
     this.accounts = [];
@@ -103,5 +111,6 @@ module.exports = {
     getProposalStatus: getProposalStatus,
     getProposalResult: getProposalResult,
     getVote: getVote,
-    getProposalVote: getProposalVote
+    getProposalVote: getProposalVote,
+    arraysMatch: arraysMatch
 }

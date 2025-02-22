@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { Given, When, Then } = require('@cucumber/cucumber');
 const hre = require("hardhat");
-const { getProposalStatus, getProposalResult, getVote, getProposalVote } = require('./setup.js');
+const { getProposalStatus, getProposalResult, getVote, getProposalVote, arraysMatch } = require('./setup.js');
 
 
 Given('implanto o smart contract de governança do permissionamento', async function () {
@@ -218,8 +218,30 @@ Then('o evento {string} é emitido para a proposta com mensagem {string}', async
     for (let i = 0; i < events.length && !found; i++) {
         found =
             events[i].fragment.name == event &&
-            events[i].args[0] == this.proposalId;
+            events[i].args[0] == this.proposalId &&
             events[i].args[1] == message;
+    }
+    assert.ok(found);
+});
+
+Then('o evento {string} é emitido para a proposta com alvo do smart contract de teste, dados {string}, limite de {int} blocos e descrição {string}', async function(event, calldatas, blocksDuration, description) {
+    const calldatasArray = calldatas.split(',');
+    const targetsArray = [];
+    for(i = 0; i < calldatasArray.length; ++i) {
+        targetsArray.push(this.mockContractAddress);
+    }
+    const block = await hre.ethers.provider.getBlockNumber();
+    const events = await this.govenanceContract.queryFilter(event, block, block);
+    let found = false;
+    for (let i = 0; i < events.length && !found; i++) {
+        const targetsMatch = 
+        found =
+            events[i].fragment.name == event &&
+            events[i].args[0] == this.proposalId &&
+            arraysMatch(events[i].args[1], targetsArray) &&
+            arraysMatch(events[i].args[2], calldatasArray) &&
+            events[i].args[3] == blocksDuration &&
+            events[i].args[4] == description;
     }
     assert.ok(found);
 });
