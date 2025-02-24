@@ -53,7 +53,8 @@ Procedimento:
 3. Administradores Globais verificam e complementam cadastros de suas próprias organizações:
    1. Novas contas podem ser cadastradas.
    2. Os nós das organizações **têm** que ser cadastrados.
-   3. Testes automatizados devem ser feitos para validar o permissionamento de contas (`transactionAllowed()`) e nós (`connectionAllowed()`).
+   3. Testes automatizados para validar o permissionamento de contas (`transactionAllowed()`).
+   4. Testes automatizados para validar o permissionamento de nós (`connectionAllowed()`).
    - **Este passo é essencial antes do reponteiramento do permissionamento.**
 4. Caso necessário, novos Administradores Globais podem ser cadastrados.
    - Suger-se já usar o *smart contract* de governança (que já foi cadastrado como Administrador Master) e fazer-se proposta(s)/votação(ões) para isso. Dessa forma, já se pode testar e exercitar o mecanismo de governança.
@@ -97,13 +98,17 @@ Implementação:
       - `organizationAddress`: Endereço do *smart contract* de `OrganizationImpl`, conforme implantado no passo 2.
       - `accountRulesV2Address`: Endereço do *smart contract* de `AccountRulesV2Impl`, conforme implantado no passo 2.
       - `accounts`: Lista de contas a serem cadastradas.
-  - 3.2 - [add-nodes-gen02.js](../deploy/add-nodes-gen02.js) - Parâmetros: ``, `` e ``
+  - 3.2 - [add-nodes-gen02.js](../deploy/add-nodes-gen02.js)
     - Parâmetros: 
       - `organizationAddress`: Endereço do *smart contract* de `OrganizationImpl`, conforme implantado no passo 2.
       - `accountRulesV2Address`: Endereço do *smart contract* de `AccountRulesV2Impl`, conforme implantado no passo 2.
       - `nodeRulesV2Address`: Endereço do *smart contract* de `NodeRulesV2Impl`, conforme implantado no passo 2.
       - `nodes`: Lista de nós a serem cadastrados.
-  - 3.3 - [test-accounts-gen02.js] e [test-nodes-gen02.js] (TODO)
+  - 3.3 - [test-accounts-gen02.js]
+    - Parâmetros: 
+      - `accountRulesV2Address`: Endereço do *smart contract* de `AccountRulesV2Impl`, conforme implantado no passo 2.
+      - `accounts`: Lista de contas a serem testadas.
+  - 3.5 - [test-nodes-gen02.js] (TODO)
 - Passo 4, caso necessário:
   - [create-proposal-add-global-admins.js] (TODO)
   - [cast-vote.js](../deploy/cast-vote.js)
@@ -116,29 +121,32 @@ Implementação:
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
 - Passo 5:
   - 5.1 - [create-proposal-add-new-orgs.js] (TODO)
-  - 5.2 - [cast-vote.js](../deploy/cast-vote.js) - Parâmetros: ``, `` e ``
+  - 5.2 - [cast-vote.js](../deploy/cast-vote.js)
     - Parâmetros:
       - `proposal`: Identificador da proposta a ser votada e indicação de aprovação ou reprovação.
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
-  - 5.3 - [execute-proposal.js](../deploy/execute-proposal.js) - Parâmetros: ``, `` e ``
+  - 5.3 - [execute-proposal.js](../deploy/execute-proposal.js)
+    - Parâmetros:
+      - `proposal`: Identificador da proposta a ser executada.
+      - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
 - Passo 6:
   - 6.1 - [create-proposal-mig-gen02.js] (TODO)
-  - 6.2 - [cast-vote.js](../deploy/cast-vote.js) - Parâmetros: ``, `` e ``
+  - 6.2 - [cast-vote.js](../deploy/cast-vote.js)
     - Parâmetros:
       - `proposal`: Identificador da proposta a ser votada e indicação de aprovação ou reprovação.
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
-  - 6.3 - [execute-proposal.js](../deploy/execute-proposal.js) - Parâmetros: ``, `` e ``
+  - 6.3 - [execute-proposal.js](../deploy/execute-proposal.js)
     - Parâmetros:
       - `proposal`: Identificador da proposta a ser executada.
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
   - OBSOLETO - [migrate-to-gen02.js](../deploy/migrate-to-gen02.js) (TODO)
 - Passo 7:
   - 7.1 - [create-proposal-remove-admins.js](../deploy/create-proposal-remove-admins.js)
-  - 7.2 - [cast-vote.js](../deploy/cast-vote.js) - Parâmetros: ``, `` e ``
+  - 7.2 - [cast-vote.js](../deploy/cast-vote.js)
     - Parâmetros:
       - `proposal`: Identificador da proposta a ser votada e indicação de aprovação ou reprovação.
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
-  - 7.3 - [execute-proposal.js](../deploy/execute-proposal.js) - Parâmetros: ``, `` e ``
+  - 7.3 - [execute-proposal.js](../deploy/execute-proposal.js)
     - Parâmetros:
       - `proposal`: Identificador da proposta a ser executada.
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
