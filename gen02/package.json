@@ -14,6 +14,7 @@
     "local-add-nodes-gen02": "npx hardhat run deploy/add-nodes-gen02.js --network local_besu",
     "local-test-nodes-gen02": "npx hardhat run deploy/test-nodes-gen02.js --network local_besu",
     "local-migrate-to-gen02": "npx hardhat run deploy/migrate-to-gen02.js --network local_besu",
+    "local-create-proposal-add-global-admins": "npx hardhat run deploy/create-proposal-add-global-admins.js --network local_besu",
     "local-create-proposal-remove-admins": "npx hardhat run deploy/create-proposal-remove-admins.js --network local_besu",
     "local-cast-vote": "npx hardhat run deploy/cast-vote.js --network local_besu",
     "local-execute-proposal": "npx hardhat run deploy/execute-proposal.js --network local_besu",

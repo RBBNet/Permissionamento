@@ -113,7 +113,11 @@ Implementação:
       - `nodeRulesV2Address`: Endereço do *smart contract* de `NodeRulesV2Impl`, conforme implantado no passo 2.
       - `nodes`: Lista de nós a serem testados.
 - Passo 4, caso necessário:
-  - [create-proposal-add-global-admins.js] (TODO)
+  - [create-proposal-add-global-admins.js](../deploy/create-proposal-add-global-admins.js)
+    - Parâmetros:
+      - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
+      - `accountRulesV2Address`: Endereço do *smart contract* de `AccountRulesV2Impl`, conforme implantado no passo 2.
+      - `newGlobalAdmins`: Lista de endereços a serem cadastrados, com as identificações das respectivas organizações.
   - [cast-vote.js](../deploy/cast-vote.js)
     - Parâmetros:
       - `proposal`: Identificador da proposta a ser votada e indicação de aprovação ou reprovação.
@@ -161,7 +165,7 @@ Implementação:
 **Observações:
 - Os scripts devem ser executados via Hardhat, através dos "scripts" cadastrados na propriedade `scripts` no [package.json](../package.json) deste projeto.
 - Deve-se usar o "script" correto de acordo com o ambiente e rede desejadas.
-  - Por exemplo, para o ambiente local em rede Besu, usar os scripts `deploy-local-xxx`.
+  - Por exemplo, para o ambiente local em rede Besu, usar os scripts `local-xxx`.
   - As redes previstas estão definidas na propriedade `networks` do arquivo [hardhat.config.js](../hardhat.config.js).
 - Os scripts dependem de parâmetros configurados em arquivos JSON.
   - A localização deste arquivo deve estar configurada na variável de ambiente `CONFIG_PARAMETERS`.

@@ -99,6 +99,20 @@
             "name": "observer-boot01"
         }
     ],
+    "newGlobalAdmins": [
+        {
+            "orgId": 1,
+            "account": "0xBcd4042DE499D14e55001CcbB24a551F3b954096"
+        },
+        {
+            "orgId": 2,
+            "account": "0xa0Ee7A142d267C1f36714E4a8F75612F20a79720"
+        },
+        {
+            "orgId": 3,
+            "account": "0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f"
+        }
+    ],
     "proposal": {
         "id": 1,
         "vote": true
