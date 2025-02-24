@@ -104,11 +104,14 @@ Implementação:
       - `accountRulesV2Address`: Endereço do *smart contract* de `AccountRulesV2Impl`, conforme implantado no passo 2.
       - `nodeRulesV2Address`: Endereço do *smart contract* de `NodeRulesV2Impl`, conforme implantado no passo 2.
       - `nodes`: Lista de nós a serem cadastrados.
-  - 3.3 - [test-accounts-gen02.js]
+  - 3.3 - [test-accounts-gen02.js](../deploy/test-accounts-gen02.js)
     - Parâmetros: 
       - `accountRulesV2Address`: Endereço do *smart contract* de `AccountRulesV2Impl`, conforme implantado no passo 2.
       - `accounts`: Lista de contas a serem testadas.
-  - 3.5 - [test-nodes-gen02.js] (TODO)
+  - 3.4 - [test-nodes-gen02.js](../deploy/test-nodes-gen02.js)
+    - Parâmetros: 
+      - `nodeRulesV2Address`: Endereço do *smart contract* de `NodeRulesV2Impl`, conforme implantado no passo 2.
+      - `nodes`: Lista de nós a serem testados.
 - Passo 4, caso necessário:
   - [create-proposal-add-global-admins.js] (TODO)
   - [cast-vote.js](../deploy/cast-vote.js)
