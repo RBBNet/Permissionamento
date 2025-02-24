@@ -11,7 +11,7 @@ async function castVote(parameters) {
     const governanceContract = await hre.ethers.getContractAt('Governance', governanceAddress);
 
     const proposalBefore = await governanceContract.getProposal(proposal.id);
-    const votesBefore = await governanceContract.getVotes(proposal.id);
+    const votesBefore = proposalBefore[10];
 
     assert.equal(proposalBefore.status, STATUS_ACTIVE, `Proposta ${proposal.id} não está ativa! Status: ${proposalBefore.status}`);
 
@@ -27,7 +27,7 @@ async function castVote(parameters) {
     const resp = await governanceContract.castVote(proposal.id, proposal.vote);
     await resp.wait();
     const proposalAfter = await governanceContract.getProposal(proposal.id);
-    const votesAfter = await governanceContract.getVotes(proposal.id);
+    const votesAfter = proposalAfter[10];
     console.log('Voto eviado.');
     console.log(`Votação antes do envio: ${votesBefore}`);
     console.log(`Votação depois do envio: ${votesAfter}`);
