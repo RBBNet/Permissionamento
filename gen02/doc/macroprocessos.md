@@ -43,22 +43,26 @@ Há um [cenário de teste automatizado](../features/macroprocesses.feature) para
 
 Procedimento:
 1. Organizações devem criar chaves para suas contas de Administradores Globais.
-   - **As chaves privadas devem ser mantidas com alto rigor de segurança**. 
-2. Administrador Master implanta smart contracts de: organizações; contas; nós; e governança/votação.
+   - **As chaves privadas devem ser mantidas com alto rigor de segurança**.
+2. As novas contas de Administradores Globais devem ser permissionadas na gen01 **como contas transacionais**.
+   - Estas contas **não** devem ser permissionadas como Administradores Master.
+   - Este permissionamento é necessário para que estes administradores possam enviar votos ainda com o permissionamento de gen01 valendo.
+3. Administrador Master implanta smart contracts de: organizações; contas; nós; e governança/votação.
    1. São configuradas as referências entre os *smart contracts*.
    2. São pré-cadastradas:
       1. Organizações participantes (necessário para as que têm nó).
       2. Um único Administrador Global para cada organização (outros Administradores Globais podem ser adicionados posteriormente).
    3. ***Smart contract* de governança é cadastrado como Administrador Master.**
-3. Administradores Globais verificam e complementam cadastros de suas próprias organizações:
+      - Apenas um Administrador Master pode adicionar um outro Administrador Master.
+4. Administradores Globais verificam e complementam cadastros de suas próprias organizações:
    1. Novas contas podem ser cadastradas.
    2. Os nós das organizações **têm** que ser cadastrados.
    3. Testes automatizados para validar o permissionamento de contas (`transactionAllowed()`).
    4. Testes automatizados para validar o permissionamento de nós (`connectionAllowed()`).
    - **Este passo é essencial antes do reponteiramento do permissionamento.**
-4. Caso necessário, novos Administradores Globais podem ser cadastrados.
+5. Caso necessário, novos Administradores Globais podem ser cadastrados.
    - Suger-se já usar o *smart contract* de governança (que já foi cadastrado como Administrador Master) e fazer-se proposta(s)/votação(ões) para isso. Dessa forma, já se pode testar e exercitar o mecanismo de governança.
-5. Cadastramento das organizações que não têm nó implantado.
+6. Cadastramento das organizações que não têm nó implantado.
    1. Um administrador Global (de qualquer organização) cria proposta para cadastramento das organizações que não têm nó implantado.
    2. Organizações votam para aprovar a proposta.
    3. Um Administrador Global (de qualquer organização) executa a proposta aprovada.
@@ -67,7 +71,7 @@ Procedimento:
    - **Não** é necessário que sejam cadastrados Administradores Globais para estas organizações.
      - Porém, caso algum Administrador Global seja cadastrado, **a chave privada deverá ser mantida com alto rigor de segurança**.
      - Após o cadastramento do primeiro Administrador Global de uma organização, deverá sempre existir ao menos um Administrador Global.
-6. Reponteiramento dos *smart contracts* de regras (rules):
+7. Reponteiramento dos *smart contracts* de regras (rules):
    1. Um administrador Global (de qualquer organização) cria proposta com os seguintes passos: 
       1. Reponteiramento das regras de nós (`NodeIngress`) para o novo *smart contract* de gestão nós.
       2. Reponteiramento das regras de contas (`AccountIngress`) para o novo *smart contract* de gestão de contas.
@@ -76,7 +80,7 @@ Procedimento:
 - **As regras de Administrador Master permanecerão inalteradas**, sendo administradas através de uma lista de endereços no *smart contract* [`Admin`](../../gen01/contracts/Admin.sol) da **primeira geração** do permissionamento.
  - Só estes Administradores Master podem realizar o reponteiramento.
  - Só estes Administradores Master poderão executar certas funções dos *smart contracts* da segunda geração.
-7. Remoção de todas as contas Administrador Master, deixando ativa apenas a conta do *smart contract* de governança/votação:
+8. Remoção de todas as contas Administrador Master, deixando ativa apenas a conta do *smart contract* de governança/votação:
    1. Um administrador Global (de qualquer organização) cria proposta para remover todas as demais contas de Administrador Master.
       - **Observação**: Um Administrador Master não pode remover a si mesmo, portanto é necessário haver a execução da exclusão via Governança.
    2. Organizações votam para aprovar a proposta.
@@ -86,33 +90,34 @@ Procedimento:
    4. Testes de verificação
 
 Implementação:
-- Passo 2 - [deploy-gen02.js](../deploy/deploy-gen02.js)
+- Passo 2 - Por se tratar de ação na gen01, deve-se utilizar as ferramentas já existentes para essa geração do permissionamento.
+- Passo 3 - [deploy-gen02.js](../deploy/deploy-gen02.js)
   - Parâmetros:
     - `adminAddress`: Endereço do *smart contract* `Admin` da gen01.
     - `organizations`: Lista de organizações a serem pré-cadastradas.
     - `globalAdmins`: Lista dos endereços a serme pré-cadastrados como Administradores globais das organizações.
     - As listas `organizations` e `globalAdmins` devem estar "sincronizadas". Isto é, o enésimo endereço será o Administrador Global da enésima organização.
-- Passo 3:
-  - 3.1 - [add-accounts-gen02.js](../deploy/add-accounts-gen02.js)
+- Passo 4:
+  - 4.1 - [add-accounts-gen02.js](../deploy/add-accounts-gen02.js)
     - Parâmetros: 
       - `organizationAddress`: Endereço do *smart contract* de `OrganizationImpl`, conforme implantado no passo 2.
       - `accountRulesV2Address`: Endereço do *smart contract* de `AccountRulesV2Impl`, conforme implantado no passo 2.
       - `accounts`: Lista de contas a serem cadastradas.
-  - 3.2 - [add-nodes-gen02.js](../deploy/add-nodes-gen02.js)
+  - 4.2 - [add-nodes-gen02.js](../deploy/add-nodes-gen02.js)
     - Parâmetros: 
       - `organizationAddress`: Endereço do *smart contract* de `OrganizationImpl`, conforme implantado no passo 2.
       - `accountRulesV2Address`: Endereço do *smart contract* de `AccountRulesV2Impl`, conforme implantado no passo 2.
       - `nodeRulesV2Address`: Endereço do *smart contract* de `NodeRulesV2Impl`, conforme implantado no passo 2.
       - `nodes`: Lista de nós a serem cadastrados.
-  - 3.3 - [test-accounts-gen02.js](../deploy/test-accounts-gen02.js)
+  - 4.3 - [test-accounts-gen02.js](../deploy/test-accounts-gen02.js)
     - Parâmetros: 
       - `accountRulesV2Address`: Endereço do *smart contract* de `AccountRulesV2Impl`, conforme implantado no passo 2.
       - `accounts`: Lista de contas a serem testadas.
-  - 3.4 - [test-nodes-gen02.js](../deploy/test-nodes-gen02.js)
+  - 4.4 - [test-nodes-gen02.js](../deploy/test-nodes-gen02.js)
     - Parâmetros: 
       - `nodeRulesV2Address`: Endereço do *smart contract* de `NodeRulesV2Impl`, conforme implantado no passo 2.
       - `nodes`: Lista de nós a serem testados.
-- Passo 4, caso necessário:
+- Passo 5, caso necessário:
   - [create-proposal-add-global-admins.js](../deploy/create-proposal-add-global-admins.js)
     - Parâmetros:
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
@@ -126,18 +131,8 @@ Implementação:
     - Parâmetros:
       - `proposal`: Identificador da proposta a ser executada.
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
-- Passo 5:
-  - 5.1 - [create-proposal-add-new-orgs.js] (TODO)
-  - 5.2 - [cast-vote.js](../deploy/cast-vote.js)
-    - Parâmetros:
-      - `proposal`: Identificador da proposta a ser votada e indicação de aprovação ou reprovação.
-      - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
-  - 5.3 - [execute-proposal.js](../deploy/execute-proposal.js)
-    - Parâmetros:
-      - `proposal`: Identificador da proposta a ser executada.
-      - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
 - Passo 6:
-  - 6.1 - [create-proposal-mig-gen02.js] (TODO)
+  - 6.1 - [create-proposal-add-new-orgs.js] (TODO)
   - 6.2 - [cast-vote.js](../deploy/cast-vote.js)
     - Parâmetros:
       - `proposal`: Identificador da proposta a ser votada e indicação de aprovação ou reprovação.
@@ -146,9 +141,8 @@ Implementação:
     - Parâmetros:
       - `proposal`: Identificador da proposta a ser executada.
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
-  - OBSOLETO - [migrate-to-gen02.js](../deploy/migrate-to-gen02.js) (TODO)
 - Passo 7:
-  - 7.1 - [create-proposal-remove-admins.js](../deploy/create-proposal-remove-admins.js)
+  - 7.1 - [create-proposal-mig-gen02.js] (TODO)
   - 7.2 - [cast-vote.js](../deploy/cast-vote.js)
     - Parâmetros:
       - `proposal`: Identificador da proposta a ser votada e indicação de aprovação ou reprovação.
@@ -157,7 +151,18 @@ Implementação:
     - Parâmetros:
       - `proposal`: Identificador da proposta a ser executada.
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
-  - 7.4 - [verify-governance.js](../deploy/verify-governance.js) - Parâmetros: ``, `` e ``
+  - OBSOLETO - [migrate-to-gen02.js](../deploy/migrate-to-gen02.js) (TODO)
+- Passo 8:
+  - 8.1 - [create-proposal-remove-admins.js](../deploy/create-proposal-remove-admins.js)
+  - 8.2 - [cast-vote.js](../deploy/cast-vote.js)
+    - Parâmetros:
+      - `proposal`: Identificador da proposta a ser votada e indicação de aprovação ou reprovação.
+      - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
+  - 8.3 - [execute-proposal.js](../deploy/execute-proposal.js)
+    - Parâmetros:
+      - `proposal`: Identificador da proposta a ser executada.
+      - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
+  - 8.4 - [verify-governance.js](../deploy/verify-governance.js) - Parâmetros: ``, `` e ``
     - Parâmetros:
       - `adminAddress`: Endereço do *smart contract* `Admin` da gen01.
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
