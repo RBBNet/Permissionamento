@@ -81,7 +81,7 @@ set CONFIG_PARAMETERS=deploy/parameters-local.json
 4. Implante o contrato *mock* de [`AdminProxy`](contracts/AdminProxy.sol):
 
 ```shell
-npm run deploy-hardhat-mock
+npm run hardhat-deploy-admin-mock
 ```
 
 **Observação**: Para efeitos de teste local da gen02 no Hardhat, não é necessário implantar a gen01. Mas é necessário ter um contrato de `AdminProxy`. Por isso esse mock se faz necessário.
@@ -89,7 +89,7 @@ npm run deploy-hardhat-mock
 5. Implante os contratos de permissionamento:
 
 ```shell
-npm run deploy-hardhat-gen02
+npm run hardhat-deploy-gen02
 ```
 
 
@@ -136,7 +136,7 @@ Validation step finished
 6. **Caso NÃO vá utilizar a gen01**, implante o contrato *mock* de [`AdminProxy`](contracts/AdminProxy.sol):
 
 ```shell
-npm run deploy-local-mock
+npm run local-deploy-admin-mock
 ```
 
 Ao final da implantação, guarde o endereço onde foi implantado o contrado de `AdminMock`:
@@ -157,7 +157,7 @@ AdminMock implantado no endereço 0x5FbDB2315678afecb367f032d93F642f64180aa3
 8. Implante os contratos da gen02:
 
 ```shell
-npm run deploy-local-gen02
+npm run local-deploy-gen02
 ```
 
 Ao final da implantação, copie os endereços dos contratos de `OrganizationImpl`, `AccountRulesV2Impl`, `NodeRulesV2Impl` e `Governance`:
@@ -189,7 +189,7 @@ Implantando smart contract de governança
 10. Realize a migração da gen01 para a gen02:
 
 ```shell
-npm run deploy-local-migratetogen02
+npm run local-migrate-to-gen02
 ```
 
 
