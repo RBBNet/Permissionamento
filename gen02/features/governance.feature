@@ -448,6 +448,22 @@ Funcionalidade: Governança do permissionamento
     # Administrador Global do BNDES cria uma proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
+    # Governança adiciona a NovaOrg como organização 7
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "NovaOrg" e direito de voto "true"
+    Então a organização 7 é "NovaOrg" e direito de voto "true"
+    E verifico se a organização 7 está ativa o resultado é "true"
+    # Governança adiciona novo administrador global para a NovaOrg
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096" na organização 7 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
+    Então a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096" é da organização 7 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
+    E verifico se a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096" está ativa o resultado é "true"
+    # Administrador Global da NovaOrg (que não participa da proposta) tenta enviar voto
+    Quando a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096" envia um voto de "Approval"
+    Então ocorre erro "UnauthorizedAccess" no envio do voto
+
+  Cenário: Tentativa de envio de voto por organização sem direito a voto
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
     # Administrador Global da PUC-Rio (sem direito a voto) tenta enviar voto
     Quando a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" envia um voto de "Approval"
     Então ocorre erro "UnauthorizedAccess" no envio do voto
