@@ -25,8 +25,8 @@ async function migrateAccountIngress(accountRulesV2Address) {
     console.log('Migração do AccountIngress');
     const accountIngressContract = await hre.ethers.getContractAt(INGRESS_ABI, ACCOUNT_INGRESS_ADDRESS);
     
-    const currentNodeRulessAddress = await accountIngressContract.getContractAddress(RULES_CONTRACT);
-    console.log(` AccountIngress está atualmente configurado para ${accountRulesV2Address}`);
+    const currentAccountRulessAddress = await accountIngressContract.getContractAddress(RULES_CONTRACT);
+    console.log(` AccountIngress está atualmente configurado para ${currentAccountRulessAddress}`);
     
     const resp = await accountIngressContract.setContractAddress(RULES_CONTRACT, accountRulesV2Address);
     await resp.wait();
