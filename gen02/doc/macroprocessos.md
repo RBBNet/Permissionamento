@@ -147,7 +147,11 @@ Implementação:
       - `proposal`: Identificador da proposta a ser executada.
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
 - Passo 7:
-  - 7.1 - [create-proposal-mig-gen02.js] (TODO)
+  - 7.1 - [create-proposal-mig-gen02.js](../deploy/create-proposal-mig-gen02.js)
+    - Parâmetros:
+      - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
+      - `accountRulesV2Address`: Endereço do *smart contract* de `AccountRulesV2Impl`, conforme implantado no passo 2.
+      - `nodeRulesV2Address`: Endereço do *smart contract* de `NodeRulesV2Impl`, conforme implantado no passo 2.
   - 7.2 - [cast-vote.js](../deploy/cast-vote.js)
     - Parâmetros:
       - `proposal`: Identificador da proposta a ser votada e indicação de aprovação ou reprovação.
@@ -156,7 +160,6 @@ Implementação:
     - Parâmetros:
       - `proposal`: Identificador da proposta a ser executada.
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
-  - OBSOLETO - [migrate-to-gen02.js](../deploy/migrate-to-gen02.js) (TODO)
 - Passo 8:
   - 8.1 - [create-proposal-remove-admins.js](../deploy/create-proposal-remove-admins.js)
   - 8.2 - [cast-vote.js](../deploy/cast-vote.js)
