@@ -1,6 +1,6 @@
 const hre = require('hardhat');
 const assert = require('assert');
-const { getParameters, getParameter, diagnostics, askConfirmation } = require('./util.js');
+const { getParameters, getParameter, diagnostics, askConfirmation, getProposalStatus, getProposalResult } = require('./util.js');
 const { STATUS_ACTIVE, STATUS_EXECUTED, RESULT_APPROVED } = require('./constants.js');
 
 async function executeProposal(parameters) {
@@ -16,7 +16,7 @@ async function executeProposal(parameters) {
     assert.equal(proposalBefore.result, RESULT_APPROVED, `Proposta ${proposal.id} não está Aprovada! Result: ${proposalBefore.result}`);
 
     console.log('--------------------------------------------------');
-    console.log(`Executando proposta ${proposalBefore.id} - ${proposalBefore.description} (Status: ${proposalBefore.status})(Resultado: ${proposalBefore.result})`);
+    console.log(`Executando proposta ${proposalBefore.id} - ${proposalBefore.description} (Status: ${getProposalStatus(proposalBefore.status)})(Resultado: ${getProposalResult(proposalBefore.result)})`);
 
     const confirmed = await askConfirmation('Confirma execução da proposta (s/n)? ', 's');
     if(!confirmed) {
