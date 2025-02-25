@@ -19,6 +19,7 @@
     "local-cast-vote": "npx hardhat run deploy/cast-vote.js --network local_besu",
     "local-execute-proposal": "npx hardhat run deploy/execute-proposal.js --network local_besu",
     "local-verify-governance": "npx hardhat run deploy/verify-governance.js --network local_besu",
+    "local-permissioning-diagnostics": "npx hardhat run deploy/permissioning-diagnostics.js --network local_besu",
     "local-migrate-to-gen03-mock": "npx hardhat run deploy/migrate-to-gen03-mock.js --network local_besu",
     "local-migrate-to-governance-mock": "npx hardhat run deploy/migrate-to-governance-mock.js --network local_besu"
   },
