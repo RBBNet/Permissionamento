@@ -78,8 +78,8 @@ Procedimento:
    2. Organizações votam para aprovar a proposta.
    3. Um Administrador Global (de qualquer organização) executa a proposta aprovada.
 - **As regras de Administrador Master permanecerão inalteradas**, sendo administradas através de uma lista de endereços no *smart contract* [`Admin`](../../gen01/contracts/Admin.sol) da **primeira geração** do permissionamento.
- - Só estes Administradores Master podem realizar o reponteiramento.
- - Só estes Administradores Master poderão executar certas funções dos *smart contracts* da segunda geração.
+  - Só estes Administradores Master podem realizar o reponteiramento.
+  - Só estes Administradores Master poderão executar certas funções dos *smart contracts* da segunda geração.
 8. Remoção de todas as contas Administrador Master, deixando ativa apenas a conta do *smart contract* de governança/votação:
    1. Um administrador Global (de qualquer organização) cria proposta para remover todas as demais contas de Administrador Master.
       - **Observação**: Um Administrador Master não pode remover a si mesmo, portanto é necessário haver a execução da exclusão via Governança.
