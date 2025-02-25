@@ -68,6 +68,7 @@ Procedimento:
    3. Um Administrador Global (de qualquer organização) executa a proposta aprovada.
    - Este passo pode ser feito paralelamente ao passo anterior, caso necessário, sem prejuízos.
    - A ideia de cadastrar essas organizações é para dar transparência ao público sobre quem faz parte da RBB. Ao mesmo tempo, pode-se já testar e exercitar o mecanismo de governança.
+   - As organizações são cadastradas **sem** administrador global e **sem** direito a voto, mesmo que sejam partícipes associados.
    - **Não** é necessário que sejam cadastrados Administradores Globais para estas organizações.
      - Porém, caso algum Administrador Global seja cadastrado, **a chave privada deverá ser mantida com alto rigor de segurança**.
      - Após o cadastramento do primeiro Administrador Global de uma organização, deverá sempre existir ao menos um Administrador Global.
@@ -132,7 +133,11 @@ Implementação:
       - `proposal`: Identificador da proposta a ser executada.
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
 - Passo 6:
-  - 6.1 - [create-proposal-add-new-orgs.js] (TODO)
+  - 6.1 - [create-proposal-add-new-orgs.js](../deploy/create-proposal-add-new-orgs.js)
+    - Parâmetros:
+      - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
+      - `organizationAddress`: Endereço do *smart contract* de `OrganizationImpl`, conforme implantado no passo 2.
+      - `newOrganizations`: Lista com os nomes das organizações a serem cadastradas.
   - 6.2 - [cast-vote.js](../deploy/cast-vote.js)
     - Parâmetros:
       - `proposal`: Identificador da proposta a ser votada e indicação de aprovação ou reprovação.
@@ -166,6 +171,12 @@ Implementação:
     - Parâmetros:
       - `adminAddress`: Endereço do *smart contract* `Admin` da gen01.
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
+- A partir da implantação da gen02 (passo 2), é possível realizar um diagnóstico do permissionamento através do script [permissioning-diagnostics.js](../deploy/permissioning-diagnostics.js).
+  - Parâmetros:
+    - `adminAddress`: Endereço do *smart contract* `Admin` da gen01.
+    - `organizations`: Lista de organizações a serem pré-cadastradas.
+    - `accountRulesV2Address`: Endereço do *smart contract* de `AccountRulesV2Impl`, conforme implantado no passo 2.
+    - `nodeRulesV2Address`: Endereço do *smart contract* de `NodeRulesV2Impl`, conforme implantado no passo 2.
 
 **Observações:
 - Os scripts devem ser executados via Hardhat, através dos "scripts" cadastrados na propriedade `scripts` no [package.json](../package.json) deste projeto.

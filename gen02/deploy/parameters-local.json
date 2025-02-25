@@ -1,9 +1,9 @@
 {
     "adminAddress": "0x72bb9c7ffbE2Ed234e53bc64862DdA6d9fFF333b",
-    "organizationAddress": "0x2bF539810D92f0DF04594fA73e9ce28c152Ac4b0",
-    "accountRulesV2Address": "0x8C847A0E6B48C6e1D77D24A33127443F0c607B02",
-    "nodeRulesV2Address": "0x8a76DBC935618bdC5610db3DF2A007EeCEF3D4Ea",
-    "governanceAddress": "0x954c90761D6cB86Cd0Ef6f2785904Ed439fB580D",
+    "organizationAddress": "0xfEdf5D0eC5FCF22FfC28Ed352217ed879dB2D0af",
+    "accountRulesV2Address": "0xa6dDA3665B3980D4e1efFf2F4438033C6c779b22",
+    "nodeRulesV2Address": "0xCd50B9972abB2F10C65fbE3439EA3F83791F13DC",
+    "governanceAddress": "0xD5905E141dE60F2650B4e1b39B81E5957bF1aA78",
     "organizations": [
         {
             "id": 0,
@@ -113,8 +113,17 @@
             "account": "0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f"
         }
     ],
+    "newOrganizations": [
+        "IBICT",
+        "SGD",
+        "CGE-PA",
+        "FENASBAC",
+        "Araguaína",
+        "STC-MA",
+        "TCE-SP"
+    ],
     "proposal": {
-        "id": 1,
+        "id": 2,
         "vote": true
     }
 }
