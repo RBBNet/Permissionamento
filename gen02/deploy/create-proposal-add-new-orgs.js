@@ -23,7 +23,7 @@ async function createProposal(parameters) {
     
     console.log('Chamadas configuradas para a proposta');
     let targets = [];
-    let calldatas = []
+    let calldatas = [];
     for(const newOrg of newOrganizations) {
         const calldata = organizationContract.interface.encodeFunctionData(organizationContract.addOrganization.fragment, [newOrg, false]);
         targets.push(organizationAddress);

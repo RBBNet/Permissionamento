@@ -24,7 +24,7 @@ async function createProposal(parameters) {
     
     console.log('Chamadas configuradas para a proposta');
     let targets = [];
-    let calldatas = []
+    let calldatas = [];
     for(const admin of newGlobalAdmins) {
         const calldata = accountsContract.interface.encodeFunctionData(ADD_ACCOUNT_FUNC, [admin.account, admin.orgId, GLOBAL_ADMIN_ROLE, ZEROED_BYTES_32]);
         targets.push(accountRulesV2Address);

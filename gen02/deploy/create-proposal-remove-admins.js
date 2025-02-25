@@ -32,7 +32,7 @@ async function createProposal(parameters) {
     
     console.log('Chamadas configuradas para a proposta');
     let targets = [];
-    let calldatas = []
+    let calldatas = [];
     for(const admin of adminsToRemove) {
         const calldata = adminContract.interface.encodeFunctionData(REMOVE_ADMIN_FUNC, [admin]);
         targets.push(adminAddress);
