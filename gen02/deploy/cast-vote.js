@@ -20,7 +20,7 @@ async function castVote(parameters) {
     assert.equal(proposalBefore.status, STATUS_ACTIVE, `Proposta ${proposal.id} não está ativa! Status: ${proposalBefore.status}`);
 
     console.log('--------------------------------------------------');
-    console.log(`Enviando voto "${proposal.vote}" para proposta ${proposalBefore.id} - ${proposalBefore.description} (Situação: ${proposalBefore.status})(Resultado: ${proposalBefore.result})`);
+    console.log(`Enviando voto "${proposal.vote}" para proposta ${proposalBefore.id} - ${proposalBefore.description} (Situação: ${getProposalStatus(proposalBefore.status)})(Resultado: ${getProposalResult(proposalBefore.result)})`);
 
     const confirmed = await askConfirmation('Confirma envio do voto (s/n)? ', 's');
     if(!confirmed) {

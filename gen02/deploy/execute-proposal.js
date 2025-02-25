@@ -28,7 +28,7 @@ async function executeProposal(parameters) {
     await resp.wait();
     const proposalAfter = await governanceContract.getProposal(proposal.id);
     console.log('Proposta executada.');
-    console.log(`Nova situação da proposta: ${proposalAfter.status}`);
+    console.log(`Nova situação da proposta: ${getProposalStatus(proposalAfter.status)}`);
     // Verificações
     assert.equal(proposalAfter.status, STATUS_EXECUTED, 'Algo errado: status da proposta não indica que a execução foi realizada.');
 }
