@@ -61,7 +61,9 @@ Procedimento:
    4. Testes automatizados para validar o permissionamento de nós (`connectionAllowed()`).
    - **Este passo é essencial antes do reponteiramento do permissionamento.**
 5. Caso necessário, novos Administradores Globais podem ser cadastrados.
-   - Suger-se já usar o *smart contract* de governança (que já foi cadastrado como Administrador Master) e fazer-se proposta(s)/votação(ões) para isso. Dessa forma, já se pode testar e exercitar o mecanismo de governança.
+   1. Um administrador Global (de qualquer organização) cria proposta para cadastramento dos novos Administradores Globais.
+   2. Organizações votam para aprovar a proposta.
+   3. Um Administrador Global (de qualquer organização) executa a proposta aprovada.
 6. Cadastramento das organizações que não têm nó implantado.
    1. Um administrador Global (de qualquer organização) cria proposta para cadastramento das organizações que não têm nó implantado.
    2. Organizações votam para aprovar a proposta.
@@ -119,16 +121,16 @@ Implementação:
       - `nodeRulesV2Address`: Endereço do *smart contract* de `NodeRulesV2Impl`, conforme implantado no passo 2.
       - `nodes`: Lista de nós a serem testados.
 - Passo 5, caso necessário:
-  - [create-proposal-add-global-admins.js](../deploy/create-proposal-add-global-admins.js)
+  - 5.1 - [create-proposal-add-global-admins.js](../deploy/create-proposal-add-global-admins.js)
     - Parâmetros:
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
       - `accountRulesV2Address`: Endereço do *smart contract* de `AccountRulesV2Impl`, conforme implantado no passo 2.
       - `newGlobalAdmins`: Lista de endereços a serem cadastrados, com as identificações das respectivas organizações.
-  - [cast-vote.js](../deploy/cast-vote.js)
+  - 5.2 - [cast-vote.js](../deploy/cast-vote.js)
     - Parâmetros:
       - `proposal`: Identificador da proposta a ser votada e indicação de aprovação ou reprovação.
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
-  - [execute-proposal.js](../deploy/execute-proposal.js)
+  - 5.3 - [execute-proposal.js](../deploy/execute-proposal.js)
     - Parâmetros:
       - `proposal`: Identificador da proposta a ser executada.
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
