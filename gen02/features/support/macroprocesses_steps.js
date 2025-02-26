@@ -16,10 +16,27 @@ Given('o smart contract de governança é adicionado como admin master', async f
     await this.adminMockContract.addAdmin(this.govenanceContractAddress);
 });
 
+function handleCalldataParameters(parameters) {
+    for(let i = 0; i < parameters.length; ++i) {
+        param = parameters[i];
+        if(param.toLowerCase() == 'true') {
+            parameters[i] = true;
+        }
+        else if(param.toLowerCase() == 'false') {
+            parameters[i] = false;
+        }
+        else if(param.startsWith('[') && param.endsWith(']')) {
+            const paramArray = param.length == 2 ? [] : param.substring(1, param.length - 1).split(';');
+            parameters[i] = paramArray;
+        }
+    }
+}
+
 Given('o alvo {string} para chamada da função {string} com parâmetros {string}', async function(targetName, functionSignature, parameterList) {
     const targetContract = getContract(this, targetName);
     const targetAddress = await targetContract.getAddress();
     const parameters = parameterList.length == 0 ? [] : parameterList.split(',');
+    handleCalldataParameters(parameters);
     const calldata = targetContract.interface.encodeFunctionData(functionSignature, parameters);
     this.proposalCalls.push([targetAddress, calldata]);
 });

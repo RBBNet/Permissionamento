@@ -60,6 +60,9 @@ Funcionalidade: Macroprocessos de gestão da RBB
     E a conta "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E" é da organização 7 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     E a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" é da organização 8 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" é da organização 9 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
+    # Cadastrando restrição de acesso a smart contract (restrição usada em cenário abaixo)
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" configura restrição de acesso ao endereço "0x0000000000000000000000000000000000009999" permitindo acesso somente pelas contas ""
+    Então a configuração de acesso ocorre com sucesso
     # Implantação do smart contract de governança
     E implanto o smart contract de governança do permissionamento
     E a implantação do smart contract de governança do permissionamento ocorre com sucesso
@@ -172,6 +175,43 @@ Funcionalidade: Macroprocessos de gestão da RBB
     E verifico se a organização 9 está ativa o resultado é "false"
     E a lista de organizações é "1,BNDES,true|2,TCU,true|3,DATAPREV,true|4,PUC-Rio,false|5,CPQD,true|6,RNP,true|7,Prodemge,true|8,SERPRO,true"
 
+  Cenário: Cadastro de novo Administrador Global
+    # Preparação de passos para uma proposta
+    Dado o alvo "AccountRulesV2Impl" para chamada da função "addAccount(address,uint256,bytes32,bytes32)" com parâmetros "0xBcd4042DE499D14e55001CcbB24a551F3b954096,1,0xd6e7d8560c69c7c18c2b8f3b45430215d788f128f0c04bc4a3607fe05eb5399f,0x0000000000000000000000000000000000000000000000000000000000000000"
+    # Administrador Global do TCU cria uma proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" cria proposta com descrição "Novo administrador global do BNDES"
+    Então a proposta é criada com sucesso
+    E o evento "ProposalCreated" é emitido para a proposta
+    E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5,6,7,8,9" e votos "NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted"
+    # Administrador Global do TCU vota para aprovar a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do Dataprev vota para aprovar a proposta
+    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do SERPRO vota para aprovar a proposta
+    Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do CPQD vota para aprovar a proposta
+    Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do RPN vota para aprovar a proposta
+    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Proposta é aprovada por maioria
+    E o evento "ProposalApproved" é emitido para a proposta
+    E a proposta tem situação "Active", resultado "Approved", organizações "1,2,3,5,6,7,8,9" e votos "NotVoted,Approval,Approval,Approval,Approval,NotVoted,Approval,NotVoted"
+    # Administrador Global do CPQD executa a proposta
+    Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" executa a proposta
+    Então a proposta é executada com sucesso
+    E o evento "ProposalFinished" é emitido para a proposta
+    E o evento "ProposalExecuted" é emitido para a proposta
+    E o evento "AccountAdded" foi emitido para a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096", organização 1, papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
+    E a proposta tem situação "Executed", resultado "Approved", organizações "1,2,3,5,6,7,8,9" e votos "NotVoted,Approval,Approval,Approval,Approval,NotVoted,Approval,NotVoted"
+    # Verificando o resultado da execução, se organização e admin global foram criados
+    E a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096" é da organização 1 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
+    E verifico se a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096" está ativa o resultado é "true"
+
   Cenário: Perda de chave privada de Administrador Global
     # Simulando perda de chave privada do Administrador Global do BNDES
     # Preparação de passos para uma proposta
@@ -182,7 +222,6 @@ Funcionalidade: Macroprocessos de gestão da RBB
     Então a proposta é criada com sucesso
     E o evento "ProposalCreated" é emitido para a proposta
     E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5,6,7,8,9" e votos "NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted"
-    Então o voto é registrado com sucesso
     # Administrador Global do TCU vota para aprovar a proposta
     Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Approval"
     Então o voto é registrado com sucesso
@@ -213,3 +252,105 @@ Funcionalidade: Macroprocessos de gestão da RBB
     E a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096" é da organização 1 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     E se tento obter os dados da conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" ocorre erro "AccountNotFound"
     E verifico se a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" está ativa o resultado é "false"
+
+  Cenário: Restrição de acesso a smart contract
+    # Verificando acesso ao smart contract 0x8888
+    Então a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
+    Então a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
+    Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
+    Então a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
+    Então a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
+    Então a conta "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
+    Então a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
+    Então a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
+    # Preparação de passos para uma proposta
+    Dado o alvo "AccountRulesV2Impl" para chamada da função "setSmartContractSenderAccess(address,bool,address[])" com parâmetros "0x0000000000000000000000000000000000008888,true,[0x71bE63f3384f5fb98995898A86B02Fb2426c5788;0xFABB0ac9d68B0B445fB7357272Ff202C5651694a]"
+    # Administrador Global do TCU cria uma proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" cria proposta com descrição "Restrição de acesso ao smart contract 0x8888"
+    Então a proposta é criada com sucesso
+    E o evento "ProposalCreated" é emitido para a proposta
+    E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5,6,7,8,9" e votos "NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted"
+    # Administrador Global do TCU vota para aprovar a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do Dataprev vota para aprovar a proposta
+    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do SERPRO vota para aprovar a proposta
+    Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do CPQD vota para aprovar a proposta
+    Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do RPN vota para aprovar a proposta
+    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Proposta é aprovada por maioria
+    E o evento "ProposalApproved" é emitido para a proposta
+    E a proposta tem situação "Active", resultado "Approved", organizações "1,2,3,5,6,7,8,9" e votos "NotVoted,Approval,Approval,Approval,Approval,NotVoted,Approval,NotVoted"
+    # Administrador Global do CPQD executa a proposta
+    Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" executa a proposta
+    Então a proposta é executada com sucesso
+    E o evento "ProposalFinished" é emitido para a proposta
+    E o evento "ProposalExecuted" é emitido para a proposta
+    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000008888" com restrição "true" permitindo as contas "0x71bE63f3384f5fb98995898A86B02Fb2426c5788,0xFABB0ac9d68B0B445fB7357272Ff202C5651694a"
+    # Verificando acesso ao smart contract 0x8888
+    Então a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
+    Então a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "true"
+    Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "false"
+    Então a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "false"
+    Então a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "false"
+    Então a conta "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "false"
+    Então a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "false"
+    Então a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" chamar o endereço "0x0000000000000000000000000000000000008888" tem verificação de permissionamento "false"
+
+  Cenário: Remoção de restrição de acesso a smart contract
+    # Verificando acesso ao smart contract 0x9999
+    Então a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "false"
+    Então a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "false"
+    Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "false"
+    Então a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "false"
+    Então a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "false"
+    Então a conta "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "false"
+    Então a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "false"
+    Então a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "false"
+    # Preparação de passos para uma proposta
+    Dado o alvo "AccountRulesV2Impl" para chamada da função "setSmartContractSenderAccess(address,bool,address[])" com parâmetros "0x0000000000000000000000000000000000009999,false,[]"
+    # Administrador Global do TCU cria uma proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" cria proposta com descrição "Remoção de restrição de acesso ao smart contract 0x9999"
+    Então a proposta é criada com sucesso
+    E o evento "ProposalCreated" é emitido para a proposta
+    E a proposta tem situação "Active", resultado "Undefined", organizações "1,2,3,5,6,7,8,9" e votos "NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted,NotVoted"
+    # Administrador Global do TCU vota para aprovar a proposta
+    Quando a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do Dataprev vota para aprovar a proposta
+    Quando a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do SERPRO vota para aprovar a proposta
+    Quando a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do CPQD vota para aprovar a proposta
+    Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Administrador Global do RPN vota para aprovar a proposta
+    Quando a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" envia um voto de "Approval"
+    Então o voto é registrado com sucesso
+    # Proposta é aprovada por maioria
+    E o evento "ProposalApproved" é emitido para a proposta
+    E a proposta tem situação "Active", resultado "Approved", organizações "1,2,3,5,6,7,8,9" e votos "NotVoted,Approval,Approval,Approval,Approval,NotVoted,Approval,NotVoted"
+    # Administrador Global do CPQD executa a proposta
+    Quando a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" executa a proposta
+    Então a proposta é executada com sucesso
+    E o evento "ProposalFinished" é emitido para a proposta
+    E o evento "ProposalExecuted" é emitido para a proposta
+    E o evento "SmartContractSenderAccessUpdated" foi emitido para o smart contract "0x0000000000000000000000000000000000009999" com restrição "false" permitindo as contas ""
+    # Verificando acesso ao smart contract 0x9999
+    Então a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "true"
+    Então a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "true"
+    Então a conta "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "true"
+    Então a conta "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "true"
+    Então a conta "0xcd3B766CCDd6AE721141F452C550Ca635964ce71" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "true"
+    Então a conta "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "true"
+    Então a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "true"
+    Então a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" chamar o endereço "0x0000000000000000000000000000000000009999" tem verificação de permissionamento "true"

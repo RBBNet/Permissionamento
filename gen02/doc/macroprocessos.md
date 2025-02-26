@@ -24,13 +24,15 @@ Procedimento:
 Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
 
 
-# Cadastramento de novo Administrador Global
+# Cadastro de novo Administrador Global
 
 Procedimento:
 1. Organização do novo Administrador Global gera par de chaves.
-2. Administrador Global (de qualquer organização) cria proposta para votação do cadastro do novo Administrador Global para a referida organização, informando novo endereço gerado.
+2. Administrador Global (de qualquer organização) cria proposta para votação do cadastro do novo Administrador Global para a referida organização, informando novo endereço gerado e sua organização.
 3. Organizações votam para aprovar a proposta.
 4. Governança realiza cadastro.
+
+Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
 
 
 # Perda de chave privada de Administrador Global
@@ -53,6 +55,8 @@ Procedimento:
 2. Organizações votam para aprovar a proposta.
 3. Governança realiza a restrição de acesso.
 
+Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
+
 
 # Remoção de restrição de acesso a *smart contract*
 
@@ -60,6 +64,8 @@ Procedimento:
 1. Administrador Global (de qualquer organização) cria proposta para remover restrição de acesso a *smart contract*, informando o endereço do contrato.
 2. Organizações votam para aprovar a proposta.
 3. Governança remove a restrição de acesso.
+
+Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
 
 
 # Implantação da segunda geração de permissionamento
