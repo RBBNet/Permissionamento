@@ -2,6 +2,8 @@ data-path="besu/node-data"
 node-private-key-file="besu/key"
 genesis-file="besu/genesis.json"
 
+#logging="DEBUG"
+
 rpc-http-enabled=true
 rpc-http-api=["ADMIN","ETH","TXPOOL","NET","QBFT","WEB3","DEBUG","TRACE","PERM"]
 rpc-http-cors-origins=["*"]
