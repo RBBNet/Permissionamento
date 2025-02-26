@@ -90,7 +90,9 @@ Procedimento:
    3. Um Administrador Global (de qualquer organização) executa a proposta aprovada.
    - Nesse momento, todas as demais contas Administrador Master são removidas.
    - Dessa forma, para todos os efeitos, após a aprovaçao da proposta, só o novo *smart contract* de governança/votação será Administrador Master (no conceito da primeira geração do permissionamento) e, portanto, só ele pode poderá autorizar um novo reponteiramento (através de votação).
-   4. Testes de verificação
+9. Testes:
+   1. Verificações.
+   2. Diagnósticos.
 
 Implementação:
 - Passo 2 - Por se tratar de ação na gen01, deve-se utilizar as ferramentas já existentes para essa geração do permissionamento.
@@ -172,16 +174,18 @@ Implementação:
     - Parâmetros:
       - `proposal`: Identificador da proposta a ser executada.
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
-  - 8.4 - [verify-governance.js](../deploy/verify-governance.js) - Parâmetros: ``, `` e ``
+- Passo 9:
+  - 9.1 - [verify-governance.js](../deploy/verify-governance.js)
     - Parâmetros:
       - `adminAddress`: Endereço do *smart contract* `Admin` da gen01.
       - `governanceAddress`: Endereço do *smart contract* de `Governance`, conforme implantado no passo 2.
-- A partir da implantação da gen02 (passo 2), é possível realizar um diagnóstico do permissionamento através do script [permissioning-diagnostics.js](../deploy/permissioning-diagnostics.js).
-  - Parâmetros:
-    - `adminAddress`: Endereço do *smart contract* `Admin` da gen01.
-    - `organizations`: Lista de organizações a serem pré-cadastradas.
-    - `accountRulesV2Address`: Endereço do *smart contract* de `AccountRulesV2Impl`, conforme implantado no passo 2.
-    - `nodeRulesV2Address`: Endereço do *smart contract* de `NodeRulesV2Impl`, conforme implantado no passo 2.
+  - 9.2 - [permissioning-diagnostics.js](../deploy/permissioning-diagnostics.js).
+    - Parâmetros:
+      - `adminAddress`: Endereço do *smart contract* `Admin` da gen01.
+      - `organizations`: Lista de organizações a serem pré-cadastradas.
+      - `accountRulesV2Address`: Endereço do *smart contract* de `AccountRulesV2Impl`, conforme implantado no passo 2.
+      - `nodeRulesV2Address`: Endereço do *smart contract* de `NodeRulesV2Impl`, conforme implantado no passo 2.
+    - **Observação**: A partir da implantação da gen02 (passo 2), é possível realizar estes diagnósticos do permissionamento a qualquer momento.
 
 **Observações:
 - Os scripts devem ser executados via Hardhat, através dos "scripts" cadastrados na propriedade `scripts` no [package.json](../package.json) deste projeto.

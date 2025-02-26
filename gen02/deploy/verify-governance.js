@@ -23,7 +23,7 @@ async function verifyGovernance(parameters) {
     assert.equal(allAdmins.length, 1, `Há mais de um administrador master: ${allAdmins}`);
     assert.equal(allAdmins[0], governanceAddress, `Administrador master configurado não é o smart contract de governança: ${allAdmins[0]}`);
 
-    console.log(`Smart contract de governança ${governanceAddress} corretamente configurado como único administrador master.`);
+    console.log(` Smart contract de governança ${governanceAddress} corretamente configurado como único administrador master.`);
     console.log();
     
     console.log('--------------------------------------------------');
