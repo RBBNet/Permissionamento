@@ -36,8 +36,8 @@ Dúvidas:
 ## USGOV02 – Administrador Global cancela uma proposta para que não possa mais receber votos e nem ser executada<a id="usgov02"></a>
 
 Critérios de aceitação:
-1. Somente Administradores Globais ativos, vinculados a organizações ativas, podem cancear propostas.
-2. O Administrador Global informa o identificador da proposta a ser encerrada e texto descritivo do motivo do cancelamento.
+1. Somente Administradores Globais ativos, vinculados a organizações ativas, podem cancelar propostas.
+2. O Administrador Global informa o identificador da proposta a ser cancelada e texto descritivo do motivo do cancelamento.
 3. Somente Administradores Globais da mesma organização do criador da proposta podem realizar o cancelamento.
 4. Somente propostas ativas podem ser canceladas.
 5. A organização do administrador deve constar na lista de organizações vinculadas à proposta.
@@ -52,6 +52,8 @@ Dúvidas:
   - **Resposta**: Qualquer Administrador Global da organização proponente deve poder cancelar a proposta.
 - Deve-se permitir o cancelamento de propostas com resultado definido?
   - **Resposta**: Sim, deve-se permitir, considerando que somente a organização proponente pode fazê-lo.
+
+**Observação**: Ver também a [história USGOV09](#usgov09).
 
 
 ## USGOV03 – Administrador Global envia voto para apuração de resultado de proposta<a id="usgov03"></a>
@@ -137,6 +139,20 @@ Critérios de aceitação:
 3. É retornada uma lista com os dados cadastrais de propostas correspondente à página de dados solicitada.
 
 **Observação**: Não há quaisquer critérios de filtragem ou parâmetros de ordenação para o resultado. Tampouco há garantia de consistência da ordem dos elementos entre consultas.
+
+
+## USGOV09 – Governança cancela uma proposta para que não possa mais receber votos e nem ser executada<a id="usgov09"></a>
+
+Critérios de aceitação:
+1. O cancelamento deve ser feito através do processo de governança.
+   - **Observação**: Nesse caso, uma segunda proposta terá que ser criada, votada, aprovada e executada para que o cancelamento seja possível.
+2. São informados o identificador da proposta a ser cancelada e texto descritivo do motivo do cancelamento.
+3. Somente propostas ativas podem ser canceladas.
+4. A proposta é marcada como cancelada.
+   1. A ocorrência do cancelamento da proposta deve emitir um evento, registrando:
+      1. O identificador da proposta
+
+**Observação**: Ver também a [história USGOV02](#usgov02).
 
 
 ## Dúvidas

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 pragma solidity 0.8.26;
 
+import "./AdminProxy.sol";
 import "./Organization.sol";
 import "./AccountRulesV2.sol";
 import "./Pagination.sol";
@@ -41,6 +42,7 @@ contract Governance {
     error ProposalNotFound(uint proposalId);
 
     uint public idSeed = 0;
+    AdminProxy immutable public admins;
     Organization immutable public organizations;
     AccountRulesV2 immutable public accounts;
     ProposalData[] public proposals;
@@ -50,6 +52,16 @@ contract Governance {
             revert UnauthorizedAccess(msg.sender, "Sender is not a global admin");
         }
         if(!accounts.isAccountActive(msg.sender)) {
+            revert UnauthorizedAccess(msg.sender, "Sender account is not active");
+        }
+        _;
+    }
+
+    modifier onlyActiveGlobalAdminOrGovernance() {
+        if(!admins.isAuthorized(msg.sender) && !accounts.hasRole(GLOBAL_ADMIN_ROLE, msg.sender)) {
+            revert UnauthorizedAccess(msg.sender, "Sender is not a global admin nor Governance");
+        }
+        if(!admins.isAuthorized(msg.sender) && !accounts.isAccountActive(msg.sender)) {
             revert UnauthorizedAccess(msg.sender, "Sender account is not active");
         }
         _;
@@ -94,9 +106,9 @@ contract Governance {
         _;
     }
 
-    modifier onlyProponentOrganization(uint proposalId) {
-        if(_getProposal(proposalId).proponentOrgId != accounts.getAccount(msg.sender).orgId) {
-            revert UnauthorizedAccess(msg.sender, "Sender is not from proponent organization");
+    modifier onlyProponentOrganizationOrGovernance(uint proposalId) {
+        if(!admins.isAuthorized(msg.sender) && _getProposal(proposalId).proponentOrgId != accounts.getAccount(msg.sender).orgId) {
+            revert UnauthorizedAccess(msg.sender, "Sender is not from proponent organization nor Governance");
         }
         _;
     }
@@ -122,15 +134,19 @@ contract Governance {
         _;
     }
 
-    constructor(Organization orgs, AccountRulesV2 accs) {
+    constructor(Organization orgs, AccountRulesV2 accs, AdminProxy adminsProxy) {
         if(address(orgs) == address(0)) {
             revert InvalidArgument("Invalid address for Organization management smart contract");
         }
         if(address(accs) == address(0)) {
             revert InvalidArgument("Invalid address for Account management smart contract");
         }
+        if(address(adminsProxy) == address(0)) {
+            revert InvalidArgument("Invalid address for Admin management smart contract");
+        }
         organizations = orgs;
         accounts = accs;
+        admins = adminsProxy;
     }
 
     function createProposal(address[] calldata targets, bytes[] memory calldatas, uint blocksDuration, string calldata description) public
@@ -165,8 +181,8 @@ contract Governance {
         return proposal.id;
     }
 
-    function cancelProposal(uint proposalId, string calldata reason) public onlyActiveGlobalAdmin existentProposal(proposalId)
-        onlyProponentOrganization(proposalId) onlyActiveProposal(proposalId) nonEmpty("Cancelation reason", reason) {
+    function cancelProposal(uint proposalId, string calldata reason) public onlyActiveGlobalAdminOrGovernance existentProposal(proposalId)
+        onlyProponentOrganizationOrGovernance(proposalId) onlyActiveProposal(proposalId) nonEmpty("Cancelation reason", reason) {
         ProposalData storage proposal = _getProposal(proposalId);
         proposal.status = ProposalStatus.Canceled;
         proposal.cancelationReason = reason;

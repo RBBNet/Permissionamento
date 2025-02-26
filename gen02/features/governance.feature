@@ -183,6 +183,17 @@ Funcionalidade: Governança do permissionamento
     E o evento "ProposalCanceled" é emitido para a proposta com mensagem "Proposta não deve mais ser executada"
     E a proposta tem situação "Canceled", resultado "Approved", organizações "1,2,3,5" e votos "Approval,Approval,NotVoted,Approval"
 
+  Cenário: Cancelamento de proposta via Governança
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    # Governança cancela a proposta
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" cancela a proposta com motivo "O cadastramento da proposta foi feito de forma errada"
+    Então a proposta é cancelada com sucesso
+    E o evento "ProposalCanceled" é emitido para a proposta com mensagem "O cadastramento da proposta foi feito de forma errada"
+    E a proposta tem situação "Canceled", resultado "Undefined", organizações "1,2,3,5" e votos "NotVoted,NotVoted,NotVoted,NotVoted"
+    E o motivo de cancelamento da proposta é "O cadastramento da proposta foi feito de forma errada"
+
   Cenário: Tentativa de cancelamento de proposta com Administrador Global de outra organização
     # Administrador Global do BNDES cria uma proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
@@ -210,6 +221,20 @@ Funcionalidade: Governança do permissionamento
     E verifico se a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" está ativa o resultado é "false"
     # Novo administrador global tenta cancelar a proposta
     Quando a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" cancela a proposta com motivo "O cadastramento da proposta foi feito de forma errada"
+    Então ocorre erro "UnauthorizedAccess" no cancelamento da proposta
+
+  Cenário: Tentativa de cancelamento de proposta com perfis de acesso sem privilégio
+    # Administrador Global do BNDES cria uma proposta
+    Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
+    Então a proposta é criada com sucesso
+    # Administrador Local do BNDES tenta cancelar proposta
+    Quando a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" cancela a proposta com motivo "O cadastramento da proposta foi feito de forma errada"
+    Então ocorre erro "UnauthorizedAccess" no cancelamento da proposta
+    # Implantador de smart contracts do BNDES tenta cancelar a proposta
+    Quando a conta "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" cancela a proposta com motivo "O cadastramento da proposta foi feito de forma errada"
+    Então ocorre erro "UnauthorizedAccess" no cancelamento da proposta
+    # Usuário do BNDES tenta cancelar a proposta
+    Quando a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" cancela a proposta com motivo "O cadastramento da proposta foi feito de forma errada"
     Então ocorre erro "UnauthorizedAccess" no cancelamento da proposta
 
   Cenário: Tentativa de cancelamento de proposta com conta não cadastrada

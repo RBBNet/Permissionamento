@@ -51,7 +51,7 @@ async function deployGen02(parameters) {
     console.log(` NodeRulesV2Impl implantado no endereço ${nodesContract.target}`);
 
     console.log('Implantando smart contract de governança');
-    const governanceContract = await hre.ethers.deployContract('Governance', [organizationsContract, accountsContract]);
+    const governanceContract = await hre.ethers.deployContract('Governance', [organizationsContract, accountsContract, adminContract]);
     await governanceContract.waitForDeployment();
     // Verificações
     assert.equal(await governanceContract.idSeed(), 0);
