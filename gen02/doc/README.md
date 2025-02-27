@@ -10,5 +10,6 @@
 
 - [Organizações](organizacoes.md)
 - [Contas](contas.md)
+- [Nós](nos.md)
 - [Governança](governanca.md)
 
