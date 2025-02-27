@@ -68,6 +68,15 @@ Procedimento:
 Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
 
 
+# Cancelamento de uma proposta
+
+Procedimento:
+1. Administrador Global (de qualquer organização) cria proposta para cancelar uma outra proposta já existente, informando o identificador dessa outra proposta e o motivo do cancelamento.
+2. Organizações votam para aprovar a proposta.
+3. Governança cancela a outra proposta, impedindo-a de receber votos e ser executada.
+
+
+
 # Implantação da segunda geração de permissionamento
 
 **Observação**: No contexto deste macroprocesso, deve-se entender o termo **Administrador Master** como uma conta cadastrada no *smart contract* [`Admin`](../../gen01/contracts/Admin.sol) da **primeira geração** do permissionamento. E o termo **Administrador Global** deve ser entendido como uma conta cadastrada no *smart contract* [`AccountRulesV2`](../contracts/AccountRulesV2.sol) da **segunda geração** do permissionamento, com o perfil de acesso de gestão global da RBB.
