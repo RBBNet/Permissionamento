@@ -38,7 +38,18 @@ Procedimento:
 Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
 
 
-# Perda de chave privada de Administrador Global
+# Exclusão de Administrador Global
+
+Procedimento:
+1. Administrador Global (de qualquer organização) cria proposta para votação da exclusão de um Administrador Global, informando o respectivo endereço.
+2. Organizações votam para aprovar a proposta.
+3. Administrador Global (de qualquer organização) executa a proposta aprovada.
+   1. Governança realiza exclusão.
+
+**Observação**: **Não** é possível excluir uma conta caso ela seja a única conta de Administrador Global de uma organização. Caso se deseje realmente excluir esse único Administrador Global, antes deve-se cadastrar um novo Administrador Global. Ver o macroprocesso a seguir.
+
+
+# Perda de chave privada de Administrador Global / "Substituição" de Administrador Global
 
 Procedimento:
 1. Organização que perdeu a chave privada gera novo par de chaves.
