@@ -48,6 +48,8 @@ Procedimento:
 
 **Observação**: **Não** é possível excluir uma conta caso ela seja a única conta de Administrador Global de uma organização. Caso se deseje realmente excluir esse único Administrador Global, antes deve-se cadastrar um novo Administrador Global. Ver o macroprocesso a seguir.
 
+Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
+
 
 # Perda de chave privada de Administrador Global / "Substituição" de Administrador Global
 
@@ -93,6 +95,7 @@ Procedimento:
 3. Administrador Global (de qualquer organização) executa a proposta aprovada.
    1. Governança cancela a outra proposta, impedindo-a de receber votos e ser executada.
 
+Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
 
 
 # Implantação da segunda geração de permissionamento

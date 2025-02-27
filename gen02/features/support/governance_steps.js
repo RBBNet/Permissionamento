@@ -99,9 +99,17 @@ Then('ocorre erro {string} na criação da proposta', function(error) {
 });
 
 Then('a proposta tem situação {string}, resultado {string}, organizações {string} e votos {string}', async function(status, result, orgs, votes) {
+    await proposalAssertions(this.proposalId, status, result, orgs, votes, this);
+});
+
+Then('a proposta {int} tem situação {string}, resultado {string}, organizações {string} e votos {string}', async function(proposalId, status, result, orgs, votes) {
+    await proposalAssertions(proposalId, status, result, orgs, votes, this);
+});
+
+async function proposalAssertions(proposalId, status, result, orgs, votes, ctx) {
     const expectedOrgs = orgs.split(',');
     const expectedVotes = votes.split(',');
-    const proposal = await this.govenanceContract.getProposal(this.proposalId);
+    const proposal = await ctx.govenanceContract.getProposal(proposalId);
     assert.equal(proposal.status, getProposalStatus(status));
     assert.equal(proposal.result, getProposalResult(result));
     assert.equal(proposal.organizations.length, expectedOrgs.length);
@@ -112,7 +120,7 @@ Then('a proposta tem situação {string}, resultado {string}, organizações {st
     for(i = 0; i < expectedVotes.length; ++i) {
         assert.equal(proposal.votes[i], getProposalVote(expectedVotes[i]));
     }
-});
+}
 
 When('a conta {string} cancela a proposta {int}', async function(admin, proposalId) {
     this.cancelError = null;
@@ -200,29 +208,45 @@ Then('o evento {string} é emitido para a proposta com voto de {string} pela org
 });
 
 Then('o evento {string} é emitido para a proposta', async function(event) {
-    const block = await hre.ethers.provider.getBlockNumber();
-    const events = await this.govenanceContract.queryFilter(event, block, block);
-    let found = false;
-    for (let i = 0; i < events.length && !found; i++) {
-        found =
-            events[i].fragment.name == event &&
-            events[i].args[0] == this.proposalId;
-    }
-    assert.ok(found);
+    await proposalEventAssertions(event, this.proposalId, this);
 });
 
-Then('o evento {string} é emitido para a proposta com mensagem {string}', async function(event, message) {
+Then('o evento {string} é emitido para a proposta {int}', async function(event, proposalId) {
+    await proposalEventAssertions(event, proposalId, this);
+});
+
+async function proposalEventAssertions(event, proposalId, ctx) {
     const block = await hre.ethers.provider.getBlockNumber();
-    const events = await this.govenanceContract.queryFilter(event, block, block);
+    const events = await ctx.govenanceContract.queryFilter(event, block, block);
     let found = false;
     for (let i = 0; i < events.length && !found; i++) {
         found =
             events[i].fragment.name == event &&
-            events[i].args[0] == this.proposalId &&
+            events[i].args[0] == proposalId;
+    }
+    assert.ok(found);
+}
+
+Then('o evento {string} é emitido para a proposta com mensagem {string}', async function(event, message) {
+    await proposalEventMessageAssertions(event, this.proposalId, message, this);
+});
+
+Then('o evento {string} é emitido para a proposta {int} com mensagem {string}', async function(event, proposalId, message) {
+    await proposalEventMessageAssertions(event, proposalId, message, this);
+});
+
+async function proposalEventMessageAssertions(event, proposalId, message, ctx) {
+    const block = await hre.ethers.provider.getBlockNumber();
+    const events = await ctx.govenanceContract.queryFilter(event, block, block);
+    let found = false;
+    for (let i = 0; i < events.length && !found; i++) {
+        found =
+            events[i].fragment.name == event &&
+            events[i].args[0] == proposalId &&
             events[i].args[1] == message;
     }
     assert.ok(found);
-});
+}
 
 Then('o evento {string} é emitido para a proposta com alvo do smart contract de teste, dados {string}, limite de {int} blocos e descrição {string}', async function(event, calldatas, blocksDuration, description) {
     const calldatasArray = calldatas.split(',');
