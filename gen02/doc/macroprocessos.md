@@ -8,7 +8,8 @@ Procedimento:
    1. Inclusão de organização
    2. Inclusão de Administrador Global da nova organização, com o endereço gerado
 3. Organizações votam para aprovar a proposta.
-4. Governança realiza novos cadastros.
+4. Administrador Global (de qualquer organização) executa a proposta aprovada.
+   1. Governança realiza novos cadastros.
 
 Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
 
@@ -18,7 +19,8 @@ Há um [cenário de teste automatizado](../features/macroprocesses.feature) para
 Procedimento:
 1. Administrador Global (de qualquer organização) cria proposta para votação de exclusão da organização.
 2. Organizações votam para aprovar a proposta.
-3. Governança realiza a exclusão da organização.
+3. Administrador Global (de qualquer organização) executa a proposta aprovada.
+   1. Governança realiza a exclusão da organização.
 4. Todas as contas e nós vinculados tornam-se intrinsecamente inativos.
 
 Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
@@ -30,7 +32,8 @@ Procedimento:
 1. Organização do novo Administrador Global gera par de chaves.
 2. Administrador Global (de qualquer organização) cria proposta para votação do cadastro do novo Administrador Global para a referida organização, informando novo endereço gerado e sua organização.
 3. Organizações votam para aprovar a proposta.
-4. Governança realiza cadastro.
+4. Administrador Global (de qualquer organização) executa a proposta aprovada.
+   1. Governança realiza cadastro.
 
 Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
 
@@ -43,7 +46,8 @@ Procedimento:
    1. Cadastro de novo Administrador Global para a referida organização, informando novo endereço gerado
    2. Exclusão do Administrador Global cuja chave foi perdida
 3. Organizações votam para aprovar a proposta.
-4. Governança realiza a "substituição" de contas.
+4. Administrador Global (de qualquer organização) executa a proposta aprovada.
+   1. Governança realiza a "substituição" de contas.
 
 Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
 
@@ -53,7 +57,8 @@ Há um [cenário de teste automatizado](../features/macroprocesses.feature) para
 Procedimento:
 1. Administrador Global (de qualquer organização) cria proposta para restringir acesso de *smart contract*, informando o endereço do contrato e eventuais contas que possam realizar o acesso restrito.
 2. Organizações votam para aprovar a proposta.
-3. Governança realiza a restrição de acesso.
+3. Administrador Global (de qualquer organização) executa a proposta aprovada.
+   1. Governança realiza a restrição de acesso.
 
 Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
 
@@ -63,7 +68,8 @@ Há um [cenário de teste automatizado](../features/macroprocesses.feature) para
 Procedimento:
 1. Administrador Global (de qualquer organização) cria proposta para remover restrição de acesso a *smart contract*, informando o endereço do contrato.
 2. Organizações votam para aprovar a proposta.
-3. Governança remove a restrição de acesso.
+3. Administrador Global (de qualquer organização) executa a proposta aprovada.
+   1. Governança remove a restrição de acesso.
 
 Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
 
@@ -73,7 +79,8 @@ Há um [cenário de teste automatizado](../features/macroprocesses.feature) para
 Procedimento:
 1. Administrador Global (de qualquer organização) cria proposta para cancelar uma outra proposta já existente, informando o identificador dessa outra proposta e o motivo do cancelamento.
 2. Organizações votam para aprovar a proposta.
-3. Governança cancela a outra proposta, impedindo-a de receber votos e ser executada.
+3. Administrador Global (de qualquer organização) executa a proposta aprovada.
+   1. Governança cancela a outra proposta, impedindo-a de receber votos e ser executada.
 
 
 
@@ -84,9 +91,9 @@ Procedimento:
 Procedimento:
 1. Organizações devem criar chaves para suas contas de Administradores Globais.
    - **As chaves privadas devem ser mantidas com alto rigor de segurança**.
-2. As novas contas de Administradores Globais devem ser permissionadas na gen01 **como contas transacionais**.
+2. Administrador Master permissiona as novas contas de Administradores Globais **na Gen01 como contas transacionais**.
    - Estas contas **não** devem ser permissionadas como Administradores Master.
-   - Este permissionamento é necessário para que estes administradores possam enviar votos ainda com o permissionamento de gen01 valendo.
+   - Este permissionamento é necessário para que estes administradores possam enviar votos (para aprovação de propostas) ainda com o permissionamento de Gen01 valendo.
 3. Administrador Master implanta smart contracts de: organizações; contas; nós; e governança/votação.
    1. São configuradas as referências entre os *smart contracts*.
    2. São pré-cadastradas:
@@ -248,7 +255,8 @@ Procedimento:
 1. Novo(s) *smart contract(s)* de permissionamento é(são) implantado(s).
 2. Administrador Global (de qualquer organização) cria proposta para chamar as funções de reponteiramento desejadas (`NodeIngress` / `AccountIngress`).
 3. Organizações votam para aprovar a proposta.
-4. O reponteiramento é realizado.
+4. Administrador Global (de qualquer organização) executa a proposta aprovada.
+   1. O reponteiramento é realizado.
 
 Este procedimento pode ser testado através do script [migrate-to-gen03-mock.js](../deploy/migrate-to-gen03-mock.js).
 
@@ -259,7 +267,8 @@ Procedimento:
 1. Novo *smart contract* de governança/votação é implantado.
 2. Administrador Global (de qualquer organização) cria proposta para adicionar o novo *smart contract* como Administrador Master
 3. Organizações votam para aprovar a proposta.
-4. Novo *smart contract* é configurado como Administrador Master.
+4. Administrador Global (de qualquer organização) executa a proposta aprovada.
+   1. Governança configura novo *smart contract* como Administrador Master.
 5. Novo *smart contract* deve ser acionado, conforme suas regras de funcionamento, para remover o *smart contract* da segunda geração como Administrador Master.
 
 Este procedimento pode ser testado através do script [migrate-governance-mock.js](../deploy/migrate-governance-mock.js).
