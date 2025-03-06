@@ -13,9 +13,7 @@ async function deployGen02(parameters) {
     const organizations = getParameter(parameters, 'organizations');
     const globalAdmins = getParameter(parameters, 'globalAdmins');
 
-    if(organizations.length != globalAdmins.length) {
-        throw new Error(`Listas de organizações e contas de administradores globais não têm o mesmo tamanho: ${organizations.length} != ${globalAdmins.length}`);
-    }
+    assert.equal(organizations.length, globalAdmins.length, `Listas de organizações e contas de administradores globais não têm o mesmo tamanho: ${organizations.length} != ${globalAdmins.length}`);
 
     const adminContract = await hre.ethers.getContractAt(ADMIN_ABI, adminAddress);
 
