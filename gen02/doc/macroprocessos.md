@@ -125,12 +125,12 @@ Procedimento:
    - **Este passo é essencial antes do reponteiramento do permissionamento.**
 5. Caso necessário, novos Administradores Globais podem ser cadastrados.
    1. Um administrador Global (de qualquer organização) cria proposta para cadastramento dos novos Administradores Globais.
-   2. Organizações votam para aprovar a proposta.
-   3. Um Administrador Global (de qualquer organização) executa a proposta aprovada.
+   2. Organizações participantes votam para aprovar a proposta.
+   3. Um Administrador Global (de qualquer organização participante) executa a proposta aprovada.
 6. Cadastramento das organizações que não têm nó implantado.
    1. Um administrador Global (de qualquer organização) cria proposta para cadastramento das organizações que não têm nó implantado.
-   2. Organizações votam para aprovar a proposta.
-   3. Um Administrador Global (de qualquer organização) executa a proposta aprovada.
+   2. Organizações participantes votam para aprovar a proposta.
+   3. Um Administrador Global (de qualquer organização participante) executa a proposta aprovada.
    - Este passo pode ser feito paralelamente ao passo anterior, caso necessário, sem prejuízos.
    - A ideia de cadastrar essas organizações é para dar transparência ao público sobre quem faz parte da RBB. Ao mesmo tempo, pode-se já testar e exercitar o mecanismo de governança.
    - As organizações são cadastradas **sem** administrador global e **sem** direito a voto, mesmo que sejam partícipes associados.
@@ -141,16 +141,16 @@ Procedimento:
    1. Um administrador Global (de qualquer organização) cria proposta com os seguintes passos: 
       1. Reponteiramento das regras de nós (`NodeIngress`) para o novo *smart contract* de gestão nós.
       2. Reponteiramento das regras de contas (`AccountIngress`) para o novo *smart contract* de gestão de contas.
-   2. Organizações votam para aprovar a proposta.
-   3. Um Administrador Global (de qualquer organização) executa a proposta aprovada.
+   2. Organizações participantes votam para aprovar a proposta.
+   3. Um Administrador Global (de qualquer organização participante) executa a proposta aprovada.
 - **As regras de Administrador Master permanecerão inalteradas**, sendo administradas através de uma lista de endereços no *smart contract* [`Admin`](../../gen01/contracts/Admin.sol) da **primeira geração** do permissionamento.
   - Só estes Administradores Master podem realizar o reponteiramento.
   - Só estes Administradores Master poderão executar certas funções dos *smart contracts* da segunda geração.
 8. Remoção de todas as contas Administrador Master, deixando ativa apenas a conta do *smart contract* de governança/votação:
    1. Um administrador Global (de qualquer organização) cria proposta para remover todas as demais contas de Administrador Master.
       - **Observação**: Um Administrador Master não pode remover a si mesmo, portanto é necessário haver a execução da exclusão via Governança.
-   2. Organizações votam para aprovar a proposta.
-   3. Um Administrador Global (de qualquer organização) executa a proposta aprovada.
+   2. Organizações participantes votam para aprovar a proposta.
+   3. Um Administrador Global (de qualquer organização participante) executa a proposta aprovada.
    - Nesse momento, todas as demais contas Administrador Master são removidas.
    - Dessa forma, para todos os efeitos, após a aprovaçao da proposta, só o novo *smart contract* de governança/votação será Administrador Master (no conceito da primeira geração do permissionamento) e, portanto, só ele pode poderá autorizar um novo reponteiramento (através de votação).
 9. Testes:
