@@ -255,7 +255,7 @@ Implementação:
       - `nodeRulesV2Address`: Endereço do *smart contract* de `NodeRulesV2Impl`, conforme implantado no passo 2.
     - **Observação**: A partir da implantação da gen02 (passo 2), é possível realizar estes diagnósticos do permissionamento a qualquer momento.
 
-**Observações:
+**Observações**:
 - Os scripts devem ser executados via Hardhat, através dos "scripts" cadastrados na propriedade `scripts` no [package.json](../package.json) deste projeto.
 - Deve-se usar o "script" correto de acordo com o ambiente e rede desejadas.
   - Por exemplo, para o ambiente local em rede Besu, usar os scripts `local-xxx`.
