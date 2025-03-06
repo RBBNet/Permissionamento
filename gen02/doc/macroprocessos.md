@@ -108,13 +108,15 @@ Procedimento:
 2. Administrador Master permissiona as novas contas de Administradores Globais **na Gen01 como contas transacionais**.
    - Estas contas **não** devem ser permissionadas como Administradores Master.
    - Este permissionamento é necessário para que estes administradores possam enviar votos (para aprovação de propostas) ainda com o permissionamento de Gen01 valendo.
-3. Administrador Master implanta smart contracts de: organizações; contas; nós; e governança/votação.
-   1. São configuradas as referências entre os *smart contracts*.
-   2. São pré-cadastradas:
-      1. Organizações participantes (necessário para as que têm nó).
-      2. Um único Administrador Global para cada organização (outros Administradores Globais podem ser adicionados posteriormente).
-   3. ***Smart contract* de governança é cadastrado como Administrador Master.**
-      - Apenas um Administrador Master pode adicionar um outro Administrador Master.
+3. Administrador Master implanta Gen02:
+   1. Implantação dos *smart contracts* de: organizações; contas; nós; e governança/votação.
+      1. São configuradas as referências entre os *smart contracts*.
+      2. São pré-cadastradas:
+         1. Organizações participantes (necessário para as que têm nó).
+         2. Um único Administrador Global para cada organização (outros Administradores Globais podem ser adicionados posteriormente).
+      3. ***Smart contract* de governança é cadastrado como Administrador Master.**
+         - Apenas um Administrador Master pode adicionar um outro Administrador Master.
+   2. Testes automatizados para validar o permissionamento dos Administradores Globais (`transactionAllowed()`).
 4. Administradores Globais verificam e complementam cadastros de suas próprias organizações:
    1. Novas contas podem ser cadastradas.
    2. Os nós das organizações **têm** que ser cadastrados.
@@ -156,13 +158,18 @@ Procedimento:
    2. Diagnósticos.
 
 Implementação:
-- Passo 2 - Por se tratar de ação na gen01, deve-se utilizar as ferramentas já existentes para essa geração do permissionamento.
-- Passo 3 - [deploy-gen02.js](../deploy/deploy-gen02.js)
-  - Parâmetros:
-    - `adminAddress`: Endereço do *smart contract* `Admin` da gen01.
-    - `organizations`: Lista de organizações a serem pré-cadastradas.
-    - `globalAdmins`: Lista dos endereços a serme pré-cadastrados como Administradores globais das organizações.
-    - As listas `organizations` e `globalAdmins` devem estar "sincronizadas". Isto é, o enésimo endereço será o Administrador Global da enésima organização.
+- Passo 2 - Por se tratar de ação na gen01, deve-se utilizar as [ferramentas já existentes](https://github.com/RBBNet/scripts-permissionamento/) para essa geração do permissionamento.
+- Passo 3:
+  - 3.1 - [deploy-gen02.js](../deploy/deploy-gen02.js)
+    - Parâmetros:
+      - `adminAddress`: Endereço do *smart contract* `Admin` da gen01.
+      - `organizations`: Lista de organizações a serem pré-cadastradas.
+      - `globalAdmins`: Lista dos endereços a serem pré-cadastrados como Administradores globais das organizações.
+      - As listas `organizations` e `globalAdmins` devem estar "sincronizadas". Isto é, o enésimo endereço será o Administrador Global da enésima organização.
+  - 3.2 - [test-admins-gen02.js](../deploy/test-admins-gen02.js)
+    - Parâmetros: 
+      - `accountRulesV2Address`: Endereço do *smart contract* de `AccountRulesV2Impl`, conforme implantado no passo 2.
+      - `globalAdmins`: Lista dos endereços a serem pré-cadastrados como Administradores globais das organizações.
 - Passo 4:
   - 4.1 - [add-accounts-gen02.js](../deploy/add-accounts-gen02.js)
     - Parâmetros: 

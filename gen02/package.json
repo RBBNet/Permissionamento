@@ -9,6 +9,7 @@
     "hardhat-deploy-gen02": "npx hardhat run deploy/deploy-gen02.js --network local",
     "local-deploy-admin-mock": "npx hardhat run deploy/deploy-admin-mock.js --network local_besu",
     "local-deploy-gen02": "npx hardhat run deploy/deploy-gen02.js --network local_besu",
+    "local-test-admins-gen02": "npx hardhat run deploy/test-admins-gen02.js --network local_besu",
     "local-add-accounts-gen02": "npx hardhat run deploy/add-accounts-gen02.js --network local_besu",
     "local-test-accounts-gen02": "npx hardhat run deploy/test-accounts-gen02.js --network local_besu",
     "local-add-nodes-gen02": "npx hardhat run deploy/add-nodes-gen02.js --network local_besu",

@@ -2,7 +2,7 @@ const fs = require('fs');
 const assert = require('assert');
 const readline = require('readline');
 const hre = require('hardhat');
-const { STATUS_ACTIVE, STATUS_EXECUTED, RESULT_APPROVED } = require('./constants.js');
+const { STATUS_ACTIVE, STATUS_EXECUTED, RESULT_APPROVED, NON_ZEROED_ADDRESS, ZEROED_BYTES } = require('./constants.js');
 
 function getParameters() {
     const paramsPath = process.env['CONFIG_PARAMETERS'];
@@ -159,6 +159,20 @@ async function approveProposal(governanceContract, idProposal, globalAdmins) {
     console.log();
 }
 
+async function transactionAllowed(accountRulesV2Address, accounts) {
+    const accountsContract = await hre.ethers.getContractAt('AccountRulesV2Impl', accountRulesV2Address);
+    for(acc of accounts) {
+        try {
+            const allowed = await accountsContract.transactionAllowed(acc, NON_ZEROED_ADDRESS, 0, 0, 0, ZEROED_BYTES);
+            const result = allowed ? 'OK' : 'ERRO';
+            console.log(` - ${result} - ${acc}`);
+        }
+        catch(error) {
+            console.log(` - Erro na verificação de acesso da conta ${acc}: ${error.message}`);
+        }
+    }
+}
+
 module.exports = {
     getParameters: getParameters,
     getParameter: getParameter,
@@ -173,5 +187,6 @@ module.exports = {
     getProposalStatus: getProposalStatus,
     getProposalResult: getProposalResult,
     executeProposal: executeProposal,
-    approveProposal: approveProposal
+    approveProposal: approveProposal,
+    transactionAllowed: transactionAllowed
 }
