@@ -70,12 +70,12 @@ npx hardhat node
 
 2. Abra outro terminal/console.
 
-3. Defina a variável de ambiente `CONFIG_PARAMETERS` contendo o caminho do arquivo com os parâmetros de configuração. Para o caso de implantação local o arquivo [`deploy/parameters-local.json`](deploy/parameters-local.json) já foi preparado.
+3. Defina a variável de ambiente `CONFIG_PARAMETERS` contendo o caminho do arquivo com os parâmetros de configuração. Para o caso de implantação local no Hardhat, o arquivo [`deploy/parameters-hardhat.json`](deploy/parameters-hardhat.json) já foi preparado.
 
 O ajuste da variável de ambiente pode ser feito via arquivo `.env` ou ajustando o valor diretamente no terminal:
 
 ```shell
-set CONFIG_PARAMETERS=deploy/parameters-local.json
+set CONFIG_PARAMETERS=deploy/parameters-hardhat.json
 ```
 
 4. Implante o contrato *mock* de [`AdminProxy`](contracts/AdminProxy.sol):
@@ -93,7 +93,7 @@ Implantando AdminMock
 
 **Observação**: Para efeitos de teste local da gen02 no Hardhat, não é necessário implantar a gen01. Mas é necessário ter um contrato de `AdminProxy`. Por isso esse mock se faz necessário.
 
-5. Copie o endereço do contrato `AdminMock` no arquivo [`deploy/parameters-local.json`](deploy/parameters-local.json), no parâmetro `adminAddress`:
+5. Copie o endereço do contrato `AdminMock` no arquivo [`deploy/parameters-hardhat.json`](deploy/parameters-hardhat.json), no parâmetro `adminAddress`:
 
 ```
 {
@@ -122,7 +122,7 @@ besu --config-file besu/config.toml
 2. Abra outro terminal/console.
 
 3. Defina as seguintes variáveis de ambiente:
-   1. `CONFIG_PARAMETERS`: Caminho do arquivo com os parâmetros de configuração. Para o caso de implantação local o arquivo [`deploy/parameters-local.json`](deploy/parameters-local.json) já foi preparado.
+   1. `CONFIG_PARAMETERS`: Caminho do arquivo com os parâmetros de configuração. Para o caso de implantação local no Besu, o arquivo [`deploy/parameters-local.json`](deploy/parameters-local.json) já foi preparado.
    2. `ACCOUNT_ADDRESS`: Endereço da conta a ser usada para envio de transações.
    3. `PRIVATE_KEY`: Chave privada da conta a ser usada para envio de transações.
    4. `ALT_PRIVATE_KEYS`: **Opcional**. Lista com chaves privadas alternativas, separadas por vírgulas, que podem ser usadas em scripts para simular o envio de transações por outras contas.
@@ -203,11 +203,9 @@ Implantando smart contract de governança
 }
 ```
 
-10. Realize a migração da gen01 para a gen02:
+#### Migração da gen01 para a gen02:
 
-```shell
-npm run local-migrate-to-gen02
-```
+O procedimento recomendado de migração da gen01 para a gen02 está descrito no documento de [macroprocessos](doc/macroprocessos.md).
 
 
 ### Implantação na Rede Lab
