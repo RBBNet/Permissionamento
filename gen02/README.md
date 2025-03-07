@@ -84,9 +84,25 @@ set CONFIG_PARAMETERS=deploy/parameters-local.json
 npm run hardhat-deploy-admin-mock
 ```
 
+Ao final da implantação, guarde o endereço onde foi implantado o contrato `AdminMock`:
+
+```
+Implantando AdminMock
+ AdminMock implantado no endereço 0x5FbDB2315678afecb367f032d93F642f64180aa3
+```
+
 **Observação**: Para efeitos de teste local da gen02 no Hardhat, não é necessário implantar a gen01. Mas é necessário ter um contrato de `AdminProxy`. Por isso esse mock se faz necessário.
 
-5. Implante os contratos de permissionamento:
+5. Copie o endereço do contrato `AdminMock` no arquivo [`deploy/parameters-local.json`](deploy/parameters-local.json), no parâmetro `adminAddress`:
+
+```
+{
+    "adminAddress": "0x0x5FbDB2315678afecb367f032d93F642f64180aa3
+    ...
+}
+```
+
+6. Implante os contratos de permissionamento:
 
 ```shell
 npm run hardhat-deploy-gen02
@@ -126,7 +142,7 @@ set PRIVATE_KEY=0x701b615bbdfb9de65240bc28bd21bbc0d996645a3dd57e7b12bc2bdf6f192c
 
 5. **Caso vá utilizar a gen01**, veja o procedimento de implantação no documento [README.md](../gen01/README.md) do projeto da gen01.
 
-Ao final da implantação, guarde o endereço onde foi implantado o contrado de `Admin`:
+Ao final da implantação, guarde o endereço onde foi implantado o contrato `Admin`:
 
 ```
 Validation step finished
@@ -139,10 +155,11 @@ Validation step finished
 npm run local-deploy-admin-mock
 ```
 
-Ao final da implantação, guarde o endereço onde foi implantado o contrado de `AdminMock`:
+Ao final da implantação, guarde o endereço onde foi implantado o contrato `AdminMock`:
 
 ```
-AdminMock implantado no endereço 0x5FbDB2315678afecb367f032d93F642f64180aa3
+Implantando AdminMock
+ AdminMock implantado no endereço 0x5FbDB2315678afecb367f032d93F642f64180aa3
 ```
 
 7. Copie o endereço do contrato de `Admin` ou `AdminMock` no arquivo [`deploy/parameters-local.json`](deploy/parameters-local.json), no parâmetro `adminAddress`:
