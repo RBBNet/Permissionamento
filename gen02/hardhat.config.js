@@ -11,15 +11,11 @@ var privateKey = process.env.PRIVATE_KEY;
 var altPrivateKeys = process.env.ALT_PRIVATE_KEYS;
 
 if(accountAddress === undefined) {
-    console.error();
-    console.error('Variável ACCOUNT_ADDRESS não configurada');
-    console.error();
+    accountAddress = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266';
 }
 
 if(privateKey === undefined) {
-    console.error();
-    console.error('Variável PRIVATE_KEY não configurada');
-    console.error();
+    privateKey = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
 }
 
 var privateKeys = [];
