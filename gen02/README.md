@@ -97,7 +97,7 @@ Implantando AdminMock
 
 ```
 {
-    "adminAddress": "0x0x5FbDB2315678afecb367f032d93F642f64180aa3
+    "adminAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3
     ...
 }
 ```
@@ -166,7 +166,7 @@ Implantando AdminMock
 
 ```
 {
-    "adminAddress": "0x0x5FbDB2315678afecb367f032d93F642f64180aa3
+    "adminAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3
     ...
 }
 ```
