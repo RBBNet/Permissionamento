@@ -9,17 +9,17 @@ Funcionalidade: Governança do permissionamento
     # o smart contract de governança/votação.
     E o endereço "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" é admin master
     # BNDES será organização 1
-    E a organização "BNDES" com direito de voto "true"
+    E a organização "33657248000189" "BNDES" do tipo "Patron" com direito de voto "true"
     # TCU será organização 2
-    E a organização "TCU" com direito de voto "true"
+    E a organização "00414607000118" "TCU" do tipo "Patron" com direito de voto "true"
     # Dataprev será a organização 3
-    E a organização "DATAPREV" com direito de voto "true"
+    E a organização "42422253000101" "DATAPREV" do tipo "Associate" com direito de voto "true"
     # PUC-Rio será a organização 4
-    E a organização "PUC-Rio" com direito de voto "false"
+    E a organização "33555921000170" "PUC-Rio" do tipo "Partner" com direito de voto "false"
     # CPQD será a organização 5
-    E a organização "CPQD" com direito de voto "true"
+    E a organização "02641663000110" "CPQD" do tipo "Associate" com direito de voto "true"
     # OrgExc será organização 6
-    E a organização "OrgExc" com direito de voto "true"
+    E a organização "12345678901234" "OrgExc" do tipo "Associate" com direito de voto "true"
     E implanto o smart contract de gestão de organizações
     E a implantação do smart contract de gestão de organizações ocorre com sucesso
     # Administrador global da organização 1 - BNDES
@@ -43,7 +43,7 @@ Funcionalidade: Governança do permissionamento
     # Governança adiciona conta de usuário para o BNDES
     E a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" na organização 1 com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000003"
     # Verificando cadastro das organizações
-    E a lista de organizações é "1,BNDES,true|2,TCU,true|3,DATAPREV,true|4,PUC-Rio,false|5,CPQD,true|6,OrgExc,true"
+    E a lista de organizações é "1,33657248000189,BNDES,Patron,true|2,00414607000118,TCU,Patron,true|3,42422253000101,DATAPREV,Associate,true|4,33555921000170,PUC-Rio,Partner,false|5,02641663000110,CPQD,Associate,true|6,12345678901234,OrgExc,Associate,true"
     # Verificando cadastro das contas
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" é da organização 1 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" é da organização 1 com papel "LOCAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000001" e situação ativa "true"
@@ -58,7 +58,7 @@ Funcionalidade: Governança do permissionamento
     E a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 6
     E verifico se a organização 6 está ativa o resultado é "false"
     E verifico se a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" está ativa o resultado é "false"
-    E a lista de organizações é "1,BNDES,true|2,TCU,true|3,DATAPREV,true|4,PUC-Rio,false|5,CPQD,true"
+    E a lista de organizações é "1,33657248000189,BNDES,Patron,true|2,00414607000118,TCU,Patron,true|3,42422253000101,DATAPREV,Associate,true|4,33555921000170,PUC-Rio,Partner,false|5,02641663000110,CPQD,Associate,true"
     E implanto o smart contract de governança do permissionamento
     E a implantação do smart contract de governança do permissionamento ocorre com sucesso
     E implanto um smart contract mock para que sofra ações da governança
@@ -204,8 +204,8 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Tentativa de cancelamento de proposta com conta inativa
     # Governança adiciona a OrgExc2 como organização 7
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "OrgExc" e direito de voto "true"
-    Então a organização 7 é "OrgExc" e direito de voto "true"
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "43210987654321" "OrgExc" do tipo "Associate" e direito de voto "true"
+    Então a organização 7 é "43210987654321" "OrgExc" do tipo "Associate" e direito de voto "true"
     E verifico se a organização 7 está ativa o resultado é "true"
     # Governança adiciona novo administrador global para a OrgExc2
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" na organização 7 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"
@@ -474,8 +474,8 @@ Funcionalidade: Governança do permissionamento
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria uma proposta com alvo o smart contract de teste com dados "0xdfc0bedb00000000000000000000000000000000000000000000000000000000000007e8", limite de 30000 blocos e descrição "Ajustando código para 2024"
     Então a proposta é criada com sucesso
     # Governança adiciona a NovaOrg como organização 7
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "NovaOrg" e direito de voto "true"
-    Então a organização 7 é "NovaOrg" e direito de voto "true"
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "43210987654321" "NovaOrg" do tipo "Associate" e direito de voto "true"
+    Então a organização 7 é "43210987654321" "NovaOrg" do tipo "Associate" e direito de voto "true"
     E verifico se a organização 7 está ativa o resultado é "true"
     # Governança adiciona novo administrador global para a NovaOrg
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096" na organização 7 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
@@ -771,8 +771,8 @@ Funcionalidade: Governança do permissionamento
 
   Cenário: Tentativa de execução de proposta com conta inativa
     # Governança adiciona a OrgExc2 como organização 7
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "OrgExc" e direito de voto "true"
-    Então a organização 7 é "OrgExc" e direito de voto "true"
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "43210987654321" "OrgExc" do tipo "Associate" e direito de voto "true"
+    Então a organização 7 é "43210987654321" "OrgExc" do tipo "Associate" e direito de voto "true"
     E verifico se a organização 7 está ativa o resultado é "true"
     # Governança adiciona novo administrador global para a OrgExc2
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" na organização 7 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000001"

@@ -1,9 +1,11 @@
 const { Before } = require('@cucumber/cucumber')
 
-function createOrganization(name, canVote) {
+function createOrganization(cnpj, name, orgType, canVote) {
     return {
         "id": 0,
+        "cnpj": cnpj,
         "name": name,
+        "orgType": orgType,
         "canVote": canVote
     }
 }
@@ -14,6 +16,15 @@ function getBoolean(value) {
         case 'false': return false;
         default: throw new Error('Valor booleano inválido: ' + value);
     }    
+}
+
+function getOrgType(type) {
+    switch(type) {
+        case 'Partner': return 0;
+        case 'Associate': return 1;
+        case 'Patron': return 2;
+        default: throw new Error('Tipo de organização inválido: ' + type);
+    }
 }
 
 const typeMap = {
@@ -106,6 +117,7 @@ module.exports = {
     createOrganization: createOrganization,
     getBoolean: getBoolean,
     getRoleId: getRoleId,
+    getOrgType: getOrgType,
     getNodeType: getNodeType,
     getConnectionResult: getConnectionResult,
     getProposalStatus: getProposalStatus,

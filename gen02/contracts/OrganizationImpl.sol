@@ -37,28 +37,30 @@ contract OrganizationImpl is Organization, Governable {
     constructor(OrganizationData[] memory orgs, AdminProxy adminsProxy) Governable(adminsProxy) {
         require(orgs.length >= 2, "At least 2 organizations must exist");
         for(uint i = 0; i < orgs.length; ++i) {
-            _addOrganization(orgs[i].name, orgs[i].canVote);
+            _addOrganization(orgs[i].cnpj, orgs[i].name, orgs[i].orgType, orgs[i].canVote);
         }
     }
 
-    function addOrganization(string calldata name, bool canVote) public onlyGovernance returns (uint) {
-        return _addOrganization(name, canVote);
+    function addOrganization(string calldata cnpj, string calldata name, OrganizationType orgType, bool canVote) public onlyGovernance returns (uint) {
+        return _addOrganization(cnpj, name, orgType, canVote);
     }
 
-    function _addOrganization(string memory name, bool canVote) private validName(name) returns (uint) {
+    function _addOrganization(string memory cnpj, string memory name, OrganizationType orgType, bool canVote) private validName(name) returns (uint) {
         uint newId = ++idSeed;
-        OrganizationData memory newOrg = OrganizationData(newId, name, canVote);
+        OrganizationData memory newOrg = OrganizationData(newId, cnpj, name, orgType, canVote);
         organizations[newId] = newOrg;
         _organizationIds.add(newId);
-        emit OrganizationAdded(newId, name, canVote);
+        emit OrganizationAdded(newId, cnpj, name, orgType, canVote);
         return newId;
     }
 
-    function updateOrganization(uint orgId, string calldata name, bool canVote) public onlyGovernance existentOrganization(orgId) validName(name) {
+    function updateOrganization(uint orgId, string calldata cnpj, string calldata name, OrganizationType orgType, bool canVote) public onlyGovernance existentOrganization(orgId) validName(name) {
         OrganizationData storage org = organizations[orgId];
+        org.cnpj = cnpj;
         org.name = name;
+        org.orgType = orgType;
         org.canVote = canVote;
-        emit OrganizationUpdated(orgId, name, canVote);
+        emit OrganizationUpdated(orgId, cnpj, name, orgType, canVote);
     }
 
     function deleteOrganization(uint orgId) public onlyGovernance existentOrganization(orgId) onlyIfMinimumActiveOrganizations {

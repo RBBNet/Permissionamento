@@ -9,18 +9,18 @@ Funcionalidade: Gestão de organizações
     # o smart contract de governança/votação.
     E o endereço "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" é admin master
     # BNDES será organização 1
-    E a organização "BNDES" com direito de voto "true"
+    E a organização "33657248000189" "BNDES" do tipo "Patron" com direito de voto "true"
     # TCU será organização 2
-    E a organização "TCU" com direito de voto "true"
+    E a organização "00414607000118" "TCU" do tipo "Patron" com direito de voto "true"
     E implanto o smart contract de gestão de organizações
     E a implantação do smart contract de gestão de organizações ocorre com sucesso
     
   Cenário: Consulta de dados cadastrais de organização
-    E a organização 1 é "BNDES" e direito de voto "true"
-    E a organização 2 é "TCU" e direito de voto "true"
+    E a organização 1 é "33657248000189" "BNDES" do tipo "Patron" e direito de voto "true"
+    E a organização 2 é "00414607000118" "TCU" do tipo "Patron" e direito de voto "true"
 
   Cenário: Consulta da lista de organizações
-    E a lista de organizações é "1,BNDES,true|2,TCU,true"
+    E a lista de organizações é "1,33657248000189,BNDES,Patron,true|2,00414607000118,TCU,Patron,true"
 
   Cenário: Consulta de organização inexistente
     Quando um observador consulta a organização 10 ocorre erro "OrganizationNotFound"
@@ -32,66 +32,66 @@ Funcionalidade: Gestão de organizações
 
   Cenário: Adição de organização
     # Governança adiciona a Dataprev com organização 3
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "Dataprev" e direito de voto "true"
-    Então a organização 3 é "Dataprev" e direito de voto "true"
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "42422253000101" "Dataprev" do tipo "Associate" e direito de voto "true"
+    Então a organização 3 é "42422253000101" "Dataprev" do tipo "Associate" e direito de voto "true"
     E verifico se a organização 3 está ativa o resultado é "true"
-    E o evento "OrganizationAdded" foi emitido para a organização 3 com nome "Dataprev" e direito de voto "true"
+    E o evento "OrganizationAdded" foi emitido para a organização 3 "42422253000101" com nome "Dataprev" tipo "Associate" e direito de voto "true"
     # Governança adiciona a PUC-Rio com organização 4
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "PUC-Rio" e direito de voto "false"
-    Então a organização 4 é "PUC-Rio" e direito de voto "false"
-    E o evento "OrganizationAdded" foi emitido para a organização 4 com nome "PUC-Rio" e direito de voto "false"
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "33555921000170" "PUC-Rio" do tipo "Partner" e direito de voto "false"
+    Então a organização 4 é "33555921000170" "PUC-Rio" do tipo "Partner" e direito de voto "false"
+    E o evento "OrganizationAdded" foi emitido para a organização 4 "33555921000170" com nome "PUC-Rio" tipo "Partner" e direito de voto "false"
     E verifico se a organização 4 está ativa o resultado é "true"
     # Verificação da lista de organizações
-    E a lista de organizações é "1,BNDES,true|2,TCU,true|3,Dataprev,true|4,PUC-Rio,false"
+    E a lista de organizações é "1,33657248000189,BNDES,Patron,true|2,00414607000118,TCU,Patron,true|3,42422253000101,Dataprev,Associate,true|4,33555921000170,PUC-Rio,Partner,false"
   
   Cenário: Tentativa de adição de organização por conta não autorizada ("por fora" da governança)
     # Uma conta que não é a da Governança tenta adicionar organização
-    Quando a conta "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" adiciona a organização "OrgAd" e direito de voto "true"
+    Quando a conta "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" adiciona a organização "12345678901234" "OrgAd" do tipo "Associate" e direito de voto "true"
     Então ocorre erro "UnauthorizedAccess" na tentativa de adição de organização
 
   Cenário: Tentativa de adição de organização com nome vazio
     # Governança tenta adicionar organização
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "" e direito de voto "true"
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "12345678901234" "" do tipo "Associate" e direito de voto "true"
     Então ocorre erro "InvalidArgument" na tentativa de adição de organização
 
   Cenário: Atualização de organização
     # Governança altera organização 1
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" atualiza a organização 1 com nome "Banco Nacional de Desenvolvimento Econômico e Social" e direito de voto "false"
-    Então a organização 1 é "Banco Nacional de Desenvolvimento Econômico e Social" e direito de voto "false"
-    E o evento "OrganizationUpdated" foi emitido para a organização 1 com nome "Banco Nacional de Desenvolvimento Econômico e Social" e direito de voto "false"
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" atualiza a organização 1 com CNPJ "33657248000180" nome "Banco Nacional de Desenvolvimento Econômico e Social" tipo "Associate" e direito de voto "false"
+    Então a organização 1 é "33657248000180" "Banco Nacional de Desenvolvimento Econômico e Social" do tipo "Associate" e direito de voto "false"
+    E o evento "OrganizationUpdated" foi emitido para a organização 1 "33657248000180" com nome "Banco Nacional de Desenvolvimento Econômico e Social" tipo "Associate" e direito de voto "false"
 
   Cenário: Tentativa de atualização de organização por conta não autorizada ("por fora" da governança)
     # Uma conta que não é a da Governança tenta atualizar organização
-    Quando a conta "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" atualiza a organização 1 com nome "Banco Nacional de Desenvolvimento Econômico e Social" e direito de voto "false"
+    Quando a conta "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" atualiza a organização 1 com CNPJ "33657248000180" nome "Banco Nacional de Desenvolvimento Econômico e Social" tipo "Associate" e direito de voto "false"
     Então ocorre erro "UnauthorizedAccess" na tentativa de atualização de organização
 
   Cenário: Tentativa de atualização de organização inexistente
     # Governança tenta atualizar organização
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" atualiza a organização 3 com nome "OrgInex" e direito de voto "false"
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" atualiza a organização 3 com CNPJ "12345678901234" nome "OrgInex" tipo "Associate" e direito de voto "false"
     Então ocorre erro "OrganizationNotFound" na tentativa de atualização de organização
 
   Cenário: Tentativa de atualização de organização com nome vazio
     # Governança tenta atualizar organização
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" atualiza a organização 1 com nome "" e direito de voto "false"
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" atualiza a organização 1 com CNPJ "33657248000189" nome "" tipo "Patron" e direito de voto "true"
     Então ocorre erro "InvalidArgument" na tentativa de atualização de organização
 
   Cenário: Exclusão de organização
     # Governança adiciona a OrgExc com organização 3
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "OrgExc" e direito de voto "true"
-    Então a organização 3 é "OrgExc" e direito de voto "true"
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "12345678901234" "OrgExc" do tipo "Associate" e direito de voto "true"
+    Então a organização 3 é "12345678901234" "OrgExc" do tipo "Associate" e direito de voto "true"
     E verifico se a organização 3 está ativa o resultado é "true"
-    E o evento "OrganizationAdded" foi emitido para a organização 3 com nome "OrgExc" e direito de voto "true"
-    E a lista de organizações é "1,BNDES,true|2,TCU,true|3,OrgExc,true"
+    E o evento "OrganizationAdded" foi emitido para a organização 3 "12345678901234" com nome "OrgExc" tipo "Associate" e direito de voto "true"
+    E a lista de organizações é "1,33657248000189,BNDES,Patron,true|2,00414607000118,TCU,Patron,true|3,12345678901234,OrgExc,Associate,true"
     # Governança exclui a organização 3
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3
     Então o evento "OrganizationDeleted" foi emitido para a organização 3
     E verifico se a organização 3 está ativa o resultado é "false"
-    E a lista de organizações é "1,BNDES,true|2,TCU,true"
+    E a lista de organizações é "1,33657248000189,BNDES,Patron,true|2,00414607000118,TCU,Patron,true"
 
   Cenário: Tentativa de exclusão de organização por conta não autorizada ("por fora" da governança)
     # Governança adiciona a OrgExc com organização 3
-    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "OrgExc" e direito de voto "true"
-    Então a organização 3 é "OrgExc" e direito de voto "true"
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "12345678901234" "OrgExc" do tipo "Associate" e direito de voto "true"
+    Então a organização 3 é "12345678901234" "OrgExc" do tipo "Associate" e direito de voto "true"
     E verifico se a organização 3 está ativa o resultado é "true"
     # Uma conta que não é a da Governança tenta excluir a organização
     Quando a conta "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" exclui a organização 3

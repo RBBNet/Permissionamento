@@ -1,10 +1,10 @@
 const assert = require('assert');
 const { Given, When, Then } = require('@cucumber/cucumber');
 const hre = require("hardhat");
-const { createOrganization, getBoolean } = require('./setup.js');
+const { createOrganization, getBoolean, getOrgType } = require('./setup.js');
 
-Given('a organização {string} com direito de voto {string}', function(name, canVote) {
-    this.organizations.push(createOrganization(name, getBoolean(canVote)));
+Given('a organização {string} {string} do tipo {string} com direito de voto {string}', function(cnpj, name, orgType, canVote) {
+    this.organizations.push(createOrganization(cnpj, name, getOrgType(orgType), getBoolean(canVote)));
 });
 
 When('implanto o smart contract de gestão de organizações', async function () {
@@ -32,9 +32,11 @@ Then('ocorre erro na implantação do smart contract de gestão de organizaçõe
     assert.ok(this.organizationContractDeployError != null);
 });
 
-Then('a organização {int} é {string} e direito de voto {string}', async function(id, name, canVote) {
+Then('a organização {int} é {string} {string} do tipo {string} e direito de voto {string}', async function(id, cnpj, name, orgType, canVote) {
     let org = await this.organizationContract.getOrganization(id);
+    assert.equal(org.cnpj, cnpj);
     assert.equal(org.name, name);
+    assert.equal(org.orgType, getOrgType(orgType));
     assert.equal(org.canVote, getBoolean(canVote));
 });
 
@@ -54,20 +56,22 @@ Then('a lista de organizações é {string}', async function(orgsList) {
     assert.equal(actualOrgs.length, expectedOrgs.length);
     for(i = 0; i < expectedOrgs.length; ++i) {
         const org = expectedOrgs[i].split(',');
-        assert.ok(actualOrgs[i].length == 3);
-        assert.ok(org.length == 3);
+        assert.ok(actualOrgs[i].length == 5);
+        assert.ok(org.length == 5);
         assert.equal(actualOrgs[i][0], BigInt(org[0]));
         assert.equal(actualOrgs[i][1], org[1]);
-        assert.equal(actualOrgs[i][2], getBoolean(org[2]));
+        assert.equal(actualOrgs[i][2], org[2]);
+        assert.equal(actualOrgs[i][3], getOrgType(org[3]));
+        assert.equal(actualOrgs[i][4], getBoolean(org[4]));
     }
 });
 
-When('a conta {string} adiciona a organização {string} e direito de voto {string}', async function(account, name, canVote) {
+When('a conta {string} adiciona a organização {string} {string} do tipo {string} e direito de voto {string}', async function(account, cnpj, name, orgType, canVote) {
     this.addError = null;
     try {
         const signer = await hre.ethers.getSigner(account);
         assert.ok(signer != null);
-        await this.organizationContract.connect(signer).addOrganization(name, getBoolean(canVote));
+        await this.organizationContract.connect(signer).addOrganization(cnpj, name, getOrgType(orgType), getBoolean(canVote));
     }
     catch(error) {
         this.addError = error;
@@ -86,7 +90,7 @@ Then('o evento {string} foi emitido para a organização {int}', async function(
     assert.ok(found);
 });
 
-Then('o evento {string} foi emitido para a organização {int} com nome {string} e direito de voto {string}', async function(event, orgId, name, canVote) {
+Then('o evento {string} foi emitido para a organização {int} {string} com nome {string} tipo {string} e direito de voto {string}', async function(event, orgId, cnpj, name, orgType, canVote) {
     const block = await hre.ethers.provider.getBlockNumber();
     const events = await this.organizationContract.queryFilter(event, block, block);
     let found = false;
@@ -94,8 +98,10 @@ Then('o evento {string} foi emitido para a organização {int} com nome {string}
         found =
             events[i].fragment.name == event &&
             events[i].args[0] == orgId &&
-            events[i].args[1] == name &&
-            events[i].args[2] == getBoolean(canVote);
+            events[i].args[1] == cnpj &&
+            events[i].args[2] == name &&
+            events[i].args[3] == getOrgType(orgType) &&
+            events[i].args[4] == getBoolean(canVote);
     }
     assert.ok(found);
 });
@@ -105,12 +111,12 @@ Then('ocorre erro {string} na tentativa de adição de organização', function(
     assert.ok(this.addError.message.includes(error));
 });
 
-When('a conta {string} atualiza a organização {int} com nome {string} e direito de voto {string}', async function(account, orgId, name, canVote) {
+When('a conta {string} atualiza a organização {int} com CNPJ {string} nome {string} tipo {string} e direito de voto {string}', async function(account, orgId, cnpj, name, orgType, canVote) {
     this.updateError = null;
     try {
         const signer = await hre.ethers.getSigner(account);
         assert.ok(signer != null);
-        await this.organizationContract.connect(signer).updateOrganization(orgId, name, getBoolean(canVote));
+        await this.organizationContract.connect(signer).updateOrganization(orgId, cnpj, name, getOrgType(orgType), getBoolean(canVote));
     }
     catch(error) {
         this.updateError = error;

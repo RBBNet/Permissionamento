@@ -9,11 +9,11 @@ Funcionalidade: Consultas de nós
     # o smart contract de governança/votação.
     E o endereço "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" é admin master
     # BNDES será organização 1
-    E a organização "BNDES" com direito de voto "true"
+    E a organização "33657248000189" "BNDES" do tipo "Patron" com direito de voto "true"
     # TCU será organização 2
-    E a organização "TCU" com direito de voto "true"
+    E a organização "00414607000118" "TCU" do tipo "Patron" com direito de voto "true"
     # OrgExc será organização 3
-    E a organização "OrgExc" com direito de voto "true"
+    E a organização "12345678901234" "OrgExc" do tipo "Associate" com direito de voto "true"
     E implanto o smart contract de gestão de organizações
     E a implantação do smart contract de gestão de organizações ocorre com sucesso
     # Administrador global da organização 1 - BNDES
@@ -38,7 +38,7 @@ Funcionalidade: Consultas de nós
     E a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" informa o endereço "0x0000000000000000000000000000000000000000000000000000000000000003" "0x0000000000000000000000000000000000000000000000000000000000000001", o nome "validator01" e o tipo "Validator" do nó para cadastrá-lo
     E a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" informa o endereço "0x0000000000000000000000000000000000000000000000000000000000000003" "0x0000000000000000000000000000000000000000000000000000000000000002", o nome "boot01" e o tipo "Boot" do nó para cadastrá-lo
     # Verificando cadastro das organizações
-    E a lista de organizações é "1,BNDES,true|2,TCU,true|3,OrgExc,true"
+    E a lista de organizações é "1,33657248000189,BNDES,Patron,true|2,00414607000118,TCU,Patron,true|3,12345678901234,OrgExc,Associate,true"
     # Verificando cadastro de nós
     E a quantidade total de nós é 8
     E o nó "0x0000000000000000000000000000000000000000000000000000000000000001" "0x0000000000000000000000000000000000000000000000000000000000000001" é da organização 1, tem o nome "validator01", tipo "Validator" e situação ativa true
@@ -50,7 +50,7 @@ Funcionalidade: Consultas de nós
     # Governança exclui a OrgExc, logo, suas contas ficarão inativas
     E a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3
     E verifico se a organização 3 está ativa o resultado é "false"
-    E a lista de organizações é "1,BNDES,true|2,TCU,true"
+    E a lista de organizações é "1,33657248000189,BNDES,Patron,true|2,00414607000118,TCU,Patron,true"
 
   ##############################################################################
   # Consulta de nós

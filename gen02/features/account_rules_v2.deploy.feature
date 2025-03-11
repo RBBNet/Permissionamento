@@ -9,9 +9,9 @@ Funcionalidade: Implantação da gestão de contas
     # o smart contract de governança/votação.
     E o endereço "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" é admin master
     # BNDES será organização 1
-    E a organização "BNDES" com direito de voto "true"
+    E a organização "33657248000189" "BNDES" do tipo "Patron" com direito de voto "true"
     # TCU será organização 2
-    E a organização "TCU" com direito de voto "true"
+    E a organização "00414607000118" "TCU" do tipo "Patron" com direito de voto "true"
     E implanto o smart contract de gestão de organizações
     E a implantação do smart contract de gestão de organizações ocorre com sucesso
 

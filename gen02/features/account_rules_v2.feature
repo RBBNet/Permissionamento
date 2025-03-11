@@ -9,11 +9,11 @@ Funcionalidade: Gestão de contas
     # o smart contract de governança/votação.
     E o endereço "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" é admin master
     # BNDES será organização 1
-    E a organização "BNDES" com direito de voto "true"
+    E a organização "33657248000189" "BNDES" do tipo "Patron" com direito de voto "true"
     # TCU será organização 2
-    E a organização "TCU" com direito de voto "true"
+    E a organização "00414607000118" "TCU" do tipo "Patron" com direito de voto "true"
     # OrgExc será organização 3
-    E a organização "OrgExc" com direito de voto "true"
+    E a organização "12345678901234" "OrgExc" do tipo "Associate" com direito de voto "true"
     E implanto o smart contract de gestão de organizações
     E a implantação do smart contract de gestão de organizações ocorre com sucesso
     # Administrador global da organização 1 - BNDES
@@ -29,7 +29,7 @@ Funcionalidade: Gestão de contas
     # Administrador global da OrgExc adiciona nova conta de usuário
     E a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" adiciona a conta local "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" com papel "USER_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000002"
     # Verificando cadastro das organizações
-    E a lista de organizações é "1,BNDES,true|2,TCU,true|3,OrgExc,true"
+    E a lista de organizações é "1,33657248000189,BNDES,Patron,true|2,00414607000118,TCU,Patron,true|3,12345678901234,OrgExc,Associate,true"
     # Verificando cadastro das contas
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" é da organização 1 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     E a conta "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a" é da organização 2 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
@@ -39,7 +39,7 @@ Funcionalidade: Gestão de contas
     # Governança exclui a OrgExc, logo, suas contas ficarão inativas
     E a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" exclui a organização 3
     E verifico se a organização 3 está ativa o resultado é "false"
-    E a lista de organizações é "1,BNDES,true|2,TCU,true"
+    E a lista de organizações é "1,33657248000189,BNDES,Patron,true|2,00414607000118,TCU,Patron,true"
     E verifico se a conta "0x2546BcD3c84621e976D8185a91A922aE77ECEc30" está ativa o resultado é "false"
     E verifico se a conta "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc" está ativa o resultado é "false"
 

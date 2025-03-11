@@ -9,23 +9,23 @@ Funcionalidade: Macroprocessos de gestão da RBB
     # o smart contract de governança/votação.
     E o endereço "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" é admin master
     # BNDES será organização 1
-    E a organização "BNDES" com direito de voto "true"
+    E a organização "33657248000189" "BNDES" do tipo "Patron" com direito de voto "true"
     # TCU será organização 2
-    E a organização "TCU" com direito de voto "true"
+    E a organização "00414607000118" "TCU" do tipo "Patron" com direito de voto "true"
     # Dataprev será a organização 3
-    E a organização "DATAPREV" com direito de voto "true"
+    E a organização "42422253000101" "DATAPREV" do tipo "Associate" com direito de voto "true"
     # PUC-Rio será a organização 4
-    E a organização "PUC-Rio" com direito de voto "false"
+    E a organização "33555921000170" "PUC-Rio" do tipo "Partner" com direito de voto "false"
     # CPQD será a organização 5
-    E a organização "CPQD" com direito de voto "true"
+    E a organização "02641663000110" "CPQD" do tipo "Associate" com direito de voto "true"
     # RNP será organização 6
-    E a organização "RNP" com direito de voto "true"
+    E a organização "03508097000136" "RNP" do tipo "Associate" com direito de voto "true"
     # Prodemge será organização 7
-    E a organização "Prodemge" com direito de voto "true"
+    E a organização "16636540000104" "Prodemge" do tipo "Associate" com direito de voto "true"
     # SERPRO será organização 8
-    E a organização "SERPRO" com direito de voto "true"
+    E a organização "33683111000107" "SERPRO" do tipo "Associate" com direito de voto "true"
     # OrgExc será organização 9
-    E a organização "OrgExc" com direito de voto "true"
+    E a organização "12345678901234" "OrgExc" do tipo "Associate" com direito de voto "true"
     E implanto o smart contract de gestão de organizações
     E a implantação do smart contract de gestão de organizações ocorre com sucesso
     # Administrador global da organização 1 - BNDES
@@ -55,7 +55,7 @@ Funcionalidade: Macroprocessos de gestão da RBB
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a conta "0xa0Ee7A142d267C1f36714E4a8F75612F20a79720" na organização 1 com papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
     Então a adição é realizada com sucesso
     # Verificando cadastro das organizações
-    E a lista de organizações é "1,BNDES,true|2,TCU,true|3,DATAPREV,true|4,PUC-Rio,false|5,CPQD,true|6,RNP,true|7,Prodemge,true|8,SERPRO,true|9,OrgExc,true"
+    E a lista de organizações é "1,33657248000189,BNDES,Patron,true|2,00414607000118,TCU,Patron,true|3,42422253000101,DATAPREV,Associate,true|4,33555921000170,PUC-Rio,Partner,false|5,02641663000110,CPQD,Associate,true|6,03508097000136,RNP,Associate,true|7,16636540000104,Prodemge,Associate,true|8,33683111000107,SERPRO,Associate,true|9,12345678901234,OrgExc,Associate,true"
     # Verificando cadastro das contas
     E a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" é da organização 1 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     E a conta "0xa0Ee7A142d267C1f36714E4a8F75612F20a79720" é da organização 1 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
@@ -104,7 +104,7 @@ Funcionalidade: Macroprocessos de gestão da RBB
 
   Cenário: Entrada de uma nova organização
     # Preparação de passos para uma proposta
-    Dado o alvo "OrganizationImpl" para chamada da função "addOrganization(string,bool)" com parâmetros "IBICT,true"
+    Dado o alvo "OrganizationImpl" para chamada da função "addOrganization(string,string,uint8,bool)" com parâmetros "04082993000149,IBICT,1,true"
     E o alvo "AccountRulesV2Impl" para chamada da função "addAccount(address,uint256,bytes32,bytes32)" com parâmetros "0xBcd4042DE499D14e55001CcbB24a551F3b954096,10,0xd6e7d8560c69c7c18c2b8f3b45430215d788f128f0c04bc4a3607fe05eb5399f,0x0000000000000000000000000000000000000000000000000000000000000000"
     # Administrador Global do BNDES cria uma proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria proposta com descrição "Inclusão do IBICT"
@@ -134,12 +134,12 @@ Funcionalidade: Macroprocessos de gestão da RBB
     Então a proposta é executada com sucesso
     E o evento "ProposalFinished" é emitido para a proposta
     E o evento "ProposalExecuted" é emitido para a proposta
-    E o evento "OrganizationAdded" foi emitido para a organização 10 com nome "IBICT" e direito de voto "true"
+    E o evento "OrganizationAdded" foi emitido para a organização 10 "04082993000149" com nome "IBICT" tipo "Associate" e direito de voto "true"
     E o evento "AccountAdded" foi emitido para a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096", organização 10, papel "GLOBAL_ADMIN_ROLE" e data hash "0x0000000000000000000000000000000000000000000000000000000000000000"
     E a proposta tem situação "Executed", resultado "Approved", organizações "1,2,3,5,6,7,8,9" e votos "Approval,Approval,Approval,NotVoted,Approval,NotVoted,Approval,NotVoted"
     # Verificando o resultado da execução, se organização e admin global foram criados
-    E a organização 10 é "IBICT" e direito de voto "true"
-    E a lista de organizações é "1,BNDES,true|2,TCU,true|3,DATAPREV,true|4,PUC-Rio,false|5,CPQD,true|6,RNP,true|7,Prodemge,true|8,SERPRO,true|9,OrgExc,true|10,IBICT,true"
+    E a organização 10 é "04082993000149" "IBICT" do tipo "Associate" e direito de voto "true"
+    E a lista de organizações é "1,33657248000189,BNDES,Patron,true|2,00414607000118,TCU,Patron,true|3,42422253000101,DATAPREV,Associate,true|4,33555921000170,PUC-Rio,Partner,false|5,02641663000110,CPQD,Associate,true|6,03508097000136,RNP,Associate,true|7,16636540000104,Prodemge,Associate,true|8,33683111000107,SERPRO,Associate,true|9,12345678901234,OrgExc,Associate,true|10,04082993000149,IBICT,Associate,true"
     E a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096" é da organização 10 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
 
   Cenário: Saída de uma organização
@@ -177,7 +177,7 @@ Funcionalidade: Macroprocessos de gestão da RBB
     E a proposta tem situação "Executed", resultado "Approved", organizações "1,2,3,5,6,7,8,9" e votos "Approval,Approval,Approval,NotVoted,NotVoted,Approval,Approval,NotVoted"
     # Verificando o resultado da execução, se organização foi excluída
     E verifico se a organização 9 está ativa o resultado é "false"
-    E a lista de organizações é "1,BNDES,true|2,TCU,true|3,DATAPREV,true|4,PUC-Rio,false|5,CPQD,true|6,RNP,true|7,Prodemge,true|8,SERPRO,true"
+    E a lista de organizações é "1,33657248000189,BNDES,Patron,true|2,00414607000118,TCU,Patron,true|3,42422253000101,DATAPREV,Associate,true|4,33555921000170,PUC-Rio,Partner,false|5,02641663000110,CPQD,Associate,true|6,03508097000136,RNP,Associate,true|7,16636540000104,Prodemge,Associate,true|8,33683111000107,SERPRO,Associate,true"
 
   Cenário: Cadastro de novo Administrador Global
     # Preparação de passos para uma proposta
