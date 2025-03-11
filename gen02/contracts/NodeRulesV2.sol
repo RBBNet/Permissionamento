@@ -8,7 +8,7 @@ bytes32 constant CONNECTION_DENIED = 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 
 interface NodeRulesV2 is NodeRulesProxy {
 
-    enum NodeType{
+    enum NodeType {
         Boot,
         Validator,
         Writer,
