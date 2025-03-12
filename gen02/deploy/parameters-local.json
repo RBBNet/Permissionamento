@@ -130,13 +130,41 @@
         }
     ],
     "newOrganizations": [
-        "IBICT",
-        "SGD",
-        "CGE-PA",
-        "FENASBAC",
-        "Araguaína",
-        "STC-MA",
-        "TCE-SP"
+        {
+            "cnpj": "04082993000149",
+            "name": "IBICT",
+            "orgType": "Associate"
+        },
+        {
+            "cnpj": "39467292000102",
+            "name": "SGD",
+            "orgType": "Associate"
+        },
+        {
+            "cnpj": "03269619000194",
+            "name": "CGE-PA",
+            "orgType": "Partner"
+        },
+        {
+            "cnpj": "33350620000100",
+            "name": "FENASBAC",
+            "orgType": "Partner"
+        },
+        {
+            "cnpj": "01830793000139",
+            "name": "Araguaína",
+            "orgType": "Partner"
+        },
+        {
+            "cnpj": "21853640000114",
+            "name": "STC-MA",
+            "orgType": "Partner"
+        },
+        {
+            "cnpj": "50290931000140",
+            "name": "TCE-SP",
+            "orgType": "Partner"
+        }
     ],
     "proposal": {
         "id": 2,

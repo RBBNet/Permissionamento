@@ -1,6 +1,6 @@
 const hre = require('hardhat');
 const assert = require('assert');
-const { getParameters, getParameter, diagnostics, askConfirmation } = require('./util.js');
+const { getParameters, getParameter, diagnostics, askConfirmation, getOrgType } = require('./util.js');
 const { STATUS_ACTIVE, RESULT_UNDEFINED } = require('./constants.js');
         
 const BLOCKS_DURATION = 30000;
@@ -25,7 +25,7 @@ async function createProposal(parameters) {
     let targets = [];
     let calldatas = [];
     for(const newOrg of newOrganizations) {
-        const calldata = organizationContract.interface.encodeFunctionData(organizationContract.addOrganization.fragment, [newOrg, false]);
+        const calldata = organizationContract.interface.encodeFunctionData(organizationContract.addOrganization.fragment, [newOrg.cnpj, newOrg.name, getOrgType(newOrg.orgType), false]);
         targets.push(organizationAddress);
         calldatas.push(calldata);
         console.log(` - ${organizationAddress}: ${calldata}`);
