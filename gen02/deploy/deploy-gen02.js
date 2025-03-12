@@ -1,7 +1,7 @@
 const hre = require('hardhat');
 const assert = require('assert');
 const { getParameters, getParameter, diagnostics, getOrgType } = require('./util.js');
-const { GLOBAL_ADMIN_ROLE, ADMIN_ABI } = require('./constants.js');
+const { GLOBAL_ADMIN_ROLE, ADMIN_ABI, ZEROED_BYTES_32 } = require('./constants.js');
 
 async function deployGen02(parameters) {
     await diagnostics();
@@ -46,7 +46,7 @@ async function deployGen02(parameters) {
     console.log('Implantando smart contract de gestão de nós');
     const nodesContract = await hre.ethers.deployContract('NodeRulesV2Impl', [organizationsContract, accountsContract, adminContract]);
     await nodesContract.waitForDeployment();
-    // TODO verificações?
+    assert.ok(!await nodesContract.isNodeActive(ZEROED_BYTES_32, ZEROED_BYTES_32));
     console.log(` NodeRulesV2Impl implantado no endereço ${nodesContract.target}`);
 
     console.log('Implantando smart contract de governança');
