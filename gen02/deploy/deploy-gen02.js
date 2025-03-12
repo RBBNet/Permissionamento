@@ -1,6 +1,6 @@
 const hre = require('hardhat');
 const assert = require('assert');
-const { getParameters, getParameter, diagnostics } = require('./util.js');
+const { getParameters, getParameter, diagnostics, getOrgType } = require('./util.js');
 const { GLOBAL_ADMIN_ROLE, ADMIN_ABI } = require('./constants.js');
 
 async function deployGen02(parameters) {
@@ -18,6 +18,7 @@ async function deployGen02(parameters) {
     const adminContract = await hre.ethers.getContractAt(ADMIN_ABI, adminAddress);
 
     console.log('Implantando smart contract de gestão de organizações');
+    organizations.forEach(o => o.orgType = getOrgType(o.orgType));
     const organizationsContract = await hre.ethers.deployContract('OrganizationImpl', [organizations, adminContract]);
     await organizationsContract.waitForDeployment();
     // Verificações

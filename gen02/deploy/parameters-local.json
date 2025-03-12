@@ -7,42 +7,58 @@
     "organizations": [
         {
             "id": 0,
+            "cnpj": "33657248000189",
             "name": "BNDES",
+            "orgType": "Patron",
             "canVote": true
         },
         {
             "id": 0,
+            "cnpj": "00414607000118",
             "name": "TCU",
+            "orgType": "Patron",
             "canVote": true
         },
         {
             "id": 0,
+            "cnpj": "42422253000101",
             "name": "DATAPREV",
+            "orgType": "Associate",
             "canVote": true
         },
         {
             "id": 0,
+            "cnpj": "33555921000170",
             "name": "PUC-Rio",
+            "orgType": "Partner",
             "canVote": false
         },
         {
             "id": 0,
+            "cnpj": "02641663000110",
             "name": "CPQD",
+            "orgType": "Associate",
             "canVote": true
         },
         {
             "id": 0,
+            "cnpj": "03508097000136",
             "name": "RNP",
+            "orgType": "Associate",
             "canVote": true
         },
         {
             "id": 0,
+            "cnpj": "16636540000104",
             "name": "PRODEMGE",
+            "orgType": "Associate",
             "canVote": true
         },
         {
             "id": 0,
+            "cnpj": "33683111000107",
             "name": "SERPRO",
+            "orgType": "Associate",
             "canVote": true
         }
     ],
