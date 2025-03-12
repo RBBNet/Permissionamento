@@ -4,13 +4,18 @@
 
 Critérios de aceitação:
 1. Somente o processo de governança pode realizar o cadastro.
-2. São informados o nome da organização e se a mesma pode participar de votações.
+2. São informados o CNPJ, nome e tipo de participação da organização e indicação se a mesma pode participar de votações.
+   1. O CNPJ não pode estar vazio.
+   2. O nome não pode estar vazio.
+   3. Caso a participação seja como Partícipe Parceiro, a organização **não** poderá participar de votações.
 3. Um identificador é gerado automaticamente de forma incremental para a organização.
 4. A organização é criada.
 5. A ocorrência do cadastro da organização deve emitir um evento, registrando:
    1. O identificador da organização
-   2. O nome da organização
-   3. A indicação se a mesma pode participar de votações
+   2. O CNPJ da organização
+   3. O nome da organização
+   4. O tipo de participação da organização
+   5. A indicação se a mesma pode participar de votações
 6. O identificador criado para a organização é retornado.
 
 
@@ -18,13 +23,18 @@ Critérios de aceitação:
 
 Critérios de aceitação:
 1. Somente o processo de governança pode realizar alterações.
-2. São informados o identificador da organização, novo nome e nova indicação se a mesma pode participar de votações.
+2. São informados o identificador da organização, novo CNPJ, novo nome, novo tipo de participação e nova indicação se a mesma pode participar de votações.
+   1. O CNPJ não pode estar vazio.
+   2. O nome não pode estar vazio.
+   3. Caso a participação seja como Partícipe Parceiro, a organização **não** poderá participar de votações.
 3. O identificador da organização não poderá ser alterado.
 4. As informações de novo nome e nova indicação de participação em votação são atualizadas.
 5. A alteração do cadastro da organização deve emitir um evento, registrando:
    1. O identificador da organização
-   2. O novo nome
-   3. A nova indicação se a mesma pode participar de votações
+   2. O novo CNPJ
+   3. O novo nome
+   4. O novo tipo de participação
+   5. A nova indicação se a mesma pode participar de votações
 
 
 ## USORG03 - Governança exclui organização participante para desabilitar nós, contas e rotação de validadores vinculadas<a id="usorg03"></a>

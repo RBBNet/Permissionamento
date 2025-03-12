@@ -27,9 +27,23 @@ contract OrganizationImpl is Organization, Governable {
         _;
     }
 
+    modifier validCnpj(string memory cnpj) {
+        if(bytes(cnpj).length == 0) {
+            revert InvalidArgument("Organization CNPJ cannot be empty.");
+        }
+        _;
+    }
+
     modifier validName(string memory name) {
         if(bytes(name).length == 0) {
-            revert InvalidArgument("Node name cannot be empty.");
+            revert InvalidArgument("Organization name cannot be empty.");
+        }
+        _;
+    }
+
+    modifier validPermissionToVote(OrganizationType orgType, bool canVote) {
+        if(canVote && orgType == OrganizationType.Partner) {
+            revert InvalidArgument("Partner organizations cannot vote");
         }
         _;
     }
@@ -45,7 +59,8 @@ contract OrganizationImpl is Organization, Governable {
         return _addOrganization(cnpj, name, orgType, canVote);
     }
 
-    function _addOrganization(string memory cnpj, string memory name, OrganizationType orgType, bool canVote) private validName(name) returns (uint) {
+    function _addOrganization(string memory cnpj, string memory name, OrganizationType orgType, bool canVote) private
+        validCnpj(cnpj) validName(name) validPermissionToVote(orgType, canVote) returns (uint) {
         uint newId = ++idSeed;
         OrganizationData memory newOrg = OrganizationData(newId, cnpj, name, orgType, canVote);
         organizations[newId] = newOrg;
@@ -54,7 +69,8 @@ contract OrganizationImpl is Organization, Governable {
         return newId;
     }
 
-    function updateOrganization(uint orgId, string calldata cnpj, string calldata name, OrganizationType orgType, bool canVote) public onlyGovernance existentOrganization(orgId) validName(name) {
+    function updateOrganization(uint orgId, string calldata cnpj, string calldata name, OrganizationType orgType, bool canVote) public
+        onlyGovernance existentOrganization(orgId) validCnpj(cnpj) validName(name) validPermissionToVote(orgType, canVote) {
         OrganizationData storage org = organizations[orgId];
         org.cnpj = cnpj;
         org.name = name;

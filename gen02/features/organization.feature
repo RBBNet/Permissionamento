@@ -49,9 +49,19 @@ Funcionalidade: Gestão de organizações
     Quando a conta "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" adiciona a organização "12345678901234" "OrgAd" do tipo "Associate" e direito de voto "true"
     Então ocorre erro "UnauthorizedAccess" na tentativa de adição de organização
 
+  Cenário: Tentativa de adição de organização com CNPJ vazio
+    # Governança tenta adicionar organização
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "" "OrgAd" do tipo "Associate" e direito de voto "true"
+    Então ocorre erro "InvalidArgument" na tentativa de adição de organização
+
   Cenário: Tentativa de adição de organização com nome vazio
     # Governança tenta adicionar organização
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "12345678901234" "" do tipo "Associate" e direito de voto "true"
+    Então ocorre erro "InvalidArgument" na tentativa de adição de organização
+
+  Cenário: Tentativa de adição de organização parceira com direito a voto
+    # Governança tenta adicionar organização
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" adiciona a organização "12345678901234" "OrgAd" do tipo "Partner" e direito de voto "true"
     Então ocorre erro "InvalidArgument" na tentativa de adição de organização
 
   Cenário: Atualização de organização
@@ -70,9 +80,19 @@ Funcionalidade: Gestão de organizações
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" atualiza a organização 3 com CNPJ "12345678901234" nome "OrgInex" tipo "Associate" e direito de voto "false"
     Então ocorre erro "OrganizationNotFound" na tentativa de atualização de organização
 
+  Cenário: Tentativa de atualização de organização com CNPJ vazio
+    # Governança tenta atualizar organização
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" atualiza a organização 1 com CNPJ "" nome "BNDES" tipo "Patron" e direito de voto "true"
+    Então ocorre erro "InvalidArgument" na tentativa de atualização de organização
+
   Cenário: Tentativa de atualização de organização com nome vazio
     # Governança tenta atualizar organização
     Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" atualiza a organização 1 com CNPJ "33657248000189" nome "" tipo "Patron" e direito de voto "true"
+    Então ocorre erro "InvalidArgument" na tentativa de atualização de organização
+
+  Cenário: Tentativa de atualização de organização parceira com direito a voto
+    # Governança tenta adicionar organização
+    Quando a conta "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199" atualiza a organização 1 com CNPJ "33657248000189" nome "BNDES" tipo "Partner" e direito de voto "true"
     Então ocorre erro "InvalidArgument" na tentativa de atualização de organização
 
   Cenário: Exclusão de organização
