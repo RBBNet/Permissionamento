@@ -25,7 +25,9 @@ async function deployGen02(parameters) {
     assert.equal(await organizationsContract.idSeed(), organizations.length);
     for(let i = 0; i < organizations.length; ++i) {
         const org = await organizationsContract.getOrganization(i+1);
+        assert.equal(org.cnpj, organizations[i].cnpj);
         assert.equal(org.name, organizations[i].name);
+        assert.equal(org.orgType, organizations[i].orgType);
         assert.equal(org.canVote, organizations[i].canVote);
         assert.ok(await organizationsContract.isOrganizationActive(i+1));
     }
