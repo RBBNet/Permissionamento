@@ -1,6 +1,6 @@
 const hre = require('hardhat');
 const assert = require('assert');
-const { getParameters, getParameter, diagnostics, getRole, getNodeTypeName } = require('./util.js');
+const { getParameters, getParameter, diagnostics, getRole, getNodeTypeName, getOrgTypeName } = require('./util.js');
 const { RULES_CONTRACT, INGRESS_ABI, ACCOUNT_INGRESS_ADDRESS, NODE_INGRESS_ADDRESS, ADMIN_ABI } = require('./constants.js');
 
 async function ingressDiagnostics() {
@@ -40,7 +40,7 @@ async function organizationDiagnostics(parameters) {
     const organizationContract = await hre.ethers.getContractAt('OrganizationImpl', organizationAddress);
     const orgs = await organizationContract.getOrganizations();
     for(org of orgs) {
-        console.log(` - ${org[0]} ${org[1]} ${org[2] ? 'pode votar' : ''}`);
+        console.log(` - ${org[0]} ${org[1]} ${org[2]} ${getOrgTypeName(org[3])} ${org[4] ? 'pode votar' : ''}`);
     }
 
     console.log();

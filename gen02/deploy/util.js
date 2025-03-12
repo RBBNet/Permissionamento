@@ -102,6 +102,15 @@ function getOrgType(type) {
     }
 }
 
+function getOrgTypeName(type) {
+    switch(parseInt(type, 10)) {
+        case 0: return 'Partner';
+        case 1: return 'Associate';
+        case 2: return 'Patron';
+        default: throw new Error('Tipo de organização inválido: ' + type);
+    }
+}
+
 function getVote(vote) {
     switch(parseInt(vote, 10)) {
         case 0: return 'NotVoted';
@@ -193,6 +202,7 @@ module.exports = {
     getNodeType: getNodeType,
     getNodeTypeName: getNodeTypeName,
     getOrgType: getOrgType,
+    getOrgTypeName: getOrgTypeName,
     getVote: getVote,
     getProposalStatus: getProposalStatus,
     getProposalResult: getProposalResult,
