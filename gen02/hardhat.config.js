@@ -38,5 +38,5 @@ module.exports = {
       from: accountAddress
     }
   },
-  solidity: "0.8.26"
+  solidity: "0.8.28"
 };
