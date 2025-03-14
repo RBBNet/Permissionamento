@@ -28,7 +28,7 @@ Critérios de aceitação:
 
 Dúvidas:
 - Qualquer administrador global deve poder criar propostas? Ou somente administradores globais de organizações com direito a voto deveriam poder criar propostas?
-  - **Resposta**: Seguindo os princípios do [Regulamento da RBB](https://github.com/RBBNet/rbb/blob/master/governanca/reunioes_comite_executivo/2022-11-29_reuniao/2022-11-29-Ata-Reuni%C3%A3o-Governan%C3%A7a-RBB-Assinada.pdf), qualquer organização pode apresentar propostas. Portanto, qualquer adminstrador global pode criar propostas.
+  - **Resposta**: Seguindo os princípios do [Regulamento da RBB](https://github.com/RBBNet/rbb/blob/master/governanca/reunioes_comite_executivo/atas/2022-11-29-Ata-Reuni%C3%A3o-Governan%C3%A7a-RBB-Assinada.pdf), qualquer organização pode apresentar propostas. Portanto, qualquer adminstrador global pode criar propostas.
 - Deve-se permitir o envio do texto completo da descrição, dando margem ao registro de informações sensíveis, ou deve-se utilizar somente um hash da descrição?
   - **Resposta**: Considerando-se o perfil dos usuários que utilizarão a funcionalidade e privilegiando a transparência, será armazenada o texto da descrição.
 
