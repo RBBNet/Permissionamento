@@ -8,7 +8,7 @@ library Pagination {
     using EnumerableSet for EnumerableSet.UintSet;
     using EnumerableSet for EnumerableSet.AddressSet;
 
-    error InvalidPaginationParameter(string message);
+    error InvalidPaginationParameter();
 
     /**
      * @notice Calcula os limites de uma página
