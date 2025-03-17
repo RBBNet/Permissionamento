@@ -10,40 +10,109 @@ library Pagination {
 
     error InvalidPaginationParameter(string message);
 
-    function getUintPage(EnumerableSet.UintSet storage set, uint pageNumber, uint pageSize) internal view returns(uint[] memory) {
-        (uint start, uint stop) = getPageBounds(set.length(), pageNumber, pageSize);
-        uint[] memory page = new uint[](stop - start);
-        for(uint i = start; i < stop; ++i) {
-            page[i - start] = set.at(i);
+    /**
+     * @notice Calcula os limites de uma página
+     * @param totalItems Total de itens no conjunto
+     * @param pageNumber Número da página (começando em 1)
+     * @param pageSize Tamanho da página
+     * @return start Índice inicial da página
+     * @return stop Índice final da página
+     */
+    function getPageBounds(
+        uint256 totalItems,
+        uint256 pageNumber,
+        uint256 pageSize
+    ) internal pure returns (uint256 start, uint256 stop) {
+        if (pageNumber == 0 || pageSize == 0) {
+            revert InvalidPaginationParameter();
         }
-        return page;
-    }
 
-    function getAddressPage(EnumerableSet.AddressSet storage set, uint pageNumber, uint pageSize) internal view returns(address[] memory) {
-        (uint start, uint stop) = getPageBounds(set.length(), pageNumber, pageSize);
-        address[] memory page = new address[](stop - start);
-        for(uint i = start; i < stop; ++i) {
-            page[i - start] = set.at(i);
+        start = (pageNumber - 1) * pageSize;
+        if (start >= totalItems) {
+            return (0, 0);
         }
-        return page;
-    }
 
-    function getPageBounds(uint length, uint pageNumber, uint pageSize) internal pure returns (uint, uint) {
-        if(pageNumber < 1) {
-            revert InvalidPaginationParameter("Page must be greater or equal to 1 ");
+        stop = start + pageSize;
+        if (stop > totalItems) {
+            stop = totalItems;
         }
-        if(pageSize < 1) {
-            revert InvalidPaginationParameter("Page size must be greater or equal to 1 ");
-        }
-        uint start = (pageNumber - 1) * pageSize;
-        if(start > length) {
-            start = length;
-        }
-        uint stop = start + pageSize;
-        if(stop > length) {
-            stop = length;
-        }
+
         return (start, stop);
     }
 
+    /**
+     * @notice Retorna uma página de valores do tipo uint
+     * @param set O conjunto de dados a ser paginado
+     * @param pageNumber Número da página (começando em 1)
+     * @param pageSize Tamanho da página
+     * @return Uma matriz com os valores da página solicitada
+     */
+    function getUintPage(
+        EnumerableSet.UintSet storage set,
+        uint256 pageNumber,
+        uint256 pageSize
+    ) internal view returns (uint256[] memory) {
+        if (pageNumber == 0 || pageSize == 0) {
+            revert InvalidPaginationParameter();
+        }
+
+        uint256 startIndex = (pageNumber - 1) * pageSize;
+        uint256 totalElements = set.length();
+
+        if (startIndex >= totalElements) {
+            return new uint256[](0);
+        }
+
+        uint256 endIndex = startIndex + pageSize;
+        if (endIndex > totalElements) {
+            endIndex = totalElements;
+        }
+
+        uint256 resultLength = endIndex - startIndex;
+        uint256[] memory result = new uint256[](resultLength);
+
+        for (uint256 i = 0; i < resultLength; i++) {
+            result[i] = set.at(startIndex + i);
+        }
+
+        return result;
+    }
+
+    /**
+     * @notice Retorna uma página de valores do tipo address
+     * @param set O conjunto de dados a ser paginado
+     * @param pageNumber Número da página (começando em 1)
+     * @param pageSize Tamanho da página
+     * @return Uma matriz com os valores da página solicitada
+     */
+    function getAddressPage(
+        EnumerableSet.AddressSet storage set,
+        uint256 pageNumber,
+        uint256 pageSize
+    ) internal view returns (address[] memory) {
+        if (pageNumber == 0 || pageSize == 0) {
+            revert InvalidPaginationParameter();
+        }
+
+        uint256 startIndex = (pageNumber - 1) * pageSize;
+        uint256 totalElements = set.length();
+
+        if (startIndex >= totalElements) {
+            return new address[](0);
+        }
+
+        uint256 endIndex = startIndex + pageSize;
+        if (endIndex > totalElements) {
+            endIndex = totalElements;
+        }
+
+        uint256 resultLength = endIndex - startIndex;
+        address[] memory result = new address[](resultLength);
+
+        for (uint256 i = 0; i < resultLength; i++) {
+            result[i] = set.at(startIndex + i);
+        }
+
+        return result;
+    }
 }
