@@ -45,7 +45,6 @@ Funcionalidade: Paginação de dados
     Então devo receber 0 números
 
   Cenário: Cálculo dos limites de página para arrays
-    Dado que o contrato PaginationMock está implantado
     Quando calculo os limites da página 2 com tamanho 5 para um total de 13 itens
     Então o início deve ser 5 e o fim deve ser 10
     Quando calculo os limites da página 3 com tamanho 5 para um total de 13 itens
