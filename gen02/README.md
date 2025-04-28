@@ -30,6 +30,7 @@ npm test
 
 ### Debug
 
+
 #### Cucumber
 
 https://github.com/cucumber/cucumber-js/blob/main/docs/debugging.md
@@ -46,7 +47,7 @@ Ajustar variável de ambiente `HARDHAT_VERBOSE=true`
 
 #### Log nos *smart contracts*
 
-O Hardhat permite utilizar função de log na console, de forma análoga ao Javascript (ver referência abaixo).
+O Hardhat permite utilizar função de log na console, de forma análoga ao Javascript (ver referência ao final do README).
 
 Exemplo:
 ```
@@ -60,7 +61,16 @@ console.log("Parametros %s e %s", p1, p2);
 **ATENÇÃO**: Esse recurso deve ser usado apenas em testes locais, de forma temporária. Tal recurso **não** pode ser usado para utilização efetiva no código final. **Remova quaisquer referências do tipo antes de fazer commit do código**.
 
 
-### Implantação Local no Hardhat
+### Implantação em ambiente local
+
+As seções abaixo descrevem os procedimentos para instalação da gen02 em ambiente local, seja no Hardhat ou seja no Besu.
+
+A implantação no Hardhat contempla processo mais simples, permitindo apenas testes diretos dos *smart contracts* da gen02.
+
+Já a implantação no Besu requer um processo mais complexo, porém permite testes mais elaborados, contemplando testes do procedimento de migração da gen01 para a gen02 (ver seção adiante) e também testes para migração para futuras gerações de permissionamento e governança.
+
+
+#### Implantação Local no Hardhat
 
 1. Inicie o Hardhat:
 
@@ -109,15 +119,17 @@ npm run hardhat-deploy-gen02
 ```
 
 
-### Implantação Local no Besu
+#### Implantação Local no Besu
 
-Este projeto já contém pronta a configuração de um nó Besu validator. Para enter como esse foi preparado e funciona localmente, veja o documento [besu.md](../besu.md).
+Este projeto já contém pronta a configuração de um nó Besu validator. Para entender como esse nó foi preparado e funciona localmente, veja o documento [besu.md](../besu.md).
 
 1. Inicie o Besu:
 
 ```shell
 besu --config-file besu/config.toml
 ```
+
+**Observação**: Para que o comando acima funcione, é necessário já ter o Besu e JDK compatível instalados e devidamente configurados no *path* do terminal/console.
 
 2. Abra outro terminal/console.
 
@@ -203,15 +215,21 @@ Implantando smart contract de governança
 }
 ```
 
-#### Migração da gen01 para a gen02:
 
-O procedimento recomendado de migração da gen01 para a gen02 está descrito no documento de [macroprocessos](doc/macroprocessos.md).
+## Implantação em ambientes produtivos
+
+Esta seção está em elaboração.
 
 
 ### Implantação na Rede Lab
 
 
 ### Implantação na Rede Piloto
+
+
+## Migração da gen01 para a gen02:
+
+O procedimento recomendado de migração da gen01 para a gen02 está descrito no documento de [macroprocessos](doc/macroprocessos.md).
 
 
 ## Referências
