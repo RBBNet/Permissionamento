@@ -52,21 +52,7 @@ library Pagination {
         uint256 pageNumber,
         uint256 pageSize
     ) internal view returns (uint256[] memory) {
-        if (pageNumber == 0 || pageSize == 0) {
-            revert InvalidPaginationParameter();
-        }
-
-        uint256 startIndex = (pageNumber - 1) * pageSize;
-        uint256 totalElements = set.length();
-
-        if (startIndex >= totalElements) {
-            return new uint256[](0);
-        }
-
-        uint256 endIndex = startIndex + pageSize;
-        if (endIndex > totalElements) {
-            endIndex = totalElements;
-        }
+        (uint256 startIndex, uint256 endIndex) = getPageBounds(set.length(), pageNumber, pageSize);
 
         uint256 resultLength = endIndex - startIndex;
         uint256[] memory result = new uint256[](resultLength);
@@ -90,21 +76,7 @@ library Pagination {
         uint256 pageNumber,
         uint256 pageSize
     ) internal view returns (address[] memory) {
-        if (pageNumber == 0 || pageSize == 0) {
-            revert InvalidPaginationParameter();
-        }
-
-        uint256 startIndex = (pageNumber - 1) * pageSize;
-        uint256 totalElements = set.length();
-
-        if (startIndex >= totalElements) {
-            return new address[](0);
-        }
-
-        uint256 endIndex = startIndex + pageSize;
-        if (endIndex > totalElements) {
-            endIndex = totalElements;
-        }
+        (uint256 startIndex, uint256 endIndex) = getPageBounds(set.length(), pageNumber, pageSize);
 
         uint256 resultLength = endIndex - startIndex;
         address[] memory result = new address[](resultLength);
