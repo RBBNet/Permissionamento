@@ -8,7 +8,7 @@ library Pagination {
     using EnumerableSet for EnumerableSet.UintSet;
     using EnumerableSet for EnumerableSet.AddressSet;
 
-    error InvalidPaginationParameter();
+    error InvalidPaginationParameter(string message);
 
     /**
      * @notice Calcula os limites de uma página
@@ -23,8 +23,11 @@ library Pagination {
         uint256 pageNumber,
         uint256 pageSize
     ) internal pure returns (uint256 start, uint256 stop) {
-        if (pageNumber == 0 || pageSize == 0) {
-            revert InvalidPaginationParameter();
+        if(pageNumber < 1) {
+            revert InvalidPaginationParameter("Page must be greater or equal to 1 ");
+        }
+        if(pageSize < 1) {
+            revert InvalidPaginationParameter("Page size must be greater or equal to 1 ");
         }
 
         start = (pageNumber - 1) * pageSize;
