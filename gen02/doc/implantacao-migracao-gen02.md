@@ -7,9 +7,11 @@ No contexto deste documento, deve-se entender os termos:
 
 ## Pré-requisitos
 
-1. As organizações deverão criar chaves para suas contas de Administradores Globais.
-   - **As chaves privadas deverão ser mantidas com alto rigor de segurança**.
-   - Cada organização poderá usar as ferramentas e recursos que acharem mais apropriadas para gerar e manter as chaves privadas, levando-se em conta as restrições de segurança.
+1. As organizações deverão fornecer dados para cadastramento na gen02:
+   - As organizações deverão criar chaves para suas contas de Administradores Globais.
+     - **As chaves privadas deverão ser mantidas com alto rigor de segurança**.
+     - Cada organização poderá usar as ferramentas e recursos que acharem mais apropriadas para gerar e manter as chaves privadas, levando-se em conta as restrições de segurança.
+   - Deverão ser fornecidos um nome e um CNPJ para cadastramento de cada organização.
 
 2. Administrador Master permissionará as novas contas de Administradores Globais **na gen01 como contas transacionais**.
    - Estas contas **não** deverão ser permissionadas como Administradores Master.
