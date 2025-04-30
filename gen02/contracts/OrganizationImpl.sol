@@ -64,7 +64,7 @@ contract OrganizationImpl is Organization, Governable {
         uint newId = ++idSeed;
         OrganizationData memory newOrg = OrganizationData(newId, cnpj, name, orgType, canVote);
         organizations[newId] = newOrg;
-        _organizationIds.add(newId);
+        assert(_organizationIds.add(newId));
         emit OrganizationAdded(newId, cnpj, name, orgType, canVote);
         return newId;
     }
@@ -81,7 +81,7 @@ contract OrganizationImpl is Organization, Governable {
 
     function deleteOrganization(uint orgId) public onlyGovernance existentOrganization(orgId) onlyIfMinimumActiveOrganizations {
         delete organizations[orgId];
-        _organizationIds.remove(orgId);
+        assert(_organizationIds.remove(orgId));
         emit OrganizationDeleted(orgId);
     }
 

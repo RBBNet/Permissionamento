@@ -162,8 +162,8 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         _revertIfInvalidDataHash(roleId, dataHash);
         AccountData memory newAccount = AccountData(orgId, account, roleId, dataHash, true);
         accounts[account] = newAccount;
-        _accountsAddresses.add(account);
-        _accountsAddressesByOrg[orgId].add(account);
+        assert(_accountsAddresses.add(account));
+        assert(_accountsAddressesByOrg[orgId].add(account));
         _grantRole(roleId, account);
         _incrementGlobalAdminCount(orgId, roleId);
         emit AccountAdded(newAccount.account, newAccount.orgId, newAccount.roleId, newAccount.dataHash);
@@ -183,8 +183,8 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
         AccountData memory acc = accounts[account];
         _revokeRole(acc.roleId, account);
         delete accounts[account];
-        _accountsAddresses.remove(account);
-        _accountsAddressesByOrg[acc.orgId].remove(account);
+        assert(_accountsAddresses.remove(account));
+        assert(_accountsAddressesByOrg[acc.orgId].remove(account));
         _decrementGlobalAdminCount(acc.orgId, acc.roleId);
         emit AccountDeleted(account, acc.orgId);
     }

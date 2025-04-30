@@ -61,8 +61,8 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
         uint256 key = _calculateKey(enodeHigh, enodeLow);
         _revertIfDuplicateNode(enodeHigh, enodeLow, key);
         allowedNodes[key] = NodeData(enodeHigh, enodeLow, nodeType, name, orgId, true);
-        _nodesKeys.add(key);
-        _nodesKeysByOrg[orgId].add(key);
+        assert(_nodesKeys.add(key));
+        assert(_nodesKeysByOrg[orgId].add(key));
         emit NodeAdded(enodeHigh, enodeLow, orgId, nodeType, name);
     }
 
@@ -81,8 +81,8 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     
     function _deleteNode(bytes32 enodeHigh, bytes32 enodeLow, uint nodeKey, uint orgId) private {
         delete allowedNodes[nodeKey];
-        _nodesKeys.remove(nodeKey);
-        _nodesKeysByOrg[orgId].remove(nodeKey);
+        assert(_nodesKeys.remove(nodeKey));
+        assert(_nodesKeysByOrg[orgId].remove(nodeKey));
         emit NodeDeleted(enodeHigh, enodeLow, orgId);
     }
 
