@@ -20,7 +20,7 @@ No contexto deste documento, deve-se entender os termos:
 
 ## Implantação da gen02 e permissionamentos iniciais
 
-3. Implantação dos *smart contracts* da gen02: `Organization`, `AccountRulesV2Impl`, `NodeRulesV2Impl` e `Governance`.
+3. Implantação dos *smart contracts* da gen02: `OrganizationImpl`, `AccountRulesV2Impl`, `NodeRulesV2Impl` e `Governance`.
    - Serão pré-cadastradas:
      - As organizações participantes que possuem nós.
      - Um único Administrador Global para cada organização (outros Administradores Globais poderão ser adicionados posteriormente).
@@ -64,8 +64,8 @@ No contexto deste documento, deve-se entender os termos:
 
 8. Reponteiramento dos *smart contracts* de regras de permissionamento (`RULES_CONTRACT`) nos *smart contracts* `Ingress`:
    - O BNDES criará proposta com os seguintes passos:
-     - Reponteiramento das regras de permissionamento de nós (`NodeIngress`) para o novo *smart contract* de gestão nós (`NodeRulesV2Impl`).
      - Reponteiramento das regras de permissionamento de contas (`AccountIngress`) para o novo *smart contract* de gestão de contas (`AccountRulesV2Impl`).
+     - Reponteiramento das regras de permissionamento de nós (`NodeIngress`) para o novo *smart contract* de gestão nós (`NodeRulesV2Impl`).
    - Organizações participantes votarão para aprovar a proposta.
    - O BNDES executará a proposta aprovada.
    - Para as ações de governança, o BNDES utilizará suas ferramentas de gestão do permissionamento da gen02.
