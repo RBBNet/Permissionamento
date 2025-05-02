@@ -52,6 +52,7 @@ No contexto deste documento, deve-se entender os termos:
 7. Cadastramento das organizações que não têm nó implantado.
    - As organizações serão cadastradas de forma a dar transparência ao público sobre quem faz parte da RBB.
      - As organizações serão cadastradas **sem** Administrador Global e **sem** direito a voto, mesmo que sejam partícipes associados.
+     - Deverão ser fornecidos um nome e um CNPJ para cadastramento de cada organização.
    - Este passo poderá ser feito paralelamente ao passo anterior, caso necessário, sem prejuízos.
    - O BNDES criará proposta para cadastramento destas organizações.
    - Organizações participantes votarão para aprovar a proposta.
