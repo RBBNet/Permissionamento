@@ -8,6 +8,7 @@ function getContract(context, contract) {
         case 'Admin': return context.adminMockContract;
         case 'OrganizationImpl': return context.organizationContract;
         case 'AccountRulesV2Impl': return context.accountRulesContract;
+        case 'NodeRulesV2Impl': return context.nodeRulesContract;
         case 'Governance': return context.govenanceContract;
         default: throw new Error('Alvo desconhecido: ' + contract);
     }

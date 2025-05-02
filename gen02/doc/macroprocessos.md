@@ -7,6 +7,7 @@ Procedimento:
 2. Administrador Global (de qualquer organização) cria proposta para votação de:
    1. Inclusão de organização
    2. Inclusão de Administrador Global da nova organização, com o endereço gerado
+   3. Inclusão de nós para a nova organização
 3. Organizações votam para aprovar a proposta.
 4. Administrador Global (de qualquer organização) executa a proposta aprovada.
    1. Governança realiza novos cadastros.

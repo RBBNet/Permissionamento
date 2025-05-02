@@ -46,6 +46,7 @@ Funcionalidade: Macroprocessos de gestão da RBB
     E a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0"
     # Administrador global da organização 9 - OrgExc
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+    # Implantação do smart contract de gestão de contas
     E implanto o smart contract de gestão de contas
     E a implantação do smart contract de gestão de contas ocorre com sucesso
     # Cadastrando restrição de acesso a smart contract (restrição usada em cenário abaixo)
@@ -67,6 +68,9 @@ Funcionalidade: Macroprocessos de gestão da RBB
     E a conta "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E" é da organização 7 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     E a conta "0xdD2FD4581271e230360230F9337D5c0430Bf44C0" é da organização 8 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
     E a conta "0x90F79bf6EB2c4f870365E785982E1f101E93b906" é da organização 9 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
+    # Implantação do smart contract de gestão de nós
+    E implanto o smart contract de gestão de nós
+    E a implantação do smart contract de gestão de nós ocorre com sucesso
     # Implantação do smart contract de governança
     E implanto o smart contract de governança do permissionamento
     E a implantação do smart contract de governança do permissionamento ocorre com sucesso
@@ -106,6 +110,10 @@ Funcionalidade: Macroprocessos de gestão da RBB
     # Preparação de passos para uma proposta
     Dado o alvo "OrganizationImpl" para chamada da função "addOrganization(string,string,uint8,bool)" com parâmetros "04082993000149,IBICT,1,true"
     E o alvo "AccountRulesV2Impl" para chamada da função "addAccount(address,uint256,bytes32,bytes32)" com parâmetros "0xBcd4042DE499D14e55001CcbB24a551F3b954096,10,0xd6e7d8560c69c7c18c2b8f3b45430215d788f128f0c04bc4a3607fe05eb5399f,0x0000000000000000000000000000000000000000000000000000000000000000"
+    E o alvo "NodeRulesV2Impl" para chamada da função "addNode(bytes32,bytes32,uint8,string,uint)" com parâmetros "0x000000000000000000000000000000000000000000000000000000000000000f,0x0000000000000000000000000000000000000000000000000000000000000000,0,boot01,10"
+    E o alvo "NodeRulesV2Impl" para chamada da função "addNode(bytes32,bytes32,uint8,string,uint)" com parâmetros "0x000000000000000000000000000000000000000000000000000000000000000f,0x0000000000000000000000000000000000000000000000000000000000000001,1,validator01,10"
+    E o alvo "NodeRulesV2Impl" para chamada da função "addNode(bytes32,bytes32,uint8,string,uint)" com parâmetros "0x000000000000000000000000000000000000000000000000000000000000000f,0x0000000000000000000000000000000000000000000000000000000000000002,2,writer01,10"
+    E o alvo "NodeRulesV2Impl" para chamada da função "addNode(bytes32,bytes32,uint8,string,uint)" com parâmetros "0x000000000000000000000000000000000000000000000000000000000000000f,0x0000000000000000000000000000000000000000000000000000000000000004,4,observer-boot01,10"
     # Administrador Global do BNDES cria uma proposta
     Quando a conta "0x71bE63f3384f5fb98995898A86B02Fb2426c5788" cria proposta com descrição "Inclusão do IBICT"
     Então a proposta é criada com sucesso
@@ -141,6 +149,10 @@ Funcionalidade: Macroprocessos de gestão da RBB
     E a organização 10 é "04082993000149" "IBICT" do tipo "Associate" e direito de voto "true"
     E a lista de organizações é "1,33657248000189,BNDES,Patron,true|2,00414607000118,TCU,Patron,true|3,42422253000101,DATAPREV,Associate,true|4,33555921000170,PUC-Rio,Partner,false|5,02641663000110,CPQD,Associate,true|6,03508097000136,RNP,Associate,true|7,16636540000104,Prodemge,Associate,true|8,33683111000107,SERPRO,Associate,true|9,12345678901234,OrgExc,Associate,true|10,04082993000149,IBICT,Associate,true"
     E a conta "0xBcd4042DE499D14e55001CcbB24a551F3b954096" é da organização 10 com papel "GLOBAL_ADMIN_ROLE", data hash "0x0000000000000000000000000000000000000000000000000000000000000000" e situação ativa "true"
+    E o nó "0x000000000000000000000000000000000000000000000000000000000000000f" "0x0000000000000000000000000000000000000000000000000000000000000000" é da organização 10, tem o nome "boot01", tipo "Boot" e situação ativa true
+    E o nó "0x000000000000000000000000000000000000000000000000000000000000000f" "0x0000000000000000000000000000000000000000000000000000000000000001" é da organização 10, tem o nome "validator01", tipo "Validator" e situação ativa true
+    E o nó "0x000000000000000000000000000000000000000000000000000000000000000f" "0x0000000000000000000000000000000000000000000000000000000000000002" é da organização 10, tem o nome "writer01", tipo "Writer" e situação ativa true
+    E o nó "0x000000000000000000000000000000000000000000000000000000000000000f" "0x0000000000000000000000000000000000000000000000000000000000000004" é da organização 10, tem o nome "observer-boot01", tipo "ObserverBoot" e situação ativa true
 
   Cenário: Saída de uma organização
     # Preparação de passos para uma proposta
