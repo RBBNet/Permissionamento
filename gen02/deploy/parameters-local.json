@@ -1,9 +1,5 @@
 {
     "adminAddress": "0x72bb9c7ffbE2Ed234e53bc64862DdA6d9fFF333b",
-    "organizationAddress": "0xfEdf5D0eC5FCF22FfC28Ed352217ed879dB2D0af",
-    "accountRulesV2Address": "0xa6dDA3665B3980D4e1efFf2F4438033C6c779b22",
-    "nodeRulesV2Address": "0xCd50B9972abB2F10C65fbE3439EA3F83791F13DC",
-    "governanceAddress": "0xD5905E141dE60F2650B4e1b39B81E5957bF1aA78",
     "organizations": [
         {
             "id": 0,
@@ -71,48 +67,5 @@
         "0x2546BcD3c84621e976D8185a91A922aE77ECEc30",
         "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E",
         "0xdD2FD4581271e230360230F9337D5c0430Bf44C0"
-    ],
-    "accounts": [
-        {
-            "account": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-            "role": "LOCAL_ADMIN_ROLE",
-            "dataHash": "0x0000000000000000000000000000000000000000000000000000000000000001"
-        },
-        {
-            "account": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
-            "role": "DEPLOYER_ROLE",
-            "dataHash": "0x0000000000000000000000000000000000000000000000000000000000000001"
-        },
-        {
-            "account": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
-            "role": "USER_ROLE",
-            "dataHash": "0x0000000000000000000000000000000000000000000000000000000000000001"
-        }
-    ],
-    "nodes": [
-        {
-            "enodeHigh": "0x0000000000000000000000000000000000000000000000000000000000000001",
-            "enodeLow": "0x0000000000000000000000000000000000000000000000000000000000000002",
-            "nodeType": "Boot",
-            "name": "boot01"
-        },
-        {
-            "enodeHigh": "0x0000000000000000000000000000000000000000000000000000000000000003",
-            "enodeLow": "0x0000000000000000000000000000000000000000000000000000000000000004",
-            "nodeType": "Validator",
-            "name": "validator01"
-        },
-        {
-            "enodeHigh": "0x0000000000000000000000000000000000000000000000000000000000000005",
-            "enodeLow": "0x0000000000000000000000000000000000000000000000000000000000000006",
-            "nodeType": "Writer",
-            "name": "writer01"
-        },
-        {
-            "enodeHigh": "0x0000000000000000000000000000000000000000000000000000000000000007",
-            "enodeLow": "0x0000000000000000000000000000000000000000000000000000000000000008",
-            "nodeType": "ObserverBoot",
-            "name": "observer-boot01"
-        }
     ]
 }
