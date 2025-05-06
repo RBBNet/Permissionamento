@@ -13,12 +13,12 @@ Observações:
 
 Todos os dados serão gerados na pasta `besu/node-data`. Esta pasta será ignorada pelo git.
 
-Sempre que se queira "zerar" ou reiniciar a blockchain, basta parar o Besu, apagar a pasta `besu/node-data` e reiniciar o Besu.
+Sempre que se queira "zerar" ou "reiniciar" a blockchain (começar uma nova cadeia de blocos), basta parar o Besu, apagar a pasta `besu/node-data` e reiniciar o Besu.
 
 
 ## Preparação do nó Besu de bancada
 
-Esta seção existe apenas para fins de documentação sobre como o nó de bancada foi preparado e *não precisa ser repetida*.
+Esta seção existe apenas para fins de documentação sobre como o nó de bancada foi preparado e **não precisa ser repetida**.
 
 1. Criada a chave privada e exportada a chave pública: `besu --data-path=besu public-key export --to=besu/key.pub`
 2. Exportada a identificação do nó: `besu --data-path=besu public-key export-address --to=besu/node.id`

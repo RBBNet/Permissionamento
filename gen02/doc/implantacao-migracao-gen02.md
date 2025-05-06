@@ -1,4 +1,4 @@
-# Implantação e migração para a segunda geração (gen02) de permissionamento
+# Implantação e migração para a segunda geração (gen02) de permissionamento da RBB
 
 No contexto deste documento, deve-se entender os termos:
 - **Administrador Master** como uma conta cadastrada no *smart contract* [`Admin`](../../gen01/contracts/Admin.sol) da **primeira geração** do permissionamento.

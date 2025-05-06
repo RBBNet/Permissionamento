@@ -1,5 +1,43 @@
 # *Smart Contracts* de Permissionamento da RBB - Segunda Geração (gen02)
 
+Esta pasta contém os *smart contracts* de permissionamento da RBB de segunda geração e vários outros artefatos de [documentação](doc), testes e de [implantação](deploy), organizados como um [projeto npm](package.json).
+
+A gen02 foi desenvolvida para endereçar riscos e trazer melhorias conceituais em relação a gen01. A saber:
+
+- Conceito de [organização](contracts/OrganizationImpl.sol).
+  - Contas e nós são sempre associados a uma organização.
+  - Público pode consultar na blockchain quem faz parte da RBB.
+- Mecanismo de [governança](contracts/Governance.sol).
+  - Ações de caráter global da rede são feitos mediante propostas/votações.
+  - Um voto por organização.
+  - Aprovação por maioria simples.
+  - Diminuição do poder de um único administrador (risco de segurança).
+  - Funcionamento da RBB mais próximo ao de uma DAO.
+- [Contas](contracts/AccountRulesV2Impl.sol) com perfis de acesso.
+  - Permissões de acesso mais granulares.
+  - 4 perfis de acesso previstos:
+    - Usuário (`USER_ROLE`): Pode enviar transações.
+    - Implantador (`DEPLOYER_ROLE`): Pode implantar smart contracts.
+    - Administrador Local (`LOCAL_ADMIN_ROLE`): Efetua o permissionamento de nós e contas da organização.
+    - Administrador Global (`GLOBAL_ADMIN_ROLE`): Representa a organização para ações de governança da rede.
+- *Hash* cadastral para [contas](contracts/AccountRulesV2Impl.sol).
+  - Conforme item 7.5.4 do [Manual de Operações da RBB](https://github.com/RBBNet/rbb/blob/master/governanca/reunioes_comite_executivo/atas/2023-12-14-RBB-Ata-Reuni%C3%A3o-Comit%C3%AA-Executivo_v3_assinada.pdf).
+- Mecanismo para restrição de acesso por [contas](contracts/AccountRulesV2Impl.sol).
+  - Desabilitação de contas.
+  - Limitação de endereços alvo de transações por conta.
+  - Reversão de restrições de acesso aplicadas a uma conta.
+  - Restrições aplicáveis por qualquer administrador da organização.
+- Mecanismo para restrição de acesso a *smart contracts*.
+  - Desabilitação completa de acesso a um *smart contract*.
+  - Limitação de acesso a um *smart contract* por *senders* específicos.
+  - Reversão de restrições de acesso aplicadas a um *smart contract*.
+  - Restrições aplicáveis somente por votação da governança.
+
+As [premissas](doc/premissas.md), [macroprocessos](doc/macroprocessos.md) e requisitos da gen02 estão documentados na pasta [`doc`](doc).
+
+Vale salientar, entretanto, que, mesmo após a implantação da gen02, alguns dos *smart contracts* da gen01 seguirão sendo usados, como os *smart contracts* "*proxies*" [`AccountIngress`](../gen01/contracts/AccountIngress.sol) e [`NodeIngress`](../gen01/contracts/NodeIngress.sol) e o *smart contract* que define as contas de administração global da rede (administradores master) [Admin](../gen01/contracts/Admin.sol).
+
+
 ## Ambiente de desenvolvimento
 
 ### Preparação do ambiente
@@ -229,7 +267,7 @@ Esta seção está em elaboração.
 
 ## Migração da gen01 para a gen02:
 
-O procedimento recomendado de migração da gen01 para a gen02 está descrito no documento de [macroprocessos](doc/macroprocessos.md).
+O procedimento recomendado de implantação da gen01 e posterior migração da gen01 para a gen02 está descrito na [documentação da gen02](doc/implantacao-migracao-gen02.md).
 
 
 ## Referências

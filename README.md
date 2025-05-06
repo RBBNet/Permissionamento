@@ -6,7 +6,7 @@ Este repositório contém o código utilizado para esse permissionamento, em sua
 
 ## Primeira geração
 
-Na pasta [`gen01`](gen01) temos a primeira geração de smart contracts de permissionamento, implantada originalmente no início de operação da RBB, incluindo os *smart contracts* [`AccountIngress`](gen01/contracts/AccountIngress.sol) e [`NodeIngress`](gen01/contracts/NodeIngress.sol), constantes no arquivo [genesis](https://github.com/RBBNet/rbb/blob/master/artefatos/observer/genesis.json) da rede. A primeira geração de *smart contracts* basicamente contém os *proxies* `AccountIngress` e `NodeIngress`, que permitem o "reponteiramento" de regras, as regras de acesso para contas e nós e a gestão de contas de administração.
+Na pasta [`gen01`](gen01) temos a primeira geração de smart contracts de permissionamento, implantada originalmente no início de operação da RBB, incluindo os *smart contracts* [`AccountIngress`](gen01/contracts/AccountIngress.sol) e [`NodeIngress`](gen01/contracts/NodeIngress.sol), constantes no arquivo [genesis](https://github.com/RBBNet/rbb/blob/master/artefatos/observer/genesis.json) da rede. A primeira geração de *smart contracts* basicamente contém os *proxies* `AccountIngress` e `NodeIngress`, que permitem o "reponteiramento" de regras: as regras de acesso para contas e nós; e a gestão de contas de administração.
 
 
 ## Segunda geração
