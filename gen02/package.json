@@ -1,7 +1,7 @@
 {
   "name": "rbb-permissionamento",
   "version": "2.0.0",
-  "description": "Smart contracts de permissionamento da RBB",
+  "description": "Smart contracts de permissionamento da RBB - Geração 2 (gen02)",
   "scripts": {
     "test": "cucumber-js",
     "compile": "npx hardhat compile",
@@ -9,6 +9,8 @@
     "hardhat-deploy-gen02": "npx hardhat run deploy/deploy-gen02.js --network local",
     "local-deploy-admin-mock": "npx hardhat run deploy/deploy-admin-mock.js --network local_besu",
     "local-deploy-gen02": "npx hardhat run deploy/deploy-gen02.js --network local_besu",
+    "lab-deploy-gen02": "npx hardhat run deploy/deploy-gen02.js --network lab_besu",
+    "piloto-deploy-gen02": "npx hardhat run deploy/deploy-gen02.js --network piloto_besu",
     "local-migrate-to-gen03-mock": "npx hardhat run deploy/migrate-to-gen03-mock.js --network local_besu",
     "local-migrate-to-governance-mock": "npx hardhat run deploy/migrate-to-governance-mock.js --network local_besu"
   },

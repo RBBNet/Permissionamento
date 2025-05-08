@@ -227,7 +227,7 @@ Implantando AdminMock
 npm run local-deploy-gen02
 ```
 
-Ao final da implantação, copie os endereços dos contratos de `OrganizationImpl`, `AccountRulesV2Impl`, `NodeRulesV2Impl` e `Governance`:
+9. Ao final da implantação, guarde os endereços dos contratos de `OrganizationImpl`, `AccountRulesV2Impl`, `NodeRulesV2Impl` e `Governance`:
 
 ```
 Implantando smart contract de gestão de organizações
@@ -240,29 +240,56 @@ Implantando smart contract de governança
  Governance implantado no endereço 0x5FC8d32690cc91D4c39d9d3abcBD16989F875707
 ```
 
-9. Copie os endereços dos contratos da gen02 no arquivo [`deploy/parameters-local.json`](deploy/parameters-local.json), nos parâmetros `adminAddress`:
-
-```
-{
-    ...
-    "organizationAddress": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-    "accountRulesV2Address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-    "nodeRulesV2Address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
-    "governanceAddress": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
-    ...
-}
-```
+Esses endereços serão necessários para chamadas aos *smart contracts* da gen02, por exemplo, através dos [scripts](https://github.com/RBBNet/scripts-permissionamento) ou [DApp](https://github.com/RBBNet/dapp-permissionamento) de permissionamento
 
 
 ## Implantação em ambientes produtivos
 
-Esta seção está em elaboração.
-
 
 ### Implantação na Rede Lab
 
+1. O ajuste das variáveis de ambiente pode ser feito via arquivo `.env` ou ajustando o valor diretamente no terminal. Exemplo:
+
+```shell
+set CONFIG_PARAMETERS=deploy/parameters-lab.json
+set ACCOUNT_ADDRESS=0x........................................
+set PRIVATE_KEY=0x................................................................
+```
+
+2. Verifique no arquivo [`hardhat.config.js`](hardhat.config.js) se a url da rede `lab_besu` está correto:
+```json
+    lab_besu: {
+      url: "http://127.0.0.1:8545",
+      chainId: 648629,
+      accounts: privateKeys,
+      from: accountAddress
+    },
+```
+
+3. Implante os contratos da gen02:
+```shell
+npm run lab-deploy-gen02
+```
+
+Ao final da implantação, guarde os endereços dos contratos de `OrganizationImpl`, `AccountRulesV2Impl`, `NodeRulesV2Impl` e `Governance`:
+
+```
+Implantando smart contract de gestão de organizações
+ OrganizationImpl implantado no endereço 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+Implantando smart contract de gestão de contas
+ AccountRulesV2Impl implantado no endereço 0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9
+Implantando smart contract de gestão de nós
+ NodeRulesV2Impl implantado no endereço 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
+Implantando smart contract de governança
+ Governance implantado no endereço 0x5FC8d32690cc91D4c39d9d3abcBD16989F875707
+```
+
+4. Documente os endereços dos *smart contracts* da gen02 no GitHub no documento [`contratos.md`](https://github.com/RBBNet/participantes/blob/main/lab/contratos.md).
+
 
 ### Implantação na Rede Piloto
+
+Esta seção está em elaboração.
 
 
 ## Migração da gen01 para a gen02:

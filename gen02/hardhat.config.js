@@ -36,6 +36,18 @@ module.exports = {
       chainId: 648629,
       accounts: privateKeys,
       from: accountAddress
+    },
+    lab_besu: {
+      url: "http://127.0.0.1:8545",
+      chainId: 648629,
+      accounts: privateKeys,
+      from: accountAddress
+    },
+    piloto_besu: {
+      url: "http://127.0.0.1:8545",
+      chainId: 12120014,
+      accounts: privateKeys,
+      from: accountAddress
     }
   },
   solidity: "0.8.28"
