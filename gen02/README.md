@@ -43,7 +43,6 @@ Vale salientar, entretanto, que, mesmo após a implantação da gen02, alguns do
 ### Preparação do ambiente
 
 Para baixar as dependências:
-
 ```shell
 npm install
 ```
@@ -57,13 +56,19 @@ Para compilar os *smart contracts* (script configurado no `package.json`):
 npm run compile
 ```
 
-Para executar os testes automatizados:
+Para executar os cenários de teste automatizados:
 
 ```shell
 npm test
 ```
 
 **Observação**: Os testes são baseados em cenários, descritos **em linguagem natural**, utilizando a sintaxe [Gherkin](https://cucumber.io/docs/gherkin/). Os cenários podem ser encontrados na pasta [features](features).
+
+Para executar testes unitários:
+
+```shell
+npm run test-unit
+```
 
 
 ### Debug

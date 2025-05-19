@@ -4,6 +4,7 @@
   "description": "Smart contracts de permissionamento da RBB - Geração 2 (gen02)",
   "scripts": {
     "test": "cucumber-js",
+    "test-unit": "mocha",
     "compile": "npx hardhat compile",
     "hardhat-deploy-admin-mock": "npx hardhat run deploy/deploy-admin-mock.js --network local",
     "hardhat-deploy-gen02": "npx hardhat run deploy/deploy-gen02.js --network local",
@@ -29,7 +30,8 @@
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "hardhat": "^2.22.19",
     "@openzeppelin/contracts": "^5.2.0",
-    "@cucumber/cucumber": "^9.6.0"
+    "@cucumber/cucumber": "^9.6.0",    
+    "mocha": "^10.2.0"
   },
   "bugs": {
     "url": "https://github.com/RBBNet/Permissionamento/issues"
