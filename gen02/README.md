@@ -104,6 +104,11 @@ console.log("Parametros %s e %s", p1, p2);
 **ATENÇÃO**: Esse recurso deve ser usado apenas em testes locais, de forma temporária. Tal recurso **não** pode ser usado para utilização efetiva no código final. **Remova quaisquer referências do tipo antes de fazer commit do código**.
 
 
+### Auditoria
+
+Os *smart contracts* podem sofrer auditoria através de ferramentas específicas. Veja o documento [auditoria.md](auditoria.md) para mais detalhes.
+
+
 ### Implantação em ambiente local
 
 As seções abaixo descrevem os procedimentos para instalação da gen02 em ambiente local, seja no Hardhat ou seja no Besu.
