@@ -2,8 +2,8 @@
 pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
-import {MockAdminProxy} from "../src/mock/MockAdminProxy.sol";
-import {AdminProxy} from "../src/AdminProxy.sol";
+import {MockAdminProxy} from "../contracts/test/AdminProxyMock.sol";
+import {AdminProxy} from "../contracts/AdminProxy.sol";
 
 contract AdminProxyTest is Test {
     MockAdminProxy public mockAdminProxy;

@@ -2,7 +2,7 @@
 pragma solidity 0.8.28;
 
 import "forge-std/Test.sol";
-import "../src/mock/PaginationMock.sol"; // Ajuste o path conforme sua estrutura
+import "../contracts/test/PaginationMock.sol"; // Ajuste o path conforme sua estrutura
 
 contract PaginationTest is Test {
     PaginationMock internal pagination;

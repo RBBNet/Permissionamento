@@ -2,8 +2,8 @@
 pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
-import {MockAccountRulesProxy} from "../src/mock/MockAccountRulesProxy.sol";
-import {AccountRulesProxy} from "../src/AccountRulesProxy.sol";
+import {MockAccountRulesProxy} from "../contracts/test/MockAccountRulesProxy.sol";
+import {AccountRulesProxy} from "../contracts/AccountRulesProxy.sol";
 
 contract AccountRulesProxyTest is Test {
     MockAccountRulesProxy public mockAccountRulesProxy;

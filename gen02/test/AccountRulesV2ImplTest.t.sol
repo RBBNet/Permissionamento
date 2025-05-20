@@ -2,13 +2,13 @@
 pragma solidity ^0.8.26;
 
 import {Test, console} from "forge-std/Test.sol";
-import {MockAdminProxy} from "../src/mock/MockAdminProxy.sol";
-import {AccountRulesV2Impl} from "../src/AccountRulesV2Impl.sol";
-import {AccountRulesV2} from "../src/AccountRulesV2.sol";
-import {Organization} from "../src/Organization.sol";
-import {OrganizationImpl} from "../src/OrganizationImpl.sol";
-import {Governance} from "../src/Governance.sol";
-import {Governable} from "../src/Governable.sol";
+import {MockAdminProxy} from "../contracts/test/AdminProxyMock.sol";
+import {AccountRulesV2Impl} from "../contracts/AccountRulesV2Impl.sol";
+import {AccountRulesV2} from "../contracts/AccountRulesV2.sol";
+import {Organization} from "../contracts/Organization.sol";
+import {OrganizationImpl} from "../contracts/OrganizationImpl.sol";
+import {Governance} from "../contracts/Governance.sol";
+import {Governable} from "../contracts/Governable.sol";
 
 contract AccountRulesV2FuzzTest is Test {
     AccountRulesV2Impl internal accountRules;

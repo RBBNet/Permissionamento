@@ -2,10 +2,10 @@
 pragma solidity ^0.8.26;
 
 import {Test, console} from "forge-std/Test.sol";
-import {MockAdminProxy} from "../src/mock/MockAdminProxy.sol";
-import {OrganizationImpl} from "../src/OrganizationImpl.sol";
-import {Organization} from "../src/Organization.sol";
-import {Governable} from "../src/Governable.sol";
+import {MockAdminProxy} from "../contracts/test/AdminProxyMock.sol";
+import {OrganizationImpl} from "../contracts/OrganizationImpl.sol";
+import {Organization} from "../contracts/Organization.sol";
+import {Governable} from "../contracts/Governable.sol";
 
 contract OrganizationImplTest is Test {
     MockAdminProxy internal adminProxy;
