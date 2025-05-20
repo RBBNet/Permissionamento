@@ -68,6 +68,46 @@ python3 mutation_tester.py contracts/Pagination.sol
 ```
 
 
+## Testes de *fuzzing*
+
+Para realização de testes de *fuzzing*, faz-se necessário a instalação da ferramenta Foundry. Ela pode ser instalada via *script* automatizado ou baixando-se [binários pré-compilados das *releases*](https://github.com/foundry-rs/foundry/releases) da ferramenta.
+
+Para utilização de *script* automatizado, execute o comando abaixo:
+```bash
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+```
+
+Para mais informações sobre a instalação do Foundry, utilize a [documentação da ferramenta](https://book.getfoundry.sh/getting-started/installation).
+
+Para executar um teste específico (modo verboso):
+```bash
+forge test <nome_do_teste> -vvv
+```
+
+Para executar uma função específica dentro de um teste (modo verboso):
+```bash
+forge test <nome_de_teste> --match-test <nome_da_funcao> -vvv
+```
+
+**Observação**: A opção `-vvv` é usada para exibir logs detalhados dos testes.
+
+Para executar todos os testes:
+```bash
+forge test
+```
+
+Para executar testes com fuzzing (ex: 1000 execuções aleatórias):
+```bash
+forge test --fuzz-runs 1000
+```
+
+Exemplo prático:
+```bash
+forge test AccountRulesProxyTest.t.sol --fuzz-runs 2000 -vvv
+```
+
+
 ### Referências
 
 - [PIP virtual environments](https://packaging.python.org/en/latest/tutorials/installing-packages/#creating-and-using-virtual-environments)

@@ -323,6 +323,13 @@ O procedimento recomendado de implantação da gen01 e posterior migração da g
 - [Gherkin Syntax](https://cucumber.io/docs/gherkin/)
 - [Hardhat-Ethers](https://hardhat.org/hardhat-runner/plugins/nomicfoundation-hardhat-ethers)
 - [Ethers API](https://docs.ethers.org/v6/single-page/#api)
-- Mocha - [Assertions](https://mochajs.org/#assertions)
-- Node.js - [Assert](https://nodejs.org/api/assert.html)
+- Mocha
+  - [Mocha](https://mochajs.org/)
+  - [Assertions](https://mochajs.org/#assertions)
+- Node.js
+  - [Node.js](https://nodejs.org/)
+  - [Assert](https://nodejs.org/api/assert.html)
 - [Role-Based Access Control](https://docs.openzeppelin.com/contracts/2.x/access-control#role-based-access-control)
+- Foundry
+  - [Foundry](https://github.com/foundry-rs/foundry)
+  - [Foundry Book](https://book.getfoundry.sh/)
