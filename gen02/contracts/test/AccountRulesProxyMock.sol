@@ -26,14 +26,14 @@ contract AccountRulesProxyMock is AccountRulesProxy {
         allowedTargets[target] = true;
     }
 
-    function isSenderAddressValid(address sender) external returns (bool){
+    function isSenderAddressValid(address sender) external pure returns (bool){
         if(sender == address(0)){
             revert InvalidSenderAddress(sender);
         }
         return true;
     }
 
-    function isTargetAddressValid(address target) external returns (bool){
+    function isTargetAddressValid(address target) external pure returns (bool){
         if(target == address(0)){
             revert InvalidTargetAddress(target);
         }
@@ -47,9 +47,9 @@ contract AccountRulesProxyMock is AccountRulesProxy {
     function transactionAllowed(
         address sender,
         address target,
-        uint256 value,
-        uint256 gasPrice,
-        uint256 gasLimit,
+        uint256,
+        uint256,
+        uint256,
         bytes calldata payload
     ) external view override returns (bool) {
         //transação é permitida se o sender, target e payload estiverem na lista de permitidos
