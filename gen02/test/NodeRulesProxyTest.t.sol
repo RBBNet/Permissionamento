@@ -2,15 +2,15 @@
 pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
-import {MockNodeRulesProxy} from "../contracts/test/MockNodeRulesProxy.sol";
+import {NodeRulesProxyMock} from "../contracts/test/NodeRulesProxyMock.sol";
 import {NodeRulesProxy} from "../contracts/NodeRulesProxy.sol";
 
 contract NodeRulesProxyTest is Test {
-    MockNodeRulesProxy public mockNodeRulesProxy;
+    NodeRulesProxyMock public mockNodeRulesProxy;
 
     function setUp() public {
         console.log(">>>>> [FUZZY] NodeRulesProxy test");
-        mockNodeRulesProxy = new MockNodeRulesProxy();
+        mockNodeRulesProxy = new NodeRulesProxyMock();
     }
 
     function testConnectionAllowed( 

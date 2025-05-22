@@ -3,7 +3,8 @@ src = "contracts"
 out = "out"
 libs = ["lib"]
 remappings = [
-    "@openzeppelin/contracts=node_modules/@openzeppelin/contracts/"
+    "@openzeppelin/contracts=node_modules/@openzeppelin/contracts/",
+    "hardhat=node_modules/hardhat"
 ]
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

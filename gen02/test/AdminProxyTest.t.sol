@@ -2,15 +2,15 @@
 pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
-import {MockAdminProxy} from "../contracts/test/AdminProxyMock.sol";
+import {AdminProxyMock} from "../contracts/test/AdminProxyMock.sol";
 import {AdminProxy} from "../contracts/AdminProxy.sol";
 
 contract AdminProxyTest is Test {
-    MockAdminProxy public mockAdminProxy;
+    AdminProxyMock public mockAdminProxy;
 
     function setUp() public {
         console.log(">>>>> [FUZZY] AdminProxy test");
-        mockAdminProxy = new MockAdminProxy();
+        mockAdminProxy = new AdminProxyMock();
     }
 
     function testIsAuthorized(address addr, bool authorized) public {
@@ -33,7 +33,7 @@ contract AdminProxyTest is Test {
         console.log('%s', addr);
         
         if(addr == address(0)){
-            vm.expectRevert(abi.encodeWithSelector(AdminProxy.InvalidSourceAddress.selector, addr));
+            vm.expectRevert(abi.encodeWithSelector(AdminProxyMock.InvalidSourceAddress.selector, addr));
             mockAdminProxy.isAValidAddress(addr);
         }else{
             bool result = mockAdminProxy.isAValidAddress(addr);

@@ -2,13 +2,13 @@
 pragma solidity ^0.8.26;
 
 import {Test, console} from "forge-std/Test.sol";
-import {MockAdminProxy} from "../contracts/test/AdminProxyMock.sol";
+import {AdminProxyMock} from "../contracts/test/AdminProxyMock.sol";
 import {OrganizationImpl} from "../contracts/OrganizationImpl.sol";
 import {Organization} from "../contracts/Organization.sol";
 import {Governable} from "../contracts/Governable.sol";
 
 contract OrganizationImplTest is Test {
-    MockAdminProxy internal adminProxy;
+    AdminProxyMock internal adminProxy;
     OrganizationImpl internal orgImpl;
 
     address internal addr1;
@@ -19,7 +19,7 @@ contract OrganizationImplTest is Test {
         addr1 = address(0x1);
         addr2 = address(0x2);
 
-        adminProxy = new MockAdminProxy(); //deploy adminmock
+        adminProxy = new AdminProxyMock(); //deploy adminmock
         adminProxy.setAuthorized(addr1, true); //addr 1 autorizado
 
         Organization.OrganizationData[] memory orgs = new Organization.OrganizationData[](2);

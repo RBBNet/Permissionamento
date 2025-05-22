@@ -2,15 +2,15 @@
 pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
-import {MockAccountRulesProxy} from "../contracts/test/MockAccountRulesProxy.sol";
+import {AccountRulesProxyMock} from "../contracts/test/AccountRulesProxyMock.sol";
 import {AccountRulesProxy} from "../contracts/AccountRulesProxy.sol";
 
 contract AccountRulesProxyTest is Test {
-    MockAccountRulesProxy public mockAccountRulesProxy;
+    AccountRulesProxyMock public mockAccountRulesProxy;
 
     function setUp() public {
         console.log(">>>>> [FUZZY] AccountRulesProxy test");
-        mockAccountRulesProxy = new MockAccountRulesProxy();
+        mockAccountRulesProxy = new AccountRulesProxyMock();
     }
 
     function testTransactionAllowed( 
@@ -27,7 +27,7 @@ contract AccountRulesProxyTest is Test {
         console.log('%s %s', sender, target);
         
         if(sender == address(0)){
-            vm.expectRevert(abi.encodeWithSelector(AccountRulesProxy.InvalidSenderAddress.selector, sender));
+            vm.expectRevert(abi.encodeWithSelector(AccountRulesProxyMock.InvalidSenderAddress.selector, sender));
             mockAccountRulesProxy.isSenderAddressValid(sender);
         }else{
             bool result = mockAccountRulesProxy.isSenderAddressValid(sender);
@@ -35,7 +35,7 @@ contract AccountRulesProxyTest is Test {
         }
 
         if(target == address(0)){
-            vm.expectRevert(abi.encodeWithSelector(AccountRulesProxy.InvalidTargetAddress.selector, target));
+            vm.expectRevert(abi.encodeWithSelector(AccountRulesProxyMock.InvalidTargetAddress.selector, target));
             mockAccountRulesProxy.isTargetAddressValid(target);
         }else{
             bool result = mockAccountRulesProxy.isTargetAddressValid(target);
@@ -50,7 +50,7 @@ contract AccountRulesProxyTest is Test {
         console.log('%s %s', sender, target);
         
         if(sender == address(0)){
-            vm.expectRevert(abi.encodeWithSelector(AccountRulesProxy.InvalidSenderAddress.selector, sender));
+            vm.expectRevert(abi.encodeWithSelector(AccountRulesProxyMock.InvalidSenderAddress.selector, sender));
             mockAccountRulesProxy.isSenderAddressValid(sender);
         }else{
             bool result = mockAccountRulesProxy.isSenderAddressValid(sender);
@@ -58,7 +58,7 @@ contract AccountRulesProxyTest is Test {
         }
 
         if(target == address(0)){
-            vm.expectRevert(abi.encodeWithSelector(AccountRulesProxy.InvalidTargetAddress.selector, target));
+            vm.expectRevert(abi.encodeWithSelector(AccountRulesProxyMock.InvalidTargetAddress.selector, target));
             mockAccountRulesProxy.isTargetAddressValid(target);
         }else{
             bool result = mockAccountRulesProxy.isTargetAddressValid(target);

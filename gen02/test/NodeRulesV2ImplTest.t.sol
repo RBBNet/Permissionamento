@@ -2,7 +2,7 @@
 pragma solidity ^0.8.18;
 
 import {Test, console} from "forge-std/Test.sol";
-import {MockAdminProxy} from "../contracts/test/AdminProxyMock.sol";
+import {AdminProxyMock} from "../contracts/test/AdminProxyMock.sol";
 
 import {AccountRulesV2} from "../contracts/AccountRulesV2.sol";
 import {AccountRulesV2Impl} from "../contracts/AccountRulesV2Impl.sol";
@@ -22,7 +22,7 @@ contract NodeRulesV2ImplFuzzTest is Test {
     NodeRulesV2Impl internal nodeRules;
     OrganizationImpl internal organization;
     AccountRulesV2Impl internal accounts;
-    MockAdminProxy internal adminProxy;
+    AdminProxyMock internal adminProxy;
 
     address internal globalAdmin1;
     address internal globalAdmin2;
@@ -38,7 +38,7 @@ contract NodeRulesV2ImplFuzzTest is Test {
 
     function setUp() public {
         
-        adminProxy = new MockAdminProxy();
+        adminProxy = new AdminProxyMock();
 
         Organization.OrganizationData[] memory orgs = new Organization.OrganizationData[](2);
         orgs[0] = Organization.OrganizationData({id: 1, name: "OrgOne", cnpj: "73418139000123", orgType: Organization.OrganizationType.Associate, canVote: true});

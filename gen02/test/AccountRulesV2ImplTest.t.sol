@@ -2,7 +2,7 @@
 pragma solidity ^0.8.26;
 
 import {Test, console} from "forge-std/Test.sol";
-import {MockAdminProxy} from "../contracts/test/AdminProxyMock.sol";
+import {AdminProxyMock} from "../contracts/test/AdminProxyMock.sol";
 import {AccountRulesV2Impl} from "../contracts/AccountRulesV2Impl.sol";
 import {AccountRulesV2} from "../contracts/AccountRulesV2.sol";
 import {Organization} from "../contracts/Organization.sol";
@@ -12,7 +12,7 @@ import {Governable} from "../contracts/Governable.sol";
 
 contract AccountRulesV2FuzzTest is Test {
     AccountRulesV2Impl internal accountRules;
-    MockAdminProxy internal adminProxy;
+    AdminProxyMock internal adminProxy;
     Governance internal governance;
     Organization internal organization;
 
@@ -37,7 +37,7 @@ contract AccountRulesV2FuzzTest is Test {
         globalAdmin1 = address(0x11);
         globalAdmin2 = address(0x12);
        
-        adminProxy = new MockAdminProxy();
+        adminProxy = new AdminProxyMock();
         vm.prank(owner); // o deploy é feito pelo "owner"
         adminProxy.setAuthorized(owner, true);
     
