@@ -85,43 +85,33 @@ contract AccountRulesV2FuzzTest is Test {
             vm.expectRevert(abi.encodeWithSelector(Governable.UnauthorizedAccess.selector, caller));
             accountRules.addAccount(newAccount, orgId, roleId, dataHash);
         } else {
-           
             if (newAccount == address(0)) {
                 // Reverte com InvalidAccount
                 vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.InvalidAccount.selector, newAccount, "Address cannot be 0x0"));
                 accountRules.addAccount(newAccount, orgId, roleId, dataHash);
             } else {
-                bool orgExists = (orgId == 1 || orgId == 2);
-                
-                if (!orgExists) {
-                
-                    vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.InvalidOrganization.selector, orgId, "The informed organization is unknown"));
+                try accountRules.getAccount(newAccount) {
+                    // Conta já existe
+                    vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.DuplicateAccount.selector, newAccount)); // conta já existe
                     accountRules.addAccount(newAccount, orgId, roleId, dataHash);
-
-                } else {
-                    
-                    
-                    bool roleValida = accountRules.validRoles(roleId);
-                    if (!roleValida) {
-    
-                        vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.InvalidRole.selector,roleId, "The informed role is unknown"));
+                } catch {
+                    // Erro AccountNotFound lançado. Conta não existe, podemos seguir adiante
+                    bool orgExists = (orgId == 1 || orgId == 2);
+                    if (!orgExists) {
+                        vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.InvalidOrganization.selector, orgId, "The informed organization is unknown"));
                         accountRules.addAccount(newAccount, orgId, roleId, dataHash);
-
                     } else {
-                        
-                        bool isAdminRole = (roleId == GLOBAL_ADMIN_ROLE || roleId == LOCAL_ADMIN_ROLE); // se roleId != GLOBAL_ADMIN_ROLE && != LOCAL_ADMIN_ROLE, dataHash não pode ser 0
-                        if (!isAdminRole && dataHash == 0) {
-                            vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.InvalidHash.selector, dataHash, "Hash cannot be 0x0"));
+                        bool roleValida = accountRules.validRoles(roleId);
+                        if (!roleValida) {
+                            vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.InvalidRole.selector,roleId, "The informed role is unknown"));
                             accountRules.addAccount(newAccount, orgId, roleId, dataHash);
                         } else {
-                            
-                            if (accountRules.getAccount(newAccount).account != address(0)) {
-                                vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.DuplicateAccount.selector, newAccount)); // conta já existe
+                            bool isAdminRole = (roleId == GLOBAL_ADMIN_ROLE || roleId == LOCAL_ADMIN_ROLE); // se roleId != GLOBAL_ADMIN_ROLE && != LOCAL_ADMIN_ROLE, dataHash não pode ser 0
+                            if (!isAdminRole && dataHash == 0) {
+                                vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.InvalidHash.selector, dataHash, "Hash cannot be 0x0"));
                                 accountRules.addAccount(newAccount, orgId, roleId, dataHash);
                             } else {
-
                                 accountRules.addAccount(newAccount, orgId, roleId, dataHash);
-                                
                                 AccountRulesV2.AccountData memory accData = accountRules.getAccount(newAccount);
                                 assertEq(accData.account, newAccount);
                                 assertEq(accData.orgId, orgId);
@@ -181,30 +171,36 @@ contract AccountRulesV2FuzzTest is Test {
         vm.assume(newAccount != address(0));
         vm.assume(roleId != bytes32(0));
 
-        bool isAuthorized = (uint256(keccak256(abi.encode(caller))) % 2 == 0);
-        adminProxy.setAuthorized(caller, true);
-        
+        bool callerIsGlobalAdmin = accountRules.hasRole(GLOBAL_ADMIN_ROLE, caller);
+        bool callerIsLocalAdmin = accountRules.hasRole(LOCAL_ADMIN_ROLE, caller);
+
         vm.prank(caller);
-        if(roleId == GLOBAL_ADMIN_ROLE){
-           vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.InvalidRole.selector,roleId, "The role cannot be global admin"));
-           accountRules.addLocalAccount(newAccount, roleId, dataHash); 
+
+        if(!callerIsGlobalAdmin && !callerIsLocalAdmin) {
+            vm.expectRevert(abi.encodeWithSelector(Governable.UnauthorizedAccess.selector, caller));
+            accountRules.addLocalAccount(newAccount, roleId, dataHash);
         }else{
-            if(roleId != LOCAL_ADMIN_ROLE && roleId != DEPLOYER_ROLE && roleId != USER_ROLE){
-                console.log("the roledid isnt valid");
-                vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.InvalidRole.selector, roleId, "The informed role is unknown"));
-                accountRules.addLocalAccount(newAccount, roleId, dataHash); 
+            if(roleId == GLOBAL_ADMIN_ROLE){
+               vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.InvalidRole.selector,roleId, "The role cannot be global admin"));
+               accountRules.addLocalAccount(newAccount, roleId, dataHash); 
             }else{
-                console.log("Role valido");
-                if(accountRules.getAccount(newAccount).account != address(0)){
-                    vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.DuplicateAccount.selector,newAccount));
+                if(roleId != LOCAL_ADMIN_ROLE && roleId != DEPLOYER_ROLE && roleId != USER_ROLE){
+                    console.log("the roledid isnt valid");
+                    vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.InvalidRole.selector, roleId, "The informed role is unknown"));
                     accountRules.addLocalAccount(newAccount, roleId, dataHash); 
                 }else{
-                    accountRules.addLocalAccount(newAccount, roleId, dataHash);
-                    AccountRulesV2.AccountData memory acc = accountRules.getAccount(newAccount);
-                    assertEq(acc.account, newAccount);
-                    assertEq(acc.roleId, roleId);
-                    assertEq(acc.dataHash, dataHash);
-                    assertTrue(acc.active);
+                    console.log("Role valido");
+                    if(accountRules.getAccount(newAccount).account != address(0)){
+                        vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.DuplicateAccount.selector,newAccount));
+                        accountRules.addLocalAccount(newAccount, roleId, dataHash); 
+                    }else{
+                        accountRules.addLocalAccount(newAccount, roleId, dataHash);
+                        AccountRulesV2.AccountData memory acc = accountRules.getAccount(newAccount);
+                        assertEq(acc.account, newAccount);
+                        assertEq(acc.roleId, roleId);
+                        assertEq(acc.dataHash, dataHash);
+                        assertTrue(acc.active);
+                    }
                 }
             }
         }
