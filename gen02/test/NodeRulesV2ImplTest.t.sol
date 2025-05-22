@@ -125,41 +125,7 @@ contract NodeRulesV2ImplFuzzTest is Test {
         } catch {}
     }
 
-    //revisar
-    // function testFuzz_UpdateLocalNode(
-    //     address caller,
-    //     bytes32 enodeHigh,
-    //     bytes32 enodeLow,
-    //     NodeRulesV2.NodeType newType,
-    //     string calldata newName
-    // ) public {
-    //     console.log("UPDATE LOCAL NODE");
-    //     if(bytes(newName).length == 0){
-    //         console.log("Node name cannot be empty.");
-    //         vm.expectRevert(abi.encodeWithSelector(NodeRulesV2.InvalidArgument.selector, "Node name cannot be empty."));
-    //         nodeRules.updateLocalNode(enodeHigh, enodeLow, newType, newName);
-    //     }else{
-    //         if(nodeRules.getNode(enodeHigh, enodeLow).orgId == 0){
-    //             console.log("Node nao existe");
-    //             vm.expectRevert(abi.encodeWithSelector(NodeRulesV2.NodeNotFound.selector, enodeHigh, enodeLow));
-    //             nodeRules.updateLocalNode(enodeHigh, enodeLow, newType, newName);
-    //         }else{
-    //             console.log("Atualizar o node");
-    //             vm.prank(caller);
-    //             try nodeRules.updateLocalNode(enodeHigh, enodeLow, newType, newName) {
-    //                 // Se sucesso, confere se atualizou
-    //                 NodeRulesV2.NodeData memory nd = nodeRules.getNode(enodeHigh, enodeLow);
-    //                 assertEq(uint(nd.nodeType), uint(newType));
-    //                 assertEq(nd.name, newName);
-    //             } catch (bytes memory reason) {
-    //                 console.log("updateLocalNode revert reason:", string(reason));
-    //             }
-    //         }
-    //     }
-    // }
-
     function testFuzz_UpdateLocalNodeStatus(address caller, bytes32 enodeHigh, bytes32 enodeLow, bool newActive) public {
-       
         vm.prank(caller);
         try nodeRules.updateLocalNodeStatus(enodeHigh, enodeLow, newActive) {
             NodeRulesV2.NodeData memory nd = nodeRules.getNode(enodeHigh, enodeLow);
