@@ -14,57 +14,57 @@ contract PaginationTest is Test {
         
         // adiciona 10 uints para teste
         for (uint i = 1; i <= 10; i++) {
-            pagination.addUint(i);
+            pagination.addUintToTestSet(i);
         }
 
         // adiciona 5 addresses para teste
         for (uint i = 1; i <= 5; i++) {
             address addr = address(uint160(i));
             testAddresses.push(addr);
-            pagination.addAddress(addr);
+            pagination.addAddressToTestSet(addr);
         }
     }
 
     function testGetPageBoundsInvalidPageNumber() public {
-        vm.expectRevert(Pagination.InvalidPaginationParameter.selector);
-        pagination.getPageBounds(10, 0, 5);
+        vm.expectRevert(abi.encodeWithSelector(Pagination.InvalidPaginationParameter.selector, "Page must be greater or equal to 1 "));
+        pagination.getTestPageBounds(10, 0, 5);
     }
 
     function testGetPageBoundsInvalidPageSize() public {
-        vm.expectRevert(Pagination.InvalidPaginationParameter.selector);
-        pagination.getPageBounds(10, 1, 0);
+        vm.expectRevert(abi.encodeWithSelector(Pagination.InvalidPaginationParameter.selector, "Page size must be greater or equal to 1 "));
+        pagination.getTestPageBounds(10, 1, 0);
     }
 
     function testGetPageBoundsOutOfBounds() public {
-        (uint start, uint stop) = pagination.getPageBounds(5, 10, 5);
+        (uint start, uint stop) = pagination.getTestPageBounds(5, 10, 5);
         assertEq(start, 0);
         assertEq(stop, 0);
     }
 
     function testGetPageBoundsNormal() public {
-        (uint start, uint stop) = pagination.getPageBounds(20, 2, 5);
+        (uint start, uint stop) = pagination.getTestPageBounds(20, 2, 5);
         assertEq(start, 5);
         assertEq(stop, 10);
     }
 
     function testGetPageBoundsAdjustStop() public {
-        (uint start, uint stop) = pagination.getPageBounds(12, 3, 5);
+        (uint start, uint stop) = pagination.getTestPageBounds(12, 3, 5);
         assertEq(start, 10);
         assertEq(stop, 12);
     }
 
     function testGetUintPageInvalidPageNumber() public {
-        vm.expectRevert(Pagination.InvalidPaginationParameter.selector);
-        pagination.getUintPage(0, 5);
+        vm.expectRevert(abi.encodeWithSelector(Pagination.InvalidPaginationParameter.selector, "Page must be greater or equal to 1 "));
+        pagination.getUintTestPage(0, 5);
     }
 
     function testGetUintPageInvalidPageSize() public {
-        vm.expectRevert(Pagination.InvalidPaginationParameter.selector);
-        pagination.getUintPage(1, 0);
+        vm.expectRevert(abi.encodeWithSelector(Pagination.InvalidPaginationParameter.selector, "Page size must be greater or equal to 1 "));
+        pagination.getUintTestPage(1, 0);
     }
 
     function testGetUintPageReturnsCorrectPage() public {
-        uint256[] memory page = pagination.getUintPage(2, 3);
+        uint256[] memory page = pagination.getUintTestPage(2, 3);
         assertEq(page.length, 3);
         assertEq(page[0], 4);
         assertEq(page[1], 5);
@@ -72,40 +72,40 @@ contract PaginationTest is Test {
     }
 
     function testGetUintPageEmptyWhenOutOfRange() public {
-        uint256[] memory page = pagination.getUintPage(5, 10);
+        uint256[] memory page = pagination.getUintTestPage(5, 10);
         assertEq(page.length, 0);
     }
 
     function testGetUintPageAdjustEndIndex() public {
-        uint256[] memory page = pagination.getUintPage(4, 3);
+        uint256[] memory page = pagination.getUintTestPage(4, 3);
         assertEq(page.length, 1);
         assertEq(page[0], 10);
     }
 
     function testGetAddressPageInvalidPageNumber() public {
-        vm.expectRevert(Pagination.InvalidPaginationParameter.selector);
-        pagination.getAddressPage(0, 3);
+        vm.expectRevert(abi.encodeWithSelector(Pagination.InvalidPaginationParameter.selector, "Page must be greater or equal to 1 "));
+        pagination.getAddressTestPage(0, 3);
     }
 
     function testGetAddressPageInvalidPageSize() public {
-        vm.expectRevert(Pagination.InvalidPaginationParameter.selector);
-        pagination.getAddressPage(1, 0);
+        vm.expectRevert(abi.encodeWithSelector(Pagination.InvalidPaginationParameter.selector, "Page size must be greater or equal to 1 "));
+        pagination.getAddressTestPage(1, 0);
     }
 
     function testGetAddressPageReturnsCorrectPage() public {
-        address[] memory page = pagination.getAddressPage(1, 2);
+        address[] memory page = pagination.getAddressTestPage(1, 2);
         assertEq(page.length, 2);
         assertEq(page[0], testAddresses[0]);
         assertEq(page[1], testAddresses[1]);
     }
 
     function testGetAddressPageEmptyWhenOutOfRange() public {
-        address[] memory page = pagination.getAddressPage(3, 5);
+        address[] memory page = pagination.getAddressTestPage(3, 5);
         assertEq(page.length, 0);
     }
 
     function testGetAddressPageAdjustEndIndex() public {
-        address[] memory page = pagination.getAddressPage(2, 3);
+        address[] memory page = pagination.getAddressTestPage(2, 3);
         assertEq(page.length, 2);
         assertEq(page[0], testAddresses[3]);
         assertEq(page[1], testAddresses[4]);

@@ -88,7 +88,7 @@ contract AccountRulesV2FuzzTest is Test {
            
             if (newAccount == address(0)) {
                 // Reverte com InvalidAccount
-                vm.expectRevert(AccountRulesV2.InvalidAccount.selector);
+                vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.InvalidAccount.selector, newAccount, "Address cannot be 0x0"));
                 accountRules.addAccount(newAccount, orgId, roleId, dataHash);
             } else {
                 bool orgExists = (orgId == 1 || orgId == 2);
@@ -191,28 +191,20 @@ contract AccountRulesV2FuzzTest is Test {
         }else{
             if(roleId != LOCAL_ADMIN_ROLE && roleId != DEPLOYER_ROLE && roleId != USER_ROLE){
                 console.log("the roledid isnt valid");
-                vm.expectRevert(abi.encodeWithSelector(Governable.UnauthorizedAccess.selector,caller));
+                vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.InvalidRole.selector, roleId, "The informed role is unknown"));
                 accountRules.addLocalAccount(newAccount, roleId, dataHash); 
             }else{
-                
-                if(roleId != LOCAL_ADMIN_ROLE){
-                    vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.InvalidRole.selector,roleId, "The informed role is unknown"));
+                console.log("Role valido");
+                if(accountRules.getAccount(newAccount).account != address(0)){
+                    vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.DuplicateAccount.selector,newAccount));
                     accountRules.addLocalAccount(newAccount, roleId, dataHash); 
                 }else{
-                    console.log("Role valido");
-                    if(accountRules.getAccount(newAccount).account != address(0)){
-                        vm.expectRevert(abi.encodeWithSelector(AccountRulesV2.DuplicateAccount.selector,newAccount));
-                        accountRules.addLocalAccount(newAccount, roleId, dataHash); 
-                    }else{
-                        
-                        accountRules.addLocalAccount(newAccount, roleId, dataHash);
-
-                        AccountRulesV2.AccountData memory acc = accountRules.getAccount(newAccount);
-                        assertEq(acc.account, newAccount);
-                        assertEq(acc.roleId, roleId);
-                        assertEq(acc.dataHash, dataHash);
-                        assertTrue(acc.active);
-                    }
+                    accountRules.addLocalAccount(newAccount, roleId, dataHash);
+                    AccountRulesV2.AccountData memory acc = accountRules.getAccount(newAccount);
+                    assertEq(acc.account, newAccount);
+                    assertEq(acc.roleId, roleId);
+                    assertEq(acc.dataHash, dataHash);
+                    assertTrue(acc.active);
                 }
             }
         }

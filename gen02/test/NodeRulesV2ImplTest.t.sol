@@ -182,11 +182,11 @@ contract NodeRulesV2ImplFuzzTest is Test {
         console.log("page: " , page);
         console.log("pagesize: " , pageSize);
 
-        if(page< 1 && pageSize >= 1){
-            vm.expectRevert(abi.encodeWithSelector(Pagination.InvalidPaginationParameter.selector));
+        if(page < 1){
+            vm.expectRevert(abi.encodeWithSelector(Pagination.InvalidPaginationParameter.selector, "Page must be greater or equal to 1 "));
             nodeRules.getNodes(page, pageSize); 
-        }else if(page>= 1 && pageSize < 1){
-            vm.expectRevert(abi.encodeWithSelector(Pagination.InvalidPaginationParameter.selector));
+        }else if(pageSize < 1){
+            vm.expectRevert(abi.encodeWithSelector(Pagination.InvalidPaginationParameter.selector, "Page size must be greater or equal to 1 "));
             nodeRules.getNodes(page, pageSize); 
         }else{
             try nodeRules.getNodes(page, pageSize) {
@@ -197,11 +197,11 @@ contract NodeRulesV2ImplFuzzTest is Test {
             
         }
 
-        if(page< 1 && pageSize >= 1){
-            vm.expectRevert(abi.encodeWithSelector(Pagination.InvalidPaginationParameter.selector));
+        if(page< 1){
+            vm.expectRevert(abi.encodeWithSelector(Pagination.InvalidPaginationParameter.selector, "Page must be greater or equal to 1 "));
             nodeRules.getNodesByOrg(1, page, pageSize); 
-        }else if(page>= 1 && pageSize < 1){
-            vm.expectRevert(abi.encodeWithSelector(Pagination.InvalidPaginationParameter.selector));
+        }else if(pageSize < 1){
+            vm.expectRevert(abi.encodeWithSelector(Pagination.InvalidPaginationParameter.selector, "Page size must be greater or equal to 1 "));
             nodeRules.getNodesByOrg(1, page, pageSize); 
         }else{
 
