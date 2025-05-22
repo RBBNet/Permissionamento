@@ -82,15 +82,15 @@ Para mais informações sobre a instalação do Foundry, utilize a [documentaç�
 
 Para executar um teste específico (modo verboso):
 ```bash
-forge test <nome_do_teste> -vvv
+forge test <nome_do_contrato> -vvv
 ```
 
 Para executar uma função específica dentro de um teste (modo verboso):
 ```bash
-forge test <nome_de_teste> --match-test <nome_da_funcao> -vvv
+forge test <nome_do_contrato> --match-test <nome_da_funcao> -vvv
 ```
 
-**Observação**: A opção `-vvv` é usada para exibir logs detalhados dos testes.
+**Observação**: A [opção `-vvv`](https://book.getfoundry.sh/reference/cli/forge/test) é usada para exibir logs detalhados dos testes.
 
 Para executar todos os testes:
 ```bash
@@ -104,7 +104,7 @@ forge test --fuzz-runs 1000
 
 Exemplo prático:
 ```bash
-forge test AccountRulesProxyTest.t.sol --fuzz-runs 2000 -vvv
+forge test AccountRulesV2Impl --match-test addLocalAccount --fuzz-runs 100000 -vvv
 ```
 
 
@@ -113,3 +113,5 @@ forge test AccountRulesProxyTest.t.sol --fuzz-runs 2000 -vvv
 - [PIP virtual environments](https://packaging.python.org/en/latest/tutorials/installing-packages/#creating-and-using-virtual-environments)
 - [Slither](https://github.com/crytic/slither)
 - [Mythril](https://github.com/ConsenSys/mythril)
+- [Foundry](https://book.getfoundry.sh/)
+  - [forge](https://book.getfoundry.sh/reference/cli/forge)
