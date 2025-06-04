@@ -15,7 +15,7 @@ contract NodeRulesV2Impl is NodeRulesV2, Governable {
     Organization public immutable organizationsContract;
     mapping (uint => NodeData) public allowedNodes;
     EnumerableSet.UintSet private _nodesKeys;
-    mapping (uint => EnumerableSet.UintSet) _nodesKeysByOrg;
+    mapping (uint => EnumerableSet.UintSet) private _nodesKeysByOrg;
 
     constructor(Organization orgs, AccountRulesV2 accs, AdminProxy adminProxy) Governable(adminProxy) {
         if(address(orgs) == address(0)) {

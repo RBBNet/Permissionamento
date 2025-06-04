@@ -14,7 +14,7 @@ contract AccountRulesV2Impl is AccountRulesV2, Governable, AccessControl {
     Organization immutable public organizations;
     mapping (address => AccountData) public accounts;
     EnumerableSet.AddressSet private _accountsAddresses;
-    mapping (uint => EnumerableSet.AddressSet) _accountsAddressesByOrg;
+    mapping (uint => EnumerableSet.AddressSet) private _accountsAddressesByOrg;
     mapping (uint => uint) public globalAdminsCount;
     mapping (bytes32 => bool) public validRoles;
     EnumerableSet.AddressSet private _restrictedAccounts;
