@@ -258,15 +258,37 @@ Esses endereços serão necessários para chamadas aos *smart contracts* da gen0
 
 ### Implantação na Rede Lab
 
-1. O ajuste das variáveis de ambiente pode ser feito via arquivo `.env` ou ajustando o valor diretamente no terminal. Exemplo:
+1. Certifique-se que o projeto está com os fontes atualizados:
+```shell
+git pull
+git status
+```
 
+2. Verifique as dependências:
+```shell
+npm install
+```
+
+3. Verifique se os contratos estão compilados e os testes estão passando:
+```shell
+npm run compile
+npm run test-unit
+npm test
+```
+
+4. Verifique os parâmetros de implantação no arquivo [`deploy/parameters-lab.json`](deploy/parameters-lab.json).
+   1. Verifique o endereço do contrado `Admin`.
+   2. Verifique as organizações.
+   3. Verifique os endereços dos administradores globais. E verifique se **a ordem dos endereços corresponde à ordem das organizações**.
+
+5. Ajuste as variáveis de ambiente. Isso pode ser feito via arquivo `.env` ou ajustando o valor diretamente no terminal. Exemplo:
 ```shell
 set CONFIG_PARAMETERS=deploy/parameters-lab.json
 set ACCOUNT_ADDRESS=0x........................................
 set PRIVATE_KEY=0x................................................................
 ```
 
-2. Verifique no arquivo [`hardhat.config.js`](hardhat.config.js) se a url da rede `lab_besu` está correto:
+6. Verifique no arquivo [`hardhat.config.js`](hardhat.config.js) se a url da rede `lab_besu` está correto:
 ```json
     lab_besu: {
       url: "http://127.0.0.1:8545",
@@ -276,7 +298,7 @@ set PRIVATE_KEY=0x..............................................................
     },
 ```
 
-3. Implante os contratos da gen02:
+7. Implante os contratos da gen02:
 ```shell
 npm run lab-deploy-gen02
 ```
@@ -285,16 +307,16 @@ Ao final da implantação, guarde os endereços dos contratos de `OrganizationIm
 
 ```
 Implantando smart contract de gestão de organizações
- OrganizationImpl implantado no endereço 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+ OrganizationImpl implantado no endereço 0x0000000000000000000000000000000000000000
 Implantando smart contract de gestão de contas
- AccountRulesV2Impl implantado no endereço 0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9
+ AccountRulesV2Impl implantado no endereço 0x0000000000000000000000000000000000000000
 Implantando smart contract de gestão de nós
- NodeRulesV2Impl implantado no endereço 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
+ NodeRulesV2Impl implantado no endereço 0x0000000000000000000000000000000000000000
 Implantando smart contract de governança
- Governance implantado no endereço 0x5FC8d32690cc91D4c39d9d3abcBD16989F875707
+ Governance implantado no endereço 0x0000000000000000000000000000000000000000
 ```
 
-4. Documente os endereços dos *smart contracts* da gen02 no GitHub no documento [`contratos.md`](https://github.com/RBBNet/participantes/blob/main/lab/contratos.md).
+8. Documente os endereços dos *smart contracts* da gen02 no GitHub no documento [`contratos.md`](https://github.com/RBBNet/participantes/blob/main/lab/contratos.md).
 
 
 ### Implantação na Rede Piloto
