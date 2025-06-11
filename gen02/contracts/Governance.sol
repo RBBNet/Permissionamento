@@ -28,7 +28,7 @@ contract Governance {
         string cancelationReason;
     }
 
-    event ProposalCreated(uint indexed proposalI, address[] targets, bytes[] calldatas, uint blocksDuration, string description);
+    event ProposalCreated(uint indexed proposalId, address[] targets, bytes[] calldatas, uint blocksDuration, string description);
     event OrganizationVoted(uint indexed proposalId, uint orgId, bool approve);
     event ProposalCanceled(uint indexed proposalId, string reason);
     event ProposalFinished(uint indexed proposalId);
