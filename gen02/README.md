@@ -277,7 +277,7 @@ npm test
 ```
 
 4. Verifique os parâmetros de implantação no arquivo [`deploy/parameters-lab.json`](deploy/parameters-lab.json).
-   1. Verifique o endereço do contrado `Admin`.
+   1. Verifique o endereço do contrato `Admin`.
    2. Verifique as organizações.
    3. Verifique os endereços dos administradores globais. E verifique se **a ordem dos endereços corresponde à ordem das organizações**.
 
@@ -340,7 +340,7 @@ npm test
 ```
 
 4. Verifique os parâmetros de implantação no arquivo [`deploy/parameters-piloto.json`](deploy/parameters-piloto.json).
-   1. Verifique o endereço do contrado `Admin`.
+   1. Verifique o endereço do contrato `Admin`.
    2. Verifique as organizações.
    3. Verifique os endereços dos administradores globais. E verifique se **a ordem dos endereços corresponde à ordem das organizações**.
 
