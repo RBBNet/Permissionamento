@@ -14,6 +14,8 @@ Procedimento:
 
 Há um [cenário de teste automatizado](../features/macroprocesses.feature) para esse macroprocesso.
 
+Há um [roteiro](adicao-nova-organizacao.md) com os passos necessários para execução deste processo através dos *smart contracts* da gen02.
+
 
 # Saída de uma organização
 
